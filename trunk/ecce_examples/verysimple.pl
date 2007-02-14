@@ -1,0 +1,1 @@
+p(a) :- q(a).p(f(X)) :- q(X).q(a).q(b).q(f(X)) :- q(X).r(a).r(X) :- r(f(X)).r2(a).r2(X) :- r2([b|X]).

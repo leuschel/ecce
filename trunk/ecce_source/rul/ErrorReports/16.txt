@@ -1,0 +1,52 @@
+From - Wed Sep 26 11:44:55 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id LAA14372
+	for <sg>; Wed, 26 Sep 2001 11:36:28 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: Fehler ist in RULification
+Date: Wed, 26 Sep 2001 11:58:12 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <0109261158120A.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 798
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000d83
+
+| ?- 
+goalRULification(unsafe4(bang(a,prefix(b,agent(q)))),_42801,
+                 rul__constraint__declaration([],[]),R), 
+print_rul(R).
+RUL Constraints: [ge_t117(_755)]
+RUL Program:
+->  any(_4528):-true.
+->  ge_t117(bang(_4513,_4511)):-ge_t118(_4513),ge_t119(_4511).
+->  ge_t118(a):-true.
+->  ge_t119(prefix(_4493,_4491)):-ge_t119(_4493),ge_t120(_4491).
+->  ge_t119(b):-true.
+->  ge_t120(agent(_4474)):-ge_t120(_4474).
+->  ge_t120(q):-true.
+ 
+R = 
+rul__constraint__declaration([ge_t117(_A)],
+                             [proc(any/1,[(any(_B):-true)]),
+                              proc(ge_t117/1,[(ge_t117(bang(_C,_D)):-ge_t118(_C),ge_t119(_D))]),
+                              proc(ge_t118/1,[(ge_t118(a):-true)]),
+                              proc(ge_t119/1,[(ge_t119(prefix(_E,_F)):-ge_t119(_E),ge_t120(_F))]),
+                              proc(ge_t119/1,[(ge_t119(b):-true)]),
+                              proc(ge_t120/1,[(ge_t120(...):-ge_t120(...))]),
+                              proc(ge_t120/1,[(...:- ...)])]) ?
+
+=============================================================================
+
+ANSWER: the test rul:rul/1 failed because non-unique procedure names have been
+	detected. I have now added another call to gensym2:seed/1 into the sub-
+	procedures of proSiNo:goalRULification/4 and it seems to work now hope-
+	fully. gensym2:seed/1 is the base for the creation of fresh type names.
+
+================================================================[SG:26.9.2001]

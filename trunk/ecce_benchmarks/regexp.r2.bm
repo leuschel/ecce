@@ -1,0 +1,31 @@
+orig_prog('orig/regexp.pro').
+pd_query([generate(star(cat(or(char(a),char(b)),
+ cat(or(char(c),char(d)),cat(or(char(e),char(f)),or(char(g),char(h)))))),S,[])]).
+
+run_time_queries([
+	[generate(star(cat(or(char(a),char(b)),cat(or(char(c),char(d)),
+			cat(or(char(e),char(f)),or(char(g),char(h)))))),
+		[a,d,e,h, b,c,f,g],[])],
+	[generate(star(cat(or(char(a),char(b)),cat(or(char(c),char(d)),
+			cat(or(char(e),char(f)),or(char(g),char(h)))))),
+		[b,d,X,g, a,c,Y,h],[])],
+	[generate(star(cat(or(char(a),char(b)),cat(or(char(c),char(d)),
+			cat(or(char(e),char(f)),or(char(g),char(h)))))),
+		[a,d,e,h, b,z,f,g, a,d,e,h, b,c,f,g, a,d,e,h, b,c,f,g],[])]
+	]).
+run_time_nr(50). /* changed from 10 */
+test_queries([
+	[generate(star(cat(or(char(a),char(b)),cat(or(char(c),char(d)),
+			cat(or(char(e),char(f)),or(char(g),char(h)))))),
+		[a,d,e,h,b,c,X,Y],[])]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('A program testing whether a string matches a regular 
+expression (using difference lists). Much more naive (and smaller) than 
+the program used by Mogensen/Bondorf for Logimix ! Regular expression: 
+((a+b)(c+d)(e+f)(g+h))*.').
+
+
+
+

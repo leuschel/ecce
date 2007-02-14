@@ -1,0 +1,17 @@
+orig_prog('/orig/processalgebra.pl').
+pd_query([unsafe(_)]).
+run_time_queries([
+	[unsafe(s(s(0)))]
+	]).
+run_time_nr(20).
+test_queries([
+	[unsafe(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(0))))))))))))))))))],
+	[unsafe(s(s(0)))]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('An interpreter for a very simple process algebra with prefix and parallel composition. A small infinite state system that is to be checked for a simple safety property.').
+
+
+
+

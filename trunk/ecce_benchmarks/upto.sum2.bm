@@ -1,0 +1,26 @@
+orig_prog('orig/upto.pro').
+pd_query([sumtrsquaretr(N,S)]).
+run_time_queries([
+	[sumtrsquaretr(branch(leaf(3),leaf(2)),X)],
+	[sumtrsquaretr(branch(branch(branch(leaf(1),leaf(2)),
+		branch(leaf(3),leaf(9))),branch(leaf(3),
+		branch(leaf(3),leaf(6)))),X)],
+	[sumtrsquaretr(branch(branch(branch(leaf(1),leaf(2)),
+		branch(leaf(3),branch(branch(leaf(3),leaf(4)),leaf(6)))),
+		branch(branch(leaf(2),branch(leaf(2),leaf(5))),
+		branch(branch(leaf(10),leaf(9)),branch(leaf(6),leaf(6))))),X)]
+	]).
+run_time_nr(20).
+test_queries([
+	[sumtrsquaretr(branch(leaf(3),leaf(2)),X)],
+	[sumtrsquaretr(branch(branch(branch(leaf(1),leaf(2)),
+		branch(leaf(3),leaf(9))),branch(leaf(3),
+		branch(leaf(3),leaf(6)))),X)]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('sumtrsquaretr example from Wadler.').
+
+
+
+

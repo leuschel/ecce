@@ -1,0 +1,61 @@
+==========================================================================================
+
+From - Mon Oct  8 17:36:48 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id QAA12332
+	for <sg>; Mon, 8 Oct 2001 16:30:30 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: Normalisation error !
+Date: Mon, 8 Oct 2001 16:53:32 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <0110081653320S.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 1014
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000e12
+
+### WARNING CALL HAS FAILED !
+### proSiNo:normalisation(
+rul__constraint__declaration([ge_t3(par(_128129,_128130)),any(_67823),any(par(_128126,_128130))],
+[proc(any/1,[(any(_67787):-true)]),proc(ge_t3/1,[(ge_t3(par(_67769,_67770)):-ge_t5(_67769),ge_t6(_67770))]),
+proc(ge_t5/1,[(ge_t5(agent(_67745)):-ge_t8(_67745))]),proc(ge_t6/1,[(ge_t6(agent(_67726)):-ge_t10(_67726))]),
+ proc(ge_t8/1,[(ge_t8(p):-true)]),proc(ge_t10/1,[(ge_t10(p):-true)])]),_145216
+)
+
+Normalerweise wird vor der normalisation immer die Simplifikation aufgerufen 
+?!
+
+Habe auch folgendes, was mir seltsam erscheint:
+ 
+| ?- 
+simplify(([ge_t3(par(_128129,_128130)),any(_67823),any(par(_128126,_128130))],
+[proc(any/1,[(any(_67787):-true)]),proc(ge_t3/1,[(ge_t3(par(_67769,_67770)):-ge_t5(_67769),ge_t6(_67770))]),
+proc(ge_t5/1,[(ge_t5(agent(_67745)):-ge_t8(_67745))]),proc(ge_t6/1,[(ge_t6(agent(_67726)):-ge_t10(_67726))]),
+ proc(ge_t8/1,[(ge_t8(p):-true)]),proc(ge_t10/1,[(ge_t10(p):-true)])]),       
+        R).
+ 
+* SIMPLIFICATION FAILED
+ 
+no
+
+==========================================================================================
+
+ANSWER: In the example above, proc simplify/2 has not been properly called with an input
+	of rul__constraint__declaration(.,.) syntax, therefore the failure is justified.
+	When wrapped into the proper syntactical form, the above constraint and the above
+	program have passed the simplification without any problems.
+
+	Also the reported problem with normalisation/2 was only a pseudo-problem, because
+	the input was not in the required simplified form. With the following call-chain:
+	simplify(RCD,SIMP),normalisation(SIMP,RESULT) we achieve success, whereby RCD is
+	constructed with the constraint and the program given above.
+
+============================================================================[SG:8.10.2001]
+	
+ 

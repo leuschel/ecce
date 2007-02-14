@@ -1,0 +1,1 @@
+v(a).v(X) :- v2(X).v(X) :- v(f(X)).v2(a).v2(f(X)) :- v2(X).test :- v(b). /* should fail */

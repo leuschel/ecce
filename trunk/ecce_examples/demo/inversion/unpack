@@ -1,0 +1,1 @@
+unpack([],[]).unpack([rep(C,N)|T],Res) :-	repeat(C,N,CN),	app(CN,UT,Res),	unpack(T,UT).repeat(C,0,[C]).repeat(C,s(X),[C|T]) :- repeat(C,X,T).	app([],L,L).app([H|X],Y,[H|Z]) :- app(X,Y,Z).unpack2([],[]).unpack2([C/N|T],Res) :-	app(CN,UT,Res),	repeat(C,N,CN),	unpack2(T,UT),	not(UT = [C|_UTT]).	

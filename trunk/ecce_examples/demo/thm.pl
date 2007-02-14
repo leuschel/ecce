@@ -1,0 +1,1 @@
+t :- thm(X).	thm(X) :- gen(X),test(X).	gen([1]).gen([0|X]) :- gen(X).	test([1|_]).test(X) :- trans(X,Y),test(Y).trans([0,1|X],[1,0|X]).trans([H|T],[H|T1]) :- trans(T,T1).	

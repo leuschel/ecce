@@ -1,0 +1,1 @@
+prodcons([],[],[]).prodcons([X|Xs],[],Out) :- prodcons(Xs,[X],Out).prodcons(X,[Y|Ys],[Y|Out]) :- prodcons(X,Ys,Out).prodcons2(X,Y) :- produce(X,Y),consume(Y).produce([],[]).produce([X|Xs],[X|Ys]) :- produce(Xs,Ys).consume([]).consume([X|Xs]) :- consume(Xs).

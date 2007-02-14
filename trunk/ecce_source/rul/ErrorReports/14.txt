@@ -1,0 +1,82 @@
+From - Mon Sep 24 16:42:07 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id OAA04243
+	for <sg>; Mon, 24 Sep 2001 14:33:04 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: not RUL
+Date: Mon, 24 Sep 2001 14:54:36 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <01092414543606.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 1319
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000d66
+
+ ?- 
+ecceRUL:entails([unsafe2(_5738)],
+                rul__constraint__declaration([t6(_5738)],
+                                             [proc(any/1,
+                                              [(any(_5714):-true)]),
+                                              proc(t2/1,
+                                              [(t2(agent(_5697)):-t6(_5697))]),
+                                              proc(t6/1,
+                                              [(t6(p):-true)]),
+                                              proc(t6/1,
+                                              [(t6(prefix(_5662,_5663)):-t10(_5662),t11(_5663))]),
+                                              proc(t10/1,
+                                              [(t10(a):-true)]),
+                                              proc(t11/1,
+                                              [(t11(par(_5622,_5623)):-t16(_5622),t17(_5623))]),
+                                              proc(t16/1,
+                                              [(t16(agent(_5598)):-t22(_5598))]),
+                                              proc(t17/1,
+                                              [(t17(agent(_5579)):-t25(_5579))]),
+                                              proc(t22/1,
+                                              [(t22(p):-true)]),
+                                              proc(t25/1,
+                                              [(t25(p):-true)])]),
+                 [unsafe2(_11399)],
+                 rul__constraint__declaration([t2(_11399)],
+                                              [proc(any/1,
+                                               [(any(_11375):-true)]),
+                                               proc(t2/1,
+                                               [(t2(agent(_11358)):-t6(_11358))]),
+                                               proc(t6/1,
+                                               [(t6(p):-true)])])).
+ 
+* SYNTAX ERROR: THIS PROGRAM IS NOT RUL! *
+[proc(any/1,[(any(_299):-true)]),
+ proc(x_t2/1,[(x_t2(agent(_433)):-x_t6(_433))]),
+ proc(x_t6/1,[(x_t6(p):-true)]),
+ proc(x_t6/1,[(x_t6(prefix(_711,_739)):-x_t10(_711),x_t11(_739))]),
+ proc(x_t10/1,[(x_t10(a):-true)]),
+ proc(x_t11/1,[(x_t11(par(_1062,_1090)):-x_t16(_1062),x_t17(_1090))]),
+ proc(x_t16/1,[(x_t16(agent(_1307)):-x_t22(_1307))]),
+ proc(x_t17/1,[(x_t17(agent(_1479)):-x_t25(_1479))]),
+ proc(x_t22/1,[(x_t22(p):-true)]),
+ proc(x_t25/1,[(x_t25(p):-true)]),
+ proc(any/1,[(any(_1994):-true)]),
+ proc(y_t2/1,[(y_t2(agent(_2130)):-y_t6(_2130))]),
+ proc(y_t6/1,[(y_t6(p):-true)])]
+ 
+no
+| ?-
+
+==============================================================================
+
+ANSWER: The properly working rul/1-Test has discovered that type t6 is defined
+	more than once in the above program. Thus the uniqueness condition on
+	type names (other than "any") is violated. As all the occuring types
+	are automatically generated, we must be more careful with the genera-
+	tion of unique type names. For this reason I have changed the genera-
+	tion code for type names in the modules "upperBound.pl", "proSiNo.pl"
+	and "interSection.pl", which is (moreover) now supported by Michael's
+	symbol generation module "gensym2.pl"
+
+================================================================[SG:24.9.2001] 

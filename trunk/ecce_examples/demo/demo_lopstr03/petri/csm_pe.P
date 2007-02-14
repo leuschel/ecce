@@ -1,0 +1,40 @@
+/* file: /Users/mal/CVS/Petri/Examples/csm.P.pe.ssat__ */
+/* benchmark info: 10 ms */
+
+
+%:- table sat__1/14.
+%:- table sat_eu__2/14.
+sat_eu__2(B,C,D,E,F,G,H,I,J,s(s(K)),L,M,N,O).
+sat_eu__2(s(P),Q,R,S,T,U,V,W,X,Y,Z,A1,B1,C1) :- 
+  sat_eu__2(P,s(Q),R,S,T,U,V,W,X,Y,Z,A1,B1,C1).
+sat_eu__2(D1,E1,F1,G1,s(H1),I1,J1,K1,L1,s(M1),N1,O1,P1,Q1) :- 
+  sat_eu__2(s(D1),E1,s(F1),G1,H1,I1,J1,K1,L1,M1,N1,O1,P1,Q1).
+sat_eu__2(R1,S1,T1,U1,s(V1),W1,s(X1),Y1,Z1,A2,B2,C2,D2,E2) :- 
+  sat_eu__2(s(R1),S1,T1,s(U1),V1,W1,X1,Y1,Z1,A2,B2,C2,D2,E2).
+sat_eu__2(F2,s(G2),H2,s(I2),J2,K2,L2,M2,N2,O2,P2,Q2,R2,S2) :- 
+  sat_eu__2(F2,G2,H2,I2,J2,s(K2),s(L2),M2,N2,O2,P2,Q2,R2,S2).
+sat_eu__2(T2,s(U2),s(V2),W2,X2,Y2,Z2,A3,B3,C3,D3,E3,F3,G3) :- 
+  sat_eu__2(T2,U2,V2,W2,X2,s(Y2),Z2,A3,B3,s(C3),D3,E3,F3,G3).
+sat_eu__2(H3,I3,J3,K3,L3,s(M3),N3,O3,P3,Q3,R3,S3,T3,U3) :- 
+  sat_eu__2(H3,I3,J3,K3,s(L3),M3,N3,O3,P3,Q3,R3,S3,T3,U3).
+sat_eu__2(V3,W3,X3,Y3,Z3,A4,B4,C4,D4,E4,s(F4),G4,H4,I4) :- 
+  sat_eu__2(V3,W3,X3,Y3,Z3,A4,B4,s(C4),D4,E4,F4,G4,H4,I4).
+sat_eu__2(J4,K4,L4,M4,N4,O4,P4,s(Q4),R4,S4,T4,U4,V4,W4) :- 
+  sat_eu__2(J4,K4,L4,M4,N4,O4,P4,Q4,s(R4),S4,T4,U4,V4,W4).
+sat_eu__2(X4,Y4,Z4,A5,B5,C5,s(D5),E5,s(F5),G5,H5,I5,J5,K5) :- 
+  sat_eu__2(X4,Y4,Z4,A5,B5,C5,D5,E5,F5,s(G5),H5,I5,J5,K5).
+sat_eu__2(L5,M5,N5,O5,P5,Q5,R5,S5,T5,s(U5),V5,W5,X5,Y5) :- 
+  sat_eu__2(L5,M5,N5,O5,P5,Q5,s(R5),S5,T5,U5,s(V5),W5,X5,Y5).
+sat_eu__2(Z5,A6,B6,C6,D6,E6,F6,G6,H6,I6,s(J6),K6,L6,M6) :- 
+  sat_eu__2(Z5,A6,B6,C6,D6,E6,F6,G6,H6,I6,J6,K6,s(L6),M6).
+sat_eu__2(N6,O6,P6,Q6,R6,S6,T6,U6,V6,W6,X6,s(Y6),Z6,A7) :- 
+  sat_eu__2(N6,O6,P6,Q6,R6,S6,T6,U6,s(V6),W6,X6,Y6,Z6,s(A7)).
+sat_eu__2(B7,C7,D7,E7,F7,G7,H7,I7,J7,K7,L7,M7,s(N7),s(O7)) :- 
+  sat_eu__2(B7,C7,D7,E7,F7,G7,H7,I7,J7,K7,L7,s(M7),N7,O7).
+sat__1(B,C,D,E,F,G,H,I,J,K,L,M,N,O) :- 
+  sat_eu__2(B,C,D,E,F,G,H,I,J,K,L,M,N,O).
+ssat__0(X) :- 
+  sat__1(0,0,0,0,0,s(0),s(0),
+    X,  /* s(s(s(s(s(s(s(s(0)))))))),*/  /* K */
+         0,0,0,0,0,s(0)).
+

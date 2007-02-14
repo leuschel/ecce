@@ -1,0 +1,66 @@
+orig_prog('orig/liftsolve.pro').
+pd_query([
+	solve([	term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),
+		term(male,[var(x)])]),
+	term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),
+		term(female,[var(x)])]),
+	term(clause,[term(male,[term(paul,[])]) ]),
+	Unknown],
+	[term(father,[X,Y])])
+	]).
+
+run_time_queries([
+	[solve([term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),
+		term(male,[var(x)])]),
+	term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),
+		term(female,[var(x)])]),
+	term(clause,[term(male,[term(paul,[])])]),
+	term(clause,[term(parent,[term(paul,[]),term(peter,[])])])],
+	[term(father,[X,Y])])],
+
+	[solve([term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),
+		term(male,[var(x)])]),
+	term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),
+		term(female,[var(x)])]),
+	term(clause,[term(male,[term(paul,[])])]),
+	term(clause,[term(father,[term(peter,[]),term(paul,[])])])],
+	[term(father,[X,Y])])],
+
+	[solve([term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),
+		term(male,[var(x)])]),
+	term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),
+		term(female,[var(x)])]),
+	term(clause,[term(male,[term(paul,[])])]),
+	term(clause,[term(female,[term(maria,[])])])],
+	[term(father,[X,Y])])]
+	]).
+run_time_nr(10).
+test_queries([
+
+
+	[solve([term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),
+		term(male,[var(x)])]),
+	term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),
+		term(female,[var(x)])]),
+	term(clause,[term(male,[term(paul,[])])]),
+	term(clause,[term(parent,[term(paul,[]),term(peter,[])])])],
+	[term(father,[X,Y])])]
+
+  ]).
+negation_used(no).
+built_ins_used(yes).
+description('The lifting meta-interpreter for the ground representation with a partially specified object program.').
+
+
+
+

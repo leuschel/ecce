@@ -1,0 +1,41 @@
+Datum: Fri, 23 Nov 2001 17:08:44 +0000 
+Betreff: Problem mit analyticFold 
+Von: "Michael Leuschel" <mal@ecs.soton.ac.uk> 
+An: "Stefan Gruner" <sg@ecs.soton.ac.uk> 
+
+### WARNING CALL HAS FAILED !
+### analyticFold:goalFolding(r(f(f(_144460))),
+	rul__constraint__declaration([t13(_144460)],
+		[proc(y_ex_t9/1,[(y_ex_t9(b):-true)]),
+		 proc(t13/1,[(t13(b):-true),(t13(f(_160933)):-y_ex_t9(_160933))]),
+		 proc(ex_t12/1,[(ex_t12(f(_160917)):-t13(_160917))])]),
+	_161103,
+	_161094)
+
+=================================================================================
+
+Answer: I could not find any error. Perhaps an Inconsistency between Michael's
+	environment and Stefan's environment? For security I will check-in the
+	whole RUL package again with CVS...
+
+==================================================================[SG:23.11.2001]
+
+Answer2: By running the same call in Michael's Environment and in Stefan's
+	Environment, we found a difference in the two traces which is caused
+	by different Versions of Sicstus Prolog! Stefan has: Version 3.8.6,
+	Michael has: Version 3.8.7!
+
+	The amazing phenomenon is that a call "term_variables(term, [_|_])",
+	which is used in Module proSiNo, is legal in Sicstus 3.8.6 but it
+	is forbidden in Sicstus 3.8.7! There it is "term_variables(term, VAR)".
+	In the Meantime, Michael has changed module proSiNo such that it is
+	conform to the latest version of SICTUS prolog.
+
+==================================================================[SG:23.11.2001]
+
+A Nasty Comment on Sicstus: If you want to forbid an instantiated second
+argument in term_variables/2, then let it be static compile-time syntax
+error and not a dynamic run-time semantic error! Fucking Hell! We wasted
+hours and hours for the debugging!
+
+==================================================================[SG:23.11.2001]

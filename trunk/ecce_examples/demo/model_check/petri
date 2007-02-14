@@ -1,0 +1,1 @@
+state(X,Y,reach(X,Y)).state(s(X),Y,R) :- state(X,s(Y),R).state(X,s(Y),R) :- state(s(X),Y,R).test1(X) :- state(s(0),0,X).unsafe(s(s(_X)),_Y).unsafe(_X,s(s(_Y))).unsafe(s(X),Y):- unsafe(X,s(Y)).unsafe(X,s(Y)) :- unsafe(s(X),Y)./*test2 :- unsafe(s(0),0).test3 :- unsafe(s(0),s(0)).*/

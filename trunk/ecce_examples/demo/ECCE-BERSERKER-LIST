@@ -1,0 +1,1 @@
+EBL - ECCE BERSERKER LIST-------------------------**abds(X) :-	demo([clause(p,[q]),clause(p,[r]),clause(q,[]),X],[p]).	in prop-demo using standard settings (conj.PD -t unfolding), BUG ?	-> works with pruning factor heuristic**

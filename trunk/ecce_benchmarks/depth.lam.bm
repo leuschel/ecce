@@ -1,0 +1,17 @@
+orig_prog('orig/depth.pro').
+pd_query([depth(member(X,[a,b,c,m,d,e,m,f,g,m,i,j]),Depth)]).
+run_time_queries([
+	[depth(member(i,[a,b,c,m,d,e,m,f,g,m,i,j]),Depth)]
+	]).
+run_time_nr(100).  /* changed from 20 */
+test_queries([
+
+	[depth(member(i,[a,b,c,m,d,e,m,f,g,m,i,j]),Depth)]
+	]).
+negation_used(no).
+built_ins_used(no).
+description(' A Lam benchmark.').
+
+
+
+

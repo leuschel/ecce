@@ -1,0 +1,141 @@
+//    background: #e0e0f0;
+
+body {
+    background: #FFF;
+    text-align: center;
+    margin: 50px 0px; padding:0px;
+} 
+* {font-family: Verdana; font-size: 10px;} /* ALL */
+pre,code{font-family:Courier; font-size:12px;}
+
+a {
+    margin: 2px;
+}
+
+//form {
+//    display: inline-block;
+//}
+
+fieldset {
+    padding: 3px; 
+    border-color: #4066B3;
+    background: #E0E0F0;
+}
+legend {
+    background: #4066B3;
+    color: #E0E0F0;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 0px 2px 0px 2px;
+}
+
+//textarea {white-space:normal|pre|nowrap|inherit;}
+
+textarea{
+    width: 615px;
+    height: 200px;
+    border: inset 1px #AAA;
+    background: #FFF;
+    display: block;
+}
+iframe{
+    width: 613px;
+    height: 200px;
+    border: inset 1px #AAA;
+    background: #FFF;
+}
+
+fieldset input, fieldset select {
+    font-size: 12px;
+}
+
+html:lang(en)>body fieldset input {
+    margin: 3px 3px;
+}
+
+.half{
+    width:301px; 
+    height:35px;
+    display: inline;
+}
+html:lang(en)>body fieldset.half {
+    padding: 0px 8px;
+}
+
+#main {
+    margin: 0px auto;
+    width: 870px;
+    border: solid #4066B3;
+    background: #E0E0F0;
+    text-align: left;
+}
+
+#top {
+    width: 850px;
+    background: #FFF;
+    padding: 10px;
+}
+
+#bottom, #bottom * {
+    color:#4066B3; 
+    font-size:9px; 
+    font-style:italic;
+    text-align: center;
+}
+
+#middle {
+    padding: 10px;
+    width: 850px;
+}
+
+#source {
+    z-index: 5; 
+    width: 630px;
+    float: left;
+}
+
+#options {
+    z-index: 5; 
+    width: 188px;
+    float: right;
+}
+html>body #options{
+    width: 200px;
+}
+
+#info {
+    height: 100px;
+    width: 160px;
+    float: right;
+    padding: 10px;
+}
+html>body #info {
+    width: 172px;
+}
+
+.ecce_button {
+    width: 80px;
+    margin: 2px 0px 2px 0px;
+    color: #E0E0F0;    
+    background: #4066B3;
+}
+html:lang(en)>body .ecce_button{
+    width: 87px;
+}
+
+.sliced {
+    color: gray;
+}
+
+.console {
+    background: #E0E0F0;
+    border: dashed 1px #4066B3; 
+    margin-left:100px; 
+    margin-right:100px; 
+    padding:10px; 
+    font-size:10px;
+}
+.console * {
+    font-size:10px;
+    font-family:Courier;
+}

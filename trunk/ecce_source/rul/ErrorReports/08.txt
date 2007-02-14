@@ -1,0 +1,53 @@
+From - Wed Sep 19 15:06:16 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id OAA03106
+	for <sg>; Wed, 19 Sep 2001 14:42:16 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: rulification: any Kreationsfehler
+Date: Wed, 19 Sep 2001 15:03:16 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <01091915031600.00663@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 395
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000d37
+
+| ?- 
+goalRULification(u(f(_143)),
+                 NEWATOM,
+                 rul__constraint__declaration([t0(_143)],
+                                              [proc(any/1,[(any(_354):-true)]),
+                                               proc(t0/1,[(t0(f(_490)):-t2(_490))]),
+                                               proc(t2/1,[(t2(b):-true)])]),
+                                               NEWRUL).
+ 
+NEWRUL = 
+rul__constraint__declaration([t0(_143),t6(_A)],
+                             [proc(any/1,[(any(_B):-true)]),
+                              proc(t0/1,[(t0(f(_C)):-t2(_C))]),
+                              proc(t2/1,[(t2(b):-true)]),
+                              proc(t6/1,[(t6(f(_D)):-any(_D))])]),
+NEWATOM = u(_A) ?
+
+---> Unwanted "any" has been generated.
+
+=====================================================================================
+
+ANSWER: There was a conceptual error. Instead of remembering the type
+        of "_143" (in our example), namely t0, the any_type had been
+        created. There was no link between new-generated t6 and the
+        old t0. This error is now eliminated such that the new type
+        t6 (in our example) eventually refers to the old type t0.
+        Procedures "proSiNo:iFactExpansion", "proSiNo:goalExpansion",
+        "proSiNo:makeIntermediateFacts" have been modified to eliminate
+        that error. As support, "rul:rulHead" is now made public in the
+        "rul.pl"-Module.
+
+=====================================================================================
+

@@ -1,0 +1,87 @@
+=====================================================================================
+
+ANSWER: (to the following problem report). In procedure ecceRUL:widen/6, Michael has
+	changed the atom-wise application of proc msg into a composition-wise appli-
+	cation for the sake of more precision. 
+
+	Example: G1 = [p(a), q(b)],  G2 = [p(b), q(a)].
+	Composition-wise msg: msg(G1,G2) = [p(Z), q(Z)].
+	Atom-wise msg: msg(p(a),p(b)) = p(X), msg(q(b),q(a)) = q(Y).
+		       The Information that X = Y = Z got lost
+	               (which had lead to too sloppy widening in such cases).
+
+====================================================================================
+   
+From - Fri Oct  5 09:23:21 2001
+Received: from localhost (pri18.dialup.ecs.soton.ac.uk [152.78.68.243])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id RAA24328;
+	Thu, 4 Oct 2001 17:29:57 +0100 (BST)
+Message-Id: <200110041629.RAA24328@hawk.ecs.soton.ac.uk>
+Date: Thu, 4 Oct 2001 17:29:54 +0100
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+Content-Type: text/plain;
+	format=flowed;
+	charset=iso-8859-1
+X-Mailer: Apple Mail (2.388)
+Cc: M.Leuschel@ecs.soton.ac.uk
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+Mime-Version: 1.0 (Apple Message framework v388)
+Subject: Prazisionsproblem in widen
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by hawk.ecs.soton.ac.uk id RAA24328
+Content-Length: 1860
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000de4
+
+Scheinbar benutzt widen nicht immer den msg ?
+Unten sollte man eigentlich
+RGOAL = [rev(_A,_B,_C),ls(_C)],
+und nicht
+RGOAL = [rev(_A,_B,_C),ls(_D)],
+bekommen.
+Dies ist wichtig für conjunctive RUL-PD und für unsere Anwendung für 
+Type Checking (und vielleicht auch für die Prozessalgebra-beispiele).
+
+Habe gerade nachgeschaut: widen benutzt den msg atom per atom, sollte es 
+aber für das ganze goal tun: habe folgende Änderung gemacht:
+
+	/* goalMerging(Goals1IN, Goals2IN, MergedGoals), */
+	msg2(Goals1IN, Goals2IN, MergedGoals),  /* MODIFICATION BY MAL : 
+check*/
+
+Die Änderung scheint zu funktionieren ! Ich kann nun das revacc Beispiel 
+völlig automatisch behandeln.
+
+Gute Neuigkeiten auch von Lopstr: unser Artikel hat scheinbar 3 mal die 
+8 bekommen.
+Bis morgen,
+Michael
+
+  ?- widen([rev(_268275,_268276,_268277),ls(_268277)],
+rul__constraint__declaration([any(_268277),any(_26     
+8275),ge_t95(_268276)],[proc(any/1,[(any(_26823
+9):-true)]),proc(ge_t95/1,[(ge_t95([_268221|_268222]):-any(_268221),ge_t97(
+_268222))]),proc(ge_t97/1,[(ge_t97([]):-true)])]),
+[rev(_257922,_257923,_25792     4),ls(_257924)],
+rul__constraint__declaration([any(_257924),any(_257922),ge_t101
+(_257923)],[proc(any     
+/1,[(any(_25788
+6):-true)]),proc(ge_t95/1,[(ge_t95([_257868|_257869]):-any(_257868),ge_t97(
+_257869))]),proc(ge_t97/1,[(ge_t97
+([]):-true)]),proc(ge_t101/1,[(ge_t101([_257829|_257830]):-ge_t95(_257830)
+,any(_257829))])]),
+RGOAL,RCONSTR)     .
+
+RGOAL = [rev(_A,_B,_C),ls(_D)],
+RCONSTR = 
+rul__constraint__declaration([any(_C),any(_A),ub_t19(_B)],[proc(any/1,
+[(any(_
+E):-true)]),proc(any/1,[(any(_F):-true)]),proc(x_ge_t95/1,[(x_ge_t95([_G|_H]
+):-any(_G),x_ge_t97(_H))]),proc(x_ge_t97/1,[(x_ge_t97([]):-true)]),proc(any/
+1,[(any(_I):-true)]),proc(y_ge_t95/1,[(y_ge_t95(...):- 
+...,...)]),proc(y_ge_t97/1,[(... :- ...)]),proc(... / 
+...,[...]),proc(...)|...]) ?
+
+======================================================================================

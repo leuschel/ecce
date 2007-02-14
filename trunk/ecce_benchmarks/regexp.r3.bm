@@ -1,0 +1,37 @@
+orig_prog('orig/regexp.pro').
+pd_query([generate(star(cat(or(char(a),char(b)),
+cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+or(char(a),char(b)))))))),S,[])]).
+run_time_queries([
+	[generate(star(cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+		cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+		cat(or(char(a),char(b)),or(char(a),char(b)))))))),
+		[a,b,a,b,a,b, a,a,a,b,a,b],[])],
+	[generate(star(cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+		cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+		cat(or(char(a),char(b)),or(char(a),char(b)))))))),
+		[a,X,a,b,a,b, a,a,a,Y,b,a],[])],
+	[generate(star(cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+		cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+		cat(or(char(a),char(b)),or(char(a),char(b)))))))),
+		[a,b,a,b,a,a, a,b],[])],
+	[generate(star(cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+		cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+		cat(or(char(a),char(b)),or(char(a),char(b)))))))),
+		[a,b,a,b,a,a, b,b,b,a,b,a, a,b,b,a,a,b],[])]
+	]).
+run_time_nr(50). /* changed from 10 */
+test_queries([
+	[generate(star(cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+		cat(or(char(a),char(b)),cat(or(char(a),char(b)),
+		cat(or(char(a),char(b)),or(char(a),char(b)))))))),
+		[a,X,a,b,a,Y],[])]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('A program testing whether a string matches a regular expression (using difference lists). Much more naive (and smaller) than the program used by Mogensen/Bondorf for Logimix ! Regular expression: ((a+b)(a+b)(a+b)(a+b)(a+b)(a+b))*.').
+
+
+
+

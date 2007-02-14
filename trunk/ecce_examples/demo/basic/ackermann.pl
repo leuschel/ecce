@@ -1,0 +1,1 @@
+ack(0,N,s(N)).ack(s(M),0,R2) :- ack(M,s(0),R2).ack(s(M),s(N),R3) :-	ack(s(M),N,R4),	ack(M,R4,R3).

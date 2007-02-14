@@ -1,0 +1,67 @@
+From - Thu Sep 27 11:09:14 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id KAA09907
+	for <sg>; Thu, 27 Sep 2001 10:46:47 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: Praezisionsfehler in rulification
+Date: Thu, 27 Sep 2001 11:08:37 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <0109271108370H.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 1697
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000d8f
+
+Fehler taucht wahrscheinlich auf weil die constraints nicht simplifiziert 
+sind ??!: goalRULification sollte wahrscheinlich immer systematisch 
+simplifcation aufrufen oder aber nicht simplifizierte constraints 
+akkzeptieren ?
+
+| ?-
+goalRULification(unsafe5(bang(_143,bang(_143,_215))),  RGOAL,
+ rul__constraint__declaration([ge_t263(bang(_143,_215))],
+ [proc(any/1,[(any(_474):-true)]),
+  proc(ge_t263/1,[(ge_t263(bang(_610,_640)):-ge_t265(_610),ge_t266(_640))]),
+  proc(ge_t265/1,[(ge_t265(a):-true)]),
+  proc(ge_t266/1,[(ge_t266(prefix(_969,_999)):-ge_t268(_969),ge_t269(_999))]),
+  proc(ge_t268/1,[(ge_t268(b):-true)]),
+  proc(ge_t269/1,[(ge_t269(agent(_1328)):-ge_t271(_1328))]),
+ proc(ge_t271/1,[(ge_t271(q):-true)])]),
+ ResRUL), ecceRUL:print_rul(ResRUL).| ?-
+RUL Constraints: [any(_184),any(_120),ge_t263(bang(_120,_184)),ge_t314(_3077)]
+RUL Program:
+-> any(_5896):-true.
+-> ge_t263(bang(_5881,_5879)):-ge_t265(_5881),ge_t266(_5879).
+-> ge_t265(a):-true.
+-> ge_t266(prefix(_5861,_5859)):-ge_t268(_5861),ge_t269(_5859).
+-> ge_t268(b):-true.
+-> ge_t269(agent(_5842)):-ge_t271(_5842).
+-> ge_t271(q):-true.
+-> ge_t314(bang(_5809,_5827)):-any(_5809),ge_t316(_5827).
+-> ge_t316(bang(_5809,_5807)):-any(_5809),any(_5807).
+ 
+RGOAL = unsafe5(_A),
+ResRUL = 
+rul__constraint__declaration([any(_215),any(_143),ge_t263(bang(_143,_215)),ge_t314(_A)],
+	[proc(any/1,[(any(_B):-true)]),
+	 proc(ge_t263/1,[(ge_t263(bang(_C,_D)):-ge_t265(_C),ge_t266(_D))]),
+	 proc(ge_t265/1,[(ge_t265(a):-true)]),
+	 proc(ge_t266/1,[(ge_t266(prefix(_E,_F)):-ge_t268(_E),ge_t269(_F))]),
+	 proc(ge_t268/1,[(ge_t268(b):-true)]),
+	 proc(ge_t269/1,[(ge_t269(...):-ge_t271(...))]),proc(ge_t271/1,[(...  :- ...)]),
+	 proc(... / ...,[...]),
+	 proc(...)]) ?
+
+=========================================================================================
+
+ANSWER: Yes, that's right, you should call goalRULification only with simplified
+	constraints. Later I will formally declare some according pre- and post-
+	conditions.
+
+===========================================================================[SG:27.9.2001]  

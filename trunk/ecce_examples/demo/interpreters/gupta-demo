@@ -1,0 +1,139 @@
+power_prog(P) :-
+	P = p(comb(assign(z,num(1)),
+	      comb(assign(w,id(x)),
+	           while(greater(id(w),num(0)),
+	         	comb(assign(z,mul(id(z),id(y))),
+	         	     assign(w,sub(id(w),num(1)))
+	         	    )
+	         	)
+	         ))).
+
+main(E,B,Res) :-
+	power_prog(P),
+	prog_eval(P,E,B,Res).
+
+model_check(E,B,Res) :-
+	power_prog(P),
+	prog_eval(P,E,B,Res),
+	Z is B**E,
+	Res \== Z. 
+
+init_store([]).
+
+access(Id,[],0).
+access(Id,[(Id,Val)|_],Val).
+access(Id,[(OId,_OVal)|R],Val) :- Id\=OId,access(Id,R,Val).
+
+update(Id,NewV,[],[(Id,NewV)]).
+update(Id,NewV,[(Id,_)|R],[(Id,NewV)|R]).
+update(Id,NewV,[P|R],[P|R1]) :-
+	P = (OId,_OVal), Id\=OId,update(Id,NewV,R,R1).
+
+prog_eval(p(Comm),Val_x,Val_y,Output) :-
+	init_store(St),
+	update(x,Val_x,St,MSt),
+	update(y,Val_y,MSt,NSt),
+	command(Comm,NSt,NewSt),
+	access(z,NewSt,Output).
+
+/* command(C,St,_) :- print(comm(C,ST)),nl,fail. */
+command(comb(C1,C2),St,OSt) :-
+	command(C1,St,NewSt),
+	command(C2,NewSt,OSt).
+
+command(while(B,C),St,OSt) :-
+	boolean(B,St),
+	command(C,St,NSt),
+	command(while(B,C),NSt,OSt).
+command(while(B,C),St,St) :-
+	not(boolean(B,St)).
+
+command(assign(I,E),St,OSt) :-
+	expression(E,St,Val),
+	update(I,Val,St,OSt).
+
+boolean(greater(E1,E2),St) :-
+	expression(E1,St,Eval1),
+	expression(E2,St,Eval2),
+	Eval1>Eval2.
+
+expression(sub(E1,E2),St,Res) :-
+	expression(E1,St,V1),expression(E2,St,V2),
+	Res is V1-V2.
+expression(mul(E1,E2),St,Res) :-
+	expression(E1,St,V1),expression(E2,St,V2),
+	Res is V1*V2.
+expression(id(X),St,Res) :- access(X,St,Res).
+expression(num(X),_,X).
+
+/* ------------------ 
+
+main(X1,X2,X3) :- 
+    main__1(X1,X2,X3).
+main__1(X1,X2,X3) :- 
+    X1 > 0, 
+    X4 is '*'(1,X2), 
+    X5 is '-'(X1,1), 
+    update__4(X5,[','(w,X1)],X6,X7), 
+    command_conj__5(X2,X4,X6,X7,X3).
+main__1(X1,X2,1) :- 
+    not(boolean__3(X1)).
+boolean__3(X1) :- 
+    X1 > 0.
+update__4(X1,[],','(w,X1),[]).
+update__4(X1,[','(w,X2)|X3],','(w,X1),X3).
+update__4(X1,[','(X2,X3)|X4],','(X2,X3),[X5|X6]) :- 
+    w \= X2, 
+    update__4(X1,X4,X5,X6).
+command_conj__5(X1,X2,','(X3,X4),X5,X6) :- 
+    access__9(X3,X4,X5,X7), 
+    X7 > 0, 
+    X8 is '*'(X2,X1), 
+    access__9(X3,X4,X5,X9), 
+    X10 is '-'(X9,1), 
+    update__4(X10,[','(X3,X4)|X5],X11,X12), 
+    command_conj__5(X1,X8,X11,X12,X6).
+command_conj__5(X1,X2,X3,X4,X2) :- 
+    not(boolean__7(X3,X4)).
+boolean__7(','(w,X1),X2) :- 
+    X1 > 0.
+boolean__7(','(X1,X2),X3) :- 
+    w \= X1, 
+    access__8(X3,X4), 
+    X4 > 0.
+access__8([],0).
+access__8([','(w,X1)|X2],X1).
+access__8([','(X1,X2)|X3],X4) :- 
+    w \= X1, 
+    access__8(X3,X4).
+access__9(w,X1,X2,X1).
+access__9(X1,X2,X3,X4) :- 
+    w \= X1, 
+    access__8(X3,X4).
+
+
+ Running ECCE Twice:
+ 
+main(X1,X2,X3) :- 
+    main__1(X1,X2,X3).
+main__1(X1,X2,X3) :- 
+    X1 > 0, 
+    X4 is '*'(1,X2), 
+    X5 is '-'(X1,1), 
+    command_conj__5__2(X2,X4,X5,X3).
+main__1(X1,X2,1) :- 
+    not(boolean__3__3(X1)).
+command_conj__5__2(X1,X2,X3,X4) :- 
+    X3 > 0, 
+    X5 is '*'(X2,X1), 
+    X6 is '-'(X3,1), 
+    command_conj__5__2(X1,X5,X6,X4).
+command_conj__5__2(X1,X2,X3,X2) :- 
+    not(boolean__7__4(X3)).
+boolean__3__3(X1) :- 
+    X1 > 0.
+boolean__7__4(X1) :- 
+    X1 > 0.
+
+ ALL ACCESS OPERATIONS HAVE BEEN PE'D AWAY !!
+*/

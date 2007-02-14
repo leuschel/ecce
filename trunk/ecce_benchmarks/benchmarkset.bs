@@ -1,0 +1,44 @@
+
+	benchmark_set([  
+	'advisor.bm',
+	'applast.bm',
+	'contains.kmp.bm',
+	'depth.lam.bm',
+	'doubleapp.bm',
+	'ex_depth.bm',
+	'flip.bm',
+%	'grammar.bm', 
+	'groundunify.simple.bm',
+	'groundunify.complex.bm',
+	'imperative-solve.bm',
+	'liftsolve.app.bm', 
+%	'liftsolve.db1.bm', 
+%	'liftsolve.db2.bm', 
+	'liftsolve.lmkng.bm', 
+	'map.reduce.bm',
+	'map.rev.bm',
+	'matchapp.bm',
+	'match.kmp.bm',
+%	'maxlength.bm',  operator problem
+	'model_elim.bm',
+	'regexp.r1.bm',
+	'regexp.r2.bm',
+	'regexp.r3.bm',
+	'relative.bm',
+	'remove.bm',
+	'remove2.bm',
+	'rev.bm',
+	'rev_acc_type.bm',
+	'rotateprune.bm',
+	'ssuply.bm',
+	'transpose.bm',
+%	'upto.sum1.bm', operator problem
+%	'upto.sum2.bm',
+	'vanilla.doubleapp.bm'
+	]).
+	
+	
+
+
+
+

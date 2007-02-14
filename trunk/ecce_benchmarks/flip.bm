@@ -1,0 +1,28 @@
+orig_prog('orig/flip.pro').
+pd_query([flipflip(T1,T2)]).
+run_time_queries([
+	[flipflip( tree(leaf(s(0)),s(s(0)),leaf(s(s(0)))) , Res )],
+	[flipflip( tree(leaf(s(0)),s(s(0)),tree(leaf(s(s(0))),0,
+			leaf(s(s(s(0)))))) , Res )],
+	[flipflip( tree(tree(leaf(s(0)),s(s(0)),leaf(s(s(0)))),s(s(0)),
+		tree(leaf(s(s(0))),0,tree(leaf(s(s(s(s(0))))),s(s(s(s(0)))),
+			leaf(s(s(s(s(s(0))))))))) , Res )],
+	[flipflip( tree(tree(leaf(s(0)),s(s(0)),tree(leaf(s(0)),s(s(0)),
+		tree(leaf(s(s(0))),s(s(s(s(0)))),leaf(s(s(s(0))))))),s(s(0)),
+		tree(leaf(s(s(0))),s(s(s(s(0)))),
+		tree(leaf(s(s(s(s(0))))),s(s(s(s(0)))),
+		tree(leaf(s(s(s(s(0))))),s(s(s(s(0)))),
+		tree(leaf(s(s(s(s(0))))),0,leaf(s(s(s(s(0)))))))))) , Res )]
+	]).
+run_time_nr(25).
+test_queries([
+	[flipflip( tree(leaf(s(0)),s(s(0)),tree(leaf(s(s(0))),0,
+			leaf(s(s(s(0)))))) , Res )]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('Flip: A simple deforestation example from Wadler.').
+
+
+
+

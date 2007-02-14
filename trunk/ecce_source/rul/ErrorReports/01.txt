@@ -1,0 +1,65 @@
+-------------------------------------------------------------------------------------------
+
+ERROR REPORT [ML:9.Aug.2001]
+
+| ?-
+
+ecceRUL:widen([t(_172138)],
+              rul__constraint__declaration([t0(_172138)],
+                                           [proc(any/1,
+                                                 [(any(_172114):-true)]),
+                                            proc(t0/1,
+                                                 [(t0(s(_172097)):-t2(_172097))]),
+                                            proc(t2/1,[(t2(0):-true)])]),
+              [t(_156197)],
+              rul__constraint__declaration([t6(_156197)],
+                                           [proc(any/1,
+                                                 [(any(_156173):-true)]),
+                                            proc(t0/1,
+                                                 [(t0(s(_156156)):-t2(_156156))]),
+                                            proc(t2/1,[(t2(0):-true)]),
+                                            proc(t6/1,[(t6(s(_156122)):-t8(_156122))]),
+                                            proc(t8/1,[(t8(s(_156103)):-any(_156103))])]),
+              A,
+              B).
+
+{INSTANTIATION ERROR: _75=..[_72|_73] - arg 2}
+
+------------------------------------------------------------------------------------------
+
+BUG FIX REPORT [SG:9.Aug.2001]
+
+In module "shorten", procedure "analyseHeads", the exeptional case "any(Var):-true" had
+not been recognized. This bug is now fixed. With the above input data we obtain this run:
+
+| ?- data_01(A,B,C,D,E,F), widen(A,B,C,D,E,F).
+
+A = [t(_A)],
+B = rul__constraint__declaration([t0(_A)],
+    [proc(any/1,[(any(_B):-true)]),
+     proc(t0/1,[(t0(s(_C)):-t2(_C))]),
+     proc(t2/1,[(t2(0):-true)])]),
+
+C = [t(_D)],
+D = rul__constraint__declaration([t6(_D)],
+    [proc(any/1,[(any(_E):-true)]),
+     proc(t0/1,[(t0(s(_F)):-t2(_F))]),
+     proc(t2/1,[(t2(0):-true)]),
+     proc(t6/1,[(t6(s(_G)):-t8(_G))]),
+     proc(t8/1,[(t8(s(...)):-any(_H))])]),
+
+E = [t(_I)],
+F = rul__constraint__declaration([x_t0(_I),y_t6(_I)],
+    [proc(any/1,[(any(_J):-true)]),
+     proc(x_t0/1,[(x_t0(s(_K)):-x_t2(_K))]),
+     proc(x_t2/1,[(x_t2(0):-true)]),
+     proc(any/1,[(any(_L):-true)]),
+     proc(y_t0/1,[(y_t0(s(...)):-y_t2(_M))]),
+     proc(y_t2/1,[(y_t2(...):-true)]),
+     proc(y_t6/1,[(... :- ...)]),
+     proc(... / ...,[...])]) ?
+
+yes
+
+| ?- 
+---------------------------------------------------------------------------------------

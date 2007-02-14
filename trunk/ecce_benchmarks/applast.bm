@@ -1,0 +1,19 @@
+orig_prog('/orig/applast.pro').
+pd_query([applast(L,X,Last)]).
+run_time_queries([
+	[applast([a,b,c,d],L,e)],
+	[applast([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,a,a,b,w,x,y],z,L)],
+[applast([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,a,a,b,w,x,y],z,q)]
+	]).
+run_time_nr(50). /* changed from 20 */
+test_queries([
+	[applast([a,b,c,d],L,e)],
+	[applast([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,a,a,b,w,x,y],z,L)]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('The append-last program.').
+
+
+
+

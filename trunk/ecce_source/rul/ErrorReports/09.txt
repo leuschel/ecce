@@ -1,0 +1,31 @@
+From - Wed Sep 19 18:13:47 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id SAA26987
+	for <sg>; Wed, 19 Sep 2001 18:02:30 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: deleteID does not exist
+Date: Wed, 19 Sep 2001 18:23:31 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <01091918233102.00663@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 325
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000d3b
+
+{EXISTENCE ERROR: 
+deleteID([proc(y_y_t2/1,[([y_y_t2(b),0]:-[true,1])]),
+          proc(y_t17/1,[([y_t17(b),2]:-[true,3]),([y_t17(f(_145)),4]:-[y_y_t2(_145),5])]),
+          proc(t22/1,[([t22(f(_118)),6]:-[t23(_118),7])]),
+          proc(t23/1,[([t23(b),8]:-[true,9]),([t23(f(...)),10]:-[t23(_76),11])])],_203): 
+procedure shorten:deleteID/2 does not exist}
+
+========================================================================================
+
+ANSWER: BugFix auxil.pl, wrong Export Declaration "deleteID/4"
+        changed to proper Export Declaration "deleteID/2"

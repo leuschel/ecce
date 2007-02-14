@@ -1,0 +1,17 @@
+orig_prog('orig/transpose.pro').
+pd_query([transpose([[X1,X2,X3,X4,X5,X6,X7,X8,X9],Xr2,Xr3],Xtrm)]).
+run_time_queries([
+	[transpose([[1,2,3,4,5,6,7,8,9],[2,3,4,5,6,7,8,9,10],
+		    [3,4,5,6,7,8,9,10,11]],Xtrm)]
+	]).
+run_time_nr(150). /* changed from 50 */
+test_queries([
+	[transpose([[1,2,3,4,5,6,7,8,9],[2,3,4,5,6,7,8,9,10],
+		    [3,4,5,6,7,8,9,10,11]],Xtrm)]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('transpose: a standard Lam benchmark.').
+
+
+

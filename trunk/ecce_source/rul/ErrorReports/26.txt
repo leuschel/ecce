@@ -1,0 +1,42 @@
+=========================================================================================
+
+ANSWER: (to the problem reported below) There was a simple signature bug in the base case
+	of procedure unfoldIteration/5. I've changed unfoldIteration([],[],RCD,RCD,_) to
+	unfoldIteration([],RCD,[],RCD,_). With this change, the reported bug did not come
+	any more, but revealed another Bug as follows:  
+
+	I have detected a singleton variable "OutputGoal" (due to typo). Its effect was
+	that the call term_variables(OutputGoal, TermVars) resulted in empty TermVars =
+	OutputGoal = VAR (uninstantiated) such that constraintProjection/3 and pruneRCD/2
+	in the body of l_goalUnfolding/5 always produced the empty RUL constraint decla-
+	ration as output. I eliminated this bug by changing the wrong name "OutputGoal"
+	to "OutputGoals".
+ 
+==========================================================================[SG:17.10.2001]
+
+From - Wed Oct 17 11:53:15 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id LAA02254
+	for <sg>; Wed, 17 Oct 2001 11:46:26 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: Problem mit l_goalUnfolding
+Date: Wed, 17 Oct 2001 12:10:25 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <01101712102510.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 302
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000e6e
+
+Folgender Aufruf 'failt':
+
+| ?- 
+unfold:l_goalUnfolding([v(f(_205131))],rul__constraint__declaration([ub_t12(_205131)],[proc(y_ge_t9/1,[(y_ge_t9(b):-true)]),proc(ub_t12/1,[(ub_t12(f(_205090)):-t13(_205090))]),proc(t13/1,[(t13(b):-true),(t13(f(_205064)):-y_ge_t9(_205064))])]),_233443,_233444,99).
+ 
+no

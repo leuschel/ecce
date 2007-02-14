@@ -1,0 +1,1 @@
+:-dynamic app/3, last/2, appendlast/0.app([],L,L).app([H|X],Y,[H|Z]) :- app(X,Y,Z).last([X],X).last([H,H2|T],X) :- last([H2|T],X).appendlast:- app(X, [a], Xs), last(Xs, b).

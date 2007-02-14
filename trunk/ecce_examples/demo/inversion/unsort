@@ -1,0 +1,1 @@
+unsort([],[]).unsort(L,[X|UDL]) :-	delete(X,L,DL),	unsort(DL,UDL).	delete(X,[X],[]).delete(X,[X],[X]).delete(X,[X,Y|T],[Y|T]) :-	X<Y.delete(X,[X,Y|T],[X,Y|T]) :-	X<Y.delete(X,[H,Y|T],[H|DT]) :-	H<Y,	delete(X,[Y|T],DT).	

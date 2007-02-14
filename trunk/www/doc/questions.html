@@ -1,0 +1,150 @@
+<html lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" href="../mecce.css"/>
+  <title>Technical FAQ for ECCE's maintainer</title>
+</head>
+<style>
+dt{font-weight:bold;}
+</style>
+<body>
+
+<h1>QUESTIONS</h1>
+
+<i>Mauricio,<br/>
+<br/>
+We have come up with a series of questions.<br/>
+Could you please answer them.<br/>
+<br/>
+Thanks!</i>
+
+<dl>
+
+<dt>How can I change the layout of the webpages?</dt>
+<dd>The file <code>mecce.css</code> contains all of the information that is necessary to change the layout of ECCE. I have extensively tested this layout in both Safari and Firefox, so there are a few tricks to support them both, e.g., the way <code>padding</code>s and <code>margin</code>s are interpreted changes acording to the browser being used.</dd><br/>
+
+<dt>How can I change the background colour?</dt>
+<dd>Change the <code>background</code> property in <code>mecce.css</code>:
+<pre>
+body {
+    background: #FFF;
+</pre>
+</dd><br/>
+
+<dt>How can I change the size of the text frames?</dt>
+<dd>Also in <code>mecce.css</code>, the upper frame's layout is given by:
+<pre>
+textarea{
+    width: 615px;
+    height: 200px;
+    border: inset 1px #AAA;
+    background: #FFF;
+}
+</pre>
+and the lower frame's layout is given by:
+<pre>
+iframe{
+    width: 613px;
+    height: 200px;
+    border: inset 1px #AAA;
+    background: #FFF;
+}
+</pre>
+</dd><br/>
+
+<dt>Where and how is <code>Ecce</code> called? How can I change the command-line options used 
+to call <code>Ecce</code>?</dt>
+<dd>In <code>process.php</code>, there is a function called <code>cli5()</code> that initiates a process which runs what is given as an argument. In the call to this function (in <code>index.php</code>), we compose a string with the options we want for the command-line execution of ECCE.</dd><br/>
+
+<dt>Can you explain how I can change the command-line options?</dt>
+<dd></dd><br/>
+
+<dt>How is the specialized file retrieved from <code>Ecce</code>? How could I edit the way it 
+is displayed/handled?</dt>
+<dd>The result of the specialisation is obtained from from two different sources:
+<ol>
+<li>we re-direct the <code>stdout</code> to a <code>$_POST</code> variable called "specialised". Since this is the same name of the lower text frame (i.e. the &lt;iframe&gt;), and runs before its rendering, the result gets immediately loaded into this part of the form.</li>
+<li>we use the <code>-o</code> option in <code>Ecce</code>, together with the <code>tempnam()</code> function in <code>underlying.php</code> to create some space for this output in <code>/tmp</code>. Thus, whenever you need to manipulate this file (even formating it, within <code>pl2html</code>), we get the code from the temporary file just created.</li>
+</ol>
+</dd><br/>
+
+<dt>How are the temporary files managed?</dt>
+<dd>Basically all (input and output) files are temporary, and are created in <code>/tmp</code>. When the user loads a file, the content of the file is transferred to some random name (given by <code>$_FILES['InputFile']['tmp_name']</code>) in the <code>/tmp</code> directory. After specialising, we use <code>tempnam("","")</code> to generate another file (with another random name) in <code>/tmp</code>. All this is transparent to the user, because we keep the original filename (saving <code>$_FILES['InputFile']['name']</code>) to a hidden input (in <code>underlying.php</code>)).</dd><br/>
+
+<dt>How can I update <code>stups</code>?</dt>
+<dd>Each time you do "svn update" inside the <code>mecce/</code> directory, you are updating the entire webpage (note that <code>~/public_html/ecce</code> is just a symbolic link that points to the <code>www/</code> directory).</dd><br/>
+
+<dt>but, how can I update the ecce binary?</dt>
+<dd><pre>
+cd mecce; make exe
+</pre>
+</dd><br/>
+
+<dt>How can I install <code>WebEcce</code> on localhost? How can I update the system on localhost?</dt>
+<dd>First you should checkout the SVN project, doing something similar to:
+<pre>
+svn co svn+ssh://mv@clip.dia.fi.upm.es/home/clip/SvnReps/Systems/mecce/trunk mecce
+</pre>
+Then, do the following:
+<pre>
+cd mecce; make install
+</pre>
+</dd><br/>
+
+<dt>Makefile's summary:</dt>
+<dd><ul>
+<li><code>make install</code>: includes all of the rest, and is to be run only at first-time installation.</li>
+<li><code>make all</code>: compiles all binary files.</li>
+<li><code>make ini</code>: will create the necesary environments variables and the symbolic link (run only once).</li>
+<li><code>make exe</code>: compiles <code>Ecce</code> using Ciao Prolog.</li>
+<li><code>make rul</code>: compiles <code>rul.exe</code> using Sicstus Prolog.</li>
+<li><code>make web</code>: makes compiled code available from the web.</li>
+<li><code>make clean</code>: cleans up the mess.</li>
+</ul></dd><br/>
+
+<dt>How can I modify the timeout?</dt>
+<dd><code>process.php</code> contains variable that looks like this:
+<pre>
+$timeout['spec']=10;
+$timeout['graph']=10;
+</pre>
+The fisrt one relates to the time allowance given to the specialisation process (either <code>Ecce</code> or <code>rul.exe</code>) and the latter to the time given to <code>dot</code> for the creation of the SVG graph. You can specify any amount of seconds you want the process to run for, before it gets killed by <code>proc_terminate()</code>. If this happens, the user also gets notified with a nice <code>javascript:alert()</code> saying "TIMEOUT!".</dd><br/>
+
+<dt>How is error reporting handled?</dt>
+<dd>Errors from ECCE are sent to:
+<pre>/tmp/ecce.log</pre>
+</dd><br/>
+
+<dt>How does the help system work? How can I edit it?</dt>
+<dd>There are two more files in the <code>doc/</code> directory: <code>help.php</code> and <code>about.php</code>. Any HTML tags can be placed in those files, which are going to be opened in a smaller windows when the user clicks the appropriate button. <code>help.php</code> automatically includes the content of <code>svg.html</code>, which is also displayed at the bottom of each SVG graph.</dd><br/>
+
+<dt>Does the system collect statistics about usage (number of users, number of specialization requests)? If no, how could we add it?
+If yes, how can I access the information.</dt>
+<dd>No it (currently) doesn't.</dd><br/>
+
+<dt>Is it possible to add this?</dt>
+<dd>Yes. We could definitely keep track of specialisation requests. The closest we can get to obtaining the number of users is to keep track of their IPs (as they are not forced to login at any point).</dd><br/>
+
+<dt>How can I add a new button<ul>
+<li>for a control option?</li>
+<li>for a postprocessing option?</li>
+<li>for an action (e.g. BUP Analysis next to Slice)?</li>
+</ul></dt>
+<dd>New buttons should only be added next to the BUP analysis, within the <code>plug-ins</code> frameset.</dd><br/>
+
+<dt> How is security managed, especially how are the <code>PHP</code> backquoting problems solved and how is the data transmitted by the client checked/validated?</dt>
+<dd>The only part where the user has access to some of the CLI string we build, is throug the <code>goal</code> textbox. Therefore, we have a <code>goal()</code> function in <code>index.php</code> that takes care of the security of this input.</dd><br/>
+
+
+<!-- more questions may be added here -->
+
+
+
+</dl>
+
+<hr>
+<address>
+Should you have any further question, please do not hesitate to contact <a href="mailto:mv@ecs.soton.ac.uk">me</a> 
+</address>
+
+</body>
+</html>

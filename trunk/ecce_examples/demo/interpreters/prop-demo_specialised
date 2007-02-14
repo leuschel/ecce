@@ -1,0 +1,62 @@
+
+/* Specialised Predicates: 
+abds__1(X1) :- abds(X1).
+member_conj__3__2(X1) :- member_conj__3(X1).
+member_conj__4__3(X1) :- member_conj__4(X1).
+member_conj__5__4(X1,X2) :- member_conj__5(clause(X1,X2)).
+append__6__5(X1,X2,X3) :- append__6(X1,X2,X3).
+demo__7__6(X1,X2) :- demo__7(X1,X2).
+resolve__8__7(X1,X2,X3,X4,X5) :- resolve__8(X1,X2,X3,X4,X5).
+member_conj__10__8(X1,X2,X3,X4,X5) :- member_conj__10(X1,X2,X3,X4,X5).
+member_conj__11__9(X1,X2,X3,X4,X5) :- member_conj__11(X1,X2,X3,X4,X5).
+member_conj__12__10(X1,X2,X3,X4,X5) :- member_conj__12(X1,X2,X3,X4,X5).
+demo__13__11(X1,X2) :- demo__13(X1,X2).
+demo__14__12(X1,X2) :- demo__14(X1,X2).
+*/
+
+abds(X1) :- 
+    member_conj__3__2(X1).
+abds__1(X1) :- 
+    member_conj__3__2(X1).
+member_conj__3__2(X1) :- 
+    member_conj__4__3(X1).
+member_conj__3__2(clause(X1,X2)) :- 
+    member_conj__5__4(X1,X2).
+member_conj__4__3(X1).
+member_conj__4__3(clause(q,X1)) :- 
+    append__6__5(X1,[],X2), 
+    demo__14__12(X1,X2).
+member_conj__5__4(r,X1) :- 
+    append__6__5(X1,[],X2), 
+    demo__13__11(X1,X2).
+member_conj__5__4(p,X1) :- 
+    append__6__5(X1,[],X2), 
+    demo__7__6(X1,X2).
+append__6__5([],X1,X1).
+append__6__5([X1|X2],X3,[X1|X4]) :- 
+    append__6__5(X2,X3,X4).
+demo__7__6(X1,[]).
+demo__7__6(X1,[X2|X3]) :- 
+    resolve__8__7(p,X1,X2,X3,X4), 
+    demo__7__6(X1,X4).
+resolve__8__7(X1,X2,X3,X4,X5) :- 
+    member_conj__10__8(X3,X1,X2,X4,X5).
+resolve__8__7(X1,X2,X3,[X4|X5],[X3|X6]) :- 
+    resolve__8__7(X1,X2,X4,X5,X6).
+member_conj__10__8(p,X1,X2,X3,[q|X3]).
+member_conj__10__8(X1,X2,X3,X4,X5) :- 
+    member_conj__11__9(X1,X2,X3,X4,X5).
+member_conj__11__9(p,X1,X2,X3,[r|X3]).
+member_conj__11__9(X1,X2,X3,X4,X5) :- 
+    member_conj__12__10(X1,X2,X3,X4,X5).
+member_conj__12__10(q,X1,X2,X3,X3).
+member_conj__12__10(X1,X1,X2,X3,X4) :- 
+    append__6__5(X2,X3,X4).
+demo__13__11(X1,[]).
+demo__13__11(X1,[X2|X3]) :- 
+    resolve__8__7(r,X1,X2,X3,X4), 
+    demo__13__11(X1,X4).
+demo__14__12(X1,[]).
+demo__14__12(X1,[X2|X3]) :- 
+    resolve__8__7(q,X1,X2,X3,X4), 
+    demo__14__12(X1,X4).

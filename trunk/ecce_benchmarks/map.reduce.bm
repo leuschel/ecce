@@ -1,0 +1,19 @@
+orig_prog('orig/map.pro').
+pd_query([map(reduce_add,L,R)]).
+run_time_queries([
+	[map(reduce_add,[[1,2],[1,2,3]],[L1,L2])],
+	[map(reduce_add,[[],[1,2],[5,6,7],[8,9,10]],Res)],
+	[map(reduce_add,[[],[1,2],[5,6,7],[],[8,9,10],[11,12],
+				[13,14],[15],[16]],Res)]
+	]).
+run_time_nr(40). /* increased from 4 */
+test_queries([
+	[map(reduce_add,[[1,2],[4,5,6]],[L1,L2])]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('Specialising the higher-order map/3 (using call and =..) for the higher-order reduce/4 in turn applied to add/3.').
+
+
+
+

@@ -1,0 +1,16 @@
+orig_prog('orig/ssuply.pro').
+pd_query([ssupply( _supplier, _part, _quantity )]).
+run_time_queries([
+	[ssupply( s3, p1, _quantity )]
+	]).
+run_time_nr(800). /* changed from 100 */
+test_queries([
+	[ssupply( s3, p1, _quantity )]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('ssuply: a Lam benchmark.').
+
+
+
+

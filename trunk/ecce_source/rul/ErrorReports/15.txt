@@ -1,0 +1,45 @@
+From - Tue Sep 25 10:04:16 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id JAA19488
+	for <sg>; Tue, 25 Sep 2001 09:25:04 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: Neues Problem mit goalRulification
+Date: Tue, 25 Sep 2001 09:46:41 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <01092509464107.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 238
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000d72
+
+| ?- | ?- 
+goalRULification(t(s(s(_88773))),
+	_97912,
+	rul__constraint__declaration([ge_t5(s(_88773))],
+	[proc(any/1,[(any(_69449):-true)]),
+	proc(ge_t5/1,[(ge_t5(s(_69432)):-ge_t6(_69432))]),
+	proc(ge_t6/1,[(ge_t6(0):-true)])]),
+	_97903).
+ 
+no
+| ?-
+
+===================================================================
+
+ANSWER: Again, I had forgotten one of those many cases in the case
+	distinction ladder! In case "non-rul-head with variables"
+	I had not made a distinction between top-level-variables
+	(for which a call must be created) and variables in lower
+	levels (for which now call must be created at that level).
+	As a consequence the program had tried to create obsolete
+	calls, and failed. The new case is now inserted into proc
+	proSiNo:goalExpansion such that the reported error does
+	not occur any more.
+
+=====================================================[SG:25.9.2001]

@@ -1,0 +1,142 @@
+From - Mon Oct  1 15:03:11 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id MAA19007
+	for <sg>; Mon, 1 Oct 2001 12:08:17 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: widen Prazisionsproblem
+Date: Mon, 1 Oct 2001 12:30:34 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <0110011230340N.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 1477
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000db7
+
+widen([rev1(_37247,_37248,_37249)],
+rul__constraint__declaration([any(_37249),any(_37247),ge_t158(_37248)],
+[proc(any/1,[(any(_37215):-true)]),
+proc(ge_t158/1,[(ge_t158([_37197|_37198]):-any(_37197),ge_t160(_37198))]),
+proc(ge_t160/1,[(ge_t160([]):-true)])]),[rev1(_27486,_27487,_27488)],
+rul__constraint__declaration([any(_27488),any(_27486),ge_t163(_27487)],
+[proc(any/1,[(any(_27454):-true)]),
+proc(ge_t158/1,[(ge_t158([_27436|_27437]):-any(_27436),ge_t160(_27437))]),
+proc(ge_t160/1,[(ge_t160([]):-true)]),
+proc(ge_t163/1,[(ge_t163([_27397|_27398]):-ge_t158(_27398),any(_27397))])]),
+Goal,R), print_rul(R).
+RUL Constraints: [any(_15993),any(_15881),ub_t19(_15937)]
+RUL Program:
+-> any(_3491):-true.
+-> any(_5654):-true.
+-> x_ge_t158([_5640|_5638]):-any(_5640),x_ge_t160(_5638).
+-> x_ge_t160([]):-true.
+-> any(_5714):-true.
+-> y_ge_t158([_5640|_5638]):-any(_5640),y_ge_t160(_5638).
+-> y_ge_t160([]):-true.
+-> y_ge_t163([_5638|_5640]):-ub_t22(_5640),any(_5638).
+-> ub_t19([_5640|_5638]):-any(_5640),any(_5638).
+-> ub_t22([_5638|_5640]):-any(_5640),any(_5638).
+ 
+R = 
+rul__constraint__declaration([any(_A),any(_B),ub_t19(_C)],
+	[proc(any/1,[(any(_D):-true)]),proc(any/1,[(any(_E):-true)]),
+	proc(x_ge_t158/1,[(x_ge_t158([_F|_G]):-any(_F),x_ge_t160(_G))]),
+	proc(x_ge_t160/1,[(x_ge_t160([]):-true)]),
+	proc(any/1,[(any(_H):-true)]),
+	proc(y_ge_t158/1,[(y_ge_t158(...):-...,...)]),
+	proc(y_ge_t160/1,[(... :- ...)]),
+	proc(... /...,[...]),
+	proc(...)|...]),
+Goal = [rev1(_B,_C,_A)] ?
+ 
+yes
+
+===================================================================================
+
+ANSWER: (This answer refers also to the problem reported in ErrorReports/19.txt!)
+	I have discovered a weak spot in John's code (which is re-used in the RUL
+	package) in procedure upperBound:upperBoundBody/11. No documentation had
+	been provided by John to describe that weak point! We describe the weak
+	point by example as follows.
+	Let there be:
+
+	p(f(X,Y)) :-   s(X), any(Y).
+	q(g(X,Y)) :- any(Y),   t(X).
+
+	In John's upperBoundBody/11-procedure, the following upperBounds had been
+	computed: (s+any)=any, (any+t)=any. 
+
+	However, this is wrong, because the relationship of the subgoals had not
+	been taken into account! If we re-order the definitions as:
+
+	p(f(X,Y)) :- s(X), any(Y).
+	q(g(X,Y)) :- t(X), any(y).
+
+	then we compute the upperbounds properly as: (s+t)=UB, (any+any)=any.
+
+	As a "work-around", I will write an auxiliary procedure which takes a
+	clause and brings all subgoals of that clause into the same sequential
+	order as the Variables in the head of that clause.
+
+	ATTENTION: This bug fix is not yet done; it appears on top of our current
+	ToDo-List (with highest priority above all the other ToDo-Items).
+
+	Please find a print-out in the following:
+
+	| ?- data(X,Y), prog1(P), upperBound(X,Y,U,D,P,0,_).
+	UB-BODY
+	y_ge_t139(_649),any(_650)
+	any(_649),x_ge_t141(_650)
+	any(_649),any(_650)
+	D = [proc(ub_t0/1,[(ub_t0([_A|_B]):-any(_B),any(_A))])],
+	P = [proc(any/1,[(any(_C):-true)]),
+		proc(x_ge_t139/1,[(x_ge_t139([_B|_A]):-any(_B),x_ge_t141(_A))]),
+		proc(x_ge_t141/1,[(x_ge_t141([]):-true)]),
+		proc(y_ge_t139/1,[(y_ge_t139([_D|_E]):-any(_D),y_ge_t141(_E))]),
+		proc(y_ge_t141/1,[(y_ge_t141([]):-true)]),
+		proc(y_ge_t144/1,[(y_ge_t144([_A|...]):-y_ge_t139(...),any(...))])],
+	U = ub_t0,
+	X = y_ge_t144,
+	Y = x_ge_t139 ?
+	yes
+
+	| ?- 
+	| ?-  reconsult('D:/PROLOG/ecce/ecce_source/rul/upperBound.pl').
+	{consulting d:/prolog/ecce/ecce_source/rul/upperbound.pl...}
+	{Warning: [X] - singleton variables in user:prog1/1 in lines 326-338}
+	{Warning: [X] - singleton variables in user:prog2/1 in lines 338-350}
+	{consulted d:/prolog/ecce/ecce_source/rul/upperbound.pl in module user,
+	30 msec 576 bytes}
+
+	yes
+	| ?- data(X,Y), prog2(P), upperBound(X,Y,U,D,P,0,_).
+	UB-BODY
+	any(_650),y_ge_t139(_649)
+	any(_649),x_ge_t141(_650)
+	any(_649),t1(_649)
+	D = [proc(ub_t0/1,[(ub_t0([_A|_A]):-any(_A),t1(_A))]),
+	proc(t1/1,[(t1([]):-true),(t1([_B|_C]):-any(_B),y_ge_t141(_C))])],
+	P = [proc(any/1,[(any(_D):-true)]),
+		proc(x_ge_t139/1,[(x_ge_t139([_A|_A]):-any(_A),x_ge_t141(_A))]),
+		proc(x_ge_t141/1,[(x_ge_t141([]):-true)]),
+		proc(y_ge_t139/1,[(y_ge_t139([_B|_C]):-any(_B),y_ge_t141(_C))]),
+		proc(y_ge_t141/1,[(y_ge_t141([]):-true)]),
+		proc(y_ge_t144/1,[(y_ge_t144([_A|...]):-any(...),y_ge_t139(...))])],
+	U = ub_t0,
+	X = y_ge_t144,
+	Y = x_ge_t139 ?
+
+	yes
+	| ?- 
+
+========================================================================[SG:1.10.2001]
+
+
+
+
+	  

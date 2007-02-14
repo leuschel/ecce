@@ -1,0 +1,235 @@
+From - Tue Aug 14 18:56:55 2001
+Received: from localhost (orval.ecs.soton.ac.uk [152.78.70.59])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id RAA28663
+	for <sg@ecs.soton.ac.uk>; Tue, 14 Aug 2001 17:09:59 +0100 (BST)
+Message-Id: <200108141609.RAA28663@hawk.ecs.soton.ac.uk>
+Date: Tue, 14 Aug 2001 17:09:59 +0100
+Content-Type: text/plain;
+	format=flowed;
+	charset=us-ascii
+Mime-Version: 1.0 (Apple Message framework v388)
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+X-Mailer: Apple Mail (2.388)
+Content-Transfer-Encoding: 7bit
+Subject: ecce usage
+Content-Length: 7918
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000c2f
+
+| ?- ecce.
+-------------------
+Welcome to ECCE 1.1
+-------------------
+Release 4, January 2001
+Implemented by Michael Leuschel
+Based on work by Michael Leuschel, Bern Martens, Jesper Jorgensen,
+Danny De Schreye, Robert Glueck, Morten Heine Sorensen, Andre de Waal.
+(C) 1995-97
+
+type h or ? for help
+type o to turn off run-time type checking (10x speedup)
+=> v
+Switching EXPERT level ON
+=> s
+  ----------
+  Parameters:
+  ----------
+   a: Abstraction operation --> l
+   c: Instance Check (at the global level) --> v
+   m: More specific resolution steps --> s
+   n: Negative solve rules --> g
+   p: Partitioning Function --> e
+   r: post-unfolding pRuning --> n
+   s: Selection rule for unfolding --> t
+   w: Whistle for termination --> f
+  ---------
+  Switches:
+  ---------
+   d: Depth bound for unfolding  -> 0
+   e: reverse redundant argument Filtering (far) -> yes
+   f: redundant argument Filtering (raf) -> yes
+   g: dead code elimination (dce) -> yes
+   h: perform parent abstraction -> yes
+   i: allow removal of redundant/duplicate calls -> yes
+   v: perform poly-Variance reducing post process -> y
+   x: perform determinate post unfolding -> yes
+   y: perform bottom-up msv post propagation -> no
+  ----------
+   z: choose a standard configuration
+=> z
+  Available Configurations:
+  -----------
+  Standard PD
+  -----------
+   b: Best standard PD (homeomorphic ecological PD + miXtus 
+unfolding/pruning)
+   e: Ecological partial deduction (requires depth bound for termination)
+   f: Fast but good standard PD (homeomorphic ecological p.d. + o 
+unfolding + no depth bound)
+   h: Homeomorphic ecological partial deduction
+   m: Msg abstraction + homeomorphic emb. on atoms p.d.
+   s: Simple partial deduction (msg + not more general)
+   y: Karp and Miller Coverability Mode for Petri Nets
+   z: Finkel Min. Coverability Mode for Petri Nets
+  --------------
+  Conjunctive PD
+  --------------
+   c: Conjunctive PD
+   d: (Csc-th-t) fast Determinate conjunctive PD
+    i:(C  -th- )  Whistle
+    j:(C  -hh- )  Whistle
+   g: conjunctive PD for deforestation (may worsen some programs)
+  ----------------------
+  Partial Configurations
+  ----------------------
+   k: enable Constrained CLP(FD) Partial Deduction
+   r: enable Constrained RUL Partial Deduction
+   a: enable Abstract Partial Deduction
+   x: add miXtus like unfolding to current configuration
+   n: disable post-processing
+   o: enable full post-processing
+   p: minimal standard PD
+=> r
+{consulting 
+/Users/michael/CVS/ecce/ecce_source/check_instance_of/check_instance_of.rul.
+pro...}
+{consulting /Users/michael/CVS/ecce/ecce_source/rul/ecceRUL.pl...}
+{module ecceRUL imported into user}
+{module terms imported into ecceRUL}
+{module lists imported into ecceRUL}
+{consulting /Users/michael/CVS/ecce/ecce_source/rul/shorten.pl...}
+{module shorten imported into ecceRUL}
+{module lists imported into shorten}
+{consulting /Users/michael/CVS/ecce/ecce_source/rul/subType.pl...}
+{module subType imported into shorten}
+{consulting /Users/michael/CVS/ecce/ecce_source/rul/rul.pl...}
+{module rul imported into subType}
+{consulting /Users/michael/CVS/ecce/ecce_source/rul/auxil.pl...}
+{module auxil imported into rul}
+{module lists imported into auxil}
+{consulted /Users/michael/CVS/ecce/ecce_source/rul/auxil.pl in module 
+auxil, 80 msec 20984 bytes}
+{module lists imported into rul}
+{consulted /Users/michael/CVS/ecce/ecce_source/rul/rul.pl in module rul, 
+110 msec 28152 bytes}
+{module auxil imported into subType}
+{consulted /Users/michael/CVS/ecce/ecce_source/rul/subType.pl in module 
+subType, 130 msec 31592 bytes}
+{consulting /Users/michael/CVS/ecce/ecce_source/rul/upperBound.pl...}
+{module upperBound imported into shorten}
+{module lists imported into upperBound}
+{module rul imported into upperBound}
+{module subType imported into upperBound}
+{module auxil imported into upperBound}
+{consulted /Users/michael/CVS/ecce/ecce_source/rul/upperBound.pl in 
+module upperBound, 50 msec 10016 bytes}
+{module auxil imported into shorten}
+{Warning: clauses for shorten:treatCase/6 are not together}
+{consulted /Users/michael/CVS/ecce/ecce_source/rul/shorten.pl in module 
+shorten, 270 msec 63088 bytes}
+{module subType imported into ecceRUL}
+{consulting /Users/michael/CVS/ecce/ecce_source/rul/proSiNo.pl...}
+{module proSiNo imported into ecceRUL}
+{module terms imported into proSiNo}
+{module lists imported into proSiNo}
+{module upperBound imported into proSiNo}
+{module auxil imported into proSiNo}
+{module rul imported into proSiNo}
+{consulted /Users/michael/CVS/ecce/ecce_source/rul/proSiNo.pl in module 
+proSiNo, 70 msec 19008 bytes}
+{module auxil imported into ecceRUL}
+{consulted /Users/michael/CVS/ecce/ecce_source/rul/ecceRUL.pl in module 
+ecceRUL, 430 msec 103712 bytes}
+{consulted 
+/Users/michael/CVS/ecce/ecce_source/check_instance_of/check_instance_of.rul.
+pro in module user, 430 msec 105912 bytes}
+{consulting 
+/Users/michael/CVS/ecce/ecce_source/more_specific/more_specific.rul.pro...
+}
+{consulted 
+/Users/michael/CVS/ecce/ecce_source/more_specific/more_specific.rul.pro 
+in module user, 10 msec 528 bytes}
+{consulting 
+/Users/michael/CVS/ecce/ecce_source/partition/partition.rul.pro...}
+{module proSiNo imported into user}
+{consulted 
+/Users/michael/CVS/ecce/ecce_source/partition/partition.rul.pro in 
+module user, 30 msec 3872 bytes}
+{consulting 
+/Users/michael/CVS/ecce/ecce_source/whistle/whistle.notmoregeneral.pro...}
+{consulted 
+/Users/michael/CVS/ecce/ecce_source/whistle/whistle.notmoregeneral.pro 
+in module user, 0 msec -272 bytes}
+{consulting 
+/Users/michael/CVS/ecce/ecce_source/abstract/abstract.rul.pro...}
+{consulted /Users/michael/CVS/ecce/ecce_source/abstract/abstract.rul.pro 
+in module user, 10 msec 1432 bytes}
+=> s
+  ----------
+  Parameters:
+  ----------
+   a: Abstraction operation --> p
+   c: Instance Check (at the global level) --> d
+   m: More specific resolution steps --> w
+   n: Negative solve rules --> g
+   p: Partitioning Function --> y
+   r: post-unfolding pRuning --> n
+   s: Selection rule for unfolding --> t
+   w: Whistle for termination --> m
+  ---------
+  Switches:
+  ---------
+   d: Depth bound for unfolding  -> 0
+   e: reverse redundant argument Filtering (far) -> yes
+   f: redundant argument Filtering (raf) -> yes
+   g: dead code elimination (dce) -> yes
+   h: perform parent abstraction -> yes
+   i: allow removal of redundant/duplicate calls -> yes
+   v: perform poly-Variance reducing post process -> y
+   x: perform determinate post unfolding -> yes
+   y: perform bottom-up msv post propagation -> no
+  ----------
+   z: choose a standard configuration
+=> z
+  Available Configurations:
+  -----------
+  Standard PD
+  -----------
+   b: Best standard PD (homeomorphic ecological PD + miXtus 
+unfolding/pruning)
+   e: Ecological partial deduction (requires depth bound for termination)
+   f: Fast but good standard PD (homeomorphic ecological p.d. + o 
+unfolding + no depth bound)
+   h: Homeomorphic ecological partial deduction
+   m: Msg abstraction + homeomorphic emb. on atoms p.d.
+   s: Simple partial deduction (msg + not more general)
+   y: Karp and Miller Coverability Mode for Petri Nets
+   z: Finkel Min. Coverability Mode for Petri Nets
+  --------------
+  Conjunctive PD
+  --------------
+   c: Conjunctive PD
+   d: (Csc-th-t) fast Determinate conjunctive PD
+    i:(C  -th- )  Whistle
+    j:(C  -hh- )  Whistle
+   g: conjunctive PD for deforestation (may worsen some programs)
+  ----------------------
+  Partial Configurations
+  ----------------------
+   k: enable Constrained CLP(FD) Partial Deduction
+   r: enable Constrained RUL Partial Deduction
+   a: enable Abstract Partial Deduction
+   x: add miXtus like unfolding to current configuration
+   n: disable post-processing
+   o: enable full post-processing
+   p: minimal standard PD
+=> n
+=> r
+filename (l for /Calvin/Programming/ecce/app) =>'~/demo/rultest.pl'.
+clauses read:   22
+clauses stored: 22
+=> p
+atom or goal (l for true) =>test5.

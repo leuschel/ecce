@@ -1,0 +1,47 @@
+From - Wed Apr  3 11:37:52 2002
+Received: from [152.78.68.234] (pri09.dialup.ecs.soton.ac.uk [152.78.68.234])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id PAA03876;
+	Thu, 28 Mar 2002 15:55:53 GMT
+User-Agent: Microsoft-Entourage/10.0.0.1331
+Date: Thu, 28 Mar 2002 15:55:50 +0000
+Subject: Re: Problem mit widen / fehler gefunden
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+CC: Michael Leuschel <mal@ecs.soton.ac.uk>
+Message-ID: <B8C8ED86.3FFA%mal@ecs.soton.ac.uk>
+In-Reply-To: <3CA31E9D.CCB40D4E@ecs.soton.ac.uk>
+Mime-version: 1.0
+Content-type: multipart/alternative; boundary="B_3100175751_158055"
+Content-Length: 3682
+Status:   
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001706
+
+Ich krieg jetzt leider dieses Problem:
+
+### WARNING CALL HAS FAILED !
+### 
+analyticFold:goalFolding(last([_252865|_252866],_252862),rul__constraint__de
+claration([any(_252872),any(_252868),any(_252866),any(_252865),any(_252865),
+any(_252866),any(_252862),new_t46(_252868),ex_new_t61(_278872),ex_new_t62(_2
+78890)],[proc(fact_70/1,[(fact_70([]):-true)]),proc(fact_71/1,[(fact_71(a):-
+true)]),proc(any/1,[(any(_284119):-true)]),proc(new_t46/1,[(new_t46([]):-tru
+e),(new_t46([_284105|_284103]):-fact_71(_284105),fact_70(_284103))]),proc(an
+y/1,[(any(_284088):-true)]),proc(any/1,[(any(_284078):-true)]),proc(any/1,[(
+any(_284068):-true)]),proc(ex_new_t61/1,[(ex_new_t61([_284054|_284052]):-fac
+t_71(_284054),ex_new_t65(_284052))]),proc(ex_new_t62/1,[(ex_new_t62([_284035
+|_284033]):-any(_284035),any(_284033))]),proc(ex_new_t65/1,[(ex_new_t65([_28
+4014|_284016]):-any(_284016),fact_71(_284014))])]),_293303,_293294)
+
+============================================================================
+
+Answer: Because the input constraint was not in Normal Form, the input RCD
+	could not be RULified. I've added another case to goalRULification
+	in module proSiNo such that Normalisation will be performed on the
+	input and then the goalRULification is re-started. [SG:04.04.2002]
+
+============================================================================
+
+
+

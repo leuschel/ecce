@@ -1,0 +1,22 @@
+orig_prog('orig/rotateprune.pro').
+pd_query([rp(T1,T2)]).
+run_time_queries([
+	[rp( tree(leaf(s(0)),s(s(0)),leaf(s(s(0)))) , Res )],
+	[rp( tree(leaf(s(0)),s(s(0)),tree(leaf(s(s(0))),0,leaf(s(s(s(0)))))) , Res )],
+	[rp( tree(tree(leaf(s(0)),s(s(0)),leaf(s(s(0)))),s(s(0)),
+		tree(leaf(s(s(0))),0,tree(leaf(s(s(s(s(0))))),s(s(s(s(0)))),leaf(s(s(s(s(s(0))))))))) , Res )],
+	[rp( tree(tree(leaf(s(0)),s(s(0)),tree(leaf(s(0)),s(s(0)),tree(leaf(s(s(0))),s(s(s(s(0)))),leaf(s(s(s(0))))))),s(s(0)),
+		tree(leaf(s(s(0))),s(s(s(s(0)))),tree(leaf(s(s(s(s(0))))),s(s(s(s(0)))),
+		tree(leaf(s(s(s(s(0))))),s(s(s(s(0)))),tree(leaf(s(s(s(s(0))))),0,leaf(s(s(s(s(0)))))))))) , Res )]
+	]).
+run_time_nr(2).
+test_queries([
+	[rp( tree(leaf(s(0)),s(s(0)),tree(leaf(s(s(0))),0,leaf(s(s(s(0)))))) , Res )]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('Rotate-Prune: A more sophisticated deforestation example.').
+
+
+
+

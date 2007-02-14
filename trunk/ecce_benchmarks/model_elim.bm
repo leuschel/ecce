@@ -1,0 +1,25 @@
+orig_prog('orig/model_elim.pro').
+pd_query([solve(neg(app(X,Y,Z)),[])]).
+run_time_queries([
+	[solve(neg(app([a,b],[c,d],L)),[])],
+	[solve(neg(app([a,b,c,d,e,f,g,h,i,k,l,m,n,o,p],
+			[q,r,s,t,u,v,w,x,y,z],L)),[])],
+    [solve(neg(app(X,Y,[a,b,c,d])),[])]
+	]).
+run_time_nr(20).
+test_queries([
+	[solve(neg(app([a,b],[c,d],L)),[])],
+	[solve(neg(app([a,b,c,d,e,f,g,h,i,k,l,m,n,o,p],
+			[q,r,s,t,u,v,w,x,y,z],L)),[])],
+    [solve(neg(app(X,Y,[a,b,c,d])),[])]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('This benchmark uses the Poole-Goebel model elimination theorem prover used by
+  Andre de Waal and John Gallager.
+The FOL object theory for this particular benchmark represents the append program.').
+
+
+
+
+

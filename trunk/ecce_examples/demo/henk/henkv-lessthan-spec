@@ -1,0 +1,1 @@
+lessThan :-     lessThan__1.lessThan__1 :-     less__3__3__3__3(A,A).lessThan__1 :-     less_conj__2__2__2__2(A,A).less_conj__2__2__2__2(s(A),B) :-     less__3__3__3__3(B,A).less_conj__2__2__2__2(s(A),B) :-     less_conj__2__2__2__2(A,B).less__3__3__3__3(A,s(s(A))).less__3__3__3__3(A,s(B)) :-     less__3__3__3__3(A,B).

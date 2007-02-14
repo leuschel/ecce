@@ -1,0 +1,1 @@
+sat__3([s(B),s(C),D,E,F]).sat__3([G,H,s(I),J,K]).sat__3([L,M,N,s(O),P]).sat_eu__2(B) :-   \+((    sat__3(B)  )).sat_eu__2([s(D),s(E),F,G,H]) :-   sat_eu__2([D,E,s(F),G,H]).sat_eu__2([I,J,s(K),L,M]) :-   sat_eu__2([I,s(J),K,s(L),M]).sat_eu__2([N,O,P,s(Q),R]) :-   sat_eu__2([s(N),O,P,Q,s(R)]).sat__1(B) :-   sat_eu__2(B).sat__0(B) :-   \+((    sat__1(B)  )).

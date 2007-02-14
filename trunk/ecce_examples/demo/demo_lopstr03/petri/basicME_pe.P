@@ -1,0 +1,19 @@
+/* file: /Users/mal/CVS/Petri/Examples/basicME.P.pe.ssat__ */
+/* benchmark info: 0 ms */
+
+
+/* :- table sat__1/5.*/
+/* :- table sat_eu__2/5.*/
+sat_eu__2(B,C,D,s(E),s(F)).
+sat_eu__2(s(G),s(H),s(I),J,K) :- 
+  sat_eu__2(G,s(H),I,s(J),K).
+sat_eu__2(s(L),s(M),s(N),O,P) :- 
+  sat_eu__2(L,M,s(N),O,s(P)).
+sat_eu__2(Q,R,S,s(T),U) :- 
+  sat_eu__2(s(Q),R,s(S),T,U).
+sat_eu__2(V,W,X,Y,s(Z)) :- 
+  sat_eu__2(s(V),s(W),X,Y,Z).
+sat__1(B,C,D,E,F) :- 
+  sat_eu__2(B,C,D,E,F).
+ssat__0 :- 
+  sat__1(B,s(0),s(0),0,0).

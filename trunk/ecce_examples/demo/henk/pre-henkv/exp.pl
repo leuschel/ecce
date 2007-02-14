@@ -1,0 +1,1 @@
+:- dynamic exp/0, plus/3, mul/3, exp/3.exp:-        exp(B,s(s(E)),s(s(s(0)))).plus(0,X,X).plus(s(X),Y,s(Z)) :- plus(X,Y,Z).mul(0,X,0).mul(s(X),Y,Z) :- mul(X,Y,XY),plus(XY,Y,Z).exp(Base,0,s(0)).exp(Base,s(E),R) :-        exp(Base,E,BE),        mul(BE,Base,R).

@@ -1,0 +1,43 @@
+Von: "Michael Leuschel" <mal@ecs.soton.ac.uk> 
+An: sg@ecs.soton.ac.uk 
+Betreff: Prazisions-Problem 
+Datum: Fri, 28 Sep 2001 14:30:59 +0100 
+CC: M.Leuschel@ecs.soton.ac.uk 
+
+
+Folgendes widening ist sehr grob: [_] + [_,_]  ->  [_|ANY]
+Kannst Du mal ueberpruefen ob dies durch John's shortening 
+zustande kommt, oder durch irgendeinen Bug. Michael
+
+?- widen([rev1(_166556,_166557,_166558)],
+	rul__constraint__declaration([any(_166558),any(_166556),ge_t139(_166557)],
+	[proc(any/1,[(any(_166524):-true)]),
+	proc(ge_t139/1,[(ge_t139([_166506|_166507]):-any(_166506),ge_t141(_166507))]),
+	proc(ge_t141/1,[(ge_t141([]):-true)])]),
+	[rev1(_156777,_156778,_156779)],
+	rul__constraint__declaration([any(_156779),any(_156777),ge_t144(_156778)],
+	[proc(any/1,[(any(_156745):-true)]),
+	proc(ge_t139/1,[(ge_t139([_156727|_156728]):-any(_156727),ge_t141(_156728))]),
+	proc(ge_t141/1,[(ge_t141([]):-true)]),
+	proc(ge_t144/1,[(ge_t144([_156688|_156689]):-ge_t139(_156689),any(_156688))])]),
+     	GOAL,RULCONSTR),
+print_rul(RULCONSTR).
+RUL Constraints: [any(_16077),any(_15965),ub_t19(_16021)]
+RUL Program:
+-> any(_19552):-true.
+-> ub_t19([_5724|_5722]):-any(_5724),any(_5722).
+ 
+GOAL = [rev1(_A,_B,_C)],
+RULCONSTR = 
+rul__constraint__declaration([any(_C),any(_A),ub_t19(_B)],
+	[proc(any/1,[(any(_D):-true)]),
+	proc(ub_t19/1,[(ub_t19([_E|_F]):-any(_E),any(_F))])]) ?
+
+======================================================================================
+
+ANSWER: The compressor could not cope with the list inputs.
+	I have switched the compressor off in procedure
+	widening/6 until I have improved the compressor.
+
+========================================================================[SG:1.10.2001]
+

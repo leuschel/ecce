@@ -1,0 +1,20 @@
+orig_prog('/orig/revlast.pro').
+pd_query([revlast_simple(L,z,Last)]).
+run_time_queries([
+	[revlast_simple([a,b,c,d],z,X)],
+	[revlast_simple([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,a,a,b,w,x,y],z,L)],
+[revlast_simple([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,a,a,b,w,x,y],z,q)]
+	]).
+run_time_nr(20).
+test_queries([
+	[revlast_simple([a,b,c,d],z,e)],
+	[revlast_simple([a,b,c,d,f,g,h,i,j,k,l,m,n,o],z,e)],
+	[revlast_simple([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,a,a,b,w,x,y],z,L)]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('A convoluted complication of the append-last program. Checks to what extent a partial evaluation system can keep static information after various manipulations.').
+
+
+
+

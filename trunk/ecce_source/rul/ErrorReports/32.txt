@@ -1,0 +1,21 @@
+Von: "Michael Leuschel" <mal@ecs.soton.ac.uk> 
+ 
+An: sg@ecs.soton.ac.uk 
+ 
+Betreff: Endlos-schleife in widen ?? 
+ 
+Datum: Mon, 21 Jan 2002 13:59:01 +0000 
+ 
+CC: M.Leuschel@ecs.soton.ac.uk 
+
+{Execution aborted}
+| ?- ecceRUL:widen([claus(member(_32307,[_32304|_32305]),_32311),
+ solve(_32311,s(s(s(0))),_32301),
+ claus(member(_32307,[_32282|_32283]),_32289),
+ solve(_32289,s(_32301),_32279)],
+rul__constraint__declaration([],[]),
+[claus(member(_32627,[_32624|_32625]),_32631),
+ solve(_32631,s(s(s(s(0)))),_32621),
+ claus(member(_32627,[_32600|_32601]),_32607),
+ solve(_32607,s(_32621),_32597)],
+rul__constraint__declaration([],[]),_32016,_32017).

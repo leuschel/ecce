@@ -1,0 +1,16 @@
+orig_prog('orig/relative.pro').
+pd_query([relative(john,X)]).
+run_time_queries([
+	[relative(john,peter)]
+	]).
+run_time_nr(150). /* changed from 50 */
+test_queries([
+	[relative(john,X)]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('A Lam benchmark. Can be fully unfolded.').
+
+
+
+

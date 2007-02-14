@@ -1,0 +1,1 @@
+:- dynamic wierd_even/2, wierd_odd/2, wierd_p/1, wicked_oe/0.wicked_oe:- wierd_even(X, _U1), wierd_even(s(X), _U2).wierd_even(nul,U) :- wierd_p(U).wierd_even(s(X),U) :- wierd_odd(X,_V), wierd_p(U).wierd_odd(s(X),U) :- wierd_even(X,_V), wierd_p(U).wierd_p(f(g(h(a)))).  % (or arbitrary complex term)

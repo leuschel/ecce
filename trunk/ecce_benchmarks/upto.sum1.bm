@@ -1,0 +1,19 @@
+orig_prog('orig/upto.pro').
+pd_query([sumsquaresupto(N,S)]).
+run_time_queries([
+	[sumsquaresupto(5,X)],
+	[sumsquaresupto(15,X)],
+	[sumsquaresupto(25,X)],
+	[sumsquaresupto(30,X)]
+	]).
+run_time_nr(20).
+test_queries([
+	[sumsquaresupto(5,X)]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('sumsquaresupto example from Wadler.').
+
+
+
+

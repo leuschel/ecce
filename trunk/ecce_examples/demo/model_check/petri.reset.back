@@ -1,0 +1,1 @@
+/* file: petri.finkel.pe.reachable_ *//* benchmark info: 0 ms *//* atom specialised: reachable(_11380) */reachable__1([],s(0),0).reachable__1([],0,0).reachable__1([t1|G],0,s(Y)) :-   reachable__1(G,s(_X),Y).reachable__1([t2|N],s(s(X)),Y) :-   reachable__1(N,X,s(Y)).reachable__0(C) :-   reachable__1(C,s(s(0)),0).

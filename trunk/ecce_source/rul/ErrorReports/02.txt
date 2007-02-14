@@ -1,0 +1,882 @@
+####################################################################
+
+Bug Report [Fixing Report see below at end of file]: 
+
+From - Tue Aug 14 16:12:59 2001
+Received: from localhost (orval.ecs.soton.ac.uk [152.78.70.59])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id NAA28431
+	for <sg>; Tue, 14 Aug 2001 13:47:44 +0100 (BST)
+Message-Id: <200108141247.NAA28431@hawk.ecs.soton.ac.uk>
+Date: Tue, 14 Aug 2001 13:47:43 +0100
+Content-Type: text/plain;
+	format=flowed;
+	charset=us-ascii
+Mime-Version: 1.0 (Apple Message framework v388)
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+X-Mailer: Apple Mail (2.388)
+Content-Transfer-Encoding: 7bit
+Subject: pruneRCD
+Content-Length: 1133
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000c2b
+
+"auxil:pruneRCD" schein manchmal Prozedure zu verdoppeln:
+
+
+/* Specialised Predicates:
+test5__1 :- test5.
+t__2(A) :- t(A), 
+rul__constraint__declaration([any(A)],[proc(any/1,[(any(B
+1):-true)]),proc(any/1,[(any(C1):-true)]),proc(any/1,[(any(D1):-true)]),proc(
+any/1,[(any(E1):-true)]),proc(any/1,[(any(F1):-true)])]).
+int__3(A) :- int(A), 
+rul__constraint__declaration([any(A)],[proc(any/1,[(any(B
+1):-true)]),proc(any/1,[(any(C1):-true)]),proc(any/1,[(any(D1):-true)]),proc(
+any/1,[(any(E1):-true)]),proc(any/1,[(any(F1):-true)])]).
+*/
+
+test5 :-
+     test5__1.
+
+/* test5__1 --> [test5] */
+test5__1 :-
+     t__2(s(0)).
+
+/* t__2(A) --> 
+[t(A),rul__constraint__declaration([any(A)],[proc(any/1,[(any
+(B):-true)]),proc(any/1,[(any(C):-true)]),proc(any/1,[(any(D):-true)]),proc(
+any/1,[(any(E):-true)]),proc(any/1,[(any(F):-true)])])] */
+t__2(skip).
+t__2(A) :-
+     int__3(A),
+     t__2(s(A)).
+
+/* int__3(A) --> 
+[int(A),rul__constraint__declaration([any(A)],[proc(any/1,[(any
+(B):-true)]),proc(any/1,[(any(C):-true)]),proc(any/1,[(any(D):-true)]),proc(
+any/1,[(any(E):-true)]),proc(any/1,[(any(F):-true)])])] */
+int__3(0).
+int__3(s(A)) :-
+     t__2(A).
+
+-------------------------------
+
+From - Tue Aug 14 16:13:27 2001
+Received: from localhost (orval.ecs.soton.ac.uk [152.78.70.59])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id PAA17760
+	for <sg>; Tue, 14 Aug 2001 15:53:00 +0100 (BST)
+Message-Id: <200108141453.PAA17760@hawk.ecs.soton.ac.uk>
+Date: Tue, 14 Aug 2001 15:52:58 +0100
+Content-Type: text/plain;
+	format=flowed;
+	charset=us-ascii
+Mime-Version: 1.0 (Apple Message framework v388)
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+X-Mailer: Apple Mail (2.388)
+Content-Transfer-Encoding: 7bit
+Subject: trace (any verdoppelt)
+Content-Length: 36726
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000c2c
+
+=> p
+atom or goal (l for true) =>test5.
+-> parameters: Abs:p InstCheck:d Msv:w NgSlv:g Part:y Prun:n Sel:t 
+Whstl:m Raf:noFar:no Dce:no Poly:n Dpu:no ParAbs:yes Msvp:no Rrc:no
+-> calculating static functors
+-> pre-processing msv phase
+.
+-> performing flow analysis
+start_partition_goal([t(s(0))],[1],_39075)
+call_proj_with_nrs([],[],[t(s(0))],_39890,_39891,_39892)
+one([],[t(s(0))])
+res_l_goalRULification([],[],rul__constraint__declaration([t0(_40267)],
+[proc(any/1,[(any(_4116
+9):-true)]),proc(t0/1,[(t0(s(_41155)):-t2(_41155))]),proc(t2/1,[(t2(0):-true)
+])]),rul__constraint__declaration([t0(_40267)],[proc(t0/1,[(t0(s(_4158
+7)):-t2(_41587))]),proc(t2/1,[(t2(0):-true)])]))
+Ordinary Goal: partition([t(_40267)])
+RUL Constraints: [t0(_40267)]
+RUL Program:
+->  t0(s(_41587)):-t2(_41587).
+->  t2(0):-true.
+result_of_partition_goal([t(s(0))],[1],[split_goal([t(_40267),rul__constraint__declaration(
+[t0(_40267)],[proc(t0/1,[(t0(s(_4158
+7)):-t2(_41587))]),proc(t2/1,[(t2(0):-true)])])],[1])])
+.asserted(_44762)
+start_partition_goal([t(_49342),t(s(s(_49342))),rul__constraint__declaration(
+[t0(s(_49342))],[proc(t0/1,[(t0(s(_3122
+1)):-t2(_31221))]),proc(t2/1,[(t2(0):-true)])])],[1,2,3],_51673)
+call_proj_with_nrs([rul__constraint__declaration([t0(s(_49342))],[proc
+(t0/1,[(t0(s(_3122
+1)):-t2(_31221))]),proc(t2/1,[(t2(0):-true)])])],[3],[t(_49342)],_52949,_52950,
+_52951)
+two([rul__constraint__declaration([t0(s(_49342))],[proc(t0/1,[(t0(s
+(_31221)):-t2(_31221))]),proc(t2/1,[(t2(0):-true)])])],[t(_49342)])
+res_l_goalRULification([],[],rul__constraint__declaration([t0(s
+(_49342))],[proc(t0/1,[(t0(s(_3122
+1)):-t2(_31221))]),proc(t2/1,[(t2(0):-true)])]),rul__constraint__declaration(
+[t2(_49342)],[proc(t2/1,[(t2(0):-true)])]))
+Ordinary Goal: partition([t(_49342)])
+RUL Constraints: [t2(_49342)]
+RUL Program:
+->  t2(0):-true.
+call_proj_with_nrs([rul__constraint__declaration([t0(s(_49342))],[proc
+(t0/1,[(t0(s(_3122
+1)):-t2(_31221))]),proc(t2/1,[(t2(0):-true)])])],[3],[t(s(s(_49342)))],_55194,
+_55195,_55196)
+two([rul__constraint__declaration([t0(s(_49342))],[proc(t0/1,[(t0(s
+(_31221)):-t2(_31221))]),proc(t2/1,[(t2(0):-true)])])],[t(s(s(_49342)))])
+res_l_goalRULification([],[],rul__constraint__declaration([t0(s(_49342)),t4(
+_55860)],[proc(any/1,[(any(_5771
+6):-true)]),proc(t0/1,[(t0(s(_57702)):-t2(_57702))]),proc(t2/1,[(t2(0):-true)
+]),proc(t4/1,[(t4(s(_5768
+8)):-t6(_57688))]),proc(t6/1,[(t6(s(_57662)):-any(_57662))])]),rul__constraint__declaration(
+[t2(_49342),t4(_55860)],[proc(any/1,[(any(_5949
+1):-true)]),proc(t2/1,[(t2(0):-true)]),proc(t4/1,[(t4(s(_59463)):-t6(_59463)
+)]),proc(t6/1,[(t6(s(_59449)):-any(_59449))])]))
+Ordinary Goal: partition([t(_55860)])
+RUL Constraints: [t4(_55860)]
+RUL Program:
+->  any(_59491):-true.
+->  t2(0):-true.
+->  t4(s(_59463)):-t6(_59463).
+->  t6(s(_59449)):-any(_59449).
+result_of_partition_goal([t(_49342),t(s(s(_49342))),rul__constraint__declaration(
+[t0(s(_49342))],[proc(t0/1,[(t0(s(_3122
+1)):-t2(_31221))]),proc(t2/1,[(t2(0):-true)])])],[1,2,3],[split_goal([t(_49342)
+,rul__constraint__declaration([t2(_49342)],[proc(t2/1,[(t2
+(0):-true)])])],[1,3]),split_goal([t(_55860),rul__constraint__declaration(
+[t4(_55860)],[proc(any/1,[(any(_5949
+1):-true)]),proc(t2/1,[(t2(0):-true)]),proc(t4/1,[(t4(s(_59463)):-t6(_59463)
+)]),proc(t6/1,[(t6(s(_59449)):-any(_59449))])])],[2,3])])
+.asserted(_59144)
+asserted(_59144)
+check_instance_of(gt_id__8,gt_id__6)
+ecceRUL:entails([t(_45241)],rul__constraint__declaration([t4(_45241)],
+[proc(any/1,[(any(_4521
+7):-true)]),proc(t2/1,[(t2(0):-true)]),proc(t4/1,[(t4(s(_45185)):-t6(_45185)
+)]),proc(t6/1,[(t6(s(_4516
+6)):-any(_45166))])]),[t(_59609)],rul__constraint__declaration([t0(_59609)
+],[proc(t0/1,[(t0(s(_59583)):-t2(_59583))]),proc(t2/1,[(t2(0):-true)])]))
+check_instance_of(gt_id__8,gt_id__6)
+ecceRUL:entails([t(_45241)],rul__constraint__declaration([t4(_45241)],
+[proc(any/1,[(any(_4521
+7):-true)]),proc(t2/1,[(t2(0):-true)]),proc(t4/1,[(t4(s(_45185)):-t6(_45185)
+)]),proc(t6/1,[(t6(s(_4516
+6)):-any(_45166))])]),[t(_59616)],rul__constraint__declaration([t0(_59616)
+],[proc(t0/1,[(t0(s(_59590)):-t2(_59590))]),proc(t2/1,[(t2(0):-true)])]))
+asserted(_59144)
+start_rul_abstract_parent(gt_id__8,[t(_45241),rul__constraint__declaration(
+[t4(_45241)],[proc(any/1,[(any(_4521
+7):-true)]),proc(t2/1,[(t2(0):-true)]),proc(t4/1,[(t4(s(_45185)):-t6(_45185)
+)]),proc(t6/1,[(t6(s(_4516
+6)):-any(_45166))])])],select(1,[match(16,select(1,[match(18,stop)]))]),gt_id__6,
+_59795,_59796)
+calling_ecceRUL_widen([t(_60859)],rul__constraint__declaration([t0
+(_60859)],[proc(t0/1,[(t0(s(_6083
+3)):-t2(_60833))]),proc(t2/1,[(t2(0):-true)])]),[t(_45241)],rul__constraint__declaration(
+[t4(_45241)],[proc(any/1,[(any(_4521
+7):-true)]),proc(t2/1,[(t2(0):-true)]),proc(t4/1,[(t4(s(_45185)):-t6(_45185)
+)]),proc(t6/1,[(t6(s(_45166)):-any(_45166))])]),_60383,_60384)
+abstract_parent(wg([t(_60859),rul__constraint__declaration([t0(_60859)],
+[proc(t0/1,[(t0(s(_6083
+3)):-t2(_60833))]),proc(t2/1,[(t2(0):-true)])])]),widen([t(_66948)],rul__constraint__declaration(
+[x_t0(_66948),y_t4(_66948)],[proc(x_t0/1,[(x_t0(s(_6713
+0)):-x_t2(_67130))]),proc(x_t2/1,[(x_t2(0):-true)]),proc(any/1,[(any(_67120)
+:-true)]),proc(y_t2/1,[(y_t2(0):-true)]),proc(y_t4/1,[(y_t4(s(_67106)):-y_t6(
+_67106))]),proc(y_t6/1,[(y_t6(s(_6709
+2)):-any(_67092))])])))widened_ordinary_goal([t(_66948)])
+RUL Constraints: [x_t0(_66948),y_t4(_66948)]
+RUL Program:
+->  x_t0(s(_67130)):-x_t2(_67130).
+->  x_t2(0):-true.
+->  any(_67120):-true.
+->  y_t2(0):-true.
+->  y_t4(s(_67106)):-y_t6(_67106).
+->  y_t6(s(_67092)):-any(_67092).
+res_l_goalRULification([],[],rul__constraint__declaration([x_t0(_66948),y_t4(
+_66948)],[proc(x_t0/1,[(x_t0(s(_6713
+0)):-x_t2(_67130))]),proc(x_t2/1,[(x_t2(0):-true)]),proc(any/1,[(any(_67120)
+:-true)]),proc(y_t2/1,[(y_t2(0):-true)]),proc(y_t4/1,[(y_t4(s(_67106)):-y_t6(
+_67106))]),proc(y_t6/1,[(y_t6(s(_6709
+2)):-any(_67092))])]),rul__constraint__declaration([t12(_66948)],[proc(any/
+1,[(any(_7291
+3):-true)]),proc(t12/1,[(t12(s(_72875)):-t13(_72875))]),proc(t13/1,[(t13(0)
+:-true),(t13(s(_72861)):-any(_72861))])]))
+rULified_widened_ordinary_goal([t(_66948)])
+RUL Constraints: [t12(_66948)]
+RUL Program:
+->  any(_72913):-true.
+->  t12(s(_72875)):-t13(_72875).
+->  t13(0):-true.  t13(s(_72861)):-any(_72861).
+[t(_66948),rul__constraint__declaration([t12(_66948)],[proc(any/1,[(any
+(_7291
+3):-true)]),proc(t12/1,[(t12(s(_72875)):-t13(_72875))]),proc(t13/1,[(t13(0)
+:-true),(t13(s(_72861)):-any(_72861))])])]
+fsi([1,2])
+end_abstract_parent(gt_id__8,[t(_45241),rul__constraint__declaration([t4
+(_45241)],[proc(any/1,[(any(_4521
+7):-true)]),proc(t2/1,[(t2(0):-true)]),proc(t4/1,[(t4(s(_45185)):-t6(_45185)
+)]),proc(t6/1,[(t6(s(_4516
+6)):-any(_45166))])])],select(1,[match(16,select(1,[match(18,stop)]))]),gt_id__6,
+[split_goal([t(_66948),rul__constraint__declaration([t12(_66948)],[proc
+(any/1,[(any(_7291
+3):-true)]),proc(t12/1,[(t12(s(_72875)):-t13(_72875))]),proc(t13/1,[(t13(0)
+:-true),(t13(s(_72861)):-any(_72861))])])],[1,2])],[none])
+*asserted(_96301)
+asserted(_96301)
+start_partition_goal([t(_100951),t(s(s(_100951))),rul__constraint__declaration(
+[t12(s(_100951))],[proc(any/1,[(any(_8237
+3):-true)]),proc(t12/1,[(t12(s(_82356)):-t13(_82356))]),proc(t13/1,[(t13(0)
+:-true),(t13(s(_82330)):-any(_82330))])])],[1,2,3],_103331)
+call_proj_with_nrs([rul__constraint__declaration([t12(s(_100951))],[proc
+(any/1,[(any(_8237
+3):-true)]),proc(t12/1,[(t12(s(_82356)):-t13(_82356))]),proc(t13/1,[(t13(0)
+:-true),(t13(s(_82330)):-any(_82330))])])],[3],[t(_100951)],_104690,_104691,
+_104692)
+two([rul__constraint__declaration([t12(s(_100951))],[proc(any/1,[(any
+(_8237
+3):-true)]),proc(t12/1,[(t12(s(_82356)):-t13(_82356))]),proc(t13/1,[(t13(0)
+:-true),(t13(s(_82330)):-any(_82330))])])],[t(_100951)])
+res_l_goalRULification([],[],rul__constraint__declaration([t12(s
+(_100951))],[proc(any/1,[(any(_8237
+3):-true)]),proc(t12/1,[(t12(s(_82356)):-t13(_82356))]),proc(t13/1,[(t13(0)
+:-true),(t13(s(_82330)):-any(_82330))])]),rul__constraint__declaration([t13(
+_100951)],[proc(any/1,[(any(_10596
+0):-true)]),proc(t13/1,[(t13(0):-true),(t13(s(_105932)):-any(_105932))])])
+)
+Ordinary Goal: partition([t(_100951)])
+RUL Constraints: [t13(_100951)]
+RUL Program:
+->  any(_105960):-true.
+->  t13(0):-true.  t13(s(_105932)):-any(_105932).
+call_proj_with_nrs([rul__constraint__declaration([t12(s(_100951))],[proc
+(any/1,[(any(_8237
+3):-true)]),proc(t12/1,[(t12(s(_82356)):-t13(_82356))]),proc(t13/1,[(t13(0)
+:-true),(t13(s(_82330)):-any(_82330))])])],[3],[t(s(s(_100951)))],_107959,
+_107960,_107961)
+two([rul__constraint__declaration([t12(s(_100951))],[proc(any/1,[(any
+(_8237
+3):-true)]),proc(t12/1,[(t12(s(_82356)):-t13(_82356))]),proc(t13/1,[(t13(0)
+:-true),(t13(s(_82330)):-any(_82330))])])],[t(s(s(_100951)))])
+res_l_goalRULification([],[],rul__constraint__declaration([t12(s(_100951)),t8(
+_108817)],[proc(any/1,[(any(_11103
+5):-true)]),proc(t12/1,[(t12(s(_111021)):-any(_111021))]),proc(t13/1,[(t13(
+0):-true),(t13(s(_111007)):-any(_111007))]),proc(t8/1,[(t8(s(_110991)):-t10(
+_110991))]),proc(t10/1,[(t10(s(_11096
+5)):-any(_110965))])]),rul__constraint__declaration([any(_100951),t8(_108817)
+],[proc(any/1,[(any(_11293
+8):-true)]),proc(t8/1,[(t8(s(_112894)):-t10(_112894))]),proc(t10/1,[(t10(s(
+_112880)):-any(_112880))])]))
+Ordinary Goal: partition([t(_108817)])
+RUL Constraints: [t8(_108817)]
+RUL Program:
+->  any(_112938):-true.
+->  t8(s(_112894)):-t10(_112894).
+->  t10(s(_112880)):-any(_112880).
+result_of_partition_goal([t(_100951),t(s(s(_100951))),rul__constraint__declaration(
+[t12(s(_100951))],[proc(any/1,[(any(_8237
+3):-true)]),proc(t12/1,[(t12(s(_82356)):-t13(_82356))]),proc(t13/1,[(t13(0)
+:-true),(t13(s(_82330)):-any(_82330))])])],[1,2,3],[split_goal([t(_100951)
+,rul__constraint__declaration([t13(_100951)],[proc(any/1,[(any(_10596
+0):-true)]),proc(t13/1,[(t13(0):-true),(t13(s(_105932)):-any(_105932))])])],[1,
+3]),split_goal([t(_108817),rul__constraint__declaration([t8(_108817)],
+[proc(any/1,[(any(_11293
+8):-true)]),proc(t8/1,[(t8(s(_112894)):-t10(_112894))]),proc(t10/1,[(t10(s(
+_112880)):-any(_112880))])])],[2,3])])
+.asserted(_110651)
+asserted(_110651)
+asserted(_110651)
+check_instance_of(gt_id__11,gt_id__9)
+ecceRUL:entails([t(_96767)],rul__constraint__declaration([t8(_96767)],
+[proc(any/1,[(any(_9674
+3):-true)]),proc(t8/1,[(t8(s(_96726)):-t10(_96726))]),proc(t10/1,[(t10(s(_96707)
+):-any(_96707))])]),[t(_111168)],rul__constraint__declaration([t12(_111168)
+],[proc(any/1,[(any(_11114
+4):-true)]),proc(t12/1,[(t12(s(_111127)):-t13(_111127))]),proc(t13/1,[(t13(
+0):-true),(t13(s(_111101)):-any(_111101))])]))
+yes
++asserted(_132821)
+asserted(_132821)
+asserted(_132821)
+check_instance_of(gt_id__10,gt_id__9)
+ecceRUL:entails([t(_119131)],rul__constraint__declaration([t13(_119131)],
+[proc(any/1,[(any(_11910
+7):-true)]),proc(t13/1,[(t13(0):-true),(t13(s(_119083)):-any(_119083))])]),[t(
+_133338)],rul__constraint__declaration([t12(_133338)],[proc(any/1,[(any
+(_13331
+4):-true)]),proc(t12/1,[(t12(s(_133297)):-t13(_133297))]),proc(t13/1,[(t13(
+0):-true),(t13(s(_133271)):-any(_133271))])]))
+asserted(_132821)
+check_instance_of(gt_id__10,gt_id__11)
+ecceRUL:entails([t(_119131)],rul__constraint__declaration([t13(_119131)],
+[proc(any/1,[(any(_11910
+7):-true)]),proc(t13/1,[(t13(0):-true),(t13(s(_119083)):-any(_119083))])]),[t(
+_133324)],rul__constraint__declaration([t8(_133324)],[proc(any/1,[(any
+(_13330
+0):-true)]),proc(t8/1,[(t8(s(_133283)):-t10(_133283))]),proc(t10/1,[(t10(s(
+_133264)):-any(_133264))])]))
+start_rul_abstract_parent(gt_id__10,[t(_119131),rul__constraint__declaration(
+[t13(_119131)],[proc(any/1,[(any(_11910
+7):-true)]),proc(t13/1,[(t13(0):-true),(t13(s(_119083)):-any(_119083))])])],select(
+1,[match(16,select(1,[match(17,select(1,[match(16,select(1,[match(18,select(
+1,[match(16,select(1,[match(17,stop)]))]))]))])),match(18,stop)]))]),gt_id__9,
+_133524,_133525)
+calling_ecceRUL_widen([t(_134982)],rul__constraint__declaration([t12
+(_134982)],[proc(any/1,[(any(_13495
+8):-true)]),proc(t12/1,[(t12(s(_134941)):-t13(_134941))]),proc(t13/1,[(t13(
+0):-true),(t13(s(_134915)):-any(_134915))])]),[t(_119131)],rul__constraint__declaration(
+[t13(_119131)],[proc(any/1,[(any(_11910
+7):-true)]),proc(t13/1,[(t13(0):-true),(t13(s(_119083)):-any(_119083))])]),_134512,
+_134513)
+abstract_parent(wg([t(_134982),rul__constraint__declaration([t12
+(_134982)],[proc(any/1,[(any(_13495
+8):-true)]),proc(t12/1,[(t12(s(_134941)):-t13(_134941))]),proc(t13/1,[(t13(
+0):-true),(t13(s(_134915)):-any(_134915))])])]),widen([t(_139919)],rul__constraint__declaration(
+[x_t12(_139919),y_t13(_139919)],[proc(any/1,[(any(_14011
+7):-true)]),proc(x_t12/1,[(x_t12(s(_140103)):-x_t13(_140103))]),proc(x_t13/
+1,[(x_t13
+(0):-true),(x_t13(s(_140089)):-any(_140089))]),proc(any/1,[(any(_140077):-true)
+]),proc(y_t13/1,[(y_t13
+(0):-true),(y_t13(s(_140063)):-any(_140063))])])))widened_ordinary_goal([t(
+_139919)])
+RUL Constraints: [x_t12(_139919),y_t13(_139919)]
+RUL Program:
+->  any(_140117):-true.
+->  x_t12(s(_140103)):-x_t13(_140103).
+->  x_t13(0):-true.  x_t13(s(_140089)):-any(_140089).
+->  any(_140077):-true.
+->  y_t13(0):-true.  y_t13(s(_140063)):-any(_140063).
+res_l_goalRULification([],[],rul__constraint__declaration([x_t12(_139919),y_t13(
+_139919)],[proc(any/1,[(any(_14011
+7):-true)]),proc(x_t12/1,[(x_t12(s(_140103)):-x_t13(_140103))]),proc(x_t13/
+1,[(x_t13
+(0):-true),(x_t13(s(_140089)):-any(_140089))]),proc(any/1,[(any(_140077):-true)
+]),proc(y_t13/1,[(y_t13
+(0):-true),(y_t13(s(_140063)):-any(_140063))])]),rul__constraint__declaration(
+[t14(_139919)],[proc(any/1,[(any(_14692
+6):-true)]),proc(any/1,[(any(_146888):-true)]),proc(t14/1,[(t14(s(_146858)
+):-any(_146858)),(t14(0):-true)])]))
+rULified_widened_ordinary_goal([t(_139919)])
+RUL Constraints: [t14(_139919)]
+RUL Program:
+->  any(_146926):-true.
+->  any(_146888):-true.
+->  t14(s(_146858)):-any(_146858).  t14(0):-true.
+[t(_139919),rul__constraint__declaration([t14(_139919)],[proc(any/1,
+[(any(_14692
+6):-true)]),proc(any/1,[(any(_146888):-true)]),proc(t14/1,[(t14(s(_146858)
+):-any(_146858)),(t14(0):-true)])])]
+fsi([1,2])
+end_abstract_parent(gt_id__10,[t(_119131),rul__constraint__declaration
+([t13(_119131)],[proc(any/1,[(any(_11910
+7):-true)]),proc(t13/1,[(t13(0):-true),(t13(s(_119083)):-any(_119083))])])],select(
+1,[match(16,select(1,[match(17,select(1,[match(16,select(1,[match(18,select(
+1,[match(16,select(1,[match(17,stop)]))]))]))])),match(18,stop)]))]),gt_id__9,
+[split_goal([t(_139919),rul__constraint__declaration([t14(_139919)],
+[proc(any/1,[(any(_14692
+6):-true)]),proc(any/1,[(any(_146888):-true)]),proc(t14/1,[(t14(s(_146858)
+):-any(_146858)),(t14(0):-true)])])],[1,2])],[none])
+*asserted(_169984)
+asserted(_169984)
+asserted(_169984)
+start_partition_goal([t(s(0)),t(s(s(0))),rul__constraint__declaration
+([t14(0)],[proc(any/1,[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[1,2,3],_188870)
+call_proj_with_nrs([rul__constraint__declaration([t14(0)],[proc(any/1,
+[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[3],[t(s(0))],_190221,_190222,_190223)
+two([rul__constraint__declaration([t14(0)],[proc(any/1,[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[t(s(0))])
+res_l_goalRULification([],[],rul__constraint__declaration([t14(0),t8
+(_191041)],[proc(any/1,[(any(_19274
+9):-true)]),proc(any/1,[(any(_192739):-true)]),proc(t14/1,[(t14(s(_192725)
+):-any(_192725)),(t14(0):-true)]),proc(t8/1,[(t8(s(_192711)):-t10(_192711)
+)]),proc(t10/1,[(t10
+(0):-true)])]),rul__constraint__declaration([t8(_191041)],[proc(t8/1,[(t8(
+s(_193420)):-t10(_193420))]),proc(t10/1,[(t10(0):-true)])]))
+Ordinary Goal: partition([t(_191041)])
+RUL Constraints: [t8(_191041)]
+RUL Program:
+->  t8(s(_193420)):-t10(_193420).
+->  t10(0):-true.
+call_proj_with_nrs([rul__constraint__declaration([t14(0)],[proc(any/1,
+[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[3],[t(s(s(0)))],_195662,_195663,_195664)
+two([rul__constraint__declaration([t14(0)],[proc(any/1,[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[t(s(s(0)))])
+res_l_goalRULification([],[],rul__constraint__declaration([t14(0),t8
+(_196490)],[proc(any/1,[(any(_19865
+8):-true)]),proc(any/1,[(any(_198648):-true)]),proc(t14/1,[(t14(s(_198634)
+):-any(_198634)),(t14(0):-true)]),proc(t8/1,[(t8(s(_198620)):-t10(_198620)
+)]),proc(t10/1,[(t10(s(_19860
+6)):-t13(_198606))]),proc(t13/1,[(t13(0):-true)])]),rul__constraint__declaration(
+[t8(_196490)],[proc(t8/1,[(t8(s(_19937
+8)):-t10(_199378))]),proc(t10/1,[(t10(s(_199364)):-t13(_199364))]),proc(t13/
+1,[(t13(0):-true)])]))
+Ordinary Goal: partition([t(_196490)])
+RUL Constraints: [t8(_196490)]
+RUL Program:
+->  t8(s(_199378)):-t10(_199378).
+->  t10(s(_199364)):-t13(_199364).
+->  t13(0):-true.
+result_of_partition_goal([t(s(0)),t(s(s(0))),rul__constraint__declaration(
+[t14(0)],[proc(any/1,[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[1,2,3],[split_goal([t(_191041),rul__constraint__declaration(
+[t8(_191041)],[proc(t8/1,[(t8(s(_19342
+0)):-t10(_193420))]),proc(t10/1,[(t10(0):-true)])])],[1,3]),split_goal([t(
+_196490),rul__constraint__declaration([t8(_196490)],[proc(t8/1,[(t8(s
+(_19937
+8)):-t10(_199378))]),proc(t10/1,[(t10(s(_199364)):-t13(_199364))]),proc(t13/
+1,[(t13(0):-true)])])],[2,3])])
+start_partition_goal([t(_175422),t(s(s(_175422))),rul__constraint__declaration(
+[t14(s(_175422))],[proc(any/1,[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[1,2,3],_177811)
+call_proj_with_nrs([rul__constraint__declaration([t14(s(_175422))],[proc
+(any/1,[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[3],[t(_175422)],_179162,_179163,_179164)
+two([rul__constraint__declaration([t14(s(_175422))],[proc(any/1,[(any
+(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[t(_175422)])
+res_l_goalRULification([],[],rul__constraint__declaration([t14(s
+(_175422))],[proc(any/1,[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])]),rul__constraint__declaration([any(_175422)
+],[proc(any/1,[(any(_18041
+9):-true)]),proc(any/1,[(any(_180409):-true)])]))
+Ordinary Goal: partition([t(_175422)])
+RUL Constraints: [any(_175422)]
+RUL Program:
+->  any(_180419):-true.
+->  any(_180409):-true.
+call_proj_with_nrs([rul__constraint__declaration([t14(s(_175422))],[proc
+(any/1,[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[3],[t(s(s(_175422)))],_182019,_182020,
+_182021)
+two([rul__constraint__declaration([t14(s(_175422))],[proc(any/1,[(any
+(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[t(s(s(_175422)))])
+res_l_goalRULification([],[],rul__constraint__declaration([t14(s(_175422)),t8(
+_182855)],[proc(any/1,[(any(_18506
+7):-true)]),proc(any/1,[(any(_185057):-true)]),proc(t14/1,[(t14(s(_185043)
+):-any(_185043)),(t14(0):-true)]),proc(t8/1,[(t8(s(_185029)):-t10(_185029)
+)]),proc(t10/1,[(t10(s(_18500
+3)):-any(_185003))])]),rul__constraint__declaration([any(_175422),t8(_182855)
+],[proc(any/1,[(any(_18692
+4):-true)]),proc(any/1,[(any(_186914):-true)]),proc(t8/1,[(t8(s(_186886)):-t10(
+_186886))]),proc(t10/1,[(t10(s(_186872)):-any(_186872))])]))
+Ordinary Goal: partition([t(_182855)])
+RUL Constraints: [t8(_182855)]
+RUL Program:
+->  any(_186924):-true.
+->  any(_186914):-true.
+->  t8(s(_186886)):-t10(_186886).
+->  t10(s(_186872)):-any(_186872).
+result_of_partition_goal([t(_175422),t(s(s(_175422))),rul__constraint__declaration(
+[t14(s(_175422))],[proc(any/1,[(any(_15609
+0):-true)]),proc(any/1,[(any(_156075):-true)]),proc(t14/1,[(t14(s(_156058)
+):-any(_156058)),(t14(0):-true)])])],[1,2,3],[split_goal([t(_175422),rul__constraint__declaration(
+[any(_175422)],[proc(any/1,[(any(_18041
+9):-true)]),proc(any/1,[(any(_180409):-true)])])],[1,3]),split_goal([t(_182855)
+,rul__constraint__declaration([t8(_182855)],[proc(any/1,[(any(_18692
+4):-true)]),proc(any/1,[(any(_186914):-true)]),proc(t8/1,[(t8(s(_186886)):-t10(
+_186886))]),proc(t10/1,[(t10(s(_186872)):-any(_186872))])])],[2,3])])
+.asserted(_184512)
+asserted(_184512)
+asserted(_184512)
+asserted(_184512)
+check_instance_of(gt_id__16,gt_id__12)
+ecceRUL:entails([t(_170465)],rul__constraint__declaration([t8(_170465)],
+[proc(any/1,[(any(_17044
+1):-true)]),proc(any/1,[(any(_170426):-true)]),proc(t8/1,[(t8(s(_170409)):-t10(
+_170409))]),proc(t10/1,[(t10(s(_17039
+0)):-any(_170390))])]),[t(_185021)],rul__constraint__declaration([t14(_185021)
+],[proc(any/1,[(any(_18499
+7):-true)]),proc(any/1,[(any(_184982):-true)]),proc(t14/1,[(t14(s(_184965)
+):-any(_184965)),(t14(0):-true)])]))
+yes
++asserted(_198471)
+asserted(_198471)
+asserted(_198471)
+asserted(_198471)
+check_instance_of(gt_id__15,gt_id__12)
+ecceRUL:entails([t(_192505)],rul__constraint__declaration([any(_192505)],
+[proc(any/1,[(any(_19248
+1):-true)]),proc(any/1,[(any(_192466):-true)])]),[t(_198980)],rul__constraint__declaration(
+[t14(_198980)],[proc(any/1,[(any(_19895
+6):-true)]),proc(any/1,[(any(_198941):-true)]),proc(t14/1,[(t14(s(_198924)
+):-any(_198924)),(t14(0):-true)])]))
+asserted(_198471)
+asserted(_198471)
+asserted(_198471)
+check_instance_of(gt_id__15,gt_id__16)
+ecceRUL:entails([t(_192505)],rul__constraint__declaration([any(_192505)],
+[proc(any/1,[(any(_19248
+1):-true)]),proc(any/1,[(any(_192466):-true)])]),[t(_199004)],rul__constraint__declaration(
+[t8(_199004)],[proc(any/1,[(any(_19898
+0):-true)]),proc(any/1,[(any(_198965):-true)]),proc(t8/1,[(t8(s(_198948)):-t10(
+_198948))]),proc(t10/1,[(t10(s(_198929)):-any(_198929))])]))
+start_rul_abstract_parent(gt_id__15,[t(_192505),rul__constraint__declaration(
+[any(_192505)],[proc(any/1,[(any(_19248
+1):-true)]),proc(any/1,[(any(_192466):-true)])])],select(1,[match(15,stop)
+,match(16,stop)]),gt_id__12,_199166,_199167)
+calling_ecceRUL_widen([t(_200113)],rul__constraint__declaration([t14
+(_200113)],[proc(any/1,[(any(_20008
+9):-true)]),proc(any/1,[(any(_200074):-true)]),proc(t14/1,[(t14(s(_200057)
+):-any(_200057)),(t14(0):-true)])]),[t(_192505)],rul__constraint__declaration(
+[any(_192505)],[proc(any/1,[(any(_19248
+1):-true)]),proc(any/1,[(any(_192466):-true)])]),_199734,_199735)
+abstract_parent(wg([t(_200113),rul__constraint__declaration([t14
+(_200113)],[proc(any/1,[(any(_20008
+9):-true)]),proc(any/1,[(any(_200074):-true)]),proc(t14/1,[(t14(s(_200057)
+):-any(_200057)),(t14(0):-true)])])]),widen([t(_204290)],rul__constraint__declaration(
+[x_t14(_204290),any(_204290)],[proc(any/1,[(any(_20447
+6):-true)]),proc(any/1,[(any(_204466):-true)]),proc(x_t14/1,[(x_t14(s(_204452)
+):-any(_204452)),(x_t14(0):-true)]),proc(any/1,[(any(_204442):-true)]),proc(
+any/1,[(any(_204432):-true)])])))widened_ordinary_goal([t(_204290)])
+RUL Constraints: [x_t14(_204290),any(_204290)]
+RUL Program:
+->  any(_204476):-true.
+->  any(_204466):-true.
+->  x_t14(s(_204452)):-any(_204452).  x_t14(0):-true.
+->  any(_204442):-true.
+->  any(_204432):-true.
+res_l_goalRULification([],[],rul__constraint__declaration([x_t14(_204290),any(
+_204290)],[proc(any/1,[(any(_20447
+6):-true)]),proc(any/1,[(any(_204466):-true)]),proc(x_t14/1,[(x_t14(s(_204452)
+):-any(_204452)),(x_t14(0):-true)]),proc(any/1,[(any(_204442):-true)]),proc(
+any/1,[(any(_20443
+2):-true)])]),rul__constraint__declaration([any(_204290)],[proc(any/1,[(any(
+_20754
+1):-true)]),proc(any/1,[(any(_207531):-true)]),proc(any/1,[(any(_207507):-true)
+]),proc(any/1,[(any(_20749
+7):-true)]),proc(any/1,[(any(_207487):-true)])]))
+rULified_widened_ordinary_goal([t(_204290)])
+RUL Constraints: [any(_204290)]
+RUL Program:
+->  any(_207541):-true.
+->  any(_207531):-true.
+->  any(_207507):-true.
+->  any(_207497):-true.
+->  any(_207487):-true.
+[t(_204290),rul__constraint__declaration([any(_204290)],[proc(any/1,
+[(any(_20754
+1):-true)]),proc(any/1,[(any(_207531):-true)]),proc(any/1,[(any(_207507):-true)
+]),proc(any/1,[(any(_20749
+7):-true)]),proc(any/1,[(any(_207487):-true)])])]
+fsi([1,2])
+end_abstract_parent(gt_id__15,[t(_192505),rul__constraint__declaration
+([any(_192505)],[proc(any/1,[(any(_19248
+1):-true)]),proc(any/1,[(any(_192466):-true)])])],select(1,[match(15,stop)
+,match(16,stop)]),gt_id__12,[split_goal([t(_204290),rul__constraint__declaration(
+[any(_204290)],[proc(any/1,[(any(_20754
+1):-true)]),proc(any/1,[(any(_207531):-true)]),proc(any/1,[(any(_207507):-true)
+]),proc(any/1,[(any(_20749
+7):-true)]),proc(any/1,[(any(_207487):-true)])])],[1,2])],[none])
+*asserted(_222228)
+asserted(_222228)
+asserted(_222228)
+asserted(_222228)
+start_partition_goal([rul__constraint__declaration([any(skip)],[proc(any/1,
+[(any(_21577
+0):-true)]),proc(any/1,[(any(_215755):-true)]),proc(any/1,[(any(_215740):-true)
+]),proc(any/1,[(any(_21572
+5):-true)]),proc(any/1,[(any(_215710):-true)])])],[1],_225985)
+result_of_partition_goal([rul__constraint__declaration([any(skip)],[proc
+(any/1,[(any(_21577
+0):-true)]),proc(any/1,[(any(_215755):-true)]),proc(any/1,[(any(_215740):-true)
+]),proc(any/1,[(any(_21572
+5):-true)]),proc(any/1,[(any(_215710):-true)])])],[1],[])
+start_partition_goal([int(_215794),t(s(_215794)),rul__constraint__declaration(
+[any(_215794)],[proc(any/1,[(any(_21577
+0):-true)]),proc(any/1,[(any(_215755):-true)]),proc(any/1,[(any(_215740):-true)
+]),proc(any/1,[(any(_21572
+5):-true)]),proc(any/1,[(any(_215710):-true)])])],[1,2,3],_226390)
+call_proj_with_nrs([rul__constraint__declaration([any(_215794)],[proc
+(any/1,[(any(_21577
+0):-true)]),proc(any/1,[(any(_215755):-true)]),proc(any/1,[(any(_215740):-true)
+]),proc(any/1,[(any(_21572
+5):-true)]),proc(any/1,[(any(_215710):-true)])])],[3],[int(_215794)],_227799,
+_227800,_227801)
+two([rul__constraint__declaration([any(_215794)],[proc(any/1,[(any
+(_21577
+0):-true)]),proc(any/1,[(any(_215755):-true)]),proc(any/1,[(any(_215740):-true)
+]),proc(any/1,[(any(_21572
+5):-true)]),proc(any/1,[(any(_215710):-true)])])],[int(_215794)])
+res_l_goalRULification([],[],rul__constraint__declaration([any(_215794)],
+[proc(any/1,[(any(_21577
+0):-true)]),proc(any/1,[(any(_215755):-true)]),proc(any/1,[(any(_215740):-true)
+]),proc(any/1,[(any(_21572
+5):-true)]),proc(any/1,[(any(_215710):-true)])]),rul__constraint__declaration(
+[any(_215794)],[proc(any/1,[(any(_22899
+2):-true)]),proc(any/1,[(any(_228982):-true)]),proc(any/1,[(any(_228972):-true)
+]),proc(any/1,[(any(_22896
+2):-true)]),proc(any/1,[(any(_228952):-true)])]))
+Ordinary Goal: partition([int(_215794)])
+RUL Constraints: [any(_215794)]
+RUL Program:
+->  any(_228992):-true.
+->  any(_228982):-true.
+->  any(_228972):-true.
+->  any(_228962):-true.
+->  any(_228952):-true.
+call_proj_with_nrs([rul__constraint__declaration([any(_215794)],[proc
+(any/1,[(any(_21577
+0):-true)]),proc(any/1,[(any(_215755):-true)]),proc(any/1,[(any(_215740):-true)
+]),proc(any/1,[(any(_21572
+5):-true)]),proc(any/1,[(any(_215710):-true)])])],[3],[t(s(_215794))],_231331,
+_231332,_231333)
+two([rul__constraint__declaration([any(_215794)],[proc(any/1,[(any
+(_21577
+0):-true)]),proc(any/1,[(any(_215755):-true)]),proc(any/1,[(any(_215740):-true)
+]),proc(any/1,[(any(_21572
+5):-true)]),proc(any/1,[(any(_215710):-true)])])],[t(s(_215794))])
+res_l_goalRULification([],[],rul__constraint__declaration([any(_215794),t10(
+_232303)],[proc(any/1,[(any(_23438
+7):-true)]),proc(any/1,[(any(_234377):-true)]),proc(any/1,[(any(_234367):-true)
+]),proc(any/1,[(any(_23435
+7):-true)]),proc(any/1,[(any(_234347):-true)]),proc(t10/1,[(t10(s(_234321)
+):-any(_234321))])]),rul__constraint__declaration([any(_215794),t10(_232303)
+],[proc(any/1,[(any(_23606
+5):-true)]),proc(any/1,[(any(_236055):-true)]),proc(any/1,[(any(_236045):-true)
+]),proc(any/1,[(any(_23603
+5):-true)]),proc(any/1,[(any(_236025):-true)]),proc(t10/1,[(t10(s(_236011)
+):-any(_236011))])]))
+Ordinary Goal: partition([t(_232303)])
+RUL Constraints: [t10(_232303)]
+RUL Program:
+->  any(_236065):-true.
+->  any(_236055):-true.
+->  any(_236045):-true.
+->  any(_236035):-true.
+->  any(_236025):-true.
+->  t10(s(_236011)):-any(_236011).
+result_of_partition_goal([int(_215794),t(s(_215794)),rul__constraint__declaration(
+[any(_215794)],[proc(any/1,[(any(_21577
+0):-true)]),proc(any/1,[(any(_215755):-true)]),proc(any/1,[(any(_215740):-true)
+]),proc(any/1,[(any(_21572
+5):-true)]),proc(any/1,[(any(_215710):-true)])])],[1,2,3],[split_goal([int(
+_215794),rul__constraint__declaration([any(_215794)],[proc(any/1,[(any
+(_22899
+2):-true)]),proc(any/1,[(any(_228982):-true)]),proc(any/1,[(any(_228972):-true)
+]),proc(any/1,[(any(_22896
+2):-true)]),proc(any/1,[(any(_228952):-true)])])],[1,3]),split_goal([t(_232303)
+,rul__constraint__declaration([t10(_232303)],[proc(any/1,[(any(_23606
+5):-true)]),proc(any/1,[(any(_236055):-true)]),proc(any/1,[(any(_236045):-true)
+]),proc(any/1,[(any(_23603
+5):-true)]),proc(any/1,[(any(_236025):-true)]),proc(t10/1,[(t10(s(_236011)
+):-any(_236011))])])],[2,3])])
+.[2]asserted(_237154)
+asserted(_237154)
+asserted(_237154)
+asserted(_237154)
+asserted(_237154)
+check_instance_of(gt_id__19,gt_id__17)
+ecceRUL:entails([t(_222808)],rul__constraint__declaration([t10(_222808)],
+[proc(any/1,[(any(_22278
+4):-true)]),proc(any/1,[(any(_222769):-true)]),proc(any/1,[(any(_222754):-true)
+]),proc(any/1,[(any(_22273
+9):-true)]),proc(any/1,[(any(_222724):-true)]),proc(t10/1,[(t10(s(_222707)
+):-any(_222707))])]),[t(_237701)],rul__constraint__declaration([any(_237701)
+],[proc(any/1,[(any(_23767
+7):-true)]),proc(any/1,[(any(_237662):-true)]),proc(any/1,[(any(_237647):-true)
+]),proc(any/1,[(any(_23763
+2):-true)]),proc(any/1,[(any(_237617):-true)])]))
+yes
++asserted(_251205)
+asserted(_251205)
+asserted(_251205)
+asserted(_251205)
+asserted(_251205)
+asserted(_251205)
+start_partition_goal([rul__constraint__declaration([any(0)],[proc(any/1,
+[(any(_24483
+9):-true)]),proc(any/1,[(any(_244824):-true)]),proc(any/1,[(any(_244809):-true)
+]),proc(any/1,[(any(_24479
+4):-true)]),proc(any/1,[(any(_244779):-true)])])],[1],_254964)
+result_of_partition_goal([rul__constraint__declaration([any(0)],[proc
+(any/1,[(any(_24483
+9):-true)]),proc(any/1,[(any(_244824):-true)]),proc(any/1,[(any(_244809):-true)
+]),proc(any/1,[(any(_24479
+4):-true)]),proc(any/1,[(any(_244779):-true)])])],[1],[])
+start_partition_goal([t(_253180),rul__constraint__declaration([any(s
+(_253180))],[proc(any/1,[(any(_24483
+9):-true)]),proc(any/1,[(any(_244824):-true)]),proc(any/1,[(any(_244809):-true)
+]),proc(any/1,[(any(_24479
+4):-true)]),proc(any/1,[(any(_244779):-true)])])],[1,2],_255237)
+call_proj_with_nrs([rul__constraint__declaration([any(s(_253180))],[proc
+(any/1,[(any(_24483
+9):-true)]),proc(any/1,[(any(_244824):-true)]),proc(any/1,[(any(_244809):-true)
+]),proc(any/1,[(any(_24479
+4):-true)]),proc(any/1,[(any(_244779):-true)])])],[2],[t(_253180)],_256455,
+_256456,_256457)
+two([rul__constraint__declaration([any(s(_253180))],[proc(any/1,[(any
+(_24483
+9):-true)]),proc(any/1,[(any(_244824):-true)]),proc(any/1,[(any(_244809):-true)
+]),proc(any/1,[(any(_24479
+4):-true)]),proc(any/1,[(any(_244779):-true)])])],[t(_253180)])
+res_l_goalRULification([],[],rul__constraint__declaration([any(s
+(_253180))],[proc(any/1,[(any(_24483
+9):-true)]),proc(any/1,[(any(_244824):-true)]),proc(any/1,[(any(_244809):-true)
+]),proc(any/1,[(any(_24479
+4):-true)]),proc(any/1,[(any(_244779):-true)])]),rul__constraint__declaration(
+[],[]))
+Ordinary Goal: partition([t(_253180)])
+RUL Constraints: []
+RUL Program:
+result_of_partition_goal([t(_253180),rul__constraint__declaration([any(s
+(_253180))],[proc(any/1,[(any(_24483
+9):-true)]),proc(any/1,[(any(_244824):-true)]),proc(any/1,[(any(_244809):-true)
+]),proc(any/1,[(any(_24479
+4):-true)]),proc(any/1,[(any(_244779):-true)])])],[1,2],[split_goal([t(_253180)
+,rul__constraint__declaration([],[])],[1,2])])
+.asserted(_256945)
+asserted(_256945)
+asserted(_256945)
+asserted(_256945)
+asserted(_256945)
+check_instance_of(gt_id__20,gt_id__17)
+ecceRUL:entails([t(_251614)],rul__constraint__declaration([],[]),[t
+(_257492)],rul__constraint__declaration([any(_257492)],[proc(any/1,[(any
+(_25746
+8):-true)]),proc(any/1,[(any(_257453):-true)]),proc(any/1,[(any(_257438):-true)
+]),proc(any/1,[(any(_25742
+3):-true)]),proc(any/1,[(any(_257408):-true)])]))
+yes
++
+-> removing superfluous polyvariance
+-> generating resultants
+
+call_assert_spec_clause(test5__1,[t__2(s(0))])
+divide([t__2(s(0))],[],[])
+call_assert_spec_clause(t__2(skip),[rul__constraint__declaration([any
+(skip)],[proc(any/1,[(any(_26167
+9):-true)]),proc(any/1,[(any(_261664):-true)]),proc(any/1,[(any(_261649):-true)
+]),proc(any/1,[(any(_26163
+4):-true)]),proc(any/1,[(any(_261619):-true)])])])
+divide([],[rul__constraint__declaration([any(skip)],[proc(any/1,[(any
+(_26167
+9):-true)]),proc(any/1,[(any(_261664):-true)]),proc(any/1,[(any(_261649):-true)
+]),proc(any/1,[(any(_26163
+4):-true)]),proc(any/1,[(any(_261619):-true)])])],[])
+checking([rul__constraint__declaration([any(skip)],[proc(any/1,[(any
+(_26167
+9):-true)]),proc(any/1,[(any(_261664):-true)]),proc(any/1,[(any(_261649):-true)
+]),proc(any/1,[(any(_26163
+4):-true)]),proc(any/1,[(any(_261619):-true)])])])
+checked([rul__constraint__declaration([any(skip)],[proc(any/1,[(any
+(_26167
+9):-true)]),proc(any/1,[(any(_261664):-true)]),proc(any/1,[(any(_261649):-true)
+]),proc(any/1,[(any(_26163
+4):-true)]),proc(any/1,[(any(_261619):-true)])])])
+proj((t__2(skip),[]),[rul__constraint__declaration([any(skip)],[proc(any/1,
+[(any(_26167
+9):-true)]),proc(any/1,[(any(_261664):-true)]),proc(any/1,[(any(_261649):-true)
+]),proc(any/1,[(any(_26163
+4):-true)]),proc(any/1,[(any(_261619):-true)])])],[])
+call_assert_spec_clause(t__2(_261703),[int__3(_261703),t__2(s(_261703))])
+divide([int__3(_261703),t__2(s(_261703))],[],[])
+call_assert_spec_clause(int__3(0),[rul__constraint__declaration([any(0)],
+[proc(any/1,[(any(_26167
+9):-true)]),proc(any/1,[(any(_261664):-true)]),proc(any/1,[(any(_261649):-true)
+]),proc(any/1,[(any(_26163
+4):-true)]),proc(any/1,[(any(_261619):-true)])])])
+divide([],[rul__constraint__declaration([any(0)],[proc(any/1,[(any
+(_26167
+9):-true)]),proc(any/1,[(any(_261664):-true)]),proc(any/1,[(any(_261649):-true)
+]),proc(any/1,[(any(_26163
+4):-true)]),proc(any/1,[(any(_261619):-true)])])],[])
+checking([rul__constraint__declaration([any(0)],[proc(any/1,[(any
+(_26167
+9):-true)]),proc(any/1,[(any(_261664):-true)]),proc(any/1,[(any(_261649):-true)
+]),proc(any/1,[(any(_26163
+4):-true)]),proc(any/1,[(any(_261619):-true)])])])
+checked([rul__constraint__declaration([any(0)],[proc(any/1,[(any(_26167
+9):-true)]),proc(any/1,[(any(_261664):-true)]),proc(any/1,[(any(_261649):-true)
+]),proc(any/1,[(any(_26163
+4):-true)]),proc(any/1,[(any(_261619):-true)])])])
+proj((int__3(0),[]),[rul__constraint__declaration([any(0)],[proc(any/1,
+[(any(_26167
+9):-true)]),proc(any/1,[(any(_261664):-true)]),proc(any/1,[(any(_261649):-true)
+]),proc(any/1,[(any(_26163
+4):-true)]),proc(any/1,[(any(_261619):-true)])])],[])
+call_assert_spec_clause(int__3(s(_263626)),[t__2(_263626)])
+divide([t__2(_263626)],[],[])
+
+/* Specialised program generated by Ecce 1.1 *//* PD Goal: test5 */
+/* Parameters: Abs:p InstCheck:d Msv:w NgSlv:g Part:y Prun:n Sel:t 
+Whstl:m Raf:noFar:no Dce:no Poly:n Dpu:no ParAbs:yes Msvp:no Rrc:no */
+/* Transformation time: 1340 ms */
+/* Unfolding time: 770 ms */
+/* Post-Processing time: 0 ms */
+
+/* Specialised Predicates:
+test5__1 :- test5.
+t__2(A) :- t(A), 
+rul__constraint__declaration([any(A)],[proc(any/1,[(any(B
+1):-true)]),proc(any/1,[(any(C1):-true)]),proc(any/1,[(any(D1):-true)]),proc(
+any/1,[(any(E1):-true)]),proc(any/1,[(any(F1):-true)])]).
+int__3(A) :- int(A), 
+rul__constraint__declaration([any(A)],[proc(any/1,[(any(B
+1):-true)]),proc(any/1,[(any(C1):-true)]),proc(any/1,[(any(D1):-true)]),proc(
+any/1,[(any(E1):-true)]),proc(any/1,[(any(F1):-true)])]).
+*/
+
+test5 :-
+     test5__1.
+
+/* test5__1 --> [test5] */
+test5__1 :-
+     t__2(s(0)).
+
+/* t__2(A) --> 
+[t(A),rul__constraint__declaration([any(A)],[proc(any/1,[(any
+(B):-true)]),proc(any/1,[(any(C):-true)]),proc(any/1,[(any(D):-true)]),proc(
+any/1,[(any(E):-true)]),proc(any/1,[(any(F):-true)])])] */
+t__2(skip).
+t__2(A) :-
+     int__3(A),
+     t__2(s(A)).
+
+/* int__3(A) --> 
+[int(A),rul__constraint__declaration([any(A)],[proc(any/1,[(any
+(B):-true)]),proc(any/1,[(any(C):-true)]),proc(any/1,[(any(D):-true)]),proc(
+any/1,[(any(E):-true)]),proc(any/1,[(any(F):-true)])])] */
+int__3(0).
+int__3(s(A)) :-
+     t__2(A).
+
+Full transformation time (with code generation): 1460 ms
+
+########################################################
+
+BUG FIX INFORMATION [SG:14.Aug.2001]
+------------------------------------
+It is not "auxil:pruneRCD" which multiplies procedure
+names. When we observe the traces we see that only the
+"any"-clauses have multiple occurrance. It was another
+procedure, dealing with "any"-clauses, which inserted
+such "any"-clauses whithout checking if such a clause
+already existed. I have now augmented "auxil:pruneRCD"
+such that also multiple "any"-clauses will be pruned.
+
+########################################################  
+ 

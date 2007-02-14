@@ -1,0 +1,178 @@
+========================================================================
+
+ANSWER: (to the following problem report). Michael has set some cuts "!"
+	end eliminated some redundant code in module shorten.pl; Now the
+	PROLOG interpreter can better recognise determinism and does not
+	need to keep a large stack of choice points any more. The memory
+	overflow error did not occur any more since then.
+
+========================================================================
+
+From - Fri Oct  5 09:19:42 2001
+Received: from localhost (pri10.dialup.ecs.soton.ac.uk [152.78.68.235])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id KAA10808;
+	Thu, 4 Oct 2001 10:01:21 +0100 (BST)
+Message-Id: <200110040901.KAA10808@hawk.ecs.soton.ac.uk>
+Date: Thu, 4 Oct 2001 10:01:21 +0100
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+Content-Type: text/plain;
+	format=flowed;
+	charset=us-ascii
+X-Mailer: Apple Mail (2.388)
+Cc: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+Mime-Version: 1.0 (Apple Message framework v388)
+Content-Transfer-Encoding: 7bit
+Subject: Memory allocation failed for widen
+Content-Length: 2656
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000dde
+
+Hier ist das Problem:
+Vieleicht geraet widen/shorten/up in eine Endlos-Schleife ?
+Michael
+
+widen([rev(_172405,_172406,_172407)],
+rul__constraint__declaration([any(_172407),any(_172405),ge_t72(_172406)],
+[proc(any/1,[(any(_172373):-true)]),
+  proc(any/1,[(any(_172358):-true)]),
+  
+proc(x_ge_t62/1,[(x_ge_t62([_172340|_17234
+1]):-any(_172340),x_ge_t64(_172341))]),
+  proc(x_ge_t64/1,[(x_ge_t64([]):-true)]),
+  proc(any/1,[(any(_172304):-true)]),
+  
+proc(y_ge_t62/1,[(y_ge_t62([_172340|_17234
+1]):-any(_172340),y_ge_t64(_172341))]),
+  proc(y_ge_t64/1,[(y_ge_t64([]):-true)]),
+  
+proc(y_ge_t68/1,[(y_ge_t68([_172340|_17234
+1]):-ub_t27(_172341),any(_172340))]),
+  proc(ub_t19/1,[(ub_t19([_172340|_172341]):-any(_172340),t20(_172341))]),
+  
+proc(t20/1,[(t20
+([]):-true),(t20([_172340|_172341]):-any(_172340),y_ge_t64(_172341))]),
+  proc(ub_t27/1,[(ub_t27([_172340|_172341]):-any(_172340),t28(_172341))]),
+  
+proc(t28/1,[(t28([_172340|_17234
+1]):-any(_172340),y_ge_t64(_172341)),(t28([]):-true)]),
+  
+proc(ge_t72/1,[(ge_t72([_172129|_17213
+0]):-ub_t19(_172130),any(_172129))])]),
+[rev(_154960,_154961,_154962)],
+rul__constraint__declaration([any(_154962),any(_154960),ge_t75
+(_154961)],[
+  proc(any/1,[(any(_154928):-true)]),
+  proc(any/1,[(any(_154913):-true)]),
+  
+proc(x_ge_t62/1,[(x_ge_t62([_154895|_15489
+6]):-any(_154895),x_ge_t64(_154896))]),
+  proc(x_ge_t64/1,[(x_ge_t64([]):-true)]),
+  proc(any/1,[(any(_154859):-true)]),
+  
+proc(y_ge_t62/1,[(y_ge_t62([_154895|_15489
+6]):-any(_154895),y_ge_t64(_154896))]),
+  proc(y_ge_t64/1,[(y_ge_t64([]):-true)]),
+  
+proc(y_ge_t68/1,[(y_ge_t68([_154895|_15489
+6]):-ub_t27(_154896),any(_154895))]),
+  proc(ub_t19/1,[(ub_t19([_154895|_154896]):-any(_154895),t20(_154896))]),
+  
+proc(t20/1,[(t20
+([]):-true),(t20([_154895|_154896]):-any(_154895),y_ge_t64(_154896))]),
+  proc(ub_t27/1,[(ub_t27([_154895|_154896]):-any(_154895),t28(_154896))]),
+  
+proc(t28/1,[(t28([_154895|_15489
+6]):-any(_154895),y_ge_t64(_154896)),(t28([]):-true)]),
+  
+proc(ge_t72/1,[(ge_t72([_154684|_15468
+5]):-ub_t19(_154685),any(_154684))]),
+  
+proc(ge_t75/1,[(ge_t75([_154660|_15466
+1]):-ge_t72(_154661),any(_154660))])]),
+  RG,RR).
+
+
+.....
+
+case3
+    LOOP:
+       Found Dependants:   
+[(x_y_ge_t68,ub_t92),(t101,x_t20),(t93,x_t28),(x_ge_t72,ub_t100),
+(y_y_ge_t68,ub_t108),(t117,y_t20),(t125,y_t20),(t109,y_t28),(y_ge_t72,ub_t116)
+,(y_ge_t75,ub_t116),(ub_t81,t82),(t125,t117)]
+       Treated Predicates: 
+[(t101,x_t20),(t93,x_t28),(t117,y_t20),(t125,y_t20),(t109,y_t28),
+(y_ge_t75,ub_t116),(t125,t117)]
+
+case2
+
+case2
+
+case2
+
+case2
+
+case2
+
+case3
+
+case1
+    LOOP:
+{ERROR: Memory allocation failed (could not get memory-block)}
+{Execution aborted}
+From - Fri Oct  5 09:20:01 2001
+Received: from localhost (pri10.dialup.ecs.soton.ac.uk [152.78.68.235])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id KAA12110
+	for <sg@ecs.soton.ac.uk>; Thu, 4 Oct 2001 10:10:19 +0100 (BST)
+Message-Id: <200110040910.KAA12110@hawk.ecs.soton.ac.uk>
+Date: Thu, 4 Oct 2001 10:10:19 +0100
+Content-Type: text/plain;
+	format=flowed;
+	charset=us-ascii
+Mime-Version: 1.0 (Apple Message framework v388)
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+X-Mailer: Apple Mail (2.388)
+Content-Transfer-Encoding: 7bit
+Subject: Memory Problem
+Content-Length: 166
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000ddf
+
+Auf der Linux Maschine funktioniert der Aufruf (hat vieleicht mehr 
+Speicherplatz).
+Irgendetwas scheint aber sehr viel Speicherplatz in widen zu gebrauchen.
+
+Michael
+From - Fri Oct  5 09:22:05 2001
+Received: from localhost (pri18.dialup.ecs.soton.ac.uk [152.78.68.243])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id LAA24173
+	for <sg@ecs.soton.ac.uk>; Thu, 4 Oct 2001 11:25:13 +0100 (BST)
+Message-Id: <200110041025.LAA24173@hawk.ecs.soton.ac.uk>
+Date: Thu, 4 Oct 2001 11:25:10 +0100
+Content-Type: text/plain;
+	format=flowed;
+	charset=us-ascii
+Mime-Version: 1.0 (Apple Message framework v388)
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+X-Mailer: Apple Mail (2.388)
+Content-Transfer-Encoding: 7bit
+Subject: Memory
+Content-Length: 99
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000de0
+
+Habe einige cuts in shorten.pl eingebaut und jetzt laeuft das Beispiel 
+auch auf Mac OSX.
+
+Michael
+
+=========================================================================

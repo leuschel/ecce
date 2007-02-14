@@ -1,0 +1,41 @@
+From - Fri Oct  5 12:01:46 2001
+Received: from localhost (orval.ecs.soton.ac.uk [152.78.70.59])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id KAA25456
+	for <sg@ecs.soton.ac.uk>; Fri, 5 Oct 2001 10:24:57 +0100 (BST)
+Message-Id: <200110050924.KAA25456@hawk.ecs.soton.ac.uk>
+Date: Fri, 5 Oct 2001 10:24:58 +0100
+Content-Type: text/plain;
+	format=flowed;
+	charset=us-ascii
+Mime-Version: 1.0 (Apple Message framework v388)
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+X-Mailer: Apple Mail (2.388)
+Content-Transfer-Encoding: 7bit
+Subject: goalRULificaiton
+Content-Length: 111
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000dee
+
+  ?- 
+goalRULification(unsafe(par(agent(p),agent(p))),_31694,rul__constraint__declaration(
+[],[]),_31685).
+
+no
+
+====================================================================================
+
+ANSWER: [SG:5.10.2001] The bug was in prePostCon:isRULhead/1. A Fact of the form
+	p(t) had wrongly been accepted as RUL head which must, however, have the
+	form p(f(X1,...,Xn)). As a consequence, a wrong case was chosen in proc
+	proSiNo:goalExpansion/4, which eventually caused above-reported failure.
+	I fixed the bug by inserting the condition "Variables \== []" into proc
+	prePostCond/isRULhead/1.
+
+	Moreover, I have implemented a switch in module prePostCond.pl that lets
+	you switch the (expensive) database recording facility on and off as you
+	need.
+
+====================================================================================

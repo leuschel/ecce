@@ -1,0 +1,18 @@
+orig_prog('orig/partialevaluator.pro').
+pd_query([pe_atom(test(X,L1,L2,Res))]).
+run_time_queries([
+	 [pe_atom(test(a,L1,L2,Res))],
+         [pe_atom(test(a,[],[b],Res))],
+	 [pe_atom(test(a,[X,Y,Z],[X],Res))]
+	]).
+run_time_nr(50).
+test_queries([
+	[pe_atom(test(a,L1,L2,Res))]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('A very simple partial evaluator.').
+
+
+
+

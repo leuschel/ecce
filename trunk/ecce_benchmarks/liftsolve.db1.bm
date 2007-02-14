@@ -1,0 +1,89 @@
+orig_prog('orig/liftsolve.pro').
+pd_query([
+	solve([
+	  term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(male,[var(x)])]),
+	  term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(female,[var(x)])]),
+	  term(clause,[term(parent,[term(a,[]),term(b,[])])]),
+	  term(clause,[term(male,[term(a,[])])])],
+	[term(father,[X,Y])])
+	]).
+
+run_time_queries([
+	[solve([
+	  term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(male,[var(x)])]),
+	  term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(female,[var(x)])]),
+	  term(clause,[term(parent,[term(a,[]),term(b,[])])]),
+	  term(clause,[term(male,[term(a,[])])])],
+	[term(father,[X,Y])])],
+	[solve([
+	  term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(male,[var(x)])]),
+	  term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(female,[var(x)])]),
+	  term(clause,[term(parent,[term(a,[]),term(b,[])])]),
+	  term(clause,[term(male,[term(a,[])])])],
+	[term(father,[term(a,[]),Y])])],
+	[solve([
+	  term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(male,[var(x)])]),
+	  term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(female,[var(x)])]),
+	  term(clause,[term(parent,[term(a,[]),term(b,[])])]),
+	  term(clause,[term(male,[term(a,[])])])],
+	[term(father,[term(a,[]),term(b,[])])])],
+	[solve([
+	  term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(male,[var(x)])]),
+	  term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(female,[var(x)])]),
+	  term(clause,[term(parent,[term(a,[]),term(b,[])])]),
+	  term(clause,[term(male,[term(a,[])])])],
+	[term(father,[term(a,[]),term(c,[])])])],
+	[solve([
+	  term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(male,[var(x)])]),
+	  term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(female,[var(x)])]),
+	  term(clause,[term(parent,[term(a,[]),term(b,[])])]),
+	  term(clause,[term(male,[term(a,[])])])],
+	[term(father,[term(c,[]),Y])])],
+	[solve([
+	  term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(male,[var(x)])]),
+	  term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(female,[var(x)])]),
+	  term(clause,[term(parent,[term(a,[]),term(b,[])])]),
+	  term(clause,[term(male,[term(a,[])])])],
+	[term(father,[X,term(b,[])])])],
+	[solve([
+	  term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(male,[var(x)])]),
+	  term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(female,[var(x)])]),
+	  term(clause,[term(parent,[term(a,[]),term(b,[])])]),
+	  term(clause,[term(male,[term(a,[])])])],
+	[term(father,[X,term(f,[term(c,[])])])])]
+  ]).
+run_time_nr(4).
+test_queries([
+	[solve([
+	  term(clause,[term(father,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(male,[var(x)])]),
+	  term(clause,[term(mother,[var(x),var(y)]),
+		term(parent,[var(x),var(y)]),term(female,[var(x)])]),
+	  term(clause,[term(parent,[term(a,[]),term(b,[])])]),
+	  term(clause,[term(male,[term(a,[])])])],
+	[term(father,[X,Y])])]
+  ]).
+
+negation_used(no).
+built_ins_used(yes).
+description('The lifting meta-interpreter for the ground representation with a simple object program which can be fully unfolded.').
+
+
+
+

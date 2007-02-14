@@ -1,0 +1,24 @@
+orig_prog('orig/groundunify.pro').
+pd_query([
+	unify(struct(p,[X]),struct(p,[struct(a,[])]),Sub)
+	]).
+run_time_queries([
+	[unify(struct(p,[var(1)]),struct(p,[struct(a,[])]),Sub)],
+	[unify(struct(p,[struct(a,[])]),struct(p,[struct(a,[])]),Sub)],
+	[unify(struct(p,[struct(b,[])]),struct(p,[struct(a,[])]),Sub)],
+	[unify(struct(p,[struct(c,[var(1)])]),struct(p,[struct(a,[])]),Sub)],
+	[unify(struct(p,[struct(X,[])]),struct(p,[struct(a,[])]),Sub)]
+  ]).
+run_time_nr(200). /* increased from 20 */
+test_queries([
+	[unify(struct(p,[var(1)]),struct(p,[struct(a,[])]),Sub)]
+  ]).
+
+negation_used(yes).
+built_ins_used(yes).
+description('A ground unification algorithm calculating explicit substitutions.').
+
+
+
+
+

@@ -1,0 +1,118 @@
+From - Sun Sep 23 12:26:55 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id OAA06197;
+	Thu, 20 Sep 2001 14:01:53 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: Unifikations-Fehler
+Date: Thu, 20 Sep 2001 14:22:59 +0100
+X-Mailer: KMail [version 1.2]
+Cc: M.Leuschel@ecs.soton.ac.uk
+MIME-Version: 1.0
+Message-Id: <01092014225904.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 1174
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000d4d
+
+Folgender Aufruf generiert Probleme: er unifiziert X und Y !
+
+l_goalRULification([trans(A,par(X,Y),C)],
+                   R,
+                   rul__constraint__declaration([t0(X),t0(Y)],
+                        [proc(any/1,[(any(D):-true)]),
+                         proc(t0/1,[(t0(par(E,F)):-t2(E),t3(F))]),
+                         proc(t2/1,[(t2(agent(G)):-t8(G))]),
+                         proc(t3/1,[(t3(agent(H)):-t11(H))]),
+                         proc(t8/1,[(t8(p):-true)]),
+                         proc(t11/1,[(t11(p):-true)]),
+                         proc(t13/1,[(t13(b):-true)])]),
+                   NRUL).
+
+Das Problem liegt glaube ich in normalisation:
+
+| ?- normalisation(rul__constraint__declaration([t0(A),t0(B)],
+                        [proc(any/1,[(any(_3690):-true)]),
+                         proc(t0/1,[(t0(par(_3675,_3673)):-t2(_3675),t3(_3673))]),
+                         proc(t2/1,[(t2(agent(_3656)):-t8(_3656))]),
+                         proc(t3/1,[(t3(agent(_3642)):-t11(_3642))]),
+                         proc(t8/1,[(t8(p):-true)]),proc(t11/1,[(t11(p):-true)]),
+                         proc(t13/1,[(t13(b):-true)])]),
+                    NEWRUL).
+ 
+B = A,
+
+NEWRUL = 
+
+rul__constraint__declaration([t0(A),t0(A)],
+                             [proc(any/1,[(any(_A):-true)]),
+                              proc(t0/1,[(t0(par(_B,_C)):-t2(_B),t3(_C))]),
+                              proc(t2/1,[(t2(agent(_D)):-t8(_D))]),
+                              proc(t3/1,[(t3(agent(_E)):-t11(_E))]),
+                              proc(t8/1,[(t8(p):-true)]),
+                              proc(t11/1,[(t11(...):-true)]),
+                              proc(t13/1,[(...:- ...)])]) ?
+ 
+yes
+
+
+Das B=A darf nicht passieren.
+
+Michael
+From - Sun Sep 23 12:27:11 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id KAA11664
+	for <sg>; Thu, 20 Sep 2001 10:56:35 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: Anderer Aufruf, wahrscheinlich gleiches Inst.Err. Problem wie vorher
+Date: Thu, 20 Sep 2001 11:17:40 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <01092011174002.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 342
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000d48
+
+goalRULification(trans(b,_24619,_35134),
+                 _40402,
+                 rul__constraint__declaration([t0(_24619)],
+                    [proc(any/1,[(any(_24595):-true)]),
+                     proc(t0/1,[(t0(par(_24577,_24578)):-t2(_24577),t3(_24578))]),
+                     proc(t2/1,[(t2(agent(_24553)):-t8(_24553))]),
+                     proc(t3/1,[(t3(agent(_24534)):-t11(_24534))]),
+                     proc(t8/1,[(t8(p):-true)]),
+                     proc(t11/1,[(t11(p):-true)])]),
+                  _40393)
+
+=============================================================================
+
+ANSWER: I Could not reproduce the above described error; the reason (for non-
+        reproduction) could be that I had changed procedure goalRULification
+        meanwhile. However, I have changed test proSiNo:normal/1 in order to
+	improve the runtime performance of that procedure; it now exploits a
+	lemma that the relationship between variable names and constraint ex-
+	pressions must a bijective function in a normal list of constraints.
+
+        Testing the "simplify" procedure, I have found another Error: In case
+	that the tested non-simple constraint was ground (variable-free), the
+	procedure had worked well, for example some non-simple constraint t(a)
+	evaluated to "true" and vanished. In case that a non-simple constraint
+	had contained variables, the semantic link between those variables and
+	the replacers got lost. For example, some t(f(X,Y)) had been replaced
+	by [tx(A),ty(B)] without preserving the information X=A and Y=B. This
+        Error is now eliminated, and the relevant dependencies are preserved.
+
+===============================================================[SG:23.9.2001]
+
+
+ 	

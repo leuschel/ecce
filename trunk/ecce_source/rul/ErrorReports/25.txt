@@ -1,0 +1,32 @@
+============================================================================
+
+ANSWER: I could not reproduce the problem reported below. In my environment,
+	the widening terminated properly with correct result. [SG:9.10.2001]
+
+============================================================================
+
+From - Tue Oct  9 13:56:05 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id NAA14695
+	for <sg>; Tue, 9 Oct 2001 13:00:09 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: Schleife in widen
+Date: Tue, 9 Oct 2001 13:23:17 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <0110091323170T.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 760
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000e1f
+
+Der normalisation Fehler ist verschwunden. Seltsam.
+Ich habe aber nun ein anderes Problem. Folgender Aufruf der beim Standard 
+Ecce Durchlauf auftritt scheint nicht zu terminieren:
+
+widen([unsafe(_14134)],rul__constraint__declaration([ge_t1530271(_14134)],[proc(ge_t1530271/1,[(ge_t1530271(par(_14107,_14108)):-ge_t1530273(_14107),ge_t1530274(_14108))]),proc(ge_t1530273/1,[(ge_t1530273(agent(_14083)):-ge_t1530276(_14083))]),proc(ge_t1530274/1,[(ge_t1530274(agent(_14064)):-ge_t1530278(_14064))]),proc(ge_t1530276/1,[(ge_t1530276(p):-true)]),proc(ge_t1530278/1,[(ge_t1530278(p):-true)])]),[unsafe(_529)],rul__constraint__declaration([any(_529)],[proc(any/1,[(any(_505):-true)]),proc(any/1,[(any(_490):-true)]),proc(any/1,[(any(_475):-true)])]),_13646,_13647)

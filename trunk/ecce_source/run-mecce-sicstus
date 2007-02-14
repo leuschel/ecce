@@ -1,0 +1,17 @@
+#!/bin/sh 
+
+#ECCEDIR=/home/clip/Systems/ASAP/ecce-1.1
+ECCEDIR=`dirname \`which $0\``
+#ECCE_SOURCE=$ECCEDIR/ecce_source
+ECCE_SOURCE=$ECCEDIR
+ECCE_BENCHMARKS=$ECCEDIR/ecce_benchmarks
+ECCE_SYSTEM_PATH=$ECCEDIR
+BIMTOOLS_PATH=$ECCEDIR/ecce_source/bimtools
+
+export ECCEDIR
+export ECCE_SOURCE
+export ECCE_BENCHMARKS
+export ECCE_SYSTEM_PATH
+export BIMTOOLS_PATH
+
+/usr/local/bin/sicstus -l ecce_sicstus.pl

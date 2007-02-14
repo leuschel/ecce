@@ -1,0 +1,55 @@
+eceived: 
+                          from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11]) by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id
+                          OAA24769 for <sg>; Thu, 9 Aug 2001 14:12:33 +0100 (BST)
+             Content-Type: 
+                          text/plain; charset="iso-8859-1"
+                     From: 
+                          Michael Leuschel <mal@ecs.soton.ac.uk>
+                       To: 
+                          sg@ecs.soton.ac.uk
+                  Subject: 
+                          goalRULification funktioniert nicht mehr:
+                     Date: 
+                          Thu, 9 Aug 2001 14:29:10 +0100
+                 X-Mailer: 
+                          KMail [version 1.2]
+             MIME-Version: 
+                          1.0
+              Message-ID: 
+                          <01080914291001.11029@kaiserslautern>
+ Content-Transfer-Encoding: 
+                          8bit
+           Content-Length: 
+                          100
+                   Status: 
+          X-Mozilla-Status: 
+                          0000
+         X-Mozilla-Status2: 
+                          00000000
+                  X-UIDL: 
+                          3a78223d00000bf9
+
+
+
+
+| ?- 
+proSiNo:goalRULification(p(_28480,b),_31399,rul__constraint__declaration([],[]),_31393).
+ 
+no
+
+----------------------------------------------------------------------------------------
+
+Antwort: Fehler behoben durch Bug-Fix in Modul "Auxil". [SG:9.Aug.2001]
+
+| ?- goalRULification(p(X,b),Y,rul__constraint__declaration([],[]),Z).
+
+Y = p(X,_A),
+Z = rul__constraint__declaration([any(X),t1(_A)],
+                                 [proc(any/1,
+                                       [(any(_B):-true)]),
+                                  proc(t1/1,
+                                       [(t1(b):-true)])]) ?
+yes
+
+| ?- 
+----------------------------------------------------------------------------------------

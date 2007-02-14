@@ -1,0 +1,20 @@
+orig_prog('orig/maxlength.pro').
+pd_query([max_length(L,Max,Len)]).
+run_time_queries([
+	[max_length([1,2,3,4,3,2,1],Max,Len)],
+	[max_length([],Max,Len)],
+	[max_length([1,5,3,2,6,3,7,3,2,1,8,5,3,5,2,3],Max,Len)],
+	[max_length([1,5,3,2,6,3,7,3,2,1,8,5,3,5,2,3],Max,5)],
+	[max_length([1,5,3,2,6,3,7,3,2,1,8,5,3,5,2,3],3,Len)]
+	]).
+run_time_nr(2).
+test_queries([
+	[max_length([1,5,3,2,6,3,7,3,2,1,8,5,3,5,2,3],Max,Len)]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('Tests whether tupling can be done.').
+
+
+
+

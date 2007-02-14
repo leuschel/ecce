@@ -1,0 +1,1 @@
+:- dynamic odd_even/0, even/1, odd/1.odd_even:- even(X), even(s(X)).even(zero).even(s(X)):- odd(X).odd(s(X)):- even(X).

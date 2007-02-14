@@ -1,0 +1,99 @@
+README File for ECCE 1.1
+------------------------
+
+ECCE is an automatic partial deduction system for logic programs.
+
+
+To start using the ECCE system you have to
+
+1. Install Sicstus Prolog (version 3 or higher).
+
+2. Untar (tar -xf) the ecce.tar file.
+   This will create a subdirectory named "ecce_source".
+
+3. Open the file "ecce_sicstus.pro" and edit the entry:
+ecce_source_directory('/Calvin/Programming/ecce/ecce_source/').
+   so that they point to the "ecce_source" directory generated above.
+   You can also edit the entry:
+ecce_benchmark_directory('/Calvin/Programming/ecce/ecce_benchmarks/').
+   to point to a benchmark directory (you should create).
+
+   Then simply load the file "ecce_sicstus.pro" using Sicstus Prolog
+   and then type "ecce" to start up the system.
+   The first time you use the system you might have to type
+   "ecce_recompile" to recompile all the .ql files and the restart
+   the system from scratch.
+
+
+   The most important commands should be "r" to read in source files and put
+   them into the internal clause database,
+   "c" to clear the internal clause database
+   and "p" to partially evaluate an atom (or goal).
+   Note that whenever the system requests for input in the style:
+	=>@ 
+   then you should input a Prolog atom followed by a point.
+   To use special characters one has to quote the atom with '.
+   For example one can type:
+	filename =>@   '~/ecce/test/test'.
+   but not
+	filename =>@   ~/ecce/test/test.
+
+You can start by testing the system on the file "append-test" in
+the following way:
+=> r
+Type a dot (.) and hit return at the end.
+filename (l for ~michael/ecce/test/tests) =>@   'append-test'.
+clauses read:   3
+clauses stored: 3
+=> o
+compiling -c+ /tmp/ecce/bimtools/prepost.nocheck.pro
+reloaded prepost.nocheck.pro
+=> p
+Use list notation for goals: [G1,G2].
+Type a dot (.) and hit return at the end.
+atom or goal (l for true) =>@   doubleapp(X,Y,Z,XYZ).
+
+.....
+
+The specialised program should look more or less like this:
+
+doubleapp(X1,X2,X3,X4) :- 
+    doubleapp__1(X1,X2,X3,X4).
+doubleapp__1([],X1,X2,X3) :- 
+    append__3(X1,X2,X3).
+doubleapp__1([X1|X2],X3,X4,[X1|X5]) :- 
+    append_conj__2(X2,X3,X4,X5).
+append_conj__2([],X1,X2,X3) :- 
+    append__3(X1,X2,X3).
+append_conj__2([X1|X2],X3,X4,[X1|X5]) :- 
+    append_conj__2(X2,X3,X4,X5).
+append__3([],X1,X1).
+append__3([X1|X2],X3,[X1|X4]) :- 
+    append__3(X2,X3,X4).
+
+
+The current user interface is still a bit rudimentary and there is no
+manual yet. E.g. currently it is best to clear the clause database (c)
+and read in the file to be specialised (r) before every partial evaluation
+(p), as the post-processor will mess with the clause database (and put
+part of the specialised program there).
+
+
+=====
+Note: to display the global tree you need gv.
+On Mac OS X: be sure to use the right Ghostscript interpreter for gv
+(in the State Menu for Ghostscript options I have to change the default
+ from gs to /sw/bin/gs to use the right Ghostscript interpreter)
+=====
+
+For further information or bug reports you can reach me
+as follows:
+============================================================
+Michael Leuschel (http://www.ecs.soton.ac.uk/~mal)
+Declarative Systems and Software Engineering
+Department of Electronics and Computer Science
+University of Southampton
+Highfield, Southampton, SO17 1BJ,  U.K.
+Fax: +44 01703 59 3045   Tel: +44 01703 59 3377
+E-mail: mal@ecs.soton.ac.uk
+============================================================

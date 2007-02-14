@@ -1,0 +1,69 @@
+/* A Model Checker for CTL fomulas */
+/* written for XSB-Prolog */
+/* by Michael Leuschel, Thierry Massart */
+
+:- table sat/2.
+
+sat(_E,true).
+sat(_E,false) :- fail.
+
+sat(E,p(P)) :- prop(E,P). /* elementary proposition */
+sat(E,e(A)) :- trans(A,E,_). /* action A enabled in state E */
+
+sat(E,and(F,G)) :- sat(E,F), sat(E,G).
+
+sat(E,or(F,_G)) :- sat(E,F).
+sat(E,or(_F,G)) :- sat(E,G).
+
+sat(E,not(F)) :- tnot(sat(E,F)).
+
+sat(E,en(F)) :- /* exists next */
+    trans(_Act,E,E2),sat(E2,F).
+
+sat(E,an(F)) :- /* always next */
+    tnot(sat(E,en(not(F)))).
+
+sat(E,eu(F,G)) :- /* exists until */
+    sat_eu(E,F,G).
+
+sat(E,au(F,G)) :- /* always until */
+  sat(E,not(eu(not(G),and(not(F),not(G))))),
+  sat_noteg(E,not(G)).
+
+sat(E,ef(F)) :- /* exists future */
+ sat(E,eu(true,F)).
+
+sat(E,af(F)) :- /* always future */
+  sat_noteg(E,not(F)).
+
+sat(E,eg(F)) :- /* exists global */
+  tnot(sat_noteg(E,F)). /* we want gfp -> negate lfp of negation */
+
+sat(E,ag(F)) :- /* always global */
+  sat(E,not(ef(not(F)))).
+  
+
+:- table sat_eu/3.
+/* tabulation to compute least-fixed point using XSB */
+  
+sat_eu(E,_F,G) :- /* exists until */
+    sat(E,G).
+sat_eu(E,F,G) :- /* exists until */
+   sat(E,F), trans(_Act,E,E2), sat_eu(E2,F,G).
+
+
+ :- table sat_noteg/2.
+/* tabulation to compute least-fixed point using XSB */
+
+sat_noteg(E,F) :-
+   sat(E,not(F)).
+sat_noteg(E,F) :-
+   findall(E2,trans(_A,E,E2),Succs),
+   sat_noteg2(Succs,F).
+   
+sat_noteg2([],_).
+sat_noteg2([S1|T],F) :-
+   sat_noteg(S1,F),
+   sat_noteg2(T,F).   
+  
+

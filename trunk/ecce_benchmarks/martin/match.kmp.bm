@@ -1,0 +1,23 @@
+orig_prog('martin/match.pro').
+pd_query([match:match([a,a,b],String)]).
+run_time_queries([
+	[match:match([a,a,b],[a,a,a,a,c,d,a,a,a,e,f,g,h,a,a,b,d,f])],
+	[match:match([a,a,b],[a,b,a,b,a,a,a,a,c,a,a,a,a,a,a,a,a,b])],
+	[match:match([a,a,b],[a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,b])],
+	[match:match([a,a,b],
+	        [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,a,a,b,w,x,y,z])]
+	]).
+run_time_nr(20).
+test_queries([
+	[match:match([a,a,b],[a,a,a,a,c,d,a,a,a,e,f,g,h,a,a,b,d,f])],
+	[match:match([a,a,b],[a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,b])],
+	[match:match([a,a,b],[a,a,a,a])],
+	[match:match([a,a,b],[])]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('Try to obtain a KMP matcher. Contains better run_time_queries than match.lam.bm.').
+
+
+
+

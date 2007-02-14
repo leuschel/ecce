@@ -1,0 +1,469 @@
+From - Tue Jan 22 16:53:07 2002
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+Message-ID: <3C4D7193.729E7EB8@ecs.soton.ac.uk>
+Date: Tue, 22 Jan 2002 14:05:07 +0000
+From: Stefan Gruner <sg@ecs.soton.ac.uk>
+Organization: University of Southampton
+X-Mailer: Mozilla 4.61 [en] (X11; I; Linux 2.2.12-20 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: john@cs.bris.ac.uk, mal@ecs.soton.ac.uk
+Subject: (another) Shortening Question (urgent)
+Content-Type: multipart/mixed;
+ boundary="------------0D163AAA6389F4F745D7AE73"
+
+This is a multi-part message in MIME format.
+--------------0D163AAA6389F4F745D7AE73
+Content-Type: multipart/alternative;
+ boundary="------------C91CFA63DE152270E263E921"
+
+
+--------------C91CFA63DE152270E263E921
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+  ------------------------------------------------------------------------------------------
+               This is a message from sg@ecs.soton.ac.uk alias Stefan Gruner
+  ------------------------------------------------------------------------------------------
+
+    Dear John,
+
+    Perhaps you have some spare time to consider the following:
+
+    1.) We have your definition of single-step Shortening, based
+         on Domain- and Call-Dependencies.
+    2.) We have your definition of a "Shortened Program" which
+        does not contain any of those dependencies any more.
+
+    Michael and I have now discovered the following problem.
+    We have some program
+
+    A :- B
+    B :- X
+
+    where A,B are dependent in such a way that their Upper
+    Bound C must be constructed. After rewriting, we obtain:
+
+    A :- C
+    B :- X
+    C :- D
+
+    where D is the Definition of the upper bound. This was
+    a one-step-shortening according to 1.)
+
+    In order to achieve situation 2.) we collect dependencies
+    again and find out that now A,D are dependent such that
+    their upper bound E has to be constructed. Rewriting D
+    we obtain:
+
+    A :- C
+    B :- X
+    C :- E
+    E :- F
+
+    Then we find the pair (A,F) and so on ad infinitum.
+
+    Am I wrong or could it be the case that your definition 2.)
+    of a "completely shortened" program is just a mathematical
+    definition but not a (finitely) constructive one? Do you have
+    any literature published about that phenomenon?
+
+    Thanks for your quick reply, because we're doing benchmark
+    tests at the moment the results of which are needed for a paper
+    the deadline of which is coming soon.
+
+    [Perhaps Michael can give some additional comments on this.]
+
+    Greetings,
+    Stefan
+
+  ------------------------------------------------------------------------------------------
+                ECS | University of Southampton | GB - Southampton SO17 1BJ
+  ------------------------------------------------------------------------------------------
+
+
+
+--------------C91CFA63DE152270E263E921
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<body bgcolor="#FFFFFF">
+
+<hr>
+<center><b>This is a message</b> from <b><a href="mailto:sg@ecs.soton.ac.uk">sg@ecs.soton.ac.uk</a></b>
+alias <b><a href="http://www.ecs.soton.ac.uk/info/people/sg">Stefan Gruner</a></b></center>
+
+<hr>
+<p>&nbsp;&nbsp;&nbsp; Dear John,
+<p>&nbsp;&nbsp;&nbsp; Perhaps you have some spare time to consider the
+following:
+<p>&nbsp;&nbsp;&nbsp; 1.) We have your definition of single-step Shortening,
+based
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; on Domain- and Call-Dependencies.
+<br>&nbsp;&nbsp;&nbsp; 2.) We have your definition of a "Shortened Program"
+which
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; does not contain any of
+those dependencies any more.
+<p>&nbsp;&nbsp;&nbsp; Michael and I have now discovered the following problem.
+<br>&nbsp;&nbsp;&nbsp; We have some program
+<p>&nbsp;&nbsp;&nbsp; A :- B
+<br>&nbsp;&nbsp;&nbsp; B :- X
+<p>&nbsp;&nbsp;&nbsp; where A,B are dependent in such a way that their
+Upper
+<br>&nbsp;&nbsp;&nbsp; Bound C must be constructed. After rewriting, we
+obtain:
+<p>&nbsp;&nbsp;&nbsp; A :- C
+<br>&nbsp;&nbsp;&nbsp; B :- X
+<br>&nbsp;&nbsp;&nbsp; C :- D
+<p>&nbsp;&nbsp;&nbsp; where D is the Definition of the upper bound. This
+was
+<br>&nbsp;&nbsp;&nbsp; a one-step-shortening according to 1.)
+<p>&nbsp;&nbsp;&nbsp; In order to achieve situation 2.)&nbsp;we collect
+dependencies
+<br>&nbsp;&nbsp;&nbsp; again and find out that now A,D are dependent such
+that
+<br>&nbsp;&nbsp;&nbsp; their upper bound E has to be constructed. Rewriting
+D
+<br>&nbsp;&nbsp;&nbsp; we obtain:
+<p>&nbsp;&nbsp;&nbsp; A :- C
+<br>&nbsp;&nbsp;&nbsp; B :- X
+<br>&nbsp;&nbsp;&nbsp; C :- E
+<br>&nbsp;&nbsp;&nbsp; E :- F
+<p>&nbsp;&nbsp;&nbsp; Then we find the pair (A,F) and so on ad infinitum.
+<p>&nbsp;&nbsp;&nbsp; Am I wrong or could it be the case that your definition
+2.)
+<br>&nbsp;&nbsp;&nbsp; of a "completely shortened" program is just a mathematical
+<br>&nbsp;&nbsp;&nbsp; definition but not a (finitely) constructive one?
+Do you have
+<br>&nbsp;&nbsp;&nbsp; any literature published about that phenomenon?
+<p>&nbsp;&nbsp;&nbsp; Thanks for your quick reply, because we're doing
+benchmark
+<br>&nbsp;&nbsp;&nbsp; tests at the moment the results of which are needed
+for a paper
+<br>&nbsp;&nbsp;&nbsp; the deadline of which is coming soon.
+<p>&nbsp;&nbsp;&nbsp; [Perhaps Michael can give some additional comments
+on this.]
+<p>&nbsp;&nbsp;&nbsp; Greetings,
+<br>&nbsp;&nbsp;&nbsp; Stefan
+<p>
+<hr>
+<center><b><a href="http://www.ecs.soton.ac.uk/">ECS</a></b> | University
+of Southampton | <b>GB</b> - Southampton <b>SO17 1BJ</b></center>
+
+<hr>
+<br>&nbsp;
+</body>
+</html>
+
+--------------C91CFA63DE152270E263E921--
+
+--------------0D163AAA6389F4F745D7AE73
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="sg.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Stefan Gruner
+Content-Disposition: attachment;
+ filename="sg.vcf"
+
+begin:vcard 
+n:Gruner;Stefan
+x-mozilla-html:TRUE
+org:University of Southampton
+version:2.1
+email;internet:sg@ecs.soton.ac.uk
+title:Dr.rer.nat., Dipl.-Inform.
+tel;fax:+44 23 80 59 30 45
+tel;work:+44 23 80 59 31 22
+note:http://www.dsse.ecs.soton.ac.uk/
+adr;quoted-printable:;;Department of ECS=0D=0AHighfield;Southampton;Hampshire;SO17 1BJ;England (GB)
+x-mozilla-cpt:;2
+fn:Stefan Gruner
+end:vcard
+
+--------------0D163AAA6389F4F745D7AE73--
+
+From - Tue Jan 22 16:52:37 2002
+Received: from magpie.ecs.soton.ac.uk (magpie.ecs.soton.ac.uk [152.78.68.131])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id QAA07983;
+	Tue, 22 Jan 2002 16:43:00 GMT
+Received: from dire.bris.ac.uk (dire.bris.ac.uk [137.222.10.60])
+	by magpie.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id QAA15569;
+	Tue, 22 Jan 2002 16:42:46 GMT
+Received: from cs.bris.ac.uk (actually host lunaleka.cs.bris.ac.uk) 
+          by dire.bris.ac.uk with SMTP-PRIV with ESMTP;
+          Tue, 22 Jan 2002 16:42:45 +0000
+Received: from bristol.ac.uk (hilea [137.222.102.203])	by cs.bris.ac.uk (8.9.3/8.9.3) 
+          with ESMTP id QAA01991;	Tue, 22 Jan 2002 16:42:44 GMT
+Sender: john@cs.bris.ac.uk
+Message-ID: <3C4D9669.118C4567@bristol.ac.uk>
+Date: Tue, 22 Jan 2002 16:42:17 +0000
+From: John Gallagher <john.gallagher@bristol.ac.uk>
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+CC: Michael Leuschel <mal@ecs.soton.ac.uk>, Stefan Gruner <sg@ecs.soton.ac.uk>
+Subject: Re: Question about RUL article
+References: <B7539FB0.4F3C%mal@ecs.soton.ac.uk> <3B2DF4E6.F9B51968@clip.dia.fi.upm.es>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-ECS-MailScanner: Found to be clean
+Content-Length: 6113
+Status:   
+X-Mozilla-Status: 8013
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d000012eb
+
+Dear Stefan and Michael
+
+I think this is the same issue that we discussed several times
+last year, isn't it?
+
+I've just got back an hour ago from a conference in America so am rather
+jet-lagged, but I am re-sending the mail I sent last June, in which
+I tried to (re)explain what the problem with the ICLP presentation 
+was, and why shortening terminates.
+
+Hope this helps.  I'll be more awake tomorrow if you still have problems.
+
+cheers
+
+John
+
+
+John Gallagher wrote:
+> 
+> Hi Michael and Stefan
+> 
+> > I hope everything is fine in Madrid.
+> 
+> Yes thanks!
+> 
+> >
+> > Sorry to bother you, but Stefan and I have a few question about your ICLP'94
+> > RUL article, concerning the shortening Definition.
+> 
+> Sorry that you have so much trouble with this. I've had several
+> exchanges of e-mail with Stefan already, and explained that the ICLP'94
+> definition of shortening was embarrassingly inaccurate. I tried
+> to give explanations of what should be happening, and advised Stefan
+> to follow that rather than the ICLP'94 description.
+> 
+> >
+> > First, in Def 3.7 (page 602), point 3 it says if $s \not\subseteq t$ the
+> > compute r = ... lub of s and t ... replace all occurences of t by r.
+> >
+> > Should this be "replace all occurences of *s* by r" ?
+> >
+> > E.g., in the Example 1 below:
+> > t(a).   t(f(X)) :- r(X).  r(a).  r(f(X)) :- s(X).  s(b).
+> >  D(t,r) holds and r\not\subseteq t  holds, you compute lub q but replace
+> > r-calls by q-calls ?! Or is there something we are missing ?
+> 
+> The example was wrong.  The idea is to increase the size of the "upper"
+> predicate until the "lower" one becomes a subtype.
+> 
+> >
+> > Also, there is something I don't understand in Def. 3.8.
+> > For example, in Ex 1 above you still have that D(t,q) holds after one
+> > shortening step?
+> > Will it not be that if t and s have the same set of function symbols in the
+> > head, then the lub will usually also contain the same set of function
+> > symbols ??  I guess this will depend on the particular lub operation (which
+> > one are you using by the way ?). But at least in the example 1 this was the
+> > case, and hence we have that D(t,q) holds and the result is not a shortened
+> > program, as we have t \subseteq q and q \not\subseteq t. Hence we have to
+> > re-compute lub between t and q, which will return q again and we never reach
+> > a fixpoint ??
+> > So maybe Def. 3.8 should say: no two predicates t and s such that D(t,s)
+> > holds and the success set of s is not a superset of the success-set of t, or
+> > something like that. Alternatively, one could re-define the definition of
+> > D(t,s) ? Or have we missed something ??
+> 
+> I think this problem arises from the previous mistake. The termination
+> of the process was guaranteed by the fact that on the next application
+> of the procedure, the dependent predicate is a subtype, and hence is handled
+> by the other case.
+> 
+> As suggested to Stefan (see message below) a better solution is to
+> replace both t and s by their upper bound (i.e. a recursive definition is
+> created immediately).  I believe this is equivalent.
+> 
+> Mildner also examined my definitions carefully :( in his PhD thesis, and claimed
+> that the shortening process does not always terminate
+> (http://www.csd.uu.se/~perm/thesis/).  But unfortunately his argument is based
+> on the faulty definition and example.
+> 
+> >
+> > Also, do you have a tech-report version or journal version of  the ICLP'94
+> > paper ?
+> 
+> The only other version I have is the one available at
+> http://www.cs.bris.ac.uk/~john/reports.html  I thought this was the same
+> as the ICLP'94 version but the definition of shortening (normalisation)
+> is 3.8 so it can't be the same.  Maybe it's the version we submitted.
+> There's also a previous TR available on the same web page, called
+> "Regular Approximation of Logic Programs and Their Uses"  by J. Gallagher
+> and D.A de Waal.
+> 
+> Another point to mention -  there is another shortening/widening
+> given in the LOPSTR'97 paper by Saglam and Gallagher.  This is
+> more accurate, though Mildner proved that it is not a widening for
+> all sequences of regular definitions.  However a guy here at Madrid
+> has done some experiments and it seems to terminate even for Mildner's
+> counterexample!  So it is an open question whether it terminates
+> for all sequences that are generated by the regular approximation
+> algorithm. It could easily be forced to terminate in pathological cases
+> by some ad hoc means, say after some fixed number of iterations
+> This widening is also described in the mail to
+> Stefan below (Another version that we used.....).
+> 
+> One other point: we have just submitted to ICLP'01 a paper on implementing
+> set-based analysis as an abstract domain. This is a rather precise
+> type analysis, and does not require any widening at all, since a finite
+> domain is defined for each program. The submitted paper is
+> available at http://www.cs.bris.ac.uk/~john/cstr01-001.ps.gz.
+> I can send you the programs if you want (Ciao or Sicstus).
+> 
+> Cheers
+> 
+> John
+> 
+> -------- Original Message --------
+>      Subject:
+>              Re: Detailed question / which version ?
+>        Date:
+>              Tue, 20 Mar 2001 12:22:57 +0000
+>        From:
+>              Stefan Gruner <sg@ecs.soton.ac.uk>
+> Organization:
+>              University of Southampton
+>          To:
+>              John Gallagher <john>
+> 
+> John Gallagher wrote:
+> 
+>    The version you have does something like this.
+>    If there are two predicates t1 and t2 satisfying these conditions
+> 
+>    (i)  t1 calls t2 (perhaps not directly)
+>    (ii) t1 and t2 have the same set of function symbols in the heads of the
+>    clauses defining them
+> 
+>    then form the upper bound of t1 and t2, say t3, and replace both t1 and
+>    t2 by t3.
+> 
+>    Another version which we used, which is simpler to implement but is not
+>    guaranteed
+>    to terminate :( adds a third condition as well as (i) and (ii)
+> 
+>    (iii) t2 is a subtype of t1
+> 
+>    in which case any calls to t2 are simply replaced by t1 (since t1 is the
+>    upper
+>    bound of t1 and t2).
+From - Tue Jan 22 16:53:16 2002
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+Message-ID: <3C4D9856.2E1ECB1E@ecs.soton.ac.uk>
+Date: Tue, 22 Jan 2002 16:50:30 +0000
+From: Stefan Gruner <sg@ecs.soton.ac.uk>
+Organization: University of Southampton
+X-Mailer: Mozilla 4.61 [en] (X11; I; Linux 2.2.12-20 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: John Gallagher <john.gallagher@bristol.ac.uk>
+CC: Michael Leuschel <mal@ecs.soton.ac.uk>
+Subject: Re: Question / Thank you
+References: <B7539FB0.4F3C%mal@ecs.soton.ac.uk> <3B2DF4E6.F9B51968@clip.dia.fi.upm.es> <3C4D9669.118C4567@bristol.ac.uk>
+Content-Type: multipart/mixed;
+ boundary="------------531EBC11C22DF54A59BD68D7"
+
+This is a multi-part message in MIME format.
+--------------531EBC11C22DF54A59BD68D7
+Content-Type: multipart/alternative;
+ boundary="------------F48132E0FF947BEE03099F80"
+
+
+--------------F48132E0FF947BEE03099F80
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+  ------------------------------------------------------------------------------------------
+               This is a message from sg@ecs.soton.ac.uk alias Stefan Gruner
+  ------------------------------------------------------------------------------------------
+
+    Dear John, thanks again very much.
+    In the meantime I have implemented
+    an "emergency break" forbidding the
+    discussed cases.
+
+    The result may be an only partially
+    shortened program, but better than
+    nothing :)
+
+  ------------------------------------------------------------------------------------------
+                ECS | University of Southampton | GB - Southampton SO17 1BJ
+  ------------------------------------------------------------------------------------------
+
+
+
+--------------F48132E0FF947BEE03099F80
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<body bgcolor="#FFFFFF">
+
+<hr>
+<center><b>This is a message</b> from <b><a href="mailto:sg@ecs.soton.ac.uk">sg@ecs.soton.ac.uk</a></b>
+alias <b><a href="http://www.ecs.soton.ac.uk/info/people/sg">Stefan Gruner</a></b></center>
+
+<hr>
+<p>&nbsp;&nbsp;&nbsp; Dear John, thanks again very much.
+<br>&nbsp;&nbsp;&nbsp; In the meantime I have implemented
+<br>&nbsp;&nbsp;&nbsp; an "emergency break" forbidding the
+<br>&nbsp;&nbsp;&nbsp; discussed cases.
+<p>&nbsp;&nbsp;&nbsp; The result may be an only partially
+<br>&nbsp;&nbsp;&nbsp; shortened program, but better than
+<br>&nbsp;&nbsp;&nbsp; nothing :)
+<p>
+<hr>
+<center><b><a href="http://www.ecs.soton.ac.uk/">ECS</a></b> | University
+of Southampton | <b>GB</b> - Southampton <b>SO17 1BJ</b></center>
+
+<hr>
+<br>&nbsp;
+</body>
+</html>
+
+--------------F48132E0FF947BEE03099F80--
+
+--------------531EBC11C22DF54A59BD68D7
+Content-Type: text/x-vcard; charset=us-ascii;
+ name="sg.vcf"
+Content-Transfer-Encoding: 7bit
+Content-Description: Card for Stefan Gruner
+Content-Disposition: attachment;
+ filename="sg.vcf"
+
+begin:vcard 
+n:Gruner;Stefan
+x-mozilla-html:TRUE
+org:University of Southampton
+version:2.1
+email;internet:sg@ecs.soton.ac.uk
+title:Dr.rer.nat., Dipl.-Inform.
+tel;fax:+44 23 80 59 30 45
+tel;work:+44 23 80 59 31 22
+note:http://www.dsse.ecs.soton.ac.uk/
+adr;quoted-printable:;;Department of ECS=0D=0AHighfield;Southampton;Hampshire;SO17 1BJ;England (GB)
+x-mozilla-cpt:;2
+fn:Stefan Gruner
+end:vcard
+
+--------------531EBC11C22DF54A59BD68D7--
+

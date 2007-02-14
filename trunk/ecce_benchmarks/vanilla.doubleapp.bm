@@ -1,0 +1,24 @@
+orig_prog('orig/vanilla.doubleapp.pro').
+pd_query([solve([doubleapp(X,Y,Z,R)])]).
+run_time_queries([
+	[solve([doubleapp([a,b,c,d,e,f,d],[a,b,c,d,e,f,d],
+			[a,b,c,d,e,f,d],R)])],
+	[solve([doubleapp([a,b,c,d,e,f,d,e,g,h,i,l,m,n],
+			[a,b,c,d,e,f,d,e,g,h,i,l,m,n],
+			[a,b,c,d,e,f,d,e,g,h,i,l,m,n],R)])]
+	]).
+run_time_nr(50). /* changed from 10 */
+test_queries([
+	[solve([doubleapp([a,b,c,d,e,f,d],[a,b,c,d,e,f,d],
+			[a,b,c,d,e,f,d],R)])],
+	[solve([doubleapp([a,b,c,d,e,f,d,e,g,h,i,l,m,n],
+			[a,b,c,d,e,f,d,e,g,h,i,l,m,n],
+			[a,b,c,d,e,f,d,e,g,h,i,l,m,n],R)])]
+	]).
+negation_used(no).
+built_ins_used(no).
+description(' Vanilla meta-interpreter where deforestation at the object level is possible.').
+
+
+
+

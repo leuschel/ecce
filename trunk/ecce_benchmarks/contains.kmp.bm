@@ -1,0 +1,16 @@
+orig_prog('orig/contains.pro').
+pd_query([contains([a,a,b],X)]).
+run_time_queries([
+	[contains([a,a,b],[a,a,a,a,c,a,a,c,a,b,a,a,a,a,a,b])]
+	]).
+run_time_nr(5).  /* changed from 1 */
+test_queries([
+	[contains([a,a,b],[a,b,a,b,a,a,a,b])]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('Slightly different run-time queries than contains.lam.bm.').
+
+
+
+

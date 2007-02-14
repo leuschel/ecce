@@ -1,0 +1,35 @@
+/* file: /Users/mal/cvs_root/XTL/Examples/rtp_inf.pl.pe.ssat__ */
+/* benchmark info: 10 ms */
+
+
+/* :- table sat__1/10.*/
+/* :- table sat_eu__2/10.*/
+sat_eu__2(B,C,D,E,F,G,s(H),s(I),J,K).
+sat_eu__2(s(L),M,N,O,P,Q,R,S,T,U) :- 
+  sat_eu__2(L,s(M),N,O,P,Q,R,S,T,U).
+sat_eu__2(V,s(W),X,Y,Z,A1,B1,C1,D1,E1) :- 
+  sat_eu__2(V,W,s(X),Y,Z,A1,B1,C1,D1,E1).
+sat_eu__2(F1,G1,s(H1),I1,J1,K1,L1,M1,N1,O1) :- 
+  sat_eu__2(F1,G1,H1,s(I1),J1,K1,L1,M1,N1,O1).
+sat_eu__2(P1,Q1,R1,s(S1),T1,U1,V1,W1,X1,Y1) :- 
+  sat_eu__2(P1,Q1,R1,S1,s(T1),U1,V1,W1,X1,Y1).
+sat_eu__2(Z1,A2,B2,s(C2),D2,E2,F2,G2,H2,I2) :- 
+  sat_eu__2(Z1,A2,B2,C2,D2,E2,F2,G2,s(H2),I2).
+sat_eu__2(J2,K2,L2,M2,s(N2),O2,P2,Q2,R2,S2) :- 
+  sat_eu__2(J2,K2,L2,M2,N2,s(O2),P2,Q2,R2,S2).
+sat_eu__2(T2,U2,V2,W2,X2,s(Y2),Z2,A3,B3,C3) :- 
+  sat_eu__2(T2,U2,V2,W2,X2,Y2,Z2,A3,s(B3),C3).
+sat_eu__2(D3,E3,F3,G3,H3,s(I3),J3,K3,L3,M3) :- 
+  sat_eu__2(D3,E3,F3,G3,H3,I3,s(J3),K3,L3,M3).
+sat_eu__2(N3,O3,P3,Q3,R3,s(S3),T3,U3,V3,W3) :- 
+  sat_eu__2(N3,O3,P3,Q3,R3,S3,T3,s(U3),V3,W3).
+sat_eu__2(X3,Y3,Z3,A4,B4,C4,s(D4),E4,F4,G4) :- 
+  sat_eu__2(X3,Y3,Z3,A4,B4,C4,D4,E4,s(F4),G4).
+sat_eu__2(H4,I4,J4,K4,L4,M4,N4,s(O4),P4,Q4) :- 
+  sat_eu__2(H4,I4,J4,K4,L4,M4,N4,O4,s(P4),Q4).
+sat_eu__2(R4,S4,T4,U4,V4,W4,X4,Y4,s(Z4),A5) :- 
+  sat_eu__2(R4,s(S4),T4,U4,V4,W4,X4,Y4,Z4,s(A5)).
+sat__1(B,C,D,E,F,G,H,I,J,K) :- 
+  sat_eu__2(B,C,D,E,F,G,H,I,J,K).
+ssat__0 :- 
+  sat__1(s(0),0,0,0,0,0,0,0,0,0).

@@ -1,0 +1,164 @@
+From - Thu Sep 27 11:15:45 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id KAA11291;
+	Thu, 27 Sep 2001 10:56:45 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: INSTANTIATION ERROR in widen
+Date: Thu, 27 Sep 2001 11:18:35 +0100
+X-Mailer: KMail [version 1.2]
+Cc: M.Leuschel@ecs.soton.ac.uk
+MIME-Version: 1.0
+Message-Id: <0109271118350I.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 1947
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000d90
+
+widen([unsafe5(_140818)],
+	rul__constraint__declaration([ub_t40(_140818)],
+	[proc(any/1,[(any(_140794):-true)]),
+	proc(x_ge_t26/1,[(x_ge_t26(b):-true)]),
+	proc(x_ge_t27/1,[(x_ge_t27(agent(_140762)):-x_ge_t29(_140762))]),
+	proc(x_ge_t29/1,[(x_ge_t29(q):-true)]),
+	proc(y_ge_t23/1,[(y_ge_t23(a):-true)]),
+	proc(y_ge_t24/1,[(y_ge_t24(prefix(_140712,_140713)):-x_ge_t26(_140712),x_ge_t27(_140713))]),
+	proc(ub_t40/1,[(ub_t40(bang(_140687,_140688)):-y_ge_t23(_140687),t41(_140688))]),
+	proc(t41/1,[(t41(prefix(_140662,_140663)):-x_ge_t26(_140662),x_ge_t27(_140663)),
+		(t41(bang(_140687,_140646)):-y_ge_t23(_140687),y_ge_t24(_140646))])]),
+	[unsafe5(_124414)],
+	rul__constraint__declaration([ge_t37(_124414)],
+	[proc(any/1,[(any(_124390):-true)]),
+	proc(x_ge_t26/1,[(x_ge_t26(b):-true)]),
+	proc(x_ge_t27/1,[(x_ge_t27(agent(_124358)):-x_ge_t29(_124358))]),
+	proc(x_ge_t29/1,[(x_ge_t29(q):-true)]),
+	proc(y_ge_t23/1,[(y_ge_t23(a):-true)]),
+	proc(y_ge_t24/1,[(y_ge_t24(prefix(_124308,_124309)):-x_ge_t26(_124308),x_ge_t27(_124309))]),
+	proc(ub_t40/1,[(ub_t40(bang(_124283,_124284)):-y_ge_t23(_124283),t41(_124284))]),
+	proc(t41/1,[(t41(prefix(_124258,_124259)):-x_ge_t26(_124258),x_ge_t27(_124259)),
+		(t41(bang(_124283,_124242)):-y_ge_t23(_124283),y_ge_t24(_124242))]),
+	proc(ge_t37/1,[(ge_t37(bang(_124216,_124217)):-y_ge_t23(_124216),ge_t39(_124217))]),
+	proc(ge_t39/1,[(ge_t39(bang(_124216,_124192)):-y_ge_t23(_124216),t41(_124192))])]),
+	X,
+	Y).
+
+leads to instantiation error
+
+COMPRESSION:
+| Compress Facts: (x_x_ge_t26(b):-true),(y_x_ge_t26(b):-true)
+| Compress Facts: (x_x_ge_t29(q):-true),(y_x_ge_t29(q):-true)
+| Compress Rules: (x_x_ge_t27(agent(_8555)):-x_x_ge_t29(_8555)),
+                  (y_x_ge_t27(agent(_8720)):-x_x_ge_t29(_8720))
+DONE.
+ 
+SHORTEN
+   LOOP:
+      Forbidden Pairs:    []
+      Found Dependants:   [(t53,y_t41)]
+      Treated Predicates: [(t53,y_t41)]
+      ReplacementHistory: [(y_t41,t53)]
+   LOOP:
+      Forbidden Pairs:    [(y_t41,t53)]
+
+{INSTANTIATION ERROR: _83=..[x_x_ge_t26|_81] - arg 2}
+
+===========================================================================================
+
+ANSWER: We can observe that somewhere in the shortening process, an existing subgoal
+	of a RUL clause has been destroyed and replaced by a fresh variable. Look at
+	this program:
+
+data([proc(x_x_ge_t26/1,
+	   [(x_x_ge_t26(b):-true)]),
+      proc(x_x_ge_t27/1,
+	   [(x_x_ge_t27(agent(_2296)):-x_x_ge_t29(_2296))]),
+      proc(x_x_ge_t29/1,
+	   [(x_x_ge_t29(q):-true)]),
+      proc(y_y_ge_t23/1,
+	   [(y_y_ge_t23(a):-true)]),
+      proc(y_y_ge_t24/1,
+	   [(y_y_ge_t24(prefix(_2446,
+			       _2444)):-x_x_ge_t26(_2446),x_x_ge_t27(_2444))]),
+      proc(y_t41/1,[(y_t41(prefix(_2406,
+				  _2404)):-x_x_ge_t26(_2406),x_x_ge_t27(_2404)),
+		    (y_t41(bang(_2391,
+				_2389)):-y_y_ge_t23(_2391),y_y_ge_t24(_2389))]),
+      proc(ub_t52/1,
+	   [(ub_t52(bang(_2226,
+			 _2259)):-y_y_ge_t23(_2226),t53(_2259))]),
+      proc(t53/1,
+	   [(t53(prefix(_2241,
+			_2239)):-x_x_ge_t26(_2241),x_x_ge_t27(_2239)),
+	    (t53(bang(_2226,_2224)):-y_y_ge_t23(_2226),y_t41(_2224))])]).
+
+Before the EXISTENCE ERROR, it has been transformed into the following program:
+
+prog([proc(x_x_ge_t26/1,
+	   [(x_x_ge_t26(b):-true)]),
+      proc(x_x_ge_t27/1,
+	   [(x_x_ge_t27(agent(_468)):-x_x_ge_t29(_468))]),
+      proc(x_x_ge_t29/1,
+	   [(x_x_ge_t29(q):-true)]),
+      proc(y_y_ge_t23/1,
+	   [(y_y_ge_t23(a):-true)]),
+      proc(y_y_ge_t24/1,
+	   [(y_y_ge_t24(prefix(_418,_419)):-_14831,x_x_ge_t27(_419))]),
+      proc(y_t41/1,
+	   [(y_t41(prefix(_393,_394)):-_14938,x_x_ge_t27(_394)),
+	    (y_t41(bang(_376,_377)):-_15009,y_y_ge_t24(_377))]),
+      proc(ub_t52/1,
+	   [(ub_t52(bang(_351,_352)):-_15115,t53(_352))]),
+      proc(t53/1,
+	   [(t53(prefix(_326,_327)):-_15222,x_x_ge_t27(_327)),
+	    (t53(bang(_351,_310)):-_15293,t53(_310))])]).
+
+whereby the type definitions y_y_ge_t24, y_t41, ub_t52, and t53 have all
+lost their first subgoal! I am searching for the reason for that loss...
+
+It turns out that the error is produced in procedure short/4, which pro-
+duces exactly the program quoted above. In procedure short/4, it can be
+only treatCase/6, so I'll have a look at it... Perhaps some mis-spelled
+and therefore singleton variable? No, it isn't a singleton variable...
+So we have to examine the three cases in treatCase/6... It seems to be
+the second case (case2)...
+
+I found out that the bug must sit in procedure treat2/5, so let's have
+a look there... yep, it must then be in replaceSpecialOccurrences/5...
+even deeper in procedure substitute/5...
+
+Bug found in case b! Look at this code:
+
+/* b) nothing to replace here */
+substitute(P, Q, PlaceListQIDs,                  
+	   (_,MoreGoalsQ), (_,MoreGoalsP)) :-       
+        !,                                       
+	substitute(P, Q, PlaceListQIDs,        
+		   MoreGoalsQ, MoreGoalsP).
+
+With "_" we generate the (later) instantiation error!
+We replace that buggy code by the following code:
+
+/* b) nothing to replace here */
+substitute(P, Q, PlaceListQIDs,                  
+	   (SameGoal,MoreGoalsQ), (SameGoal,MoreGoalsP)) :-       
+        !,                                       
+	substitute(P, Q, PlaceListQIDs,        
+		   MoreGoalsQ, MoreGoalsP).
+
+Result: The above-reported instantiation error does not occur any more.
+
+=========================================================[SG:27.9.2001]
+
+
+
+
+
+
+
+
+
+

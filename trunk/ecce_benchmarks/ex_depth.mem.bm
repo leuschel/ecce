@@ -1,0 +1,24 @@
+orig_prog('orig/ex_depth.pro').
+pd_query([solve([member(X,Y)],I,Depth)]).
+run_time_queries([
+	[solve([member(d,[a,b,c,d,e,f,d,f,e,d,c,b,a])],0,Depth)],
+	[solve([member(a,[a,b,c,d,e,f,d,f,e,d,c,b,a])],0,Depth)],
+	[solve([member(d,[f,e,d,c,b,a])],0,Depth)],
+	[solve([member(d,[a,b,c,d,e,f,d])],0,Depth)],
+	[solve([member(g,[a,b,c,d,e,f,d,f,e,d,c,b,a])],0,Depth)],
+	[solve([member(a,[a,b])],0,Depth)],
+	[solve([member(e,[a,b,c,d,e,f,d,e,g,h,i,l,m,n,f,e,d,c,b,a])],0,Depth)],
+	[solve([member(d,[a,b,c,d,e,f,d,e,g,h,i,l,m,n,a,b,c,d,e,f,d,e,g,h,i,l,m,n])],0,Depth)],
+	[solve([member(X,[a,b,c,d,e,f,d,e,g,h,i,l,m,n,a,b,c,d,e,f,d,e,g,h,i,l,m,n])],0,Depth)]
+	]).
+run_time_nr(2).
+test_queries([
+	[solve([member(X,[a,b,c,d,e,f,d])],0,Depth)]
+	]).
+negation_used(no).
+built_ins_used(no).
+description(' A variation of ex_depth, with a simpler query (for my ACM TOPLAS submission).').
+
+
+
+

@@ -1,0 +1,27 @@
+===================================================
+
+In procedure proSiNo:goalRULification, the creation
+of new type constraint definitions was not complete.
+
+It was OK in those cases where RUL form was reached,
+but it was not OK in other cases, where I had for-
+gotten to treat certain term variables. For Example:
+"t(g(X,Y,Z))" had been properly transformed into a
+clause of the form "t(g(X,Y,Z)):-tx(X),ty(Y),tz(Z)",
+but "t(g(X,h(Y),Z))" had been badly transformed into
+a clause of the form "t(g(X,U,Z)):-tu(U)", wherein
+the calls of the form "tx(X)" and "tz(Z)" had been
+forgotten.
+
+This error is now (hopefully) eliminated by changes
+in the procedures goalRULification, createCall, and
+goalExpansion (all in module proSiNo).
+
+Moreover, nullary constant goals (like p, q, r) are
+now allowed as input to procedure goalRULification.
+
+In the supporting module auxil, a small bug has been
+fixed in procedure fillUpWithANY which is now also
+imported and used by the goalRULification procedure.
+
+======================================[SG:23.9.2001]   

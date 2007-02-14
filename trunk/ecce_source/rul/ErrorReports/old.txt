@@ -1,0 +1,152 @@
+From - Wed Aug  8 11:56:24 2001
+Received: from magpie.ecs.soton.ac.uk (magpie.ecs.soton.ac.uk [152.78.68.131])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id LAA08378
+	for <sg@ecs.soton.ac.uk>; Wed, 8 Aug 2001 11:34:41 +0100 (BST)
+Received: from mta582.mail.yahoo.com (mta582.mail.yahoo.com [216.136.172.111])
+	by magpie.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id LAA11717
+	for <sg@ecs.soton.ac.uk>; Wed, 8 Aug 2001 11:34:20 +0100 (BST)
+Received: from mta582.mail.yahoo.com for sg@ecs.soton.ac.uk; Aug  8 03:34:19 2001 -0700
+X-Track: 1: 40
+X-Yahoo-Forwarded: from stefan_gruner@yahoo.de to sg@ecs.soton.ac.uk
+Received: from raven.ecs.soton.ac.uk (152.78.70.1)
+  by mta582.mail.yahoo.com with SMTP; 08 Aug 2001 03:34:18 -0700 (PDT)
+Received: from hawk.ecs.soton.ac.uk (hawk.ecs.soton.ac.uk [152.78.68.142])
+	by raven.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id LAA13344
+	for <stefan_gruner@yahoo.de>; Wed, 8 Aug 2001 11:34:17 +0100 (BST)
+Received: from localhost (pri17.dialup.ecs.soton.ac.uk [152.78.68.242])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id LAA08315
+	for <stefan_gruner@yahoo.de>; Wed, 8 Aug 2001 11:34:15 +0100 (BST)
+Message-Id: <200108081034.LAA08315@hawk.ecs.soton.ac.uk>
+Date: Wed, 8 Aug 2001 11:34:19 +0100
+Content-Type: text/plain;
+	format=flowed;
+	charset=us-ascii
+X-Mailer: Apple Mail (2.388)
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <stefan_gruner@yahoo.de>
+Mime-Version: 1.0 (Apple Message framework v388)
+In-Reply-To: <20010807163327.13169.qmail@web5102.mail.yahoo.com>
+Subject: Re: ENTAILS: erster fehlerfreier Durchlauf
+Content-Transfer-Encoding: 7bit
+X-ECS-MailScanner: Found to be clean
+Content-Length: 444
+Status:   
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000be6
+
+Hier is der andere Fehler:
+| ?- 
+ecceRUL:entails([p(_55558,_55559)],rul__constraint__declaration([t1
+(_55559)],[proc(any/1,[(any(_5553
+4):-true)]),proc(t0/1,[(t0(_55519):-any(_55519))]),proc(t1/1,[(t1(b):-true)
+])]),[p(_62360,_62361)],rul__constraint__declaration([t0(_62360),t1
+(_62361)],[proc(any/1,[(any(_6233
+2):-true)]),proc(t0/1,[(t0(_62317):-any(_62317))]),proc(t1/1,[(t1(b):-true)
+])])).
+{INSTANTIATION ERROR: _75=..[_72|_73] - arg 2}
+From - Wed Aug  8 11:57:14 2001
+Received: from magpie.ecs.soton.ac.uk (magpie.ecs.soton.ac.uk [152.78.68.131])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id KAA01403
+	for <sg@ecs.soton.ac.uk>; Wed, 8 Aug 2001 10:47:00 +0100 (BST)
+Received: from mta589.mail.yahoo.com (mta589.mail.yahoo.com [216.136.172.118])
+	by magpie.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id KAA09165
+	for <sg@ecs.soton.ac.uk>; Wed, 8 Aug 2001 10:46:52 +0100 (BST)
+Received: from mta589.mail.yahoo.com for sg@ecs.soton.ac.uk; Aug  8 02:46:51 2001 -0700
+X-Track: 1: 40
+X-Yahoo-Forwarded: from stefan_gruner@yahoo.de to sg@ecs.soton.ac.uk
+Received: from raven.ecs.soton.ac.uk (152.78.70.1)
+  by mta589.mail.yahoo.com with SMTP; 08 Aug 2001 02:46:50 -0700 (PDT)
+Received: from hawk.ecs.soton.ac.uk (hawk.ecs.soton.ac.uk [152.78.68.142])
+	by raven.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id KAA12807
+	for <stefan_gruner@yahoo.de>; Wed, 8 Aug 2001 10:46:49 +0100 (BST)
+Received: from localhost (pri12.dialup.ecs.soton.ac.uk [152.78.68.237])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id KAA01351
+	for <stefan_gruner@yahoo.de>; Wed, 8 Aug 2001 10:46:47 +0100 (BST)
+Message-Id: <200108080946.KAA01351@hawk.ecs.soton.ac.uk>
+Date: Wed, 8 Aug 2001 10:46:50 +0100
+Content-Type: text/plain;
+	format=flowed;
+	charset=iso-8859-1
+X-Mailer: Apple Mail (2.388)
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <stefan_gruner@yahoo.de>
+Mime-Version: 1.0 (Apple Message framework v388)
+In-Reply-To: <20010807163327.13169.qmail@web5102.mail.yahoo.com>
+Subject: Re: ENTAILS: erster fehlerfreier Durchlauf
+X-ECS-MailScanner: Found to be clean
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by hawk.ecs.soton.ac.uk id KAA01403
+Content-Length: 1022
+Status:   
+X-Mozilla-Status: 8013
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000be4
+
+
+On Tuesday, August 7, 2001, at 05:33 , Stefan Gruner wrote:
+
+> Erster syntaktisch fehlerfreier
+> Durchlauf von "Entails", Antwort
+> mit Deinem Beispiel: "yes".
+> Hoffentlich naehern wir uns nun
+> bald dem Fixpunkt der Testphase.
+> Ich checke die Aenderungen gleich
+> mit CVS ein.
+> Schoenen Abend noch!
+>
+> __________________________________________________________________
+> Do You Yahoo!?
+> Gesendet von Yahoo! Mail - http://mail.yahoo.de
+>
+
+Gut, habe jetzt ein paar Beispiele vollkommen durchlaufen lassen können.
+Habe aber immer noch Probleme mit dem Instantiation Error.
+Anderer Fehler:
+
+
+ecceRUL:entails([p(_193100)],rul__constraint__declaration([t2(_193100)],
+[proc(any/1,[(any(_19307
+6):-true)]),proc(t0/1,[(t0(c(_193059)):-t2(_193059))]),proc(t2/1,[(t2(_193059)
+:-any(_193059))])]),[p(_201061)],rul__constraint__declaration([t0(_201061)
+],[proc(any/1,[(any(_20103
+7):-true)]),proc(t0/1,[(t0(c(_201020)):-t2(_201020))]),proc(t2/1,[(t2(_201020)
+:-any(_201020))])]))
+{INSTANTIATION ERROR: _75=..[_72|_73] - arg 2}
+
+auxil:anyInlining scheint manchmal nicht vollständig zu funktionieren:
+(t27 wird eliminiert aber Aufrufe zu t27 nicht nach any umbenannt).
+
+| ?-
+  G =
+rul__constraint__declaration([t17(_172),t22(_226)],
+  [proc(any/1,[(any(_6034):-true)]),proc(x_| ?-           
+t0/1,[(x_t0(s(_5954)):-x_t2(_5954))]),
+  proc(x_t2/1,[(x_t2(0):-true)]),proc(any/1,[(any(_6010):-true     )]),
+  
+proc(y_t0/1,[(y_t0(s(_599
+6)):-y_t2(_5996))]),proc(y_t2/1,[(y_t2(0):-true)]),
+  proc(y_t6/1,[(y_          t6(s(_5954)):-y_t8(_5954))]),
+  proc(y_t8/1,[(y_t8(s(_5940)):-y_t11(_5940))]),
+  proc(t16/1,[(t16(s(_5          954)):-t17(_5954))]),
+  proc(t17/1,[(t17(0):-true),(t17(s(_5940)):-y_t11(_5940))]),
+  proc(t22/1,[(t22          (s(_5924)):-t24(_5924))]),
+  proc(t24/1,[(t24(s(_5898)):-t27(_5898))]),
+  proc(t27/1,[(t27(_5898):-any          (_5898))])]),
+   auxil:anyInlining(G,RG),
+   print_rul(RG),nl.
+RUL Constraints: [t17(_150),t22(_193)]
+RUL Program:
+->  any(_296):-true.
+->  x_t0(s(_430)):-x_t2(_430).
+->  x_t2(0):-true.
+->  any(_696):-true.
+->  y_t0(s(_830)):-y_t2(_830).
+->  y_t2(0):-true.
+->  y_t6(s(_430)):-y_t8(_430).
+->  y_t8(s(_1280)):-y_t11(_1280).
+->  t16(s(_430)):-t17(_430).
+->  t17(0):-true.  t17(s(_1280)):-y_t11(_1280).
+->  t22(s(_1849)):-t24(_1849).
+->  t24(s(_2021)):-t27(_2021).
+

@@ -1,0 +1,70 @@
+#################################################################################
+Answer to the Bug reported below: Unwanted Unification was performed in procedure
+analyticFold:findMultipleArgs/2, due to an error in subroutine searchMultiples/2,
+due to an error in subsubroutine sameElement/3. That error is now eliminated via
+replacing the double occurrance of a variable name "E" by an explicit syntactical
+identity check with "==" in procedure analyticFold:sameElement/3. [SG:11.01.2002]
+=================================================================================
+
+Anhänge: Weitergeleitete E-Mail
+
+Von: "Michael Leuschel" <mal@ecs.soton.ac.uk> 
+ 
+An: sg@ecs.soton.ac.uk 
+ 
+Betreff: Fehler im System 
+ 
+Datum: Thu, 10 Jan 2002 15:41:44 +0000 
+ 
+CC: M.Leuschel@ecs.soton.ac.uk 
+
+=> b
+Original Program Files will be read from BENCH_DIR:
+~/CVS/ecce/ecce_benchmarks/
+Specialised Files will be written to ECCE_SPEC_DIR:
+~/CVS/ecce/ecce_benchmarks/ecce_out/
+
+Benchmark File must contain (in that order):
+  orig_prog/1, pd_query/1, run_time_queries/1, run_time_nr/1
+  + possibly: test_queries/1, negation_used/1, built_ins_used/1
+Path to Benchmark File (BENCH_DIR):
+~/CVS/ecce/ecce_benchmarks/
+Benchmark File =>'match.kmp.bm'.
+.....
+Description of benchmark:
+Negation:no Built-ins:yes
+Try to obtain a KMP matcher. Contains better run_time_queries than 
+match.lam.bm.
+clauses read:   4
+clauses stored: 4
+-> parameters: Abs:p InstCheck:d Msv:w NgSlv:g Part:y Prun:n Sel:t Whstl:m 
+Raf:yesFar:yes Dce:yes Poly:y Dpu:yes ParAbs:yes Msvp:no Rrc:yes
+-> calculating static functors
+-> pre-processing msv phase
+...
+-> performing flow analysis
+.### WARNING CALL HAS FAILED !
+### 
+analyticFold:goalFolding(match1([a,a,b],[_73670|_73671],[a,a,b],[_73670|_73671]),
+rul__constraint__declaration([any(_66940),any(_66941),any(_73670),any(_73671)],
+[proc(ex_t13901/1,[(ex_t13901([_100487|_100485]):-ex_t13906(_100487),ex_t13907(_100485))]),
+proc(ex_t13902/1,[(ex_t13902([_100379|_100377]):-any(_100379),any(_100377))]),
+proc(ex_t13903/1,[(ex_t13903([_100455|_100453]):-ex_t13909(_100455),ex_t13910(_100453))]),
+proc(ex_t13904/1,[(ex_t13904([_100436|_100434]):-ex_t13912(_100436),ex_t13913(_100434))]),
+proc(ex_t13906/1,[(ex_t13906(a):-true)]),
+proc(ex_t13907/1,[(ex_t13907([_100417|_100415]):-ex_t13915(_100417),ex_t13916(_100415))]),
+proc(ex_t13909/1,[(ex_t13909(a):-true)]),
+proc(ex_t13910/1,[(ex_t13910([_100398|_100396]):-ex_t13918(_100398),ex_t13919(_100396))]),
+proc(ex_t13912/1,[(ex_t13912(a):-true)]),
+proc(ex_t13913/1,[(ex_t13913([_100379|_100377]):-any(_100379),any(_100377))]),
+proc(ex_t13915/1,[(ex_t13915(b):-true)]),
+proc(ex_t13916/1,[(ex_t13916([]):-true)]),
+proc(ex_t13918/1,[(ex_t13918(a):-true)]),
+proc(ex_t13919/1,[(ex_t13919([_100360|_100358]):-ex_t13921(_100360),ex_t13922(_100358))]),
+proc(ex_t13921/1,[(ex_t13921(b):-true)]),
+proc(ex_t13922/1,[(ex_t13922([]):-true)]),
+proc(any/1,[(any(_100345):-true)])]),
+_100653,_100644)
+
+--------------------------------------------------------------------------------
+

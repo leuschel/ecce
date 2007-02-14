@@ -1,0 +1,175 @@
+\begin{thebibliography}{10}
+
+\bibitem{CPD:megapaper}
+D.~De~Schreye, R.~Gl\"{u}ck, J.~J{\o}rgensen, M.~Leuschel, B.~Martens, and
+  M.~H. S{\o}rensen.
+\newblock Conjunctive partial deduction: Foundations, control, algorithms and
+  experiments.
+\newblock {\em The Journal of Logic Programming}, 41(2 \& 3):231--277, November
+  1999.
+
+\bibitem{FarwerLeuschel:PPDP04}
+B.~Farwer and M.~Leuschel.
+\newblock Model checking object {P}etri nets in {P}rolog.
+\newblock In {\em Proceedings PPDP '04}, pages
+  20--31, New York, NY, USA, 2004. ACM Press.
+
+\bibitem{Gallagher91:ngc}
+J.~Gallagher and M.~Bruynooghe.
+\newblock The derivation of an algorithm for program specialisation.
+\newblock {\em New Generation Computing}, 9(3 \& 4):305--333, 1991.
+
+\bibitem{GallagherdeWaal:ICLP94}
+J.~Gallagher and D.~A. de~Waal.
+\newblock Fast and precise regular approximations of logic programs.
+\newblock In P.~Van~Hentenryck, editor, {\em Proceedings of the
+  International Conference on Logic Programming}, pages 599--613. The MIT
+  Press, 1994.
+
+\bibitem{GlueckLeuschel:Inversion}
+R.~Gl\"{u}ck and M.~Leuschel.
+\newblock Abstraction-based partial deduction for solving inverse problems -- a
+  transformational approach to software verification.
+\newblock In {\em Proceedings International Ershov Conference on
+  Perspectives of System Informatics}, LNCS 1755, pages 93--100, Novosibirsk,
+  Russia, 1999. Springer-Verlag.
+
+\bibitem{JorgensenLeuschelMartens:CPPD}
+J.~J{\o}rgensen, M.~Leuschel, and B.~Martens.
+\newblock Conjunctive partial deduction in practice.
+\newblock In J.~Gallagher, editor, {\em Proceedings of LOPSTR'96}, LNCS 1207, pages 59--82,
+  Stockholm, Sweden, August 1996. Springer-Verlag.
+
+\bibitem{LassezMaherMarriott:fddlp88}
+J.-L. Lassez, M.~Maher, and K.~Marriott.
+\newblock Unification revisited.
+\newblock In J.~Minker, editor, {\em Foundations of Deductive Databases and
+  Logic Programming}, pages 587--625. Morgan-Kaufmann, 1988.
+
+\bibitem{LehmannLeuschel:LPAR2000}
+H.~Lehmann and M.~Leuschel.
+\newblock Solving planning problems by partial deduction.
+\newblock In M.~Parigot and A.~Voronkov, editors, {\em Proceedings LPAR'2000}, LNAI 1955, pages 451--468, Reunion Island, France, 2000.
+  Springer-Verlag.
+
+\bibitem{Leuschel:NeilFest02}
+M.~Leuschel.
+\newblock Homeomorphic embedding for online termination of symbolic methods.
+\newblock In T.~{\AE}. Mogensen, D.~Schmidt, and I.~H. Sudborough, editors,
+  {\em The Essence of Computation}, LNCS 2566,
+  pages 379--403. Springer-Verlag, 2002.
+
+\bibitem{LeuschelDeSchreye:PLILP96}
+M.~Leuschel and D.~De~Schreye.
+\newblock Logic program specialisation: How to be more specific.
+\newblock In H.~Kuchen and S.~Swierstra, editors, {\em Proceedings of
+  PLILP'96}, LNCS 1140, pages 137--151, Aachen, Germany, September 1996.
+  Springer-Verlag.
+
+\bibitem{LeuschelDeSchreyeDeWaal:JICSLP96}
+M.~Leuschel, D.~De~Schreye, and A.~de~Waal.
+\newblock A conceptual embedding of folding into partial deduction: Towards a
+  maximal integration.
+\newblock In M.~Maher, editor, {\em Proceedings of the Joint International
+  Conference and Symposium on Logic Programming JICSLP'96}, pages 319--332,
+  Bonn, Germany, September 1996. MIT Press.
+
+\bibitem{LeuschelGruner:LOPSTR2001}
+M.~Leuschel and S.~Gruner.
+\newblock Abstract partial deduction using regular types and its application to
+  model checking.
+\newblock In A.~Pettorossi, editor, {\em Proceedings LOPSTR'2001}, LNCS 2372,
+  pages 91--110, Paphos, Cyprus, 2001. Springer-Verlag.
+
+\bibitem{LeuschelEtAl:TPLP03}
+M.~Leuschel, J.~J{\o}rgensen, W.~Vanhoof, and M.~Bruynooghe.
+\newblock Offline specialisation in {P}rolog using a hand-written compiler
+  generator.
+\newblock {\em Theory and Practice of Logic Programming}, 4(1):139--191, 2004.
+
+\bibitem{LeuschelLehmann:CL2000}
+M.~Leuschel and H.~Lehmann.
+\newblock Coverability of reset {P}etri nets and other well-structured
+  transition systems by partial deduction.
+\newblock In J.~Lloyd, editor, {\em Proceedings of CL'2000}, LNAI 1861, pages 101--115, London, UK,
+  2000. Springer-Verlag.
+
+\bibitem{LeuschelLehmann:Coverability}
+M.~Leuschel and H.~Lehmann.
+\newblock Solving coverability problems of {P}etri nets by partial deduction.
+\newblock In M.~Gabbrielli and F.~Pfenning, editors, {\em Proceedings of
+  PPDP'2000}, pages 268--279, Montreal, Canada, 2000. ACM Press.
+
+\bibitem{Leuschel:Lopstr03}
+M.~Leuschel and H.~Lehmann.
+\newblock Inductive theorem proving by program specialisation: Generating
+  proofs for {I}sabelle using {E}cce (invited talk).
+\newblock In M.~Bruynooghe, editor, {\em Proceedings of LOPSTR'03}, LNCS 3018.
+  Springer-Verlag, 2004.
+
+\bibitem{LeuschelMartens:Dagstuhl96}
+M.~Leuschel and B.~Martens.
+\newblock Global control for partial deduction through characteristic atoms and
+  global trees.
+\newblock In O.~Danvy, R.~Gl\"{u}ck, and P.~Thiemann, editors, {\em Partial
+  Evaluation, International Seminar}, LNCS 1110, pages 263--283, Schlo\ss\
+  Dagstuhl, 1996. Springer-Verlag.
+
+\bibitem{LeuschelMartensDeSchreye:Toplas}
+M.~Leuschel, B.~Martens, and D.~De~Schreye.
+\newblock Controlling generalisation and polyvariance in partial deduction of
+  normal logic programs.
+\newblock {\em ACM Transactions on Programming Languages and Systems},
+  20(1):208--258, January 1998.
+
+\bibitem{LeuschelMassart:LOPSTR99}
+M.~Leuschel and T.~Massart.
+\newblock Infinite state model checking by abstract interpretation and program
+  specialisation.
+\newblock In A.~Bossi, editor, {\em Proceedings of LOPSTR'99}, LNCS 1817, pages 63--82, Venice,
+  Italy, 2000.
+
+\bibitem{LeuschelSorensen:RAF}
+M.~Leuschel and M.~H. S{\o}rensen.
+\newblock Redundant argument filtering of logic programs.
+\newblock In J.~Gallagher, editor, {\em Proceedings of LOPSTR'96}, LNCS 1207, pages 83--103,
+  Stockholm, Sweden, August 1996. Springer-Verlag.
+
+\bibitem{LeuschelVidal:ESOP05}
+M.~Leuschel and G.~Vidal.
+\newblock Forward slicing by conjunctive partial deduction and argument
+  filtering.
+\newblock In M.~Sagiv, editor, {\em Proceedings ESOP 2005}, LNCS 3444, pages
+  61--76. Springer-Verlag, April 2005.
+
+\bibitem{MarriottNaishLassez:AMAI90}
+K.~Marriott, L.~Naish, and J.-L. Lassez.
+\newblock Most specific logic programs.
+\newblock {\em Annals of Mathematics and Artificial Intelligence}, 1:303--338,
+  1990.
+
+\bibitem{MartensGallagher:ICLP95}
+B.~Martens and J.~Gallagher.
+\newblock Ensuring global termination of partial deduction while allowing
+  flexible polyvariance.
+\newblock In L.~Sterling, editor, {\em Proceedings ICLP'95}, pages 597--613,
+  Kanagawa, Japan, June 1995. MIT Press.
+
+\bibitem{Prestwich:PEPM93}
+S.~Prestwich.
+\newblock Online partial deduction of large programs.
+\newblock In {\em Proceedings of PEPM'93}, pages 111--118. ACM
+  Press, 1993.
+
+\bibitem{Sahlin93:ngc}
+D.~Sahlin.
+\newblock Mixtus: An automatic partial evaluator for full {P}rolog.
+\newblock {\em New Generation Computing}, 12(1):7--51, 1993.
+
+\bibitem{TamaryCodish:WST04}
+L.~Tamary and M.~Codish.
+\newblock Abstract partial evaluation for termination analysis.
+\newblock In {\em 7th International Workshop on Termination (WST 2004)}, June
+  2004.
+
+\end{thebibliography}

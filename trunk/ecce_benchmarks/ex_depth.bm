@@ -1,0 +1,27 @@
+orig_prog('orig/ex_depth.pro').
+pd_query([solve([inboth(X,Y,Z)],0,Depth)]).
+run_time_queries([
+	[solve([inboth(d,[a,b,c,d,e,f,d],[f,e,d,c,b,a])],0,Depth)],
+	[solve([inboth(a,[a,b,c,d,e,f,d],[f,e,d,c,b,a])],0,Depth)],
+	[solve([inboth(d,[],[f,e,d,c,b,a])],0,Depth)],
+	[solve([inboth(d,[a,b,c,d,e,f,d],[])],0,Depth)],
+	[solve([inboth(g,[a,b,c,d,e,f,d],[f,e,d,c,b,a])],0,Depth)],
+	[solve([inboth(a,[a],[b])],0,Depth)],
+	[solve([inboth(e,[a,b,c,d,e,f,d,e,g,h,i,l,m,n],
+			[f,e,d,c,b,a])],0,Depth)],
+	[solve([inboth(d,[a,b,c,d,e,f,d,e,g,h,i,l,m,n],
+			[a,b,c,d,e,f,d,e,g,h,i,l,m,n])],0,Depth)],
+	[solve([inboth(X,[a,b,c,d,e,f,d,e,g,h,i,l,m,n],
+			[a,b,c,d,e,f,d,e,g,h,i,l,m,n])],0,Depth)]
+	]).
+run_time_nr(2).
+test_queries([
+	[solve([inboth(X,[a,b,c,d,e,f,d],[f,e,d,c,b,a])],0,Depth)]
+	]).
+negation_used(no).
+built_ins_used(no).
+description(' A variation of the Lam benchmark with a more sophisticated object program.').
+
+
+
+

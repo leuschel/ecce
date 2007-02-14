@@ -1,0 +1,26 @@
+Datum: Thu, 15 Nov 2001 12:46:22 +0000 
+Betreff: AnalyticFold Problem 
+Von: "Michael Leuschel" <mal@ecs.soton.ac.uk> 
+An: "Stefan Gruner" <sg@ecs.soton.ac.uk> 
+
+Habe folgendes Problem:
+
+### WARNING CALL HAS FAILED !
+### analyticFold:goalFolding(t(s(s(_24140))),rul__constraint__declaration([t19(_
+24140)],[proc(t19/1,[(t19(0):-true),(t19(s(_27355)):-t19(_27355))])]),_29452,_29
+443) 
+
+=============================================================================
+Answer: it seems that the call of compression/2 is the reason of the problem.
+	I'm gonna try to compress the following intermediate result:
+
+rul__constraint__declaration([t19(_513),ex_t5(_1050)],
+                             [proc(any/1,[(any(_3299):-true)]),
+                              proc(t19/1,[(t19(0):-true),
+                                          (t19(s(_3285)):-t19(_3285))]),
+                              proc(ex_t5/1,[(ex_t5(s(_3269)):-ex_t7(_3269))]),
+                              proc(ex_t7/1,[(ex_t7(s(_3255)):-t19(_3255))])])
+
+Ah yeah, there was a syntax bug in compression/2. I fixed that. [SG:15.11.2001]
+===============================================================================
+

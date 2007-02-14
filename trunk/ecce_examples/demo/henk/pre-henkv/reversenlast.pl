@@ -1,0 +1,1 @@
+:- dynamic rev/2, app/3, last/2, reversenlast/0.rev([], []).rev([X|Y], R):-	rev(Y, S),	app(S, [X], R).app([],L,L).app([H|X],Y,[H|Z]) :- app(X,Y,Z).last([X],X).last([H,H2|T],X) :- last([H2|T],X).reversenlast :- rev([a|X], R), last(R, b).

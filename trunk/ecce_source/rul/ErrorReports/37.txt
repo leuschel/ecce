@@ -1,0 +1,58 @@
+From - Wed Apr  3 11:08:34 2002
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id LAA20711;
+	Thu, 28 Mar 2002 11:10:07 GMT
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: Problem mit widen
+Date: Thu, 28 Mar 2002 10:58:24 +0000
+X-Mailer: KMail [version 1.2]
+Cc: M.Leuschel@ecs.soton.ac.uk
+MIME-Version: 1.0
+Message-Id: <02032810582400.32158@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 765
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001701
+
+| ?- ecceRUL:naive_widen(
+ [cpy([a])],
+ rul__constraint__declaration([],[]),
+ [cpy([a,a])],
+ rul__constraint__declaration([],[]),
+ Goal,RUL).
+
+[THIS BUG IS NOW FIXED]
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>> Compression: 3/3 in #Proc.Definitions
+
+>>> Compression: 4/4 in #Proc.Definitions
+
+START SHORTENING: PLEASE WAIT...
+>>> Compression: 4/10 in #Proc.Definitions
+>>> Computing Shortening Candidates...
+>>> Re-Directing Call-Chains...
+>>> Pruning: 4/10 in #Proc.Definitions
+SHORTENING FINISHED
+
+
+
+RUL = 
+rul__constraint__declaration([],[proc(y_fact_703/1,[(y_fact_703([]):-true)]),proc(new_t705/1,[(new_t705([]):-true),(new_t705([_A|_B]):-y_fact_702(_A),y_fact_703(_B))]),proc(y_fact_702/1,[(y_fact_702(a):-true)]),proc(ub_new_t704/1,[(ub_new_t704([_C|_D]):-y_fact_702(_C),new_t705(_D))])]),
+Goal = [cpy(_E)] ?

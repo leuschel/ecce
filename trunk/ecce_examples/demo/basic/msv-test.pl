@@ -1,0 +1,1 @@
+p(a,b).p(X,c) :- p(X,Y).q(a,b,c).q(X,Y,Z) :- q(X,Y,Z).t(X,Y) :- p(X,Y),q(X,Y,Z).r(X,Y) :- p(X,Y),q(Z,X,V).

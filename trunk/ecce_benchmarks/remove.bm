@@ -1,0 +1,22 @@
+orig_prog('orig/remove.pro').
+pd_query([rr(X,Y)]).
+run_time_queries([
+	[rr([a,a,b,b,a,a,a,a,c,d,a,b,a,a,d,d],Y)],
+	[rr([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],Y)],
+	[rr([a,b,b,b,c,d,e,f,g,g,h,i,j,k,l,m,m,m,m,m,m,m,m,
+		n,o,p,q,r,s,t,u,v,v,v,v,w,x,y,z,z,z],Y)]
+	]).
+run_time_nr(20).
+test_queries([
+	[rr([a,a,b,b,a,a,a,a,c,d,a,b,a,a,d,d],Y)],
+	[rr([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z],Y)],
+	[rr([a,b,b,b,c,d,e,f,g,g,h,i,j,k,l,m,m,m,m,m,m,m,m,
+		n,o,p,q,r,s,t,u,v,v,v,v,w,x,y,z,z,z],Y)]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('Remove: An even more sophisticated deforestation example.').
+
+
+
+

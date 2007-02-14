@@ -1,0 +1,29 @@
+From - Tue Apr  9 13:54:30 2002
+Received: from penelope.ecs.soton.ac.uk (penelope.ecs.soton.ac.uk [152.78.68.135])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id KAA23545
+	for <sg@ecs.soton.ac.uk>; Fri, 5 Apr 2002 10:40:44 +0100 (BST)
+Received: (from mal@localhost)
+	by penelope.ecs.soton.ac.uk (8.9.1a/8.9.1) id KAA19656
+	for sg; Fri, 5 Apr 2002 10:40:37 +0100 (BST)
+Date: Fri, 5 Apr 2002 10:40:37 +0100 (BST)
+From: Michael Leuschel <M.Leuschel@ecs.soton.ac.uk>
+Message-Id: <200204050940.KAA19656@penelope.ecs.soton.ac.uk>
+Content-Type: text
+To: undisclosed-recipients:;
+Content-Length: 262
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001786
+
+ 
+
+Lade ecce_tcltk.pl (sicstus –l ecce_tcltk.pl) 
+waehle Turn RUL on und 
+lade dann Beispiele (in ecce_examples rultests.pl 
+oder apdtest in CVS/ecce oder schreibe Deine eigenen 
+Tests; umso mehr umso besser).
+
+Michael
+(muss mails leider mit Unix mail versenden)
+

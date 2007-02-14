@@ -1,0 +1,19 @@
+orig_prog('orig/rev.pro').
+pd_query([rev(L,X)]).
+run_time_queries([
+	[rev([a,b,c,d],R)],
+	[rev([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,a,a,b,w,x,y],R)],
+[rev([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,a,a,b,w,x,y],R)]
+	]).
+run_time_nr(20).
+test_queries([
+	[rev([a,b,c,d],R)],
+	[rev([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,a,a,b,w,x,y],R)]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('The naive reverse program.').
+
+
+
+

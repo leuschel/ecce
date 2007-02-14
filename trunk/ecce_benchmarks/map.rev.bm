@@ -1,0 +1,18 @@
+orig_prog('orig/map.pro').
+pd_query([map(rev,L,R)]).
+run_time_queries([
+	[map(rev,[[a,b],[c,d,e]],[L1,L2])],
+	[map(rev,[[],[a,b],[c,d,e],[f,g,h,i]],Res)],
+	[map(rev,[[],[a,b],[c,d,e],[],[f,g,h],[i,j],[k,l],[m],[n]],Res)]
+	]).
+run_time_nr(40). /* increased from 4 */
+test_queries([
+	[map(rev,[[a,b],[c,d,e]],[L1,L2])]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('Specialising the higher-order map (using call and =..) for the reverse program.').
+
+
+
+

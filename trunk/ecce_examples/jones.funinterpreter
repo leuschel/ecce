@@ -1,0 +1,84 @@
+
+lkbody(F,[(F,_,Bdy)|_],Bdy).
+lkbody(F,[(G,_,_)|PGT],Res) :- F\=G, lkbody(F,PGT,Res).
+
+
+lkparm(F,[(F,Par,_)|_],Par).
+lkparm(F,[(G,_,_)|PGT],Res) :- F\=G, lkparm(F,PGT,Res).
+
+
+lkvar(X,[X|_],[Res|_],Res).
+lkvar(X,[V|NST],[_|VST],Res) :- X\=V, lkvar(X,NST,VST,Res).
+
+
+eval(X,NS,VS,_,_) :- print(eval(X,NS,VS)),nl,fail.
+eval(cst(C),_,_,_,C).
+eval(var(X),NS,VS,_PG,Res) :- lkvar(X,NS,VS,Res).
+eval(call(F,Args),NS,VS,PG,Res) :-
+  l_eval(Args,NS,VS,PG,ParValues),
+  lkbody(F,PG,Bdy),
+  lkparm(F,PG,Pars),
+  eval(Bdy,Pars,ParValues,PG,Res).
+/* eval(test(Op,Args),NS,VS,PG,Res) :-
+  l_eval(Args,NS,VS,PG,ParValues),
+  TestExpression =.. [Op|ParValues],
+  test_eval(TestExpression,Res). */
+eval(test('=',[Arg1,Arg2]),NS,VS,PG,Res) :-
+  eval(Arg1,NS,VS,PG,Val1),
+  eval(Arg2,NS,VS,PG,Val2),
+  test_eval(Val1,Val2,Res).
+eval(arith(Op,Args),NS,VS,PG,Res) :-
+  l_eval(Args,NS,VS,PG,ParValues),
+  ArithExpression =.. [Op|ParValues],
+  Res is ArithExpression.
+eval(if(Test,Then,Else),NS,VS,PG,Res) :-
+  eval(Test,NS,VS,PG,Bool),
+  if_eval(Bool,Then,Else,NS,VS,PG,Res).
+  
+test_eval(X,X,true).
+test_eval(X,Y,false) :- X\=Y.
+
+if_eval(true,Then,_,NS,VS,PG,Res) :-
+  eval(Then,NS,VS,PG,Res).
+if_eval(false,_,Else,NS,VS,PG,Res) :-
+  eval(Else,NS,VS,PG,Res).
+  
+  
+l_eval([],_,_,_,[]).
+l_eval([Call|T],NS,VS,PG,[ECall|ET]) :-
+   eval(Call,NS,VS,PG,ECall),
+   l_eval(T,NS,VS,PG,ET).
+   
+
+program2(
+  [
+    (main,[z],call(f,[var(z)])),
+    (f,[x],call(g,[var(x)])) ,
+    (g,[y],cst(1)) ,
+    (h,[y],call(i,[var(y)])),
+    (i,[y],call(h,[var(y)]))
+  ]).
+  
+program(
+  [
+    (main,[z],call(f,[var(z)])),
+    (f,[x],call(g,[var(x),cst(1)])) ,
+    (g,[u,v],if(test('=',[var(u),cst(0)]),
+                var(v),
+                call(g,[arith('-',[var(u),cst(1)]), arith('*',[cst(2),var(v)])])
+                )),
+    (id,[x],var(x))
+  ]).
+   
+  
+run(PG,F,D,Res) :-
+  eval(call(F,D),[],[],PG,Res).
+  
+run(F,D,Res) :- program(PG), run(PG,F,D,Res).
+  
+run(D,Res) :-
+  run(main,D,Res).
+  
+
+:- run([cst(2)],R).
+

@@ -1,0 +1,23 @@
+orig_prog('orig/doubleapp.pro').
+pd_query([double_app(X,Y,Z,Res)]).
+run_time_queries([
+	[double_app([],[a],[b,c],Res)],
+	[double_app([a,b,c],[d,e,f],[g,h,i],Res)],
+	[double_app([1,5,3,2,6,3,7,3,2,1,8,5,3,5,2,3],
+		    [1,5,3,2,6,3,7,3,2,1,8,5,3,5,2,3],
+		    [1,5,3,2,6,3,7,3,2,1,8,5,3,5,2,3],Res)],
+	[double_app([1,5,3,2,6,3,7,3,2,1,8,5,3,5,2,3],
+		    [1,5,3,2,6,3,7,3,2,1,8,5,3,5,2,3],
+		    [1,5,3,2,6,3,7,3,2,1,8,5,3,5,2,3],Res)]
+	]).
+run_time_nr(40).  /* changed from 20 */
+test_queries([
+	[double_app([a,b,c],[d,e,f],[g,h,i],Res)]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('Tests whether deforestation can be done.').
+
+
+
+

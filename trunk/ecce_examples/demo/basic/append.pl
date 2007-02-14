@@ -1,0 +1,1 @@
+doubleapp(X,Y,Z,XYZ) :- append(X,Y,XY), append(XY,Z,XYZ).append([],L,L).append([H|X],Y,[H|Z]) :- append(X,Y,Z).rev([],L,L).rev([H|T],A,R) :- rev(T,[H|A],R).

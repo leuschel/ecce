@@ -1,0 +1,13 @@
+
+	benchmark_set([  
+	'slicing/inter_medium.bm',
+	'slicing/lambdaint.bm',
+	'slicing/ctl_trace.bm',
+	'slicing/matlab.bm'
+	]).
+	
+	
+
+
+
+

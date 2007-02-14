@@ -1,0 +1,81 @@
+Problematic calls:
+
+widen([cpy(_266567,[a],[_266562|_266563]),last([_266562|_266563],_266559)],
+  rul__constraint__declaration([],[]),
+  [cpy(_266886,[a,a],[_266879|_266880]),last([_266879|_266880],_266876)],
+  rul__constraint__declaration([],[]),Goal,Constr).
+  
+  analyticFold:l_goalRULification([cpy(_266567,[a],[_266562|_266563]),last([_266562|_266563],_266559)],
+     G,rul__constraint__declaration([],[]),
+     R1)
+     
+     analyticFold:l_goalRULification([cpy([a]),l(b)],G,
+     rul__constraint__declaration([],[]),
+     R1)
+     
+     goalRULification(p(b),P,
+    rul__constraint__declaration([ex_new_t0(X)],
+     [proc(any/1,[(any(_4624):-true)]),
+     proc(ex_new_t0/1,[(ex_new_t0([_4610|_4608]):-ex_new_t2(_4610),ex_new_t3(_4608))]),
+     proc(ex_new_t2/1,[(ex_new_t2(a):-true)]),
+     proc(ex_new_t3/1,[(ex_new_t3([]):-true)])]),
+     NewRUL)
+     
+     
+     | ?- auxil:fillUpWithANY([p(b)],[ex_new_t0(_188)],Result)          .
+
+Result = [] ? 
+
+yes
+
+Error: throws away constraints
+
+Solution:
+
+instead of using:
+
+fillUpWithANY([],_,[]).
+
+fillUpWithANY(InGoals, InConstraints, OutConstraints) :-
+
+	term_variables(InGoals, GoalVars),
+
+	removeOrphans(GoalVars, InConstraints, ResultC),
+
+	fillUpWithANY_2(InGoals, ResultC, OutConstraints).
+
+
+Define the following variation:
+%---------------------------------------------------------
+
+fillUpWithANY_woprojection([],_,[]).
+
+fillUpWithANY_woprojection(InGoals, InConstraints, OutConstraints) :-
+
+	term_variables(InGoals, GoalVars),
+
+	fillUpWithANY_2(InGoals, InConstraints, OutConstraints).
+	
+	---> and use within goalRULification
+	
+	
+==========================================
+	
+	OTHER (small) problem:
+	simplify does not simplify any's
+	
+	 (any([]),... )
+	 
+	 simplify has to be called in ecceRUL:widen (at the end):
+	 
+	 naive_widen(G1,R1,G2,R2,G,RFinal) :- /* Michael, 17.10.2001 */
+	
+   pp_mnf(analyticFold:l_goalRULification(G1,RG1,R1,RR1)),
+   pp_mnf(analyticFold:l_goalRULification(G2,RG2,R2,RR2)),
+   /* debug_print(calling_widen2(RG1, RR1, RG2, RR2, G, R)),debug_nl, */
+   pp_mnf(ecceRUL:widen2(RG1, RR1, RG2, RR2, G, R)),
+   /* debug_print(result_widen2(G,R)),debug_nl, */
+   proSiNo:simplify(R,RFinal),
+   l_goalUnfolding(G,RFinal).
+   
+   

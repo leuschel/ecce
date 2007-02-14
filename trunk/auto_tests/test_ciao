@@ -1,0 +1,61 @@
+#!/bin/bash
+
+
+
+Testname=$1
+Orig=$2
+Spec=$3
+Goal=$4
+shift
+shift
+shift 
+shift
+
+SpecSetting=-pe
+#SpecSetting=-slice
+
+
+
+
+for SpecSetting in -pe -slice -far
+do
+echo -n Running test case [$Testname $SpecSetting] ...
+
+../ecce_source/ecce_ciao_entry $Orig $SpecSetting "$Goal." -o $Spec "$@"
+
+cat <<END > $Testname.pl
+main([Test]) :-
+	(Test == spec ->
+	  ensure_loaded('$Spec')
+	  ;
+	  ensure_loaded('$Orig')
+	  ),		 
+   statistics(runtime, [T1,_]),
+	Goal=$Goal,
+	findall(Goal, Goal, Ans), 
+	portray_clause(Ans), 
+   statistics(runtime, [T2,_]),
+   _Time is T2 - T1,
+   %format(user_error, "~NCompleted ~w in ~w ms~n", [Test,Time]),	
+	halt.
+
+END
+##
+
+rm -rf [$Testname].spec
+rm -rf [$Testname].orig
+
+ciao $Testname.pl spec > $Testname.spec
+ciao $Testname.pl orig >  $Testname.orig
+
+if diff -q $Testname.spec  $Testname.orig 
+then 
+echo OK $Testname $SpecSetting
+exit 0
+else 
+echo FAIL: TEST CASE FAILED $Testname $SpecSetting
+exit 1
+fi 
+
+
+done

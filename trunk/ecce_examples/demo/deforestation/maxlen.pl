@@ -1,0 +1,1 @@
+len([],0).len([H|T],L1) :- len(T,L), L1 is L + 1.max(Ls,M) :- max1(Ls,0,M).max1([],M,M).max1([H|T],N,M) :-	H =< N, max1(T,N,M).max1([H|T],N,M) :-	H > N, max1(T,H,M).maxlen(Ls,M,L) :- max(Ls,M),len(Ls,L).  /*  <---- */

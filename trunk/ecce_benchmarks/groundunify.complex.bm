@@ -1,0 +1,35 @@
+orig_prog('orig/groundunify.pro').
+pd_query([
+	unify(struct(p,[X,X]),struct(p,[struct(f,[Y,struct(a,[])]),Z]),Sub)
+	]).
+
+run_time_queries([
+	[unify(struct(p,[var(3),var(3)]),
+		struct(p,[struct(f,[var(2),struct(a,[])]),var(1)]),Sub)],
+	[unify(struct(p,[struct(a,[]),struct(a,[])]),
+		struct(p,[struct(f,[var(2),struct(a,[])]),struct(a,[])]),Sub)],
+	[unify(struct(p,[var(1),var(1)]),
+		struct(p,[struct(f,[var(1),struct(a,[])]),var(2)]),Sub)],
+	[unify(struct(p,[struct(f,[var(1),struct(a,[])]),
+			 struct(f,[var(1),struct(a,[])])]),
+		struct(p,[struct(f,[struct(b,[]),struct(a,[])]),var(2)]),Sub)]
+  ]).
+run_time_nr(40). /* increased from 2 */
+test_queries([
+	[unify(struct(p,[var(3),var(3)]),
+		struct(p,[struct(f,[var(2),struct(a,[])]),var(1)]),Sub)],
+	[unify(struct(p,[var(1),var(1)]),
+		struct(p,[struct(f,[var(1),struct(a,[])]),var(2)]),Sub)],
+	[unify(struct(p,[struct(f,[var(1),struct(a,[])]),
+			 struct(f,[var(1),struct(a,[])])]),
+		struct(p,[struct(f,[struct(b,[]),struct(a,[])]),var(2)]),Sub)]
+  ]).
+
+negation_used(yes).
+built_ins_used(yes).
+description('A ground unification algorithm calculating explicit substitutions.').
+
+
+
+
+

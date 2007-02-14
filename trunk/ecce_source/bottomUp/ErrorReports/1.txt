@@ -1,0 +1,306 @@
+========================================================================
+ANSWER: John's Tool produced code with multiple clauses (same head) that
+	violates the RUL definition. Those multiples are now eliminated.
+[SG:19/04/2002]  =======================================================
+
+
+
+From - Fri Apr 19 10:45:49 2002
+Received: from [152.78.70.94] (starnberg.ecs.soton.ac.uk [152.78.70.94])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id KAA03865
+	for <sg@ecs.soton.ac.uk>; Fri, 19 Apr 2002 10:25:36 +0100 (BST)
+User-Agent: Microsoft-Entourage/10.0.0.1331
+Date: Fri, 19 Apr 2002 10:25:35 +0100
+Subject: Problem im unfold2 precondition immer noch da
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+Message-ID: <B8E5A11F.4333%mal@ecs.soton.ac.uk>
+Mime-version: 1.0
+Content-type: multipart/alternative; boundary="B_3102056736_312492"
+Content-Length: 23946
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001854
+
+> This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+--B_3102056736_312492
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
+-------------------
+Welcome to ECCE 1.1
+-------------------
+Release 4, January 2001
+Implemented by Michael Leuschel
+Based on work by Michael Leuschel, Bern Martens, Jesper Jorgensen,
+Danny De Schreye, Robert Glueck, Morten Heine Sorensen, Andre de Waal.
+(C) 1995-97
+
+type h or ? for help
+type o to turn off run-time type checking (10x speedup)
+=> l
+ Clauses in database:
+1: trans(prefix(A,B),A,B).
+2: trans(par(A,B),C,par(D,E)) :-
+    trans(A,C,D), 
+    trans(B,C,E).
+3: trans(interleave(A,B),C,interleave(D,B)) :-
+    trans(A,C,D).
+4: trans(interleave(A,B),C,interleave(A,D)) :-
+    trans(B,C,D).
+5: trans(choice(A,B),C,D) :-
+    trans(A,C,D).
+6: trans(choice(A,B),C,D) :-
+    trans(B,C,D).
+7: trans(agent(A),B,C) :-
+    agent_def(A,D),
+    trans(D,B,C).
+8: agent_def(v2,prefix(a,interleave(agent(v2),prefix(b,stop)))).
+9: agent_def(w2,choice(prefix(b,stop),prefix(a,prefix(b,agent(w2))))).
+10: agent_def(z2,prefix(a,interleave(agent(z2),agent(z2)))).
+11: ptrace(A,[]).
+12: ptrace(A,[B|C]) :-
+    trans(A,B,D), 
+    ptrace(D,C).
+13: test1(A) :- 
+    ptrace(agent(z2),A).
+14: stop(stop).
+15: stop(par(A,B)) :-
+    stop(A), 
+    stop(B).
+16: stop(interleave(A,B)) :-
+    stop(A), 
+    stop(B).
+17: stop(choice(A,B)) :-
+    stop(A).
+18: stop(choice(A,B)) :-
+    stop(B).
+19: trace(A,[]) :- 
+    stop(A).
+20: trace(A,[B|C]) :-
+    trans(A,B,D), 
+    trace(D,C).
+=> p
+atom or goal (l for true) =>test1(T).
+-> parameters: Abs:q InstCheck:d Msv:w NgSlv:g Part:y Prun:n Sel:t Whstl:f
+Raf:yesFar:yes Dce:yes Poly:y Dpu:yes ParAbs:yes Msvp:no Rrc:yes
+-> calculating static functors
+-> pre-processing msv phase
+..
+-> performing flow analysis
+Examining:gt_id__5
+    
+[test1(_2333)]
+ptrace(interleave(agent(z2),agent(z2)),_28008)
+added_leaf(gt_id__5,gt_id__6,[ptrace(interleave(agent(z2),agent(z2)),_28008)
+,rul__constraint__declaration([],[])])
+.Examining:gt_id__6
+    
+[ptrace(interleave(agent(z2),agent(z2)),_20524),rul__constraint__declaration
+([],[])]
+rul([])
+trans(interleave(agent(z2),agent(z2)),_34587,interleave(_38098,_38106)),\npt
+race(interleave(_38098,_38106),_34588),\nrul([])
+atom before: 
+trans(interleave(agent(z2),agent(z2)),_34587,interleave(_38098,_38106))
+opening: ~/CVS/ecce/ecce_source/bottomUp/tmp.pl done
+
+>> A raw Rul Constraint Declaration has been constructed.
+>> Please rul:compress/2 the result for best performance.
+atom: trans(interleave(agent(z2),agent(z2)),_266,interleave(_395,_396))
+RUL Constraints: [t29(_266),t84(_395),t85(_396)]
+RUL Program:
+
+  t85(interleave(_3791,_3792)):-t85(_3791),t85(_3792).
+  t85(interleave(_3641,_3642)):-t85(_3641),t85(_3642).
+  t85(interleave(_3114,_3115)):-t85(_3114),t85(_3115).
+  t85(interleave(_3040,_3041)):-t85(_3040),t85(_3041).
+  t85(agent(_3781)):-t16(_3781).
+  t85(agent(_3631)):-t16(_3631).
+  t85(agent(_3104)):-t16(_3104).
+  t85(agent(_3030)):-t16(_3030).
+
+  t84(interleave(_3764,_3765)):-t84(_3764),t84(_3765).
+  t84(interleave(_3614,_3615)):-t84(_3614),t84(_3615).
+  t84(interleave(_3087,_3088)):-t84(_3087),t84(_3088).
+  t84(interleave(_3013,_3014)):-t84(_3013),t84(_3014).
+  t84(agent(_3754)):-t14(_3754).
+  t84(agent(_3604)):-t14(_3604).
+  t84(agent(_3077)):-t14(_3077).
+  t84(agent(_3003)):-t14(_3003).
+
+  t82(interleave(_3550,_3551)):-t84(_3550),t85(_3551).
+  t82(interleave(_2949,_2950)):-t84(_2949),t85(_2950).
+
+  t71(prefix(_3506,_3507)):-t29(_3506),t30(_3507).
+  t71(prefix(_2905,_2906)):-t29(_2905),t30(_2906).
+  t71(interleave(_3533,_3534)):-t13(_3533),t15(_3534).
+  t71(interleave(_2932,_2933)):-t13(_2932),t15(_2933).
+  t71(agent(_3523)):-t16(_3523).
+  t71(agent(_2922)):-t16(_2922).
+
+  t406(prefix(_3428,_3429)):-any(_3428),any(_3429).
+  t406(prefix(_3131,_3132)):-any(_3131),any(_3132).
+  t406(par(_3479,_3480)):-t406(_3479),t406(_3480).
+  t406(par(_3182,_3183)):-t406(_3182),t406(_3183).
+  t406(interleave(_3462,_3463)):-any(_3462),any(_3463).
+  t406(interleave(_3165,_3166)):-any(_3165),any(_3166).
+  t406(choice(_3445,_3446)):-any(_3445),any(_3446).
+  t406(choice(_3148,_3149)):-any(_3148),any(_3149).
+  t406(agent(_3496)):-t273(_3496).
+  t406(agent(_3199)):-t273(_3199).
+
+  t37(prefix(_2747,_2748)):-t29(_2747),t30(_2748).
+  t37(interleave(_2720,_2721)):-t13(_2720),t15(_2721).
+  t37(agent(_2737)):-t16(_2737).
+
+  t34(z2):-true.
+
+  t33(agent(_3722)):-t34(_3722).
+  t33(agent(_3668)):-t34(_3668).
+  t33(agent(_3067)):-t34(_3067).
+  t33(agent(_2895)):-t34(_2895).
+  t33(agent(_2826)):-t34(_2826).
+
+  t32(z2):-true.
+
+  t31(agent(_3712)):-t32(_3712).
+  t31(agent(_3658)):-t32(_3658).
+  t31(agent(_3057)):-t32(_3057).
+  t31(agent(_2885)):-t32(_2885).
+  t31(agent(_2816)):-t32(_2816).
+
+  t30(interleave(_3695,_3696)):-t31(_3695),t33(_3696).
+  t30(interleave(_3567,_3568)):-t31(_3567),t33(_3568).
+  t30(interleave(_2966,_2967)):-t31(_2966),t33(_2967).
+  t30(interleave(_2868,_2869)):-t31(_2868),t33(_2869).
+  t30(interleave(_2794,_2795)):-t31(_2794),t33(_2795).
+
+  t29(a):-true.
+
+  t282(z2):-true.
+  t282(v2):-true.
+
+  t280(prefix(_3324,_3325)):-t244(_3324),t245(_3325).
+  t280(agent(_3341)):-t266(_3341).
+
+  t28(prefix(_3678,_3679)):-t29(_3678),t30(_3679).
+  t28(prefix(_2851,_2852)):-t29(_2851),t30(_2852).
+
+  t279(agent(_3314)):-t282(_3314).
+
+  t277(interleave(_3263,_3264)):-t279(_3263),t280(_3264).
+
+  t274(prefix(_3224,_3225)):-t239(_3224),t277(_3225).
+  t274(choice(_3241,_3242)):-t249(_3241),t252(_3242).
+
+  t273(z2):-true.
+  t273(w2):-true.
+  t273(v2):-true.
+
+  t27(z2):-true.
+
+  t266(z2):-true.
+
+  t257(w2):-true.
+
+  t256(agent(_3413)):-t257(_3413).
+
+  t255(b):-true.
+
+  t254(prefix(_3366,_3367)):-t255(_3366),t256(_3367).
+
+  t253(a):-true.
+
+  t252(prefix(_3297,_3298)):-t253(_3297),t254(_3298).
+
+  t251(stop):-true.
+
+  t250(b):-true.
+
+  t249(prefix(_3280,_3281)):-t250(_3280),t251(_3281).
+
+  t245(stop):-true.
+
+  t244(b):-true.
+
+  t239(a):-true.
+
+  t16(z2):-true.
+
+  t15(agent(_3594)):-t16(_3594).
+  t15(agent(_2993)):-t16(_2993).
+  t15(agent(_2774)):-t16(_2774).
+
+  t14(z2):-true.
+
+  t13(agent(_3584)):-t14(_3584).
+  t13(agent(_2983)):-t14(_2983).
+  t13(agent(_2764)):-t14(_2764).
+added_leaf(gt_id__6,gt_id__7,[trans(interleave(agent(z2),agent(z2)),_266,int
+erleave(_395,_396)),ptrace(interleave(_395,_396),_267),rul__constraint__decl
+aration([],[])])
+.### PRE-CONDITION ERROR OCCURED
+### 
+unfold2:l_goalUnfolding2([trans(interleave(agent(z2),agent(z2)),_5064,interl
+eave(_5062,_5060)),ptrace(interleave(_5062,_5060),_5067)],
+rul__constraint__d
+eclaration([t29(_5064),t84(_5062),t85(_5060)],[proc(t85/1,[(t85(interleave(_
+36523,_36521)):-t85(_36523),t85(_36521)),(t85(interleave(_36508,_36506)):-t8
+5(_36508),t85(_36506)),(t85(interleave(_36493,_36491)):-t85(_36493),t85(_364
+91)),(t85(interleave(_36478,_36476)):-t85(_36478),t85(_36476)),(t85(agent(_3
+6464)):-t16(_36464)),(t85(agent(_36455)):-t16(_36455)),(t85(agent(_36446)):-
+t16(_36446)),(t85(agent(_36437)):-t16(_36437))]),proc(t84/1,[(t84(interleave
+(_36408,_36406)):-t84(_36408),t84(_36406)),(t84(interleave(_36393,_36391)):-
+t84(_36393),t84(_36391)),(t84(interleave(_36378,_36376)):-t84(_36378),t84(_3
+6376)),(t84(interleave(_36363,_36361)):-t84(_36363),t84(_36361)),(t84(agent(
+_36349)):-t14(_36349)),(t84(agent(_36340)):-t14(_36340)),(t84(agent(_36331))
+:-t14(_36331)),(t84(agent(_36322)):-t14(_36322))]),proc(t82/1,[(t82(interlea
+ve(_36293,_36291)):-t84(_36293),t85(_36291)),(t82(interleave(_36278,_36276))
+:-t84(_36278),t85(_36276))]),proc(t71/1,[(t71(prefix(_36256,_36254)):-t29(_3
+6256),t30(_36254)),(t71(prefix(_36241,_36239)):-t29(_36241),t30(_36239)),(t7
+1(interleave(_36226,_36224)):-t13(_36226),t15(_36224)),(t71(interleave(_3621
+1,_36209)):-t13(_36211),t15(_36209)),(t71(agent(_36197)):-t16(_36197)),(t71(
+agent(_36188)):-t16(_36188))]),proc(t406/1,[(t406(prefix(_36163,_36161)):-an
+y(_36163),any(_36161)),(t406(prefix(_36148,_36146)):-any(_36148),any(_36146)
+),(t406(par(_36133,_36131)):-t406(_36133),t406(_36131)),(t406(par(_36118,_36
+116)):-t406(_36118),t406(_36116)),(t406(interleave(_36103,_36101)):-any(_361
+03),any(_36101)),(t406(interleave(_36088,_36086)):-any(_36088),any(_36086)),
+(t406(choice(_36073,_36071)):-any(_36073),any(_36071)),(t406(choice(_36058,_
+36056)):-any(_36058),any(_36056)),(t406(agent(_36044)):-t273(_36044)),(t406(
+agent(_36035)):-t273(_36035))]),proc(t37/1,[(t37(prefix(_36002,_36000)):-t29
+(_36002),t30(_36000)),(t37(interleave(_35987,_35985)):-t13(_35987),t15(_3598
+5)),(t37(agent(_35973)):-t16(_35973))]),proc(t34/1,[(t34(z2):-true)]),proc(t
+33/1,[(t33(agent(_35955)):-t34(_35955)),(t33(agent(_35946)):-t34(_35946)),(t
+33(agent(_35937)):-t34(_35937)),(t33(agent(_35928)):-t34(_35928)),(t33(agent
+(_35919)):-t34(_35919))]),proc(t32/1,[(t32(z2):-true)]),proc(t31/1,[(t31(age
+nt(_35897)):-t32(_35897)),(t31(agent(_35888)):-t32(_35888)),(t31(agent(_3587
+9)):-t32(_35879)),(t31(agent(_35870)):-t32(_35870)),(t31(agent(_35861)):-t32
+(_35861))]),proc(t30/1,[(t30(interleave(_35838,_35836)):-t31(_35838),t33(_35
+836)),(t30(interleave(_35823,_35821)):-t31(_35823),t33(_35821)),(t30(interle
+ave(_35808,_35806)):-t31(_35808),t33(_35806)),(t30(interleave(_35793,_35791)
+):-t31(_35793),t33(_35791)),(t30(interleave(_35778,_35776)):-t31(_35778),t33
+(_35776))]),proc(t29/1,[(t29(a):-true)]),proc(t282/1,[(t282(z2):-true),(t282
+(v2):-true)]),proc(t280/1,[(t280(prefix(_35750,_35748)):-t244(_35750),t245(_
+35748)),(t280(agent(_35736)):-t266(_35736))]),proc(t28/1,[(t28(prefix(_35719
+,_35717)):-t29(_35719),t30(_35717)),(t28(prefix(_35704,_35702)):-t29(_35704)
+,t30(_35702))]),proc(t279/1,[(t279(agent(_35683)):-t282(_35683))]),proc(t277
+/1,[(t277(interleave(_35668,_35666)):-t279(_35668),t280(_35666))]),proc(t274
+/1,[(t274(prefix(_35648,_35646)):-t239(_35648),t277(_35646)),(t274(choice(_3
+5633,_35631)):-t249(_35633),t252(_35631))]),proc(t273/1,[(t273(z2):-true),(t
+273(w2):-true),(t273(v2):-true)]),proc(t27/1,[(t27(z2):-true)]),proc(t266/1,
+[(t266(z2):-true)]),proc(t257/1,[(t257(w2):-true)]),proc(t256/1,[(t256(agent
+(_35612)):-t257(_35612))]),proc(t255/1,[(t255(b):-true)]),proc(t254/1,[(t254
+(prefix(_35597,_35595)):-t255(_35597),t256(_35595))]),proc(t253/1,[(t253(a):
+-true)]),proc(t252/1,[(t252(prefix(_35577,_35575)):-t253(_35577),t254(_35575
+))]),proc(t251/1,[(t251(stop):-true)]),proc(t250/1,[(t250(b):-true)]),proc(t
+249/1,[(t249(prefix(_35557,_35555)):-t250(_35557),t251(_35555))]),proc(t245/
+1,[(t245(stop):-true)]),proc(t244/1,[(t244(b):-true)]),proc(t239/1,[(t239(a)
+:-true)]),proc(t16/1,[(t16(z2):-true)]),proc(t15/1,[(t15(agent(_35538)):-t16
+(_35538)),(t15(agent(_35529)):-t16(_35529)),(t15(agent(_35520)):-t16(_35520)
+)]),proc(t14/1,[(t14(z2):-true)]),proc(t13/1,[(t13(agent(_35502)):-t14(_3550
+2)),(t13(agent(_35493)):-t14(_35493)),(t13(agent(_35484)):-t14(_35484))])]))
+

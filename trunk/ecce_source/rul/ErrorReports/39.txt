@@ -1,0 +1,49 @@
+=================================
+[April 2002] Diverse Aenderungen!
+=================================
+
+* Umgruppierung der Modulstruktur:
+  alle Faltungsprozeduren (l_goal-
+  RULification, goalRULification,
+  goalFolding) jetzt im selben Mo-
+  dul (analyticFold).
+
+* Konzept-Fehler in goalFolding
+  behoben: dort war pruneRCD auf-
+  gerufen worden mit dem Ergebnis
+  dass TypInformation vernichtet
+  wurde die im Kontext von l_goal-
+  RULification benoetigt wird was
+  schliesslich zu ungenauen APD-
+  Resultaten fuehrte. pruneRCD
+  wird nun in goalFolding nicht
+  mehr aufgerufen.
+
+* Konzept-Fehler in Entails be-
+  hoben: Typ "any" wird nun be-
+  ruecksichtigt.
+
+* Weiterer Fehler in Entails
+  beseitigt: mehrfache Goal-
+  variable, z.B. g(X,Y,X,Y),
+  werden nun beruecksichtigt
+  (wurden zuvor ignoriert).  
+
+* Alle Compiler-Warnungen (z.B.
+  singulaere Variablen) wurden
+  eliminiert.
+
+* Import-Export-Deklarationen
+  wurden entruempelt und einige
+  inzwischen obsolete Prozeduren
+  und Module geloescht (oder aus-
+  kommentiert).
+
+* Einige Cuts(!) zur Verbesserung
+  der Laufzeiteffizienz eingefuegt
+  (hoffentlich nur gruene und keine
+  roten!).
+
+* Einige besonders wichtige Pro-
+  zeduren werfen jetzt Fehler-
+  meldungen beim Scheitern.

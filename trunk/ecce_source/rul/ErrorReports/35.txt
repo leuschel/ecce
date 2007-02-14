@@ -1,0 +1,47 @@
+==============================================================================
+I had not treated the possibility of upperBound(U,X)=U. In such a situation we
+must of course not delete the definition of U. This was the reason for the bug
+reported below. This bug is now fixed by introduction of an according sub-case
+in procedure treatCase(case1,.,.,.,.,.) [SG:24.01.2002] 
+==============================================================================
+
+Anhänge: Weitergeleitete E-Mail
+
+Von: "Michael Leuschel" <mal@ecs.soton.ac.uk> 
+ 
+An: sg@ecs.soton.ac.uk 
+ 
+Betreff: not found 
+ 
+Datum: Wed, 23 Jan 2002 15:30:28 +0000 
+
+* ERROR: PREDICATE x_ex_t6/1 NOT FOUND *
+### POST-CONDITION ERROR OCCURED
+### ecceRUL:widen2([append(_706,_707,_708),append(_700,_991,_992)],
+rul__constraint__declaration([any(_700),any(_706),any(_707),any(_708),ex_t0(_991),ex_t1(_992)],
+[proc(fact_15/1,[(fact_15(a):-true)]),proc(fact_16/1,[(fact_16(b):-true)]),
+proc(fact_17/1,[(fact_17([]):-true)]),proc(ex_t0/1,[(ex_t0([_1156|_1154]):-fact_15(_1156),ex_t4(_1154))]),
+proc(ex_t1/1,[(ex_t1([_1137|_1135]):-any(_1137),ex_t6(_1135))]),
+proc(ex_t4/1,[(ex_t4([_1118|_1116]):-fact_15(_1118),ex_t9(_1116))]),
+proc(ex_t6/1,[(ex_t6([_1099|_1097]):-any(_1099),any(_1097))]),
+proc(ex_t9/1,[(ex_t9([_1080|_1078]):-fact_16(_1080),fact_17(_1078))]),
+proc(any/1,[(any(_1180):-true)])]),[append(_751,_752,_753),append(_745,_1347,_1348)],
+rul__constraint__declaration([any(_745),any(_751),any(_752),any(_753),ex_t18(_1347),ex_t19(_1348)],
+[proc(fact_35/1,[(fact_35(a):-true)]),proc(fact_36/1,[(fact_36(b):-true)]),
+proc(fact_37/1,[(fact_37([]):-true)]),proc(ex_t18/1,[(ex_t18([_1535|_1533]):-fact_35(_1535),ex_t22(_1533))]),
+proc(ex_t19/1,[(ex_t19([_1516|_1514]):-any(_1516),ex_t24(_1514))]),
+proc(ex_t22/1,[(ex_t22([_1497|_1495]):-fact_35(_1497),ex_t27(_1495))]),
+proc(ex_t24/1,[(ex_t24([_1478|_1476]):-any(_1478),ex_t29(_1476))]),
+proc(ex_t27/1,[(ex_t27([_1459|_1457]):-fact_36(_1459),fact_37(_1457))]),
+proc(ex_t29/1,[(ex_t29([_1440|_1438]):-any(_1440),any(_1438))]),
+proc(any/1,[(any(_1559):-true)])]),[append(_1657,_1658,_1659),append(_1660,_1661,_1662)],
+rul__constraint__declaration([any(_1660),any(_1657),any(_1658),any(_1659),ub_t26(_1661),x_ex_t6(_1662)],
+[proc(y_fact_35/1,[(y_fact_35(a):-true)]),proc(y_fact_36/1,[(y_fact_36(b):-true)]),
+proc(y_fact_37/1,[(y_fact_37([]):-true)]),
+proc(y_ex_t27/1,[(y_ex_t27([_1634|_1633]):-y_fact_36(_1634),y_fact_37(_1633))]),
+proc(any/1,[(any(_1684):-true)]),proc(t20/1,[(t20(a):-true),(t20(b):-true)]),
+proc(t21/1,[(t21([_1634|_1633]):-y_fact_36(_1634),y_fact_37(_1633)),(t21([]):-true)]),
+proc(ub_t26/1,[(ub_t26([_1634|_1633]):-t20(_1634),t27(_1633))]),
+proc(t27/1,[(t27([_1634|_1633]):-t20(_1634),t27(_1633)),(t27([]):-true)])]))
+============================================================================
+

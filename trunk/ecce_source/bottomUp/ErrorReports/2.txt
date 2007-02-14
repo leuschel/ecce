@@ -1,0 +1,439 @@
+==============================================================================
+ANSWER to the problem reported below: John's Tool doesn't produce the any-type
+   definition {any(X):-true}. We have to insert it explicitly. [SG:19/04/2002]
+==============================================================================
+ 
+From - Fri Apr 19 12:37:32 2002
+Received: from [152.78.70.94] (starnberg.ecs.soton.ac.uk [152.78.70.94])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id MAA29893
+	for <sg@ecs.soton.ac.uk>; Fri, 19 Apr 2002 12:34:17 +0100 (BST)
+User-Agent: Microsoft-Entourage/10.0.0.1331
+Date: Fri, 19 Apr 2002 12:34:15 +0100
+Subject: Prob
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+Message-ID: <B8E5BF47.4352%mal@ecs.soton.ac.uk>
+Mime-version: 1.0
+Content-type: multipart/alternative; boundary="B_3102064456_775975"
+Content-Length: 17279
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001858
+
+> This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+--B_3102064456_775975
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
+[ptrace(interleave(agent(z2),_193),_196),rul__constraint__declaration([any(_
+196),new_t1272(_193)],[proc(x_ex_new_t1250/1,[(x_ex_new_t1250(z2):-true)]),p
+roc(new_t1272/1,[(new_t1272(agent(_145)):-x_ex_new_t1250(_145)),(new_t1272(i
+nterleave(_133,_134)):-y_ex_new_t1261(_133),y_ex_new_t1261(_134))]),proc(y_e
+x_new_t1261/1,[(y_ex_new_t1261(agent(_109)):-x_ex_new_t1250(_109))]),proc(ub
+_new_t1271/1,[(ub_new_t1271(interleave(_89,_90)):-y_ex_new_t1261(_89),new_t1
+272(_90))]),proc(any/1,[(any(_67):-true)])])]
+rul([any([]),new_t1272(_193)])
+trans(interleave(agent(z2),_193),_14141,interleave(_18921,_18929)),\nptrace(
+interleave(_18921,_18929),_14142),\nrul([any([_14141|_14142]),new_t1272(_193
+)])
+atom before: 
+trans(interleave(agent(z2),_193),_14141,interleave(_18921,_18929))
+opening: ~/CVS/ecce/ecce_source/bottomUp/tmp.pl done
+
+>> A raw Rul Constraint Declaration has been constructed.
+>> Please rul:compress/2 the result for best performance.
+atom: trans(interleave(agent(z2),_193),_610,interleave(_898,_899))
+RUL Constraints: [t230(_193),any(_610),any(_898),any(_899)]
+RUL Program:
+
+  t74(z2):-true.
+  t74(v2):-true.
+
+  t72(prefix(_166308,_166330)):-t36(_166308),t37(_166330).
+  t72(agent(_166639)):-t58(_166639).
+
+  t71(agent(_166076)):-t74(_166076).
+
+  t69(interleave(_165083,_165105)):-t71(_165083),t72(_165105).
+
+  t66(prefix(_164277,_164299)):-t31(_164277),t69(_164299).
+  t66(choice(_164608,_164630)):-t41(_164608),t44(_164630).
+
+  t65(z2):-true.
+  t65(w2):-true.
+  t65(v2):-true.
+
+  t58(z2):-true.
+
+  t545(prefix(_181381,_181403)):-any(_181381),any(_181403).
+  t545(par(_182374,_182396)):-t545(_182374),t545(_182396).
+  t545(interleave(_182043,_182065)):-any(_182043),any(_182065).
+  t545(choice(_181712,_181734)):-any(_181712),any(_181734).
+  t545(agent(_182705)):-t412(_182705).
+
+  t49(w2):-true.
+
+  t48(agent(_168498)):-t49(_168498).
+
+  t47(b):-true.
+
+  t46(prefix(_167303,_167325)):-t47(_167303),t48(_167325).
+
+  t45(a):-true.
+
+  t44(prefix(_165745,_165767)):-t45(_165745),t46(_165767).
+
+  t43(stop):-true.
+
+  t421(z2):-true.
+  t421(v2):-true.
+
+  t42(b):-true.
+
+  t419(prefix(_186136,_186158)):-t383(_186136),t384(_186158).
+  t419(agent(_186467)):-t405(_186467).
+
+  t418(agent(_185904)):-t421(_185904).
+
+  t416(interleave(_184911,_184933)):-t418(_184911),t419(_184933).
+
+  t413(prefix(_184105,_184127)):-t378(_184105),t416(_184127).
+  t413(choice(_184436,_184458)):-t388(_184436),t391(_184458).
+
+  t412(z2):-true.
+  t412(w2):-true.
+  t412(v2):-true.
+
+  t41(prefix(_165414,_165436)):-t42(_165414),t43(_165436).
+
+  t405(z2):-true.
+
+  t396(w2):-true.
+
+  t395(agent(_188326)):-t396(_188326).
+
+  t394(b):-true.
+
+  t393(prefix(_187131,_187153)):-t394(_187131),t395(_187153).
+
+  t392(a):-true.
+
+  t391(prefix(_185573,_185595)):-t392(_185573),t393(_185595).
+
+  t390(stop):-true.
+
+  t389(b):-true.
+
+  t388(prefix(_185242,_185264)):-t389(_185242),t390(_185264).
+
+  t384(stop):-true.
+
+  t383(b):-true.
+
+  t378(a):-true.
+
+  t37(stop):-true.
+
+  t36(b):-true.
+
+  t31(a):-true.
+
+  t251([_179828|_179850]):-any(_179828),any(_179850).
+
+  t248(interleave(_178923,_178945)):-t241(_178923),t241(_178945).
+  t248(agent(_178691)):-t239(_178691).
+
+  t241(agent(_178110)):-t239(_178110).
+
+  t239(z2):-true.
+
+  t230(interleave(_174291,_174313)):-t223(_174291),t223(_174313).
+  t230(agent(_174059)):-t221(_174059).
+
+  t223(agent(_172719)):-t221(_172719).
+
+  t221(z2):-true.
+
+  t214([_171463|_171485]):-any(_171463),any(_171485).
+
+  t178(prefix(_170270,_170292)):-any(_170270),any(_170292).
+  t178(par(_169939,_169961)):-t178(_169939),t178(_169961).
+  t178(interleave(_169608,_169630)):-any(_169608),any(_169630).
+  t178(choice(_169277,_169299)):-any(_169277),any(_169299).
+  t178(agent(_170601)):-t65(_170601).
+added_leaf(gt_id__156,gt_id__157,[trans(interleave(agent(z2),_193),_610,inte
+rleave(_898,_899)),ptrace(interleave(_898,_899),_611),rul__constraint__decla
+ration([any([_610|_611]),new_t1272(_193)],[proc(x_ex_new_t1250/1,[(x_ex_new_
+t1250(z2):-true)]),proc(new_t1272/1,[(new_t1272(agent(_145)):-x_ex_new_t1250
+(_145)),(new_t1272(interleave(_133,_134)):-y_ex_new_t1261(_133),y_ex_new_t12
+61(_134))]),proc(y_ex_new_t1261/1,[(y_ex_new_t1261(agent(_109)):-x_ex_new_t1
+250(_109))]),proc(ub_new_t1271/1,[(ub_new_t1271(interleave(_89,_90)):-y_ex_n
+ew_t1261(_89),new_t1272(_90))]),proc(any/1,[(any(_67):-true)])])])
+.~~~~~~~~~~~~~~~~~~~~~~~~~
+wellDefined failed with input
+any
+~~~~~~~~~~~~~~~~~~~~~~~~~
+### PRE-CONDITION ERROR OCCURED
+### 
+unfold2:l_goalUnfolding2([trans(interleave(agent(z2),_3985),_3983,interleave
+(_3981,_3979)),ptrace(interleave(_3981,_3979),_3988)],rul__constraint__decla
+ration([t230(_3985),any(_3983),any(_3981),any(_3979)],[proc(t74/1,[(t74(z2):
+-true),(t74(v2):-true)]),proc(t72/1,[(t72(prefix(_18084,_18082)):-t36(_18084
+),t37(_18082)),(t72(agent(_18070)):-t58(_18070))]),proc(t71/1,[(t71(agent(_1
+8054)):-t74(_18054))]),proc(t69/1,[(t69(interleave(_18039,_18037)):-t71(_180
+39),t72(_18037))]),proc(t66/1,[(t66(prefix(_18019,_18017)):-t31(_18019),t69(
+_18017)),(t66(choice(_18004,_18002)):-t41(_18004),t44(_18002))]),proc(t65/1,
+[(t65(z2):-true),(t65(w2):-true),(t65(v2):-true)]),proc(t58/1,[(t58(z2):-tru
+e)]),proc(t545/1,[(t545(prefix(_17982,_17980)):-any(_17982),any(_17980)),(t5
+45(par(_17967,_17965)):-t545(_17967),t545(_17965)),(t545(interleave(_17952,_
+17950)):-any(_17952),any(_17950)),(t545(choice(_17937,_17935)):-any(_17937),
+any(_17935)),(t545(agent(_17923)):-t412(_17923))]),proc(t49/1,[(t49(w2):-tru
+e)]),proc(t48/1,[(t48(agent(_17901)):-t49(_17901))]),proc(t47/1,[(t47(b):-tr
+ue)]),proc(t46/1,[(t46(prefix(_17886,_17884)):-t47(_17886),t48(_17884))]),pr
+oc(t45/1,[(t45(a):-true)]),proc(t44/1,[(t44(prefix(_17866,_17864)):-t45(_178
+66),t46(_17864))]),proc(t43/1,[(t43(stop):-true)]),proc(t421/1,[(t421(z2):-t
+rue),(t421(v2):-true)]),proc(t42/1,[(t42(b):-true)]),proc(t419/1,[(t419(pref
+ix(_17846,_17844)):-t383(_17846),t384(_17844)),(t419(agent(_17832)):-t405(_1
+7832))]),proc(t418/1,[(t418(agent(_17816)):-t421(_17816))]),proc(t416/1,[(t4
+16(interleave(_17801,_17799)):-t418(_17801),t419(_17799))]),proc(t413/1,[(t4
+13(prefix(_17781,_17779)):-t378(_17781),t416(_17779)),(t413(choice(_17766,_1
+7764)):-t388(_17766),t391(_17764))]),proc(t412/1,[(t412(z2):-true),(t412(w2)
+:-true),(t412(v2):-true)]),proc(t41/1,[(t41(prefix(_17744,_17742)):-t42(_177
+44),t43(_17742))]),proc(t405/1,[(t405(z2):-true)]),proc(t396/1,[(t396(w2):-t
+rue)]),proc(t395/1,[(t395(agent(_17725)):-t396(_17725))]),proc(t394/1,[(t394
+(b):-true)]),proc(t393/1,[(t393(prefix(_17710,_17708)):-t394(_17710),t395(_1
+7708))]),proc(t392/1,[(t392(a):-true)]),proc(t391/1,[(t391(prefix(_17690,_17
+688)):-t392(_17690),t393(_17688))]),proc(t390/1,[(t390(stop):-true)]),proc(t
+389/1,[(t389(b):-true)]),proc(t388/1,[(t388(prefix(_17670,_17668)):-t389(_17
+670),t390(_17668))]),proc(t384/1,[(t384(stop):-true)]),proc(t383/1,[(t383(b)
+:-true)]),proc(t378/1,[(t378(a):-true)]),proc(t37/1,[(t37(stop):-true)]),pro
+c(t36/1,[(t36(b):-true)]),proc(t31/1,[(t31(a):-true)]),proc(t251/1,[(t251([_
+17651|_17649]):-any(_17651),any(_17649))]),proc(t248/1,[(t248(interleave(_17
+631,_17629)):-t241(_17631),t241(_17629)),(t248(agent(_17617)):-t239(_17617))
+]),proc(t241/1,[(t241(agent(_17601)):-t239(_17601))]),proc(t239/1,[(t239(z2)
+:-true)]),proc(t230/1,[(t230(interleave(_17586,_17584)):-t223(_17586),t223(_
+17584)),(t230(agent(_17572)):-t221(_17572))]),proc(t223/1,[(t223(agent(_1755
+6)):-t221(_17556))]),proc(t221/1,[(t221(z2):-true)]),proc(t214/1,[(t214([_17
+542|_17540]):-any(_17542),any(_17540))]),proc(t178/1,[(t178(prefix(_17522,_1
+7520)):-any(_17522),any(_17520)),(t178(par(_17507,_17505)):-t178(_17507),t17
+8(_17505)),(t178(interleave(_17492,_17490)):-any(_17492),any(_17490)),(t178(
+choice(_17477,_17475)):-any(_17477),any(_17475)),(t178(agent(_17463)):-t65(_
+17463))])]))
+
+--B_3102064456_775975
+Content-type: text/html; charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
+
+<HTML>
+<HEAD>
+<TITLE>Prob</TITLE>
+</HEAD>
+<BODY>
+<FONT FACE=3D"Verdana">[ptrace(interleave(agent(z2),_193),_196),rul__constrai=
+nt__declaration([any(_196),new_t1272(_193)],[proc(x_ex_new_t1250/1,[(x_ex_ne=
+w_t1250(z2):-true)]),proc(new_t1272/1,[(new_t1272(agent(_145)):-x_ex_new_t12=
+50(_145)),(new_t1272(interleave(_133,_134)):-y_ex_new_t1261(_133),y_ex_new_t=
+1261(_134))]),proc(y_ex_new_t1261/1,[(y_ex_new_t1261(agent(_109)):-x_ex_new_=
+t1250(_109))]),proc(ub_new_t1271/1,[(ub_new_t1271(interleave(_89,_90)):-y_ex=
+_new_t1261(_89),new_t1272(_90))]),proc(any/1,[(any(_67):-true)])])]<BR>
+rul([any([]),new_t1272(_193)])<BR>
+trans(interleave(agent(z2),_193),_14141,interleave(_18921,_18929)),\nptrace=
+(interleave(_18921,_18929),_14142),\nrul([any([_14141|_14142]),new_t1272(_19=
+3)])<BR>
+atom before: trans(interleave(agent(z2),_193),_14141,interleave(_18921,_189=
+29))<BR>
+opening: ~/CVS/ecce/ecce_source/bottomUp/tmp.pl done<BR>
+<BR>
+&gt;&gt; A raw Rul Constraint Declaration has been constructed.<BR>
+&gt;&gt; Please rul:compress/2 the result for best performance.<BR>
+atom: trans(interleave(agent(z2),_193),_610,interleave(_898,_899))<BR>
+RUL Constraints: [t230(_193),any(_610),any(_898),any(_899)]<BR>
+RUL Program:<BR>
+<BR>
+&nbsp;&nbsp;t74(z2):-true.<BR>
+&nbsp;&nbsp;t74(v2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t72(prefix(_166308,_166330)):-t36(_166308),t37(_166330).<BR>
+&nbsp;&nbsp;t72(agent(_166639)):-t58(_166639).<BR>
+<BR>
+&nbsp;&nbsp;t71(agent(_166076)):-t74(_166076).<BR>
+<BR>
+&nbsp;&nbsp;t69(interleave(_165083,_165105)):-t71(_165083),t72(_165105).<BR=
+>
+<BR>
+&nbsp;&nbsp;t66(prefix(_164277,_164299)):-t31(_164277),t69(_164299).<BR>
+&nbsp;&nbsp;t66(choice(_164608,_164630)):-t41(_164608),t44(_164630).<BR>
+<BR>
+&nbsp;&nbsp;t65(z2):-true.<BR>
+&nbsp;&nbsp;t65(w2):-true.<BR>
+&nbsp;&nbsp;t65(v2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t58(z2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t545(prefix(_181381,_181403)):-any(_181381),any(_181403).<BR>
+&nbsp;&nbsp;t545(par(_182374,_182396)):-t545(_182374),t545(_182396).<BR>
+&nbsp;&nbsp;t545(interleave(_182043,_182065)):-any(_182043),any(_182065).<B=
+R>
+&nbsp;&nbsp;t545(choice(_181712,_181734)):-any(_181712),any(_181734).<BR>
+&nbsp;&nbsp;t545(agent(_182705)):-t412(_182705).<BR>
+<BR>
+&nbsp;&nbsp;t49(w2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t48(agent(_168498)):-t49(_168498).<BR>
+<BR>
+&nbsp;&nbsp;t47(b):-true.<BR>
+<BR>
+&nbsp;&nbsp;t46(prefix(_167303,_167325)):-t47(_167303),t48(_167325).<BR>
+<BR>
+&nbsp;&nbsp;t45(a):-true.<BR>
+<BR>
+&nbsp;&nbsp;t44(prefix(_165745,_165767)):-t45(_165745),t46(_165767).<BR>
+<BR>
+&nbsp;&nbsp;t43(stop):-true.<BR>
+<BR>
+&nbsp;&nbsp;t421(z2):-true.<BR>
+&nbsp;&nbsp;t421(v2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t42(b):-true.<BR>
+<BR>
+&nbsp;&nbsp;t419(prefix(_186136,_186158)):-t383(_186136),t384(_186158).<BR>
+&nbsp;&nbsp;t419(agent(_186467)):-t405(_186467).<BR>
+<BR>
+&nbsp;&nbsp;t418(agent(_185904)):-t421(_185904).<BR>
+<BR>
+&nbsp;&nbsp;t416(interleave(_184911,_184933)):-t418(_184911),t419(_184933).=
+<BR>
+<BR>
+&nbsp;&nbsp;t413(prefix(_184105,_184127)):-t378(_184105),t416(_184127).<BR>
+&nbsp;&nbsp;t413(choice(_184436,_184458)):-t388(_184436),t391(_184458).<BR>
+<BR>
+&nbsp;&nbsp;t412(z2):-true.<BR>
+&nbsp;&nbsp;t412(w2):-true.<BR>
+&nbsp;&nbsp;t412(v2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t41(prefix(_165414,_165436)):-t42(_165414),t43(_165436).<BR>
+<BR>
+&nbsp;&nbsp;t405(z2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t396(w2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t395(agent(_188326)):-t396(_188326).<BR>
+<BR>
+&nbsp;&nbsp;t394(b):-true.<BR>
+<BR>
+&nbsp;&nbsp;t393(prefix(_187131,_187153)):-t394(_187131),t395(_187153).<BR>
+<BR>
+&nbsp;&nbsp;t392(a):-true.<BR>
+<BR>
+&nbsp;&nbsp;t391(prefix(_185573,_185595)):-t392(_185573),t393(_185595).<BR>
+<BR>
+&nbsp;&nbsp;t390(stop):-true.<BR>
+<BR>
+&nbsp;&nbsp;t389(b):-true.<BR>
+<BR>
+&nbsp;&nbsp;t388(prefix(_185242,_185264)):-t389(_185242),t390(_185264).<BR>
+<BR>
+&nbsp;&nbsp;t384(stop):-true.<BR>
+<BR>
+&nbsp;&nbsp;t383(b):-true.<BR>
+<BR>
+&nbsp;&nbsp;t378(a):-true.<BR>
+<BR>
+&nbsp;&nbsp;t37(stop):-true.<BR>
+<BR>
+&nbsp;&nbsp;t36(b):-true.<BR>
+<BR>
+&nbsp;&nbsp;t31(a):-true.<BR>
+<BR>
+&nbsp;&nbsp;t251([_179828|_179850]):-any(_179828),any(_179850).<BR>
+<BR>
+&nbsp;&nbsp;t248(interleave(_178923,_178945)):-t241(_178923),t241(_178945).=
+<BR>
+&nbsp;&nbsp;t248(agent(_178691)):-t239(_178691).<BR>
+<BR>
+&nbsp;&nbsp;t241(agent(_178110)):-t239(_178110).<BR>
+<BR>
+&nbsp;&nbsp;t239(z2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t230(interleave(_174291,_174313)):-t223(_174291),t223(_174313).=
+<BR>
+&nbsp;&nbsp;t230(agent(_174059)):-t221(_174059).<BR>
+<BR>
+&nbsp;&nbsp;t223(agent(_172719)):-t221(_172719).<BR>
+<BR>
+&nbsp;&nbsp;t221(z2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t214([_171463|_171485]):-any(_171463),any(_171485).<BR>
+<BR>
+&nbsp;&nbsp;t178(prefix(_170270,_170292)):-any(_170270),any(_170292).<BR>
+&nbsp;&nbsp;t178(par(_169939,_169961)):-t178(_169939),t178(_169961).<BR>
+&nbsp;&nbsp;t178(interleave(_169608,_169630)):-any(_169608),any(_169630).<B=
+R>
+&nbsp;&nbsp;t178(choice(_169277,_169299)):-any(_169277),any(_169299).<BR>
+&nbsp;&nbsp;t178(agent(_170601)):-t65(_170601).<BR>
+added_leaf(gt_id__156,gt_id__157,[trans(interleave(agent(z2),_193),_610,int=
+erleave(_898,_899)),ptrace(interleave(_898,_899),_611),rul__constraint__decl=
+aration([any([_610|_611]),new_t1272(_193)],[proc(x_ex_new_t1250/1,[(x_ex_new=
+_t1250(z2):-true)]),proc(new_t1272/1,[(new_t1272(agent(_145)):-x_ex_new_t125=
+0(_145)),(new_t1272(interleave(_133,_134)):-y_ex_new_t1261(_133),y_ex_new_t1=
+261(_134))]),proc(y_ex_new_t1261/1,[(y_ex_new_t1261(agent(_109)):-x_ex_new_t=
+1250(_109))]),proc(ub_new_t1271/1,[(ub_new_t1271(interleave(_89,_90)):-y_ex_=
+new_t1261(_89),new_t1272(_90))]),proc(any/1,[(any(_67):-true)])])])<BR>
+.~~~~~~~~~~~~~~~~~~~~~~~~~<BR>
+wellDefined failed with input<BR>
+any<BR>
+~~~~~~~~~~~~~~~~~~~~~~~~~<BR>
+### PRE-CONDITION ERROR OCCURED<BR>
+### unfold2:l_goalUnfolding2([trans(interleave(agent(z2),_3985),_3983,inter=
+leave(_3981,_3979)),ptrace(interleave(_3981,_3979),_3988)],rul__constraint__=
+declaration([t230(_3985),any(_3983),any(_3981),any(_3979)],[proc(t74/1,[(t74=
+(z2):-true),(t74(v2):-true)]),proc(t72/1,[(t72(prefix(_18084,_18082)):-t36(_=
+18084),t37(_18082)),(t72(agent(_18070)):-t58(_18070))]),proc(t71/1,[(t71(age=
+nt(_18054)):-t74(_18054))]),proc(t69/1,[(t69(interleave(_18039,_18037)):-t71=
+(_18039),t72(_18037))]),proc(t66/1,[(t66(prefix(_18019,_18017)):-t31(_18019)=
+,t69(_18017)),(t66(choice(_18004,_18002)):-t41(_18004),t44(_18002))]),proc(t=
+65/1,[(t65(z2):-true),(t65(w2):-true),(t65(v2):-true)]),proc(t58/1,[(t58(z2)=
+:-true)]),proc(t545/1,[(t545(prefix(_17982,_17980)):-any(_17982),any(_17980)=
+),(t545(par(_17967,_17965)):-t545(_17967),t545(_17965)),(t545(interleave(_17=
+952,_17950)):-any(_17952),any(_17950)),(t545(choice(_17937,_17935)):-any(_17=
+937),any(_17935)),(t545(agent(_17923)):-t412(_17923))]),proc(t49/1,[(t49(w2)=
+:-true)]),proc(t48/1,[(t48(agent(_17901)):-t49(_17901))]),proc(t47/1,[(t47(b=
+):-true)]),proc(t46/1,[(t46(prefix(_17886,_17884)):-t47(_17886),t48(_17884))=
+]),proc(t45/1,[(t45(a):-true)]),proc(t44/1,[(t44(prefix(_17866,_17864)):-t45=
+(_17866),t46(_17864))]),proc(t43/1,[(t43(stop):-true)]),proc(t421/1,[(t421(z=
+2):-true),(t421(v2):-true)]),proc(t42/1,[(t42(b):-true)]),proc(t419/1,[(t419=
+(prefix(_17846,_17844)):-t383(_17846),t384(_17844)),(t419(agent(_17832)):-t4=
+05(_17832))]),proc(t418/1,[(t418(agent(_17816)):-t421(_17816))]),proc(t416/1=
+,[(t416(interleave(_17801,_17799)):-t418(_17801),t419(_17799))]),proc(t413/1=
+,[(t413(prefix(_17781,_17779)):-t378(_17781),t416(_17779)),(t413(choice(_177=
+66,_17764)):-t388(_17766),t391(_17764))]),proc(t412/1,[(t412(z2):-true),(t41=
+2(w2):-true),(t412(v2):-true)]),proc(t41/1,[(t41(prefix(_17744,_17742)):-t42=
+(_17744),t43(_17742))]),proc(t405/1,[(t405(z2):-true)]),proc(t396/1,[(t396(w=
+2):-true)]),proc(t395/1,[(t395(agent(_17725)):-t396(_17725))]),proc(t394/1,[=
+(t394(b):-true)]),proc(t393/1,[(t393(prefix(_17710,_17708)):-t394(_17710),t3=
+95(_17708))]),proc(t392/1,[(t392(a):-true)]),proc(t391/1,[(t391(prefix(_1769=
+0,_17688)):-t392(_17690),t393(_17688))]),proc(t390/1,[(t390(stop):-true)]),p=
+roc(t389/1,[(t389(b):-true)]),proc(t388/1,[(t388(prefix(_17670,_17668)):-t38=
+9(_17670),t390(_17668))]),proc(t384/1,[(t384(stop):-true)]),proc(t383/1,[(t3=
+83(b):-true)]),proc(t378/1,[(t378(a):-true)]),proc(t37/1,[(t37(stop):-true)]=
+),proc(t36/1,[(t36(b):-true)]),proc(t31/1,[(t31(a):-true)]),proc(t251/1,[(t2=
+51([_17651|_17649]):-any(_17651),any(_17649))]),proc(t248/1,[(t248(interleav=
+e(_17631,_17629)):-t241(_17631),t241(_17629)),(t248(agent(_17617)):-t239(_17=
+617))]),proc(t241/1,[(t241(agent(_17601)):-t239(_17601))]),proc(t239/1,[(t23=
+9(z2):-true)]),proc(t230/1,[(t230(interleave(_17586,_17584)):-t223(_17586),t=
+223(_17584)),(t230(agent(_17572)):-t221(_17572))]),proc(t223/1,[(t223(agent(=
+_17556)):-t221(_17556))]),proc(t221/1,[(t221(z2):-true)]),proc(t214/1,[(t214=
+([_17542|_17540]):-any(_17542),any(_17540))]),proc(t178/1,[(t178(prefix(_175=
+22,_17520)):-any(_17522),any(_17520)),(t178(par(_17507,_17505)):-t178(_17507=
+),t178(_17505)),(t178(interleave(_17492,_17490)):-any(_17492),any(_17490)),(=
+t178(choice(_17477,_17475)):-any(_17477),any(_17475)),(t178(agent(_17463)):-=
+t65(_17463))])]))</FONT>
+</BODY>
+</HTML>
+
+
+--B_3102064456_775975--
+

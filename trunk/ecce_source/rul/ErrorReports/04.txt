@@ -1,0 +1,22 @@
+Datum: Tue, 11 Sep 2001 14:23:04 +0100 
+Von: Michael Leuschel <mal@ecs.soton.ac.uk> 
+An: Stefan Gruner <sg@ecs.soton.ac.uk> 
+Betreff: Problem - generierung von t17 
+
+
+proSiNo:l_goalRULification([t(_69199)],_60800,rul__constraint__declaration(
+[x_t0(_69199),y_t6(_69199)],[proc(any/1,[(any(_6941
+3):-true)]),proc(x_t0/1,[(x_t0(s(_69399)):-x_t2(_69399))]),proc(x_t2/1,[(x_t2(
+0):-true)]),proc(any/1,[(any(_69389):-true)]),proc(y_t0/1,[(y_t0(s(_69375)
+):-y_t2(_69375))]),proc(y_t2/1,[(y_t2(0):-true)]),proc(y_t6/1,[(y_t6(s(_69361)
+):-y_t8(_69361))]),proc(y_t8/1,[(y_t8(s(_69347)):-any(_69347))])]),_60802)
+
+--------------------------------------------------------------------------------
+
+ANTWORT: In John Gallagher's interSection-Prozedur, welche hier wieder-
+         verwendet worden war, war die Entstehung leerer Definitionen
+	 nicht ausgeschlossen. (In unserem Beispiel: [proc(t17/1, [])].
+         Ich habe bei Erzeugung einer leeren Definition ein Scheitern
+	 der interSection-Prozedur eingebaut.
+
+-----------------------------------------------------------------[SG:13.09.2001]

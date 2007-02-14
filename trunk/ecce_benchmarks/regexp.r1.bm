@@ -1,0 +1,33 @@
+orig_prog('orig/regexp.pro').
+pd_query([generate(cat(star(or(char(a),char(b))),
+			   cat(char(a),cat(char(a),char(b)))),S,[])]).
+run_time_queries([
+	[generate(cat(star(or(char(a),char(b))),
+		cat(char(a),cat(char(a),char(b)))),
+		[a,a,a,a,a,a,b,b,a,a,a,b],[])],
+	[generate(cat(star(or(char(a),char(b))),
+		cat(char(a),cat(char(a),char(b)))),
+		[a,a,a,a,a,a,b,b,a,b],[])],
+	[generate(cat(star(or(char(a),char(b))),
+		cat(char(a),cat(char(a),char(b)))),
+		[a,b,a,b,a,b,a,b,a,b,a],[])],
+	[generate(cat(star(or(char(a),char(b))),
+		cat(char(a),cat(char(a),char(b)))),
+		[X,Y,Z,V],[])]
+	]).
+run_time_nr(50). /* changed from 10 */
+test_queries([
+	[generate(cat(star(or(char(a),char(b))),
+		cat(char(a),cat(char(a),char(b)))),
+		[X,Y,Z,V],[])]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('A program testing whether a string matches a regular 
+expression (using difference lists). Much more naive (and smaller) than 
+the program used by Mogensen/Bondorf for Logimix ! Regular expression: 
+(a+b)*aab.').
+
+
+
+

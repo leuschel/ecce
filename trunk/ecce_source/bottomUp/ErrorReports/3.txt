@@ -1,0 +1,1336 @@
+========================================================================
+ANSWER: all the problems reported below were caused by a scanning error.
+We had not deleted all irrelevant input, which lead to confusion between
+the relevant input and the irrelevant input. As a result, we had got non-
+RUL syntax in the generated Rul Constraint Declarations. Bug now fixed. 
+[SG:22/04/2002] ========================================================
+
+
+
+From - Mon Apr 22 13:58:31 2002
+Received: from [152.78.70.94] (starnberg.ecs.soton.ac.uk [152.78.70.94])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id NAA26467
+	for <sg@ecs.soton.ac.uk>; Mon, 22 Apr 2002 13:37:27 +0100 (BST)
+User-Agent: Microsoft-Entourage/10.0.0.1331
+Date: Mon, 22 Apr 2002 13:37:28 +0100
+Subject: Preconditon error
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+Message-ID: <B8E9C298.4399%mal@ecs.soton.ac.uk>
+Mime-version: 1.0
+Content-type: multipart/alternative; boundary="B_3102327449_2516181"
+Content-Length: 1964
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001873
+
+> This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+--B_3102327449_2516181
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
++### PRE-CONDITION ERROR OCCURED
+### 
+unfold2:l_goalUnfolding2([trans(agent(z2),a,_161411),ptrace(interleave(_1614
+11,_161409),_161413)],rul__constraint__declaration([t83(_161413),t204(_16141
+1),t46(_161409)],[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(interleav
+e(_163792,_163790)):-t173(_163792),t173(_163790)),(t173(agent(_163778)):-t98
+(_163778))]),proc(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_16376
+1,_163759)):-t173(_163761),t173(_163759)),(t46(interleave(_163746,_163744)):
+-t46(_163746),t46(_163744)),(t46(agent(_163732)):-t98(_163732))]),proc(t204/
+1,[(t204(interleave(_163713,_163711)):-t46(_163713),t46(_163711))]),proc(t83
+/1,[(t83([_163694|_163692]):-t71(_163694),t83(_163692)),(t83([]):-true)])]))
+
+--B_3102327449_2516181
+Content-type: text/html; charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
+
+<HTML>
+<HEAD>
+<TITLE>Preconditon error</TITLE>
+</HEAD>
+<BODY>
+<FONT FACE=3D"Verdana">+### PRE-CONDITION ERROR OCCURED<BR>
+### unfold2:l_goalUnfolding2([trans(agent(z2),a,_161411),ptrace(interleave(=
+_161411,_161409),_161413)],rul__constraint__declaration([t83(_161413),t204(_=
+161411),t46(_161409)],[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(inte=
+rleave(_163792,_163790)):-t173(_163792),t173(_163790)),(t173(agent(_163778))=
+:-t98(_163778))]),proc(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_=
+163761,_163759)):-t173(_163761),t173(_163759)),(t46(interleave(_163746,_1637=
+44)):-t46(_163746),t46(_163744)),(t46(agent(_163732)):-t98(_163732))]),proc(=
+t204/1,[(t204(interleave(_163713,_163711)):-t46(_163713),t46(_163711))]),pro=
+c(t83/1,[(t83([_163694|_163692]):-t71(_163694),t83(_163692)),(t83([]):-true)=
+])]))</FONT>
+</BODY>
+</HTML>
+
+
+--B_3102327449_2516181--
+
+From - Mon Apr 22 13:58:45 2002
+Received: from [152.78.70.94] (starnberg.ecs.soton.ac.uk [152.78.70.94])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id NAA26737
+	for <sg@ecs.soton.ac.uk>; Mon, 22 Apr 2002 13:38:46 +0100 (BST)
+User-Agent: Microsoft-Entourage/10.0.0.1331
+Date: Mon, 22 Apr 2002 13:38:47 +0100
+Subject: Anderer Precondition errror
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+Message-ID: <B8E9C2E7.439A%mal@ecs.soton.ac.uk>
+Mime-version: 1.0
+Content-type: multipart/alternative; boundary="B_3102327528_2561739"
+Content-Length: 3627
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001874
+
+> This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+--B_3102327528_2561739
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
+### 
+unfold2:l_goalUnfolding2([trans(agent(z2),a,interleave(_165407,_165408)),ptr
+ace(interleave(interleave(_165407,_165408),_161409),_161413)],rul__constrain
+t__declaration([t83(_161413),t204(interleave(_165407,_165408)),t46(_161409)]
+,[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(interleave(_161396,_16139
+4)):-t173(_161396),t173(_161394)),(t173(agent(_161382)):-t98(_161382))]),pro
+c(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_161365,_161363)):-t17
+3(_161365),t173(_161363)),(t46(interleave(_161350,_161348)):-t46(_161350),t4
+6(_161348)),(t46(agent(_161336)):-t98(_161336))]),proc(t204/1,[(t204(interle
+ave(_161317,_161315)):-t46(_161317),t46(_161315))]),proc(t83/1,[(t83([_16129
+8|_161296]):-t71(_161298),t83(_161296)),(t83([]):-true)])]))
+### WARNING CALL HAS FAILED !
+### 
+unfold2:l_goalUnfolding2([trans(agent(z2),a,interleave(_165407,_165408)),ptr
+ace(interleave(interleave(_165407,_165408),_161409),_161413)],rul__constrain
+t__declaration([t83(_161413),t204(interleave(_165407,_165408)),t46(_161409)]
+,[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(interleave(_161396,_16139
+4)):-t173(_161396),t173(_161394)),(t173(agent(_161382)):-t98(_161382))]),pro
+c(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_161365,_161363)):-t17
+3(_161365),t173(_161363)),(t46(interleave(_161350,_161348)):-t46(_161350),t4
+6(_161348)),(t46(agent(_161336)):-t98(_161336))]),proc(t204/1,[(t204(interle
+ave(_161317,_161315)):-t46(_161317),t46(_161315))]),proc(t83/1,[(t83([_16129
+8|_161296]):-t71(_161298),t83(_161296)),(t83([]):-true)])]))
+
+
+--B_3102327528_2561739
+Content-type: text/html; charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
+
+<HTML>
+<HEAD>
+<TITLE>Anderer Precondition errror</TITLE>
+</HEAD>
+<BODY>
+<FONT FACE=3D"Verdana">### unfold2:l_goalUnfolding2([trans(agent(z2),a,interl=
+eave(_165407,_165408)),ptrace(interleave(interleave(_165407,_165408),_161409=
+),_161413)],rul__constraint__declaration([t83(_161413),t204(interleave(_1654=
+07,_165408)),t46(_161409)],[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173=
+(interleave(_161396,_161394)):-t173(_161396),t173(_161394)),(t173(agent(_161=
+382)):-t98(_161382))]),proc(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interle=
+ave(_161365,_161363)):-t173(_161365),t173(_161363)),(t46(interleave(_161350,=
+_161348)):-t46(_161350),t46(_161348)),(t46(agent(_161336)):-t98(_161336))]),=
+proc(t204/1,[(t204(interleave(_161317,_161315)):-t46(_161317),t46(_161315))]=
+),proc(t83/1,[(t83([_161298|_161296]):-t71(_161298),t83(_161296)),(t83([]):-=
+true)])]))<BR>
+### WARNING CALL HAS FAILED !<BR>
+### unfold2:l_goalUnfolding2([trans(agent(z2),a,interleave(_165407,_165408)=
+),ptrace(interleave(interleave(_165407,_165408),_161409),_161413)],rul__cons=
+traint__declaration([t83(_161413),t204(interleave(_165407,_165408)),t46(_161=
+409)],[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(interleave(_161396,_=
+161394)):-t173(_161396),t173(_161394)),(t173(agent(_161382)):-t98(_161382))]=
+),proc(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_161365,_161363))=
+:-t173(_161365),t173(_161363)),(t46(interleave(_161350,_161348)):-t46(_16135=
+0),t46(_161348)),(t46(agent(_161336)):-t98(_161336))]),proc(t204/1,[(t204(in=
+terleave(_161317,_161315)):-t46(_161317),t46(_161315))]),proc(t83/1,[(t83([_=
+161298|_161296]):-t71(_161298),t83(_161296)),(t83([]):-true)])]))<BR>
+</FONT>
+</BODY>
+</HTML>
+
+
+--B_3102327528_2561739--
+
+From - Mon Apr 22 13:58:58 2002
+Received: from [152.78.70.94] (starnberg.ecs.soton.ac.uk [152.78.70.94])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id NAA27698
+	for <sg@ecs.soton.ac.uk>; Mon, 22 Apr 2002 13:43:28 +0100 (BST)
+User-Agent: Microsoft-Entourage/10.0.0.1331
+Date: Mon, 22 Apr 2002 13:43:29 +0100
+Subject: Noch mehr Fehlermeldungen (falls es hilft)
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+Message-ID: <B8E9C401.439B%mal@ecs.soton.ac.uk>
+Mime-version: 1.0
+Content-type: multipart/alternative; boundary="B_3102327810_2564698"
+Content-Length: 9941
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001875
+
+> This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+--B_3102327810_2564698
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
+
+[stop(_31487),rul__constraint__declaration([x_t678([]),ub_new_t506(_31487),x
+_t678(_31470)],[proc(y_ex_new_t492/1,[(y_ex_new_t492(w2):-true)]),proc(x_t39
+/1,[(x_t39(b):-true),(x_t39(a):-true)]),proc(y_ex_new_t498/1,[(y_ex_new_t498
+(v2):-true)]),proc(y_ex_new_t490/1,[(y_ex_new_t490(agent(_31401)):-y_ex_new_
+t492(_31401))]),proc(y_ex_new_t489/1,[(y_ex_new_t489(b):-true)]),proc(x_t678
+/1,[(x_t678([_31366|_31367]):-x_t39(_31366),x_t678(_31367)),(x_t678([]):-tru
+e)]),proc(y_ex_new_t495/1,[(y_ex_new_t495(agent(_31336)):-y_ex_new_t498(_313
+36))]),proc(ub_new_t506/1,[(ub_new_t506(agent(_31317)):-y_ex_new_t492(_31317
+)),(ub_new_t506(prefix(_31305,_31306)):-y_ex_new_t489(_31305),y_ex_new_t490(
+_31306))])])]
+### PRE-CONDITION ERROR OCCURED
+### 
+unfold2:l_goalUnfolding2([stop(_40766)],rul__constraint__declaration([t164(_
+40766)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),proc(t
+27/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40694,_40695)):-t47(_4069
+4),t88(_40695)),(t159(interleave(_40677,_40678)):-t131(_40677),t159(_40678))
+,(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40645,_40646)):-t131(_4
+0645),t159(_40646)),(t131(interleave(_40628,_40629)):-t131(_40628),t159(_406
+29)),(t131(agent(_40612)):-t27(_40612)),(t131(stop):-true)]),proc(t164/1,[(t
+164(interleave(_40585,_40586)):-t131(_40585),t159(_40586)),(t164(stop):-true
+)])]))
+### WARNING CALL HAS FAILED !
+### 
+unfold2:l_goalUnfolding2([stop(_40766)],rul__constraint__declaration([t164(_
+40766)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),proc(t
+27/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40694,_40695)):-t47(_4069
+4),t88(_40695)),(t159(interleave(_40677,_40678)):-t131(_40677),t159(_40678))
+,(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40645,_40646)):-t131(_4
+0645),t159(_40646)),(t131(interleave(_40628,_40629)):-t131(_40628),t159(_406
+29)),(t131(agent(_40612)):-t27(_40612)),(t131(stop):-true)]),proc(t164/1,[(t
+164(interleave(_40585,_40586)):-t131(_40585),t159(_40586)),(t164(stop):-true
+)])]))
+### WARNING CALL HAS FAILED !
+### 
+unfold2:l_goalUnfolding([stop(_40766)],rul__constraint__declaration([t164(_4
+0766)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),proc(t2
+7/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40694,_40695)):-t47(_40694
+),t88(_40695)),(t159(interleave(_40677,_40678)):-t131(_40677),t159(_40678)),
+(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40645,_40646)):-t131(_40
+645),t159(_40646)),(t131(interleave(_40628,_40629)):-t131(_40628),t159(_4062
+9)),(t131(agent(_40612)):-t27(_40612)),(t131(stop):-true)]),proc(t164/1,[(t1
+64(interleave(_40585,_40586)):-t131(_40585),t159(_40586)),(t164(stop):-true)
+])]))
+### PRE-CONDITION ERROR OCCURED
+### 
+unfold2:l_goalUnfolding2([stop(_40757)],rul__constraint__declaration([t164(_
+40757)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),proc(t
+27/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40685,_40686)):-t47(_4068
+5),t88(_40686)),(t159(interleave(_40668,_40669)):-t131(_40668),t159(_40669))
+,(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40636,_40637)):-t131(_4
+0636),t159(_40637)),(t131(interleave(_40619,_40620)):-t131(_40619),t159(_406
+20)),(t131(agent(_40603)):-t27(_40603)),(t131(stop):-true)]),proc(t164/1,[(t
+164(interleave(_40576,_40577)):-t131(_40576),t159(_40577)),(t164(stop):-true
+)])]))
+### WARNING CALL HAS FAILED !
+### 
+unfold2:l_goalUnfolding2([stop(_40757)],rul__constraint__declaration([t164(_
+40757)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),proc(t
+27/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40685,_40686)):-t47(_4068
+5),t88(_40686)),(t159(interleave(_40668,_40669)):-t131(_40668),t159(_40669))
+,(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40636,_40637)):-t131(_4
+0636),t159(_40637)),(t131(interleave(_40619,_40620)):-t131(_40619),t159(_406
+20)),(t131(agent(_40603)):-t27(_40603)),(t131(stop):-true)]),proc(t164/1,[(t
+164(interleave(_40576,_40577)):-t131(_40576),t159(_40577)),(t164(stop):-true
+)])]))
+### WARNING CALL HAS FAILED !
+### 
+unfold2:l_goalUnfolding([stop(_40757)],rul__constraint__declaration([t164(_4
+0757)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),proc(t2
+7/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40685,_40686)):-t47(_40685
+),t88(_40686)),(t159(interleave(_40668,_40669)):-t131(_40668),t159(_40669)),
+(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40636,_40637)):-t131(_40
+636),t159(_40637)),(t131(interleave(_40619,_40620)):-t131(_40619),t159(_4062
+0)),(t131(agent(_40603)):-t27(_40603)),(t131(stop):-true)]),proc(t164/1,[(t1
+64(interleave(_40576,_40577)):-t131(_40576),t159(_40577)),(t164(stop):-true)
+])]))
+.
+
+--B_3102327810_2564698
+Content-type: text/html; charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
+
+<HTML>
+<HEAD>
+<TITLE>Noch mehr Fehlermeldungen (falls es hilft)</TITLE>
+</HEAD>
+<BODY>
+<FONT FACE=3D"Verdana"><BR>
+[stop(_31487),rul__constraint__declaration([x_t678([]),ub_new_t506(_31487),=
+x_t678(_31470)],[proc(y_ex_new_t492/1,[(y_ex_new_t492(w2):-true)]),proc(x_t3=
+9/1,[(x_t39(b):-true),(x_t39(a):-true)]),proc(y_ex_new_t498/1,[(y_ex_new_t49=
+8(v2):-true)]),proc(y_ex_new_t490/1,[(y_ex_new_t490(agent(_31401)):-y_ex_new=
+_t492(_31401))]),proc(y_ex_new_t489/1,[(y_ex_new_t489(b):-true)]),proc(x_t67=
+8/1,[(x_t678([_31366|_31367]):-x_t39(_31366),x_t678(_31367)),(x_t678([]):-tr=
+ue)]),proc(y_ex_new_t495/1,[(y_ex_new_t495(agent(_31336)):-y_ex_new_t498(_31=
+336))]),proc(ub_new_t506/1,[(ub_new_t506(agent(_31317)):-y_ex_new_t492(_3131=
+7)),(ub_new_t506(prefix(_31305,_31306)):-y_ex_new_t489(_31305),y_ex_new_t490=
+(_31306))])])]<BR>
+### PRE-CONDITION ERROR OCCURED<BR>
+### unfold2:l_goalUnfolding2([stop(_40766)],rul__constraint__declaration([t=
+164(_40766)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),p=
+roc(t27/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40694,_40695)):-t47(=
+_40694),t88(_40695)),(t159(interleave(_40677,_40678)):-t131(_40677),t159(_40=
+678)),(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40645,_40646)):-t1=
+31(_40645),t159(_40646)),(t131(interleave(_40628,_40629)):-t131(_40628),t159=
+(_40629)),(t131(agent(_40612)):-t27(_40612)),(t131(stop):-true)]),proc(t164/=
+1,[(t164(interleave(_40585,_40586)):-t131(_40585),t159(_40586)),(t164(stop):=
+-true)])]))<BR>
+### WARNING CALL HAS FAILED !<BR>
+### unfold2:l_goalUnfolding2([stop(_40766)],rul__constraint__declaration([t=
+164(_40766)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),p=
+roc(t27/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40694,_40695)):-t47(=
+_40694),t88(_40695)),(t159(interleave(_40677,_40678)):-t131(_40677),t159(_40=
+678)),(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40645,_40646)):-t1=
+31(_40645),t159(_40646)),(t131(interleave(_40628,_40629)):-t131(_40628),t159=
+(_40629)),(t131(agent(_40612)):-t27(_40612)),(t131(stop):-true)]),proc(t164/=
+1,[(t164(interleave(_40585,_40586)):-t131(_40585),t159(_40586)),(t164(stop):=
+-true)])]))<BR>
+### WARNING CALL HAS FAILED !<BR>
+### unfold2:l_goalUnfolding([stop(_40766)],rul__constraint__declaration([t1=
+64(_40766)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),pr=
+oc(t27/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40694,_40695)):-t47(_=
+40694),t88(_40695)),(t159(interleave(_40677,_40678)):-t131(_40677),t159(_406=
+78)),(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40645,_40646)):-t13=
+1(_40645),t159(_40646)),(t131(interleave(_40628,_40629)):-t131(_40628),t159(=
+_40629)),(t131(agent(_40612)):-t27(_40612)),(t131(stop):-true)]),proc(t164/1=
+,[(t164(interleave(_40585,_40586)):-t131(_40585),t159(_40586)),(t164(stop):-=
+true)])]))<BR>
+### PRE-CONDITION ERROR OCCURED<BR>
+### unfold2:l_goalUnfolding2([stop(_40757)],rul__constraint__declaration([t=
+164(_40757)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),p=
+roc(t27/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40685,_40686)):-t47(=
+_40685),t88(_40686)),(t159(interleave(_40668,_40669)):-t131(_40668),t159(_40=
+669)),(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40636,_40637)):-t1=
+31(_40636),t159(_40637)),(t131(interleave(_40619,_40620)):-t131(_40619),t159=
+(_40620)),(t131(agent(_40603)):-t27(_40603)),(t131(stop):-true)]),proc(t164/=
+1,[(t164(interleave(_40576,_40577)):-t131(_40576),t159(_40577)),(t164(stop):=
+-true)])]))<BR>
+### WARNING CALL HAS FAILED !<BR>
+### unfold2:l_goalUnfolding2([stop(_40757)],rul__constraint__declaration([t=
+164(_40757)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),p=
+roc(t27/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40685,_40686)):-t47(=
+_40685),t88(_40686)),(t159(interleave(_40668,_40669)):-t131(_40668),t159(_40=
+669)),(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40636,_40637)):-t1=
+31(_40636),t159(_40637)),(t131(interleave(_40619,_40620)):-t131(_40619),t159=
+(_40620)),(t131(agent(_40603)):-t27(_40603)),(t131(stop):-true)]),proc(t164/=
+1,[(t164(interleave(_40576,_40577)):-t131(_40576),t159(_40577)),(t164(stop):=
+-true)])]))<BR>
+### WARNING CALL HAS FAILED !<BR>
+### unfold2:l_goalUnfolding([stop(_40757)],rul__constraint__declaration([t1=
+64(_40757)],[proc(t88/1,[(t88(stop):-true)]),proc(t47/1,[(t47(b):-true)]),pr=
+oc(t27/1,[(t27(v2):-true)]),proc(t159/1,[(t159(prefix(_40685,_40686)):-t47(_=
+40685),t88(_40686)),(t159(interleave(_40668,_40669)):-t131(_40668),t159(_406=
+69)),(t159(stop):-true)]),proc(t131/1,[(t131(interleave(_40636,_40637)):-t13=
+1(_40636),t159(_40637)),(t131(interleave(_40619,_40620)):-t131(_40619),t159(=
+_40620)),(t131(agent(_40603)):-t27(_40603)),(t131(stop):-true)]),proc(t164/1=
+,[(t164(interleave(_40576,_40577)):-t131(_40576),t159(_40577)),(t164(stop):-=
+true)])]))<BR>
+.</FONT>
+</BODY>
+</HTML>
+
+
+--B_3102327810_2564698--
+
+From - Mon Apr 22 13:59:11 2002
+Received: from [152.78.70.94] (starnberg.ecs.soton.ac.uk [152.78.70.94])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id NAA29283;
+	Mon, 22 Apr 2002 13:50:25 +0100 (BST)
+User-Agent: Microsoft-Entourage/10.0.0.1331
+Date: Mon, 22 Apr 2002 13:50:26 +0100
+Subject: Nochmal
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+CC: Michael Leuschel <mal@ecs.soton.ac.uk>
+Message-ID: <B8E9C5A2.439D%mal@ecs.soton.ac.uk>
+Mime-version: 1.0
+Content-type: multipart/alternative; boundary="B_3102328227_2593355"
+Content-Length: 5848
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001876
+
+> This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+--B_3102328227_2593355
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
++### PRE-CONDITION ERROR OCCURED
+### 
+unfold2:l_goalUnfolding2([trans(agent(z2),a,_161494),ptrace(interleave(_1614
+94,_161492),_161496)],rul__constraint__declaration([t83(_161496),t204(_16149
+4),t46(_161492)],[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(interleav
+e(_163877,_163875)):-t173(_163877),t173(_163875)),(t173(agent(_163863)):-t98
+(_163863))]),proc(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_16384
+6,_163844)):-t173(_163846),t173(_163844)),(t46(interleave(_163831,_163829)):
+-t46(_163831),t46(_163829)),(t46(agent(_163817)):-t98(_163817))]),proc(t204/
+1,[(t204(interleave(_163798,_163796)):-t46(_163798),t46(_163796))]),proc(t83
+/1,[(t83([_163779|_163777]):-t71(_163779),t83(_163777)),(t83([]):-true)])]))
+### WARNING CALL HAS FAILED !
+### 
+unfold2:l_goalUnfolding2([trans(agent(z2),a,_161494),ptrace(interleave(_1614
+94,_161492),_161496)],rul__constraint__declaration([t83(_161496),t204(_16149
+4),t46(_161492)],[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(interleav
+e(_163877,_163875)):-t173(_163877),t173(_163875)),(t173(agent(_163863)):-t98
+(_163863))]),proc(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_16384
+6,_163844)):-t173(_163846),t173(_163844)),(t46(interleave(_163831,_163829)):
+-t46(_163831),t46(_163829)),(t46(agent(_163817)):-t98(_163817))]),proc(t204/
+1,[(t204(interleave(_163798,_163796)):-t46(_163798),t46(_163796))]),proc(t83
+/1,[(t83([_163779|_163777]):-t71(_163779),t83(_163777)),(t83([]):-true)])]))
+Examining:gt_id__115
+    
+
+
+| ?- | ?- 
+print_rul(rul__constraint__declaration([t83(_161496),t204(_161494),t46(_1614
+92)],[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(interleave(_163877,_1
+63875)):-t173(_163877),t173(_163875)),(t173(agent(_163863)):-t98(_163863))])
+,proc(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_163846,_163844)):
+-t173(_163846),t173(_163844)),(t46(interleave(_163831,_163829)):-t46(_163831
+),t46(_163829)),(t46(agent(_163817)):-t98(_163817))]),proc(t204/1,[(t204(int
+erleave(_163798,_163796)):-t46(_163798),t46(_163796))]),proc(t83/1,[(t83([_1
+63779|_163777]):-t71(_163779),t83(_163777)),(t83([]):-true)])])).
+RUL Constraints: [t83(_131),t204(_180),t46(_229)]
+RUL Program:
+
+  t98(z2):-true.
+
+  t173(interleave(_454,_486)):-t173(_454),t173(_486).
+  t173(agent(_662)):-t98(_662).
+
+  t71(a):-true.
+
+  t46(interleave(_948,_980)):-t173(_948),t173(_980).
+  t46(interleave(_1156,_1188)):-t46(_1156),t46(_1188).
+  t46(agent(_1364)):-t98(_1364).
+
+  t204(interleave(_1544,_1576)):-t46(_1544),t46(_1576).
+
+  t83([_1798|_1830]):-t71(_1798),t83(_1830).
+  t83([]):-true.
+
+Yes
+
+--B_3102328227_2593355
+Content-type: text/html; charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
+
+<HTML>
+<HEAD>
+<TITLE>Nochmal</TITLE>
+</HEAD>
+<BODY>
+<FONT FACE=3D"Verdana">+### PRE-CONDITION ERROR OCCURED<BR>
+### unfold2:l_goalUnfolding2([trans(agent(z2),a,_161494),ptrace(interleave(=
+_161494,_161492),_161496)],rul__constraint__declaration([t83(_161496),t204(_=
+161494),t46(_161492)],[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(inte=
+rleave(_163877,_163875)):-t173(_163877),t173(_163875)),(t173(agent(_163863))=
+:-t98(_163863))]),proc(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_=
+163846,_163844)):-t173(_163846),t173(_163844)),(t46(interleave(_163831,_1638=
+29)):-t46(_163831),t46(_163829)),(t46(agent(_163817)):-t98(_163817))]),proc(=
+t204/1,[(t204(interleave(_163798,_163796)):-t46(_163798),t46(_163796))]),pro=
+c(t83/1,[(t83([_163779|_163777]):-t71(_163779),t83(_163777)),(t83([]):-true)=
+])]))<BR>
+### WARNING CALL HAS FAILED !<BR>
+### unfold2:l_goalUnfolding2([trans(agent(z2),a,_161494),ptrace(interleave(=
+_161494,_161492),_161496)],rul__constraint__declaration([t83(_161496),t204(_=
+161494),t46(_161492)],[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(inte=
+rleave(_163877,_163875)):-t173(_163877),t173(_163875)),(t173(agent(_163863))=
+:-t98(_163863))]),proc(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_=
+163846,_163844)):-t173(_163846),t173(_163844)),(t46(interleave(_163831,_1638=
+29)):-t46(_163831),t46(_163829)),(t46(agent(_163817)):-t98(_163817))]),proc(=
+t204/1,[(t204(interleave(_163798,_163796)):-t46(_163798),t46(_163796))]),pro=
+c(t83/1,[(t83([_163779|_163777]):-t71(_163779),t83(_163777)),(t83([]):-true)=
+])]))<BR>
+Examining:gt_id__115<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<BR>
+<BR>
+<BR>
+| ?- | ?- print_rul(rul__constraint__declaration([t83(_161496),t204(_161494=
+),t46(_161492)],[proc(t98/1,[(t98(z2):-true)]),proc(t173/1,[(t173(interleave=
+(_163877,_163875)):-t173(_163877),t173(_163875)),(t173(agent(_163863)):-t98(=
+_163863))]),proc(t71/1,[(t71(a):-true)]),proc(t46/1,[(t46(interleave(_163846=
+,_163844)):-t173(_163846),t173(_163844)),(t46(interleave(_163831,_163829)):-=
+t46(_163831),t46(_163829)),(t46(agent(_163817)):-t98(_163817))]),proc(t204/1=
+,[(t204(interleave(_163798,_163796)):-t46(_163798),t46(_163796))]),proc(t83/=
+1,[(t83([_163779|_163777]):-t71(_163779),t83(_163777)),(t83([]):-true)])])).=
+ <BR>
+RUL Constraints: [t83(_131),t204(_180),t46(_229)]<BR>
+RUL Program:<BR>
+<BR>
+&nbsp;&nbsp;t98(z2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t173(interleave(_454,_486)):-t173(_454),t173(_486).<BR>
+&nbsp;&nbsp;t173(agent(_662)):-t98(_662).<BR>
+<BR>
+&nbsp;&nbsp;t71(a):-true.<BR>
+<BR>
+&nbsp;&nbsp;t46(interleave(_948,_980)):-t173(_948),t173(_980).<BR>
+&nbsp;&nbsp;t46(interleave(_1156,_1188)):-t46(_1156),t46(_1188).<BR>
+&nbsp;&nbsp;t46(agent(_1364)):-t98(_1364).<BR>
+<BR>
+&nbsp;&nbsp;t204(interleave(_1544,_1576)):-t46(_1544),t46(_1576).<BR>
+<BR>
+&nbsp;&nbsp;t83([_1798|_1830]):-t71(_1798),t83(_1830).<BR>
+&nbsp;&nbsp;t83([]):-true.<BR>
+<BR>
+Yes</FONT>
+</BODY>
+</HTML>
+
+
+--B_3102328227_2593355--
+
+From - Mon Apr 22 17:35:43 2002
+Received: from [152.78.70.94] (starnberg.ecs.soton.ac.uk [152.78.70.94])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id QAA02602
+	for <sg@ecs.soton.ac.uk>; Mon, 22 Apr 2002 16:22:33 +0100 (BST)
+User-Agent: Microsoft-Entourage/10.0.0.1331
+Date: Mon, 22 Apr 2002 16:22:31 +0100
+Subject: Call
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+Message-ID: <B8E9E947.43D9%mal@ecs.soton.ac.uk>
+Mime-version: 1.0
+Content-type: multipart/alternative; boundary="B_3102337352_3095643"
+Content-Length: 26166
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001880
+
+> This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+--B_3102337352_3095643
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
+| ?- 
+ad_hoc_bup_propagation([trans(agent(z2),a,_34852),ptrace(interleave(_34852,_
+34853),_631),rul__constraint__declaration([t71(interleave(agent(z2),_34853))
+,t118(interleave(_34852,_34853)),t34(_631)],[proc(t16/1,[(t16(a):-true)]),pr
+oc(t43/1,[(t43(z2):-true)]),proc(t61/1,[(t61(interleave(_565,_566)):-t61(_56
+5),t61(_566)),(t61(agent(_549)):-t43(_549))]),proc(t45/1,[(t45(agent(_530)):
+-t43(_530))]),proc(t34/1,[(t34([_510|_511]):-t16(_510),t34(_511)),(t34([]):-
+true)]),proc(t118/1,[(t118(interleave(_479,_480)):-t61(_479),t61(_480))]),pr
+oc(t71/1,[(t71(interleave(_454,_455)):-t45(_454),t61(_455)),(t71(agent(_438)
+):-t43(_438))])])],_32460).
+goal before: [trans(agent(z2),a,_158),ptrace(interleave(_158,_247),_278)]
+{Warning: abolish(johnsTool:program_pred/2) - no matching predicate}
+opening: ~/CVS/ecce/ecce_source/bottomUp/tmp.pl done
+
+>> A raw Rul Constraint Declaration has been constructed.
+goal: [trans(agent(z2),a,_52),ptrace(interleave(_52,_77),_86)]
+RUL Constraints: [t204(_52),t46(_77),t83(_86)]
+RUL Program:
+
+  t98(z2):-true.
+
+  t71(a):-true.
+
+  t173(interleave(_74638,_74636)):-t173(_74638),t173(_74636).
+  t173(agent(_74624)):-t98(_74624).
+
+  t83([_74608|_74606]):-t71(_74608),t83(_74606).
+  t83([]):-true.
+
+  t46(interleave(_74588,_74586)):-t173(_74588),t173(_74586).
+  t46(interleave(_74573,_74571)):-t46(_74573),t46(_74571).
+  t46(agent(_74559)):-t98(_74559).
+
+  t204(interleave(_74540,_74538)):-t46(_74540),t46(_74538).
+
+yes
+| ?- 
+
+
+------------------- INPUT FILE fuer JOHN -----------------------------
+
+
+trans(prefix(A,X),A,X).
+trans(par(X,Y),A,par(X2,Y2)) :- trans(X,A,X2), trans(Y,A,Y2).
+trans(interleave(X,Y),A,interleave(X2,Y)) :- trans(X,A,X2).
+trans(interleave(X,Y),A,interleave(X,Y2)) :- trans(Y,A,Y2).
+trans(choice(X,_Y),A,X2) :- trans(X,A,X2).
+trans(choice(_X,Y),A,Y2) :- trans(Y,A,Y2).
+trans(agent(X),A,Y) :- agent_def(X,Def), trans(Def,A,Y).
+
+
+agent_def(u2,prefix(a,interleave(prefix(b,stop),agent(u2)))).
+agent_def(v2,prefix(a,interleave(agent(v2),prefix(b,stop)))).
+agent_def(w2,choice(prefix(b,stop),prefix(a,prefix(b,agent(w2))))).
+agent_def(z2,prefix(a,interleave(agent(z2),agent(z2)))).
+
+ptrace(_X,[]).
+ptrace(X,[A|T]) :- trans(X,A,Y), ptrace(Y,T).
+
+test1(T) :- ptrace(agent(z2),T).
+test2(T) :- trace(agent(v2),T).
+test3(T) :- trace(agent(w2),T).
+test4(T) :- trace(agent(w2),T), trace(agent(v2),T).
+
+stop(stop).
+stop(par(X,Y)) :- stop(X),stop(Y).
+stop(interleave(X,_Y)) :- stop(X).
+stop(interleave(_X,Y)) :- stop(Y).
+stop(choice(X,_Y)) :- stop(X).
+stop(choice(_X,Y)) :- stop(Y).
+
+trace(X,[]) :- stop(X).
+trace(X,[A|T]) :- trans(X,A,Y), trace(Y,T).
+
+  t16(a):-true.
+
+  t43(z2):-true.
+
+  t61(interleave(_850,_876)):-t61(_850),t61(_876).
+  t61(agent(_1034)):-t43(_1034).
+
+  t45(agent(_1202)):-t43(_1202).
+
+  t34([_1363|_1389]):-t16(_1363),t34(_1389).
+  t34([]):-true.
+
+  t118(interleave(_1656,_1682)):-t61(_1656),t61(_1682).
+
+  t71(interleave(_1893,_1919)):-t45(_1893),t61(_1919).
+  t71(agent(_2077)):-t43(_2077).
+
+
+my_query_atom(_158,_247,_278) :-
+  t71(interleave(agent(z2),_247)), t118(interleave(_158,_247)), t34(_278),
+  trans(agent(z2),a,_158), ptrace(interleave(_158,_247),_278).
+
+
+
+-------- TEMP FILE --------------------
+
+my_query_atom_left_query(X1,X2,X3) :- any(X1),any(X2),any(X3).
+t71_left_query(X1) :- t12(X1).
+t12(interleave(X1,X2)) :- t13(X1),any(X2).
+t13(agent(X1)) :- t14(X1).
+t14(z2) :- true.
+t45_left_query(X1) :- t13(X1).
+t13(agent(X1)) :- t14(X1).
+t14(z2) :- true.
+t71__left_ans(X1) :- t49(X1).
+t49(interleave(X1,X2)) :- t13(X1),t46(X2).
+t13(agent(X1)) :- t14(X1).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t14(z2) :- true.
+t18(z2) :- true.
+t118_left_query(X1) :- t60(X1).
+t60(interleave(X1,X2)) :- any(X1),t46(X2).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t18(z2) :- true.
+t45__left_ans(X1) :- t20(X1).
+t20(agent(X1)) :- t14(X1).
+t14(z2) :- true.
+t61_left_query(X1) :- any(X1).
+t43_left_query(X1) :- any(X1).
+t43__left_ans(X1) :- t18(X1).
+t18(z2) :- true.
+t61__left_ans(X1) :- t46(X1).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t18(z2) :- true.
+t118__left_ans(X1) :- t67(X1).
+t67(interleave(X1,X2)) :- t46(X1),t46(X2).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t18(z2) :- true.
+t34_left_query(X1) :- any(X1).
+t16_left_query(X1) :- any(X1).
+t16__left_ans(X1) :- t71(X1).
+t71(a) :- true.
+t34__left_ans(X1) :- t83(X1).
+t83([]) :- true.
+t83([X1|X2]) :- t71(X1),t83(X2).
+t71(a) :- true.
+ptrace_left_query(X1,X2) :- t171(X1),t83(X2).
+t171(interleave(X1,X2)) :- t173(X1),t46(X2).
+t83([]) :- true.
+t83([X1|X2]) :- t71(X1),t83(X2).
+t173(interleave(X1,X2)) :- t173(X1),t173(X2).
+t173(agent(X1)) :- t98(X1).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t173(X1),t173(X2).
+t71(a) :- true.
+t98(z2) :- true.
+t18(z2) :- true.
+trans_left_query(X1,X2,X3) :- t136(X1),t71(X2),any(X3).
+t136(agent(X1)) :- t18(X1).
+t136(interleave(X1,X2)) :- t46(X1),t46(X2).
+t136(prefix(X1,X2)) :- t95(X1),t96(X2).
+t71(a) :- true.
+t18(z2) :- true.
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t173(X1),t173(X2).
+t95(a) :- true.
+t96(interleave(X1,X2)) :- t97(X1),t99(X2).
+t173(interleave(X1,X2)) :- t173(X1),t173(X2).
+t173(agent(X1)) :- t98(X1).
+t97(agent(X1)) :- t98(X1).
+t99(agent(X1)) :- t100(X1).
+t98(z2) :- true.
+t100(z2) :- true.
+agent_def_left_query(X1,X2) :- t89(X1),any(X2).
+t89(z2) :- true.
+agent_def__left_ans(X1,X2) :- t93(X1),t94(X2).
+t93(z2) :- true.
+t94(prefix(X1,X2)) :- t95(X1),t96(X2).
+t95(a) :- true.
+t96(interleave(X1,X2)) :- t97(X1),t99(X2).
+t97(agent(X1)) :- t98(X1).
+t99(agent(X1)) :- t100(X1).
+t98(z2) :- true.
+t100(z2) :- true.
+trans__left_ans(X1,X2,X3) :- t208(X1),t71(X2),t204(X3).
+t208(agent(X1)) :- t18(X1).
+t208(interleave(X1,X2)) :- t46(X1),t46(X2).
+t208(prefix(X1,X2)) :- t95(X1),t96(X2).
+t71(a) :- true.
+t204(interleave(X1,X2)) :- t46(X1),t46(X2).
+t18(z2) :- true.
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t95(a) :- true.
+t96(interleave(X1,X2)) :- t97(X1),t99(X2).
+t97(agent(X1)) :- t98(X1).
+t99(agent(X1)) :- t100(X1).
+t98(z2) :- true.
+t100(z2) :- true.
+ptrace__left_ans(X1,X2) :- t171(X1),t239(X2).
+t171(interleave(X1,X2)) :- t173(X1),t46(X2).
+t239([]) :- true.
+t239([X1|X2]) :- t71(X1),t239(X2).
+t173(interleave(X1,X2)) :- t173(X1),t173(X2).
+t173(agent(X1)) :- t98(X1).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t173(X1),t173(X2).
+t71(a) :- true.
+t98(z2) :- true.
+t18(z2) :- true.
+my_query_atom__left_ans(X1,X2,X3) :- t204(X1),t46(X2),t83(X3).
+t204(interleave(X1,X2)) :- t46(X1),t46(X2).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t83([]) :- true.
+t83([X1|X2]) :- t71(X1),t83(X2).
+t18(z2) :- true.
+t71(a) :- true.
+my_query_atom_right_query(X1,X2,X3) :- any(X1),any(X2),any(X3).
+ptrace_right_query(X1,X2) :- any(X1),any(X2).
+ptrace__right_ans(X1,X2) :- any(X1),t305(X2).
+t305([]) :- true.
+t305([X1|X2]) :- any(X1),t305(X2).
+trans_right_query(X1,X2,X3) :- any(X1),any(X2),any(X3).
+agent_def_right_query(X1,X2) :- any(X1),t628(X2).
+t628(prefix(X1,X2)) :- any(X1),any(X2).
+t628(choice(X1,X2)) :- any(X1),any(X2).
+t628(interleave(X1,X2)) :- any(X1),any(X2).
+t628(par(X1,X2)) :- t628(X1),t628(X2).
+t628(agent(X1)) :- t468(X1).
+t468(z2) :- true.
+t468(w2) :- true.
+t468(u2) :- true.
+t468(v2) :- true.
+agent_def__right_ans(X1,X2) :- t468(X1),t469(X2).
+t468(z2) :- true.
+t468(w2) :- true.
+t468(u2) :- true.
+t468(v2) :- true.
+t469(prefix(X1,X2)) :- t423(X1),t472(X2).
+t469(choice(X1,X2)) :- t433(X1),t436(X2).
+t423(a) :- true.
+t472(interleave(X1,X2)) :- t474(X1),t475(X2).
+t433(prefix(X1,X2)) :- t434(X1),t435(X2).
+t436(prefix(X1,X2)) :- t437(X1),t438(X2).
+t474(agent(X1)) :- t477(X1).
+t474(prefix(X1,X2)) :- t416(X1),t417(X2).
+t475(agent(X1)) :- t479(X1).
+t475(prefix(X1,X2)) :- t428(X1),t429(X2).
+t434(b) :- true.
+t435(stop) :- true.
+t437(a) :- true.
+t438(prefix(X1,X2)) :- t439(X1),t440(X2).
+t477(v2) :- true.
+t477(z2) :- true.
+t416(b) :- true.
+t417(stop) :- true.
+t479(u2) :- true.
+t479(z2) :- true.
+t428(b) :- true.
+t429(stop) :- true.
+t439(b) :- true.
+t440(agent(X1)) :- t441(X1).
+t441(w2) :- true.
+trans__right_ans(X1,X2,X3) :- t628(X1),any(X2),any(X3).
+t628(prefix(X1,X2)) :- any(X1),any(X2).
+t628(choice(X1,X2)) :- any(X1),any(X2).
+t628(interleave(X1,X2)) :- any(X1),any(X2).
+t628(par(X1,X2)) :- t628(X1),t628(X2).
+t628(agent(X1)) :- t468(X1).
+t468(z2) :- true.
+t468(w2) :- true.
+t468(u2) :- true.
+t468(v2) :- true.
+t34_right_query(X1) :- t305(X1).
+t305([]) :- true.
+t305([X1|X2]) :- any(X1),t305(X2).
+t34__right_ans(X1) :- t826(X1).
+t826([]) :- true.
+t826([X1|X2]) :- t817(X1),t826(X2).
+t817(a) :- true.
+t16_right_query(X1) :- any(X1).
+t16__right_ans(X1) :- t817(X1).
+t817(a) :- true.
+t118_right_query(X1) :- t833(X1).
+t833(interleave(X1,X2)) :- any(X1),any(X2).
+t45_right_query(X1) :- t862(X1).
+t862(agent(X1)) :- t863(X1).
+t863(z2) :- true.
+t61_right_query(X1) :- any(X1).
+t61__right_ans(X1) :- t855(X1).
+t855(agent(X1)) :- t838(X1).
+t855(interleave(X1,X2)) :- t855(X1),t855(X2).
+t838(z2) :- true.
+t118__right_ans(X1) :- t871(X1).
+t871(interleave(X1,X2)) :- t855(X1),t855(X2).
+t855(agent(X1)) :- t838(X1).
+t855(interleave(X1,X2)) :- t855(X1),t855(X2).
+t838(z2) :- true.
+t71_right_query(X1) :- t881(X1).
+t881(interleave(X1,X2)) :- t882(X1),t855(X2).
+t882(agent(X1)) :- t883(X1).
+t855(agent(X1)) :- t838(X1).
+t855(interleave(X1,X2)) :- t855(X1),t855(X2).
+t883(z2) :- true.
+t838(z2) :- true.
+t43_right_query(X1) :- any(X1).
+t43__right_ans(X1) :- t838(X1).
+t838(z2) :- true.
+t45__right_ans(X1) :- t889(X1).
+t889(agent(X1)) :- t863(X1).
+t863(z2) :- true.
+t71__right_ans(X1) :- t891(X1).
+t891(interleave(X1,X2)) :- t882(X1),t855(X2).
+t882(agent(X1)) :- t883(X1).
+t855(agent(X1)) :- t838(X1).
+t855(interleave(X1,X2)) :- t855(X1),t855(X2).
+t883(z2) :- true.
+t838(z2) :- true.
+my_query_atom__right_ans(X1,X2,X3) :- t855(X1),t855(X2),t826(X3).
+t855(agent(X1)) :- t838(X1).
+t855(interleave(X1,X2)) :- t855(X1),t855(X2).
+t826([]) :- true.
+t826([X1|X2]) :- t817(X1),t826(X2).
+t838(z2) :- true.
+t817(a) :- true.
+trans_ans(X1,X2,X3) :- t208(X1),t71(X2),t204(X3).
+t208(agent(X1)) :- t18(X1).
+t208(interleave(X1,X2)) :- t46(X1),t46(X2).
+t208(prefix(X1,X2)) :- t95(X1),t96(X2).
+t71(a) :- true.
+t204(interleave(X1,X2)) :- t46(X1),t46(X2).
+t18(z2) :- true.
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t95(a) :- true.
+t96(interleave(X1,X2)) :- t97(X1),t99(X2).
+t97(agent(X1)) :- t98(X1).
+t99(agent(X1)) :- t100(X1).
+t98(z2) :- true.
+t100(z2) :- true.
+agent_def_ans(X1,X2) :- t93(X1),t94(X2).
+t93(z2) :- true.
+t94(prefix(X1,X2)) :- t95(X1),t96(X2).
+t95(a) :- true.
+t96(interleave(X1,X2)) :- t97(X1),t99(X2).
+t97(agent(X1)) :- t98(X1).
+t99(agent(X1)) :- t100(X1).
+t98(z2) :- true.
+t100(z2) :- true.
+ptrace_ans(X1,X2) :- t171(X1),t239(X2).
+t171(interleave(X1,X2)) :- t173(X1),t46(X2).
+t239([]) :- true.
+t239([X1|X2]) :- t71(X1),t239(X2).
+t173(interleave(X1,X2)) :- t173(X1),t173(X2).
+t173(agent(X1)) :- t98(X1).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t173(X1),t173(X2).
+t71(a) :- true.
+t98(z2) :- true.
+t18(z2) :- true.
+t16_ans(X1) :- t71(X1).
+t71(a) :- true.
+t43_ans(X1) :- t18(X1).
+t18(z2) :- true.
+t61_ans(X1) :- t46(X1).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t18(z2) :- true.
+t45_ans(X1) :- t20(X1).
+t20(agent(X1)) :- t14(X1).
+t14(z2) :- true.
+t34_ans(X1) :- t83(X1).
+t83([]) :- true.
+t83([X1|X2]) :- t71(X1),t83(X2).
+t71(a) :- true.
+t118_ans(X1) :- t67(X1).
+t67(interleave(X1,X2)) :- t46(X1),t46(X2).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t18(z2) :- true.
+t71_ans(X1) :- t49(X1).
+t49(interleave(X1,X2)) :- t13(X1),t46(X2).
+t13(agent(X1)) :- t14(X1).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t14(z2) :- true.
+t18(z2) :- true.
+my_query_atom_ans(X1,X2,X3) :- t204(X1),t46(X2),t83(X3).
+t204(interleave(X1,X2)) :- t46(X1),t46(X2).
+t46(agent(X1)) :- t18(X1).
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).
+t83([]) :- true.
+t83([X1|X2]) :- t71(X1),t83(X2).
+t18(z2) :- true.
+t71(a) :- true.
+
+
+--B_3102337352_3095643
+Content-type: text/html; charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
+
+<HTML>
+<HEAD>
+<TITLE>Call</TITLE>
+</HEAD>
+<BODY>
+<FONT FACE=3D"Verdana">| ?- ad_hoc_bup_propagation([trans(agent(z2),a,_34852)=
+,ptrace(interleave(_34852,_34853),_631),rul__constraint__declaration([t71(in=
+terleave(agent(z2),_34853)),t118(interleave(_34852,_34853)),t34(_631)],[proc=
+(t16/1,[(t16(a):-true)]),proc(t43/1,[(t43(z2):-true)]),proc(t61/1,[(t61(inte=
+rleave(_565,_566)):-t61(_565),t61(_566)),(t61(agent(_549)):-t43(_549))]),pro=
+c(t45/1,[(t45(agent(_530)):-t43(_530))]),proc(t34/1,[(t34([_510|_511]):-t16(=
+_510),t34(_511)),(t34([]):-true)]),proc(t118/1,[(t118(interleave(_479,_480))=
+:-t61(_479),t61(_480))]),proc(t71/1,[(t71(interleave(_454,_455)):-t45(_454),=
+t61(_455)),(t71(agent(_438)):-t43(_438))])])],_32460).<BR>
+goal before: [trans(agent(z2),a,_158),ptrace(interleave(_158,_247),_278)]<B=
+R>
+{Warning: abolish(johnsTool:program_pred/2) - no matching predicate}<BR>
+opening: ~/CVS/ecce/ecce_source/bottomUp/tmp.pl done<BR>
+<BR>
+&gt;&gt; A raw Rul Constraint Declaration has been constructed.<BR>
+goal: [trans(agent(z2),a,_52),ptrace(interleave(_52,_77),_86)]<BR>
+RUL Constraints: [t204(_52),t46(_77),t83(_86)]<BR>
+RUL Program:<BR>
+<BR>
+&nbsp;&nbsp;t98(z2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t71(a):-true.<BR>
+<BR>
+&nbsp;&nbsp;t173(interleave(_74638,_74636)):-t173(_74638),t173(_74636).<BR>
+&nbsp;&nbsp;t173(agent(_74624)):-t98(_74624).<BR>
+<BR>
+&nbsp;&nbsp;t83([_74608|_74606]):-t71(_74608),t83(_74606).<BR>
+&nbsp;&nbsp;t83([]):-true.<BR>
+<BR>
+&nbsp;&nbsp;t46(interleave(_74588,_74586)):-t173(_74588),t173(_74586).<BR>
+&nbsp;&nbsp;t46(interleave(_74573,_74571)):-t46(_74573),t46(_74571).<BR>
+&nbsp;&nbsp;t46(agent(_74559)):-t98(_74559).<BR>
+<BR>
+&nbsp;&nbsp;t204(interleave(_74540,_74538)):-t46(_74540),t46(_74538).<BR>
+<BR>
+yes<BR>
+| ?- <BR>
+<BR>
+<BR>
+------------------- INPUT FILE fuer JOHN -----------------------------<BR>
+<BR>
+<BR>
+trans(prefix(A,X),A,X).<BR>
+trans(par(X,Y),A,par(X2,Y2)) :- trans(X,A,X2), trans(Y,A,Y2).<BR>
+trans(interleave(X,Y),A,interleave(X2,Y)) :- trans(X,A,X2).<BR>
+trans(interleave(X,Y),A,interleave(X,Y2)) :- trans(Y,A,Y2).<BR>
+trans(choice(X,_Y),A,X2) :- trans(X,A,X2).<BR>
+trans(choice(_X,Y),A,Y2) :- trans(Y,A,Y2).<BR>
+trans(agent(X),A,Y) :- agent_def(X,Def), trans(Def,A,Y).<BR>
+<BR>
+<BR>
+agent_def(u2,prefix(a,interleave(prefix(b,stop),agent(u2)))).<BR>
+agent_def(v2,prefix(a,interleave(agent(v2),prefix(b,stop)))).<BR>
+agent_def(w2,choice(prefix(b,stop),prefix(a,prefix(b,agent(w2))))).<BR>
+agent_def(z2,prefix(a,interleave(agent(z2),agent(z2)))).<BR>
+<BR>
+ptrace(_X,[]).<BR>
+ptrace(X,[A|T]) :- trans(X,A,Y), ptrace(Y,T).<BR>
+<BR>
+test1(T) :- ptrace(agent(z2),T).<BR>
+test2(T) :- trace(agent(v2),T).<BR>
+test3(T) :- trace(agent(w2),T).<BR>
+test4(T) :- trace(agent(w2),T), trace(agent(v2),T).<BR>
+<BR>
+stop(stop).<BR>
+stop(par(X,Y)) :- stop(X),stop(Y).<BR>
+stop(interleave(X,_Y)) :- stop(X).<BR>
+stop(interleave(_X,Y)) :- stop(Y).<BR>
+stop(choice(X,_Y)) :- stop(X).<BR>
+stop(choice(_X,Y)) :- stop(Y).<BR>
+<BR>
+trace(X,[]) :- stop(X).<BR>
+trace(X,[A|T]) :- trans(X,A,Y), trace(Y,T).<BR>
+<BR>
+&nbsp;&nbsp;t16(a):-true.<BR>
+<BR>
+&nbsp;&nbsp;t43(z2):-true.<BR>
+<BR>
+&nbsp;&nbsp;t61(interleave(_850,_876)):-t61(_850),t61(_876).<BR>
+&nbsp;&nbsp;t61(agent(_1034)):-t43(_1034).<BR>
+<BR>
+&nbsp;&nbsp;t45(agent(_1202)):-t43(_1202).<BR>
+<BR>
+&nbsp;&nbsp;t34([_1363|_1389]):-t16(_1363),t34(_1389).<BR>
+&nbsp;&nbsp;t34([]):-true.<BR>
+<BR>
+&nbsp;&nbsp;t118(interleave(_1656,_1682)):-t61(_1656),t61(_1682).<BR>
+<BR>
+&nbsp;&nbsp;t71(interleave(_1893,_1919)):-t45(_1893),t61(_1919).<BR>
+&nbsp;&nbsp;t71(agent(_2077)):-t43(_2077).<BR>
+<BR>
+<BR>
+my_query_atom(_158,_247,_278) :- <BR>
+&nbsp;&nbsp;t71(interleave(agent(z2),_247)), t118(interleave(_158,_247)), t=
+34(_278),<BR>
+&nbsp;&nbsp;trans(agent(z2),a,_158), ptrace(interleave(_158,_247),_278).<BR=
+>
+<BR>
+<BR>
+<BR>
+-------- TEMP FILE --------------------<BR>
+<BR>
+my_query_atom_left_query(X1,X2,X3) :- any(X1),any(X2),any(X3).<BR>
+t71_left_query(X1) :- t12(X1).<BR>
+t12(interleave(X1,X2)) :- t13(X1),any(X2).<BR>
+t13(agent(X1)) :- t14(X1).<BR>
+t14(z2) :- true.<BR>
+t45_left_query(X1) :- t13(X1).<BR>
+t13(agent(X1)) :- t14(X1).<BR>
+t14(z2) :- true.<BR>
+t71__left_ans(X1) :- t49(X1).<BR>
+t49(interleave(X1,X2)) :- t13(X1),t46(X2).<BR>
+t13(agent(X1)) :- t14(X1).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t14(z2) :- true.<BR>
+t18(z2) :- true.<BR>
+t118_left_query(X1) :- t60(X1).<BR>
+t60(interleave(X1,X2)) :- any(X1),t46(X2).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t18(z2) :- true.<BR>
+t45__left_ans(X1) :- t20(X1).<BR>
+t20(agent(X1)) :- t14(X1).<BR>
+t14(z2) :- true.<BR>
+t61_left_query(X1) :- any(X1).<BR>
+t43_left_query(X1) :- any(X1).<BR>
+t43__left_ans(X1) :- t18(X1).<BR>
+t18(z2) :- true.<BR>
+t61__left_ans(X1) :- t46(X1).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t18(z2) :- true.<BR>
+t118__left_ans(X1) :- t67(X1).<BR>
+t67(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t18(z2) :- true.<BR>
+t34_left_query(X1) :- any(X1).<BR>
+t16_left_query(X1) :- any(X1).<BR>
+t16__left_ans(X1) :- t71(X1).<BR>
+t71(a) :- true.<BR>
+t34__left_ans(X1) :- t83(X1).<BR>
+t83([]) :- true.<BR>
+t83([X1|X2]) :- t71(X1),t83(X2).<BR>
+t71(a) :- true.<BR>
+ptrace_left_query(X1,X2) :- t171(X1),t83(X2).<BR>
+t171(interleave(X1,X2)) :- t173(X1),t46(X2).<BR>
+t83([]) :- true.<BR>
+t83([X1|X2]) :- t71(X1),t83(X2).<BR>
+t173(interleave(X1,X2)) :- t173(X1),t173(X2).<BR>
+t173(agent(X1)) :- t98(X1).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t173(X1),t173(X2).<BR>
+t71(a) :- true.<BR>
+t98(z2) :- true.<BR>
+t18(z2) :- true.<BR>
+trans_left_query(X1,X2,X3) :- t136(X1),t71(X2),any(X3).<BR>
+t136(agent(X1)) :- t18(X1).<BR>
+t136(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t136(prefix(X1,X2)) :- t95(X1),t96(X2).<BR>
+t71(a) :- true.<BR>
+t18(z2) :- true.<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t173(X1),t173(X2).<BR>
+t95(a) :- true.<BR>
+t96(interleave(X1,X2)) :- t97(X1),t99(X2).<BR>
+t173(interleave(X1,X2)) :- t173(X1),t173(X2).<BR>
+t173(agent(X1)) :- t98(X1).<BR>
+t97(agent(X1)) :- t98(X1).<BR>
+t99(agent(X1)) :- t100(X1).<BR>
+t98(z2) :- true.<BR>
+t100(z2) :- true.<BR>
+agent_def_left_query(X1,X2) :- t89(X1),any(X2).<BR>
+t89(z2) :- true.<BR>
+agent_def__left_ans(X1,X2) :- t93(X1),t94(X2).<BR>
+t93(z2) :- true.<BR>
+t94(prefix(X1,X2)) :- t95(X1),t96(X2).<BR>
+t95(a) :- true.<BR>
+t96(interleave(X1,X2)) :- t97(X1),t99(X2).<BR>
+t97(agent(X1)) :- t98(X1).<BR>
+t99(agent(X1)) :- t100(X1).<BR>
+t98(z2) :- true.<BR>
+t100(z2) :- true.<BR>
+trans__left_ans(X1,X2,X3) :- t208(X1),t71(X2),t204(X3).<BR>
+t208(agent(X1)) :- t18(X1).<BR>
+t208(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t208(prefix(X1,X2)) :- t95(X1),t96(X2).<BR>
+t71(a) :- true.<BR>
+t204(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t18(z2) :- true.<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t95(a) :- true.<BR>
+t96(interleave(X1,X2)) :- t97(X1),t99(X2).<BR>
+t97(agent(X1)) :- t98(X1).<BR>
+t99(agent(X1)) :- t100(X1).<BR>
+t98(z2) :- true.<BR>
+t100(z2) :- true.<BR>
+ptrace__left_ans(X1,X2) :- t171(X1),t239(X2).<BR>
+t171(interleave(X1,X2)) :- t173(X1),t46(X2).<BR>
+t239([]) :- true.<BR>
+t239([X1|X2]) :- t71(X1),t239(X2).<BR>
+t173(interleave(X1,X2)) :- t173(X1),t173(X2).<BR>
+t173(agent(X1)) :- t98(X1).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t173(X1),t173(X2).<BR>
+t71(a) :- true.<BR>
+t98(z2) :- true.<BR>
+t18(z2) :- true.<BR>
+my_query_atom__left_ans(X1,X2,X3) :- t204(X1),t46(X2),t83(X3).<BR>
+t204(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t83([]) :- true.<BR>
+t83([X1|X2]) :- t71(X1),t83(X2).<BR>
+t18(z2) :- true.<BR>
+t71(a) :- true.<BR>
+my_query_atom_right_query(X1,X2,X3) :- any(X1),any(X2),any(X3).<BR>
+ptrace_right_query(X1,X2) :- any(X1),any(X2).<BR>
+ptrace__right_ans(X1,X2) :- any(X1),t305(X2).<BR>
+t305([]) :- true.<BR>
+t305([X1|X2]) :- any(X1),t305(X2).<BR>
+trans_right_query(X1,X2,X3) :- any(X1),any(X2),any(X3).<BR>
+agent_def_right_query(X1,X2) :- any(X1),t628(X2).<BR>
+t628(prefix(X1,X2)) :- any(X1),any(X2).<BR>
+t628(choice(X1,X2)) :- any(X1),any(X2).<BR>
+t628(interleave(X1,X2)) :- any(X1),any(X2).<BR>
+t628(par(X1,X2)) :- t628(X1),t628(X2).<BR>
+t628(agent(X1)) :- t468(X1).<BR>
+t468(z2) :- true.<BR>
+t468(w2) :- true.<BR>
+t468(u2) :- true.<BR>
+t468(v2) :- true.<BR>
+agent_def__right_ans(X1,X2) :- t468(X1),t469(X2).<BR>
+t468(z2) :- true.<BR>
+t468(w2) :- true.<BR>
+t468(u2) :- true.<BR>
+t468(v2) :- true.<BR>
+t469(prefix(X1,X2)) :- t423(X1),t472(X2).<BR>
+t469(choice(X1,X2)) :- t433(X1),t436(X2).<BR>
+t423(a) :- true.<BR>
+t472(interleave(X1,X2)) :- t474(X1),t475(X2).<BR>
+t433(prefix(X1,X2)) :- t434(X1),t435(X2).<BR>
+t436(prefix(X1,X2)) :- t437(X1),t438(X2).<BR>
+t474(agent(X1)) :- t477(X1).<BR>
+t474(prefix(X1,X2)) :- t416(X1),t417(X2).<BR>
+t475(agent(X1)) :- t479(X1).<BR>
+t475(prefix(X1,X2)) :- t428(X1),t429(X2).<BR>
+t434(b) :- true.<BR>
+t435(stop) :- true.<BR>
+t437(a) :- true.<BR>
+t438(prefix(X1,X2)) :- t439(X1),t440(X2).<BR>
+t477(v2) :- true.<BR>
+t477(z2) :- true.<BR>
+t416(b) :- true.<BR>
+t417(stop) :- true.<BR>
+t479(u2) :- true.<BR>
+t479(z2) :- true.<BR>
+t428(b) :- true.<BR>
+t429(stop) :- true.<BR>
+t439(b) :- true.<BR>
+t440(agent(X1)) :- t441(X1).<BR>
+t441(w2) :- true.<BR>
+trans__right_ans(X1,X2,X3) :- t628(X1),any(X2),any(X3).<BR>
+t628(prefix(X1,X2)) :- any(X1),any(X2).<BR>
+t628(choice(X1,X2)) :- any(X1),any(X2).<BR>
+t628(interleave(X1,X2)) :- any(X1),any(X2).<BR>
+t628(par(X1,X2)) :- t628(X1),t628(X2).<BR>
+t628(agent(X1)) :- t468(X1).<BR>
+t468(z2) :- true.<BR>
+t468(w2) :- true.<BR>
+t468(u2) :- true.<BR>
+t468(v2) :- true.<BR>
+t34_right_query(X1) :- t305(X1).<BR>
+t305([]) :- true.<BR>
+t305([X1|X2]) :- any(X1),t305(X2).<BR>
+t34__right_ans(X1) :- t826(X1).<BR>
+t826([]) :- true.<BR>
+t826([X1|X2]) :- t817(X1),t826(X2).<BR>
+t817(a) :- true.<BR>
+t16_right_query(X1) :- any(X1).<BR>
+t16__right_ans(X1) :- t817(X1).<BR>
+t817(a) :- true.<BR>
+t118_right_query(X1) :- t833(X1).<BR>
+t833(interleave(X1,X2)) :- any(X1),any(X2).<BR>
+t45_right_query(X1) :- t862(X1).<BR>
+t862(agent(X1)) :- t863(X1).<BR>
+t863(z2) :- true.<BR>
+t61_right_query(X1) :- any(X1).<BR>
+t61__right_ans(X1) :- t855(X1).<BR>
+t855(agent(X1)) :- t838(X1).<BR>
+t855(interleave(X1,X2)) :- t855(X1),t855(X2).<BR>
+t838(z2) :- true.<BR>
+t118__right_ans(X1) :- t871(X1).<BR>
+t871(interleave(X1,X2)) :- t855(X1),t855(X2).<BR>
+t855(agent(X1)) :- t838(X1).<BR>
+t855(interleave(X1,X2)) :- t855(X1),t855(X2).<BR>
+t838(z2) :- true.<BR>
+t71_right_query(X1) :- t881(X1).<BR>
+t881(interleave(X1,X2)) :- t882(X1),t855(X2).<BR>
+t882(agent(X1)) :- t883(X1).<BR>
+t855(agent(X1)) :- t838(X1).<BR>
+t855(interleave(X1,X2)) :- t855(X1),t855(X2).<BR>
+t883(z2) :- true.<BR>
+t838(z2) :- true.<BR>
+t43_right_query(X1) :- any(X1).<BR>
+t43__right_ans(X1) :- t838(X1).<BR>
+t838(z2) :- true.<BR>
+t45__right_ans(X1) :- t889(X1).<BR>
+t889(agent(X1)) :- t863(X1).<BR>
+t863(z2) :- true.<BR>
+t71__right_ans(X1) :- t891(X1).<BR>
+t891(interleave(X1,X2)) :- t882(X1),t855(X2).<BR>
+t882(agent(X1)) :- t883(X1).<BR>
+t855(agent(X1)) :- t838(X1).<BR>
+t855(interleave(X1,X2)) :- t855(X1),t855(X2).<BR>
+t883(z2) :- true.<BR>
+t838(z2) :- true.<BR>
+my_query_atom__right_ans(X1,X2,X3) :- t855(X1),t855(X2),t826(X3).<BR>
+t855(agent(X1)) :- t838(X1).<BR>
+t855(interleave(X1,X2)) :- t855(X1),t855(X2).<BR>
+t826([]) :- true.<BR>
+t826([X1|X2]) :- t817(X1),t826(X2).<BR>
+t838(z2) :- true.<BR>
+t817(a) :- true.<BR>
+trans_ans(X1,X2,X3) :- t208(X1),t71(X2),t204(X3).<BR>
+t208(agent(X1)) :- t18(X1).<BR>
+t208(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t208(prefix(X1,X2)) :- t95(X1),t96(X2).<BR>
+t71(a) :- true.<BR>
+t204(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t18(z2) :- true.<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t95(a) :- true.<BR>
+t96(interleave(X1,X2)) :- t97(X1),t99(X2).<BR>
+t97(agent(X1)) :- t98(X1).<BR>
+t99(agent(X1)) :- t100(X1).<BR>
+t98(z2) :- true.<BR>
+t100(z2) :- true.<BR>
+agent_def_ans(X1,X2) :- t93(X1),t94(X2).<BR>
+t93(z2) :- true.<BR>
+t94(prefix(X1,X2)) :- t95(X1),t96(X2).<BR>
+t95(a) :- true.<BR>
+t96(interleave(X1,X2)) :- t97(X1),t99(X2).<BR>
+t97(agent(X1)) :- t98(X1).<BR>
+t99(agent(X1)) :- t100(X1).<BR>
+t98(z2) :- true.<BR>
+t100(z2) :- true.<BR>
+ptrace_ans(X1,X2) :- t171(X1),t239(X2).<BR>
+t171(interleave(X1,X2)) :- t173(X1),t46(X2).<BR>
+t239([]) :- true.<BR>
+t239([X1|X2]) :- t71(X1),t239(X2).<BR>
+t173(interleave(X1,X2)) :- t173(X1),t173(X2).<BR>
+t173(agent(X1)) :- t98(X1).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t173(X1),t173(X2).<BR>
+t71(a) :- true.<BR>
+t98(z2) :- true.<BR>
+t18(z2) :- true.<BR>
+t16_ans(X1) :- t71(X1).<BR>
+t71(a) :- true.<BR>
+t43_ans(X1) :- t18(X1).<BR>
+t18(z2) :- true.<BR>
+t61_ans(X1) :- t46(X1).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t18(z2) :- true.<BR>
+t45_ans(X1) :- t20(X1).<BR>
+t20(agent(X1)) :- t14(X1).<BR>
+t14(z2) :- true.<BR>
+t34_ans(X1) :- t83(X1).<BR>
+t83([]) :- true.<BR>
+t83([X1|X2]) :- t71(X1),t83(X2).<BR>
+t71(a) :- true.<BR>
+t118_ans(X1) :- t67(X1).<BR>
+t67(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t18(z2) :- true.<BR>
+t71_ans(X1) :- t49(X1).<BR>
+t49(interleave(X1,X2)) :- t13(X1),t46(X2).<BR>
+t13(agent(X1)) :- t14(X1).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t14(z2) :- true.<BR>
+t18(z2) :- true.<BR>
+my_query_atom_ans(X1,X2,X3) :- t204(X1),t46(X2),t83(X3).<BR>
+t204(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t46(agent(X1)) :- t18(X1).<BR>
+t46(interleave(X1,X2)) :- t46(X1),t46(X2).<BR>
+t83([]) :- true.<BR>
+t83([X1|X2]) :- t71(X1),t83(X2).<BR>
+t18(z2) :- true.<BR>
+t71(a) :- true.<BR>
+</FONT>
+</BODY>
+</HTML>
+
+
+--B_3102337352_3095643--
+

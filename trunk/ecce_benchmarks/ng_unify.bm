@@ -1,0 +1,29 @@
+orig_prog('ng_unify.pl').
+pd_query([
+	unify(f(g(a),a,g(a)),S)
+	]).
+
+run_time_queries([
+	[unify(f(g(a),a,g(a)),f(X,X,X))],
+	[unify(f(g(a),a,g(a)),f(g(X),X,g(X)))],
+	[unify(f(g(a),a,g(a)),f(g(a),b,g(a)))],
+	[unify(f(g(a),a,g(a)),f(g(c),a,g(a)))],
+	[unify(f(g(a),a,g(a)),f(g(a),a,g(c)))],
+	[unify(f(g(a),a,g(a)),f(g(a),a,g(a)))]
+  ]).
+run_time_nr(10).
+test_queries([
+	[unify(f(g(a),a,g(a)),S)],
+	[unify(f(g(a),a,g(a)),f(X,X,X))],
+	[unify(f(g(a),a,g(a)),f(g(X),X,g(X)))],
+	[unify(f(g(a),a,g(a)),f(g(a),a,g(c)))]
+  ]).
+
+negation_used(yes).
+built_ins_used(yes).
+description('A *non-declarative* non-ground unification algorithm (not to be 
+used with ecce).').
+
+
+
+

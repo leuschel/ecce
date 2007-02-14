@@ -1,0 +1,86 @@
+===========================================================================
+ANSWER to the BugReport below. Look at this simpler example which shows
+       the same phenomenon:
+
+| ?- goalRULification(p(a(C,C),a(C,C)),X,
+     rul__constraint__declaration([c(C)],[proc(c1/1,[(c(x):-true)])]),Y).  
+X = p(_A,_B),
+Y = rul__constraint__declaration([c(C),ex_new_t58(_A),ex_new_t59(_B)],
+    [proc(any/1,[(any(_C):-true)]),proc(c1/1,[(c(x):-true)]),
+     proc(ex_new_t58/1,[(ex_new_t58(a(_D,_D)):-c(_D),c(_D))]),
+     proc(ex_new_t59/1,[(ex_new_t59(a(_D,_D)):-c(_D),c(_D))])]) ? 
+yes
+| ?- 
+
+From a symmetric input goal, goalRULification has created a form which
+violates the RUL definition: (ex_new_t59(a(_D,_D)):-c(_D),c(_D)), see
+the double _D in the clause head! As a consequence, other procedures
+failed because they assume RUL syntax.
+
+This Bug has now been fixed such that double Variables do not occur in
+clause heads of RUL constraint declarations any more after goalRULification
+has been performed. (New Procedures have been introduced.) [SG:18/04/2002].
+============================================================================
+
+From - Thu Apr 18 09:36:06 2002
+Received: from [152.78.70.94] (starnberg.ecs.soton.ac.uk [152.78.70.94])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with ESMTP id QAA10216
+	for <sg@ecs.soton.ac.uk>; Wed, 17 Apr 2002 16:35:34 +0100 (BST)
+User-Agent: Microsoft-Entourage/10.0.0.1331
+Date: Wed, 17 Apr 2002 15:58:49 +0100
+Subject: Problem in analyticFodl
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: Stefan Gruner <sg@ecs.soton.ac.uk>
+Message-ID: <B8E34C39.42ED%mal@ecs.soton.ac.uk>
+Mime-version: 1.0
+Content-type: multipart/alternative; boundary="B_3101906135_916529"
+Content-Length: 1868
+Status:   
+X-Mozilla-Status: 8003
+X-Mozilla-Status2: 00000000
+X-UIDL: 3c5e75bb00001832
+
+> This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+--B_3101906135_916529
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
+### WARNING CALL HAS FAILED !
+### 
+analyticFold:l_goalRULification([trace(par(par(_829,_829),par(_829,_829)),_8
+35)],_864,rul__constraint__declaration([new_t636(_829),any(_835)],[proc(y_ex
+_new_t627/1,[(y_ex_new_t627(p):-true)]),proc(y_ex_new_t611/1,[(y_ex_new_t611
+(agent(_782)):-y_ex_new_t627(_782))]),proc(new_t636/1,[(new_t636(agent(_763)
+):-y_ex_new_t627(_763)),(new_t636(par(_751,_752)):-y_ex_new_t611(_751),y_ex_
+new_t611(_752))]),proc(new_t634/1,[(new_t634(par(_726,_727)):-new_t636(_726)
+,new_t636(_727))]),proc(ub_new_t633/1,[(ub_new_t633(par(_701,_702)):-new_t63
+4(_701),new_t634(_702))]),proc(any/1,[(any(_679):-true)])]),_866)
+### => Stop at next error (y/n) => 
+
+--B_3101906135_916529
+Content-type: text/html; charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
+
+<HTML>
+<HEAD>
+<TITLE>Problem in analyticFodl</TITLE>
+</HEAD>
+<BODY>
+<FONT FACE=3D"Verdana">### WARNING CALL HAS FAILED !<BR>
+### analyticFold:l_goalRULification([trace(par(par(_829,_829),par(_829,_829=
+)),_835)],_864,rul__constraint__declaration([new_t636(_829),any(_835)],[proc=
+(y_ex_new_t627/1,[(y_ex_new_t627(p):-true)]),proc(y_ex_new_t611/1,[(y_ex_new=
+_t611(agent(_782)):-y_ex_new_t627(_782))]),proc(new_t636/1,[(new_t636(agent(=
+_763)):-y_ex_new_t627(_763)),(new_t636(par(_751,_752)):-y_ex_new_t611(_751),=
+y_ex_new_t611(_752))]),proc(new_t634/1,[(new_t634(par(_726,_727)):-new_t636(=
+_726),new_t636(_727))]),proc(ub_new_t633/1,[(ub_new_t633(par(_701,_702)):-ne=
+w_t634(_701),new_t634(_702))]),proc(any/1,[(any(_679):-true)])]),_866)<BR>
+### =3D&gt; Stop at next error (y/n) =3D&gt; </FONT>
+</BODY>
+</HTML>
+
+
+--B_3101906135_916529--
+

@@ -1,0 +1,17 @@
+orig_prog('orig/grammar.pro').
+pd_query([expression(n,[],String,[])]).
+run_time_queries([
+	[expression( n, [], ['(','(','(','(',n,')',')',')',')'], [] )]
+	]).
+run_time_nr(50).
+test_queries([
+	[expression( n, [], ['(','(','(','(',n,')',')',')',')'], [] )]
+	]).
+negation_used(no).
+built_ins_used(yes).
+description('A Lam benchmark.').
+
+
+
+
+

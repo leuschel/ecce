@@ -1,0 +1,1 @@
+/* file: petri.reset.pe.back_check_ *//* benchmark info: 0 ms *//* atom specialised: back_check(_11564) */search_initial__1([],[s(0),0]).search_initial__1([t1|B],[0,s(C)]) :-   search_initial__1(B,[s(D),C]).search_initial__1([t2|E],[s(s(F)),G]) :-   search_initial__1(E,[F,s(G)]).back_check__0([t2|B]) :-   search_initial__1(B,[s(C),s(D)]).

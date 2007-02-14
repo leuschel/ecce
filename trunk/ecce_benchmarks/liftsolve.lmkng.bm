@@ -1,0 +1,24 @@
+orig_prog('orig/liftsolve.pro').
+pd_query([
+	l_mkng(Lg,Ln,[sub(N,X)],S)
+	]).
+
+run_time_queries([
+	[l_mkng([var(1)],Ln,[sub(1,X)],S)],
+	[l_mkng([var(1),var(2)],Ln,[sub(2,X)],S)],
+	[l_mkng([term(a,[]),var(1),var(3)],Ln,[sub(1,X)],S)],
+	[l_mkng([term(f,[var(1),var(2),var(1)]),
+		 term(g,[var(2),var(1),var(2)]),
+		 term(h,[term(a,[]),term(b,[]),var(1)])],Ln,[sub(1,X)],S)]
+	]).
+run_time_nr(20).  /* changed from 10 */
+test_queries([
+	[l_mkng([term(f,[var(1),var(2),var(1)])],Ln,[sub(1,X)],S)]
+  ]).
+negation_used(no).
+built_ins_used(yes).
+description('Testing part of lifting meta-interpreter for the ground representation (generates an infinite number of chtrees).').
+
+
+
+

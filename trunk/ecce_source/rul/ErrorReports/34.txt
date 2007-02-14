@@ -1,0 +1,26 @@
+######################################################################
+
+Von: "Michael Leuschel" <mal@ecs.soton.ac.uk> 
+ 
+An: sg@ecs.soton.ac.uk 
+ 
+Betreff: anderes Problem 
+ 
+Datum: Tue, 22 Jan 2002 17:13:28 +0000 
+
+calling_widen([append(_47882,_47883,_47884),
+               append(_47876,[a,a,b],[_47867,_47865|_47882])],
+	rul__constraint__declaration([],[]),
+		[append(_48136,_48137,_48138),
+		 append(_48130,[a,a,b],[_48121,_48119,_48117|_48136])],
+	rul__constraint__declaration([],[]),
+		_47611,
+		_47612)
+
+<<< Compr.Result: Factor 9/9 in #Proc.Definitions >>>
+
+<<< Compr.Result: Factor 10/10 in #Proc.Definitions >>>
+
+<<< Compr.Result: Factor 9/20 in #Proc.Definitions >>>
+
+#################################### PROBLEM SOLVED 23.01.2002 #######

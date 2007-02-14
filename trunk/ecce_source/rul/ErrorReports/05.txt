@@ -1,0 +1,94 @@
+Datum: Tue, 11 Sep 2001 15:04:24 +0100 
+Von: Michael Leuschel <mal@ecs.soton.ac.uk> 
+CC: Michael Leuschel <mal@ecs.soton.ac.uk> 
+An: Stefan Gruner <sg@ecs.soton.ac.uk> 
+Betreff: Problem in widen 
+
+Versuch dieses mal:
+Irgendetwas stimm mit widen nicht:
+
+1] proSiNo:l_goalRULification([unsafe(agc(p))],G,
+                 rul__constraint__declaration([],[]),RR),
+
+2] proSiNo:l_goalRULification([unsafe(par(agc(p),agc(p)))],G2,
+                 rul__constraint__declaration([],[]),RR2),
+
+3] ecceRUL:widen(G,RR,G2,RR2,ResG,ResRR),
+
+4] ecceRUL:print_rul(ResRR),
+
+5] proSiNo:l_goalRULification(ResG,FinalG,ResRR,FinalRR),
+
+6] ecceRUL:print_rul(FinalRR).
+
+============================================================
+Testergebnisse:
+============================================================
+
+1] ==>
+ 
+| ?- data(A,B,C,D), 
+     l_goalRULification(A,B,C,D).
+
+A = [unsafe(agc(p))],
+B = [unsafe(_A)],
+C = rul__constraint__declaration([],[]),
+D = rul__constraint__declaration([t0(_A)],
+                                 [proc(any/1,
+                                     [(any(_B):-true)]),
+                                 proc(t0/1,
+                                    [(t0(agc(_C)):-t2(_C))]),
+                                 proc(t2/1,[(t2(p):-true)])]) ?
+yes.
+---------------------------------------------------------------
+
+2] ==>
+
+| ?- data2(A,B,C,D), 
+     l_goalRULification(A,B,C,D).
+
+A = [unsafe(par(agc(p),agc(p)))],
+B = [unsafe(_A)],
+C = rul__constraint__declaration([],[]),
+D = rul__constraint__declaration([t0(_A)],
+                                 [proc(any/1,
+                                     [(any(_3390):-true)]),
+                                  proc(t0/1,
+                                     [(t0(par(_3375,_3373)):-t2(_3375),
+                                                             t3(_3373))]),
+                                  proc(t2/1,
+                                     [(t2(agc(_3356)):-t8(_3356))]),
+                                  proc(t3/1,
+                                     [(t3(agc(_3342)):-t11(_3342))]),
+                                  proc(t8/1,
+                                     [(t8(p):-true)]),
+                                  proc(t11/1,
+                                     [(t11(p):-true)])])) ?
+yes.
+-----------------------------------------------------------
+
+3++4] ==>
+
+G = [unsafe(_L)],
+
+RUL Constraints: 
+    [x_t0(_L),
+     y_t0(_L)]
+
+RUL Program:
+->  any(_8501):-true.
+->  x_t0(agc(_8487)):-x_t2(_8487).
+->  x_t2(p):-true.
+->  any(_8477):-true.
+->  y_t0(par(_8462,_8460)):-y_t2(_8462),y_t3(_8460).
+->  y_t2(agc(_8443)):-y_t8(_8443).
+->  y_t3(agc(_8429)):-y_t11(_8429).
+->  y_t8(p):-true.
+->  y_t11(p):-true.
+
+{PROBLEM: FALSCHER WIDENING-ALGORITHMUS,
+ ES HAT KEINE VERSCHMELZUNG STATTGEFUNDEN}
+
+======================================================
+
+===>>> Widening-Algorithmus wird korrigiert. [Erledigt]

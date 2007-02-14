@@ -1,0 +1,31 @@
+orig_prog('orig/rev_acc_type.pro').
+pd_query([rev(L,[],R)]).
+run_time_queries([
+	[rev([],[],R)],
+	[rev([a],[],R)],
+	[rev([a,b,c,d,e,f,g],[],R)],
+	[rev([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r],[],R)],
+	[rev([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
+		1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+		21,22,23,24,25,26,27,28,29,30],[],R)],
+	[rev([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
+		1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+		21,22,23,24,25,26,27,28,29,30,
+	      a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
+		1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+		21,22,23,24,25,26,27,28,29,30,
+	      a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
+		1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+		21,22,23,24,25,26,27,28,29,30],[],R)]
+	]).
+run_time_nr(5).
+test_queries([
+	[rev([a,b,c],[],R)]
+	]).
+negation_used(no).
+built_ins_used(no).
+description('A simple benchmark generating an infinite number of different characteristic trees.').
+
+
+
+

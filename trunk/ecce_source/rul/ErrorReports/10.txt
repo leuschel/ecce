@@ -1,0 +1,50 @@
+From - Thu Sep 20 10:29:10 2001
+Received: from kaiserslautern (mal@toowong.ecs.soton.ac.uk [152.78.70.11])
+	by hawk.ecs.soton.ac.uk (8.9.3/8.9.3) with SMTP id JAA03722
+	for <sg>; Thu, 20 Sep 2001 09:59:54 +0100 (BST)
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Michael Leuschel <mal@ecs.soton.ac.uk>
+To: sg@ecs.soton.ac.uk
+Subject: goalRUlification Instantiation error
+Date: Thu, 20 Sep 2001 10:20:59 +0100
+X-Mailer: KMail [version 1.2]
+MIME-Version: 1.0
+Message-Id: <01092010205901.01460@kaiserslautern>
+Content-Transfer-Encoding: 8bit
+Content-Length: 203
+Status:   
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 3a78223d00000d46
+
+| ?- 
+goalRULification(trans(_26374,
+                       par(prefix(a,agent(p)),
+                           prefix(bar(a),agent(p))),
+                       par(_31473,_31481)),_36643,
+                 rul__constraint__declaration([],[]),
+                 _36634).
+
+{INSTANTIATION ERROR: _60=..[_57|_58] - arg 2}
+
+========================================================================
+
+ANSWER: The following Error is now eliminated.
+        When an input Goal contained some Variable X,
+        Then we had obsoletely constructed a new con-
+	straint t(X) for that X, though we should have
+        assumed that X, as a Variable, has already some
+	other constraint (s or any). Then we had con-
+	structed an intermediate Fact t(X):-true, which
+	is not in RUL form such that the "iFactExpansion"
+	procedure had failed. Now we just ignore the Var-
+	iables in the input goal. We don't construct new
+	types for them any more. We achieved this with
+	changes in procedures "makeIntermediateFacts",
+	"makeNewConstraints" and "crossOver" in the
+	"proSiNo"-Module. As a consequence, some other
+	code has become obsolete in the "auxil"-Module
+	and has therefore been deleted.
+
+=====================================================================

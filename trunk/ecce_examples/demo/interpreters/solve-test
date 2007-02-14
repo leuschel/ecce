@@ -1,0 +1,1 @@
+solve([]).solve([H|T]) :-	claus(H,Bdy),	solve(Bdy),solve(T).claus(append([],L,L),[]).claus(append([H|X],Y,[H|Z]),[append(X,Y,Z)]).claus(solve([]),[]).claus(solve([H|T]), [claus(H,Bdy),solve(Bdy),solve(T)]).claus(claus(append([],L,L),[]),[]).claus(claus(append([H|X],Y,[H|Z]),[append(X,Y,Z)]),[]).

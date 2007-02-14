@@ -1,0 +1,50 @@
+Von: Michael Leuschel <mal@ecs.soton.ac.uk> 
+An: sg@ecs.soton.ac.uk 
+Betreff: widen loop 
+Datum: Tue, 18 Sep 2001 14:12:19 +0100 
+
+
+widen([t(_56310)],rul__constraint__declaration([t0(_56310)],
+     [proc(any/1,[(any(_56286):-true)]),proc(t0/1,[(t0(s(_56269)):-t2(_56269))]),
+      proc(t2/1,[(t2(0):-true)])]),[t(_40338)],
+  rul__constraint__declaration([t6(_40338)],
+     [proc(any/1,[(any(_40314):-true)]),proc(t0/1,[(t0(s(_40297)):-t2(_40297))]),
+      proc(t2/1,[(t2(0):-true)]),proc(t6/1,[(t6(s(_40263)):-t8(_40263))]),
+      proc(t8/1,[(t8(s(_40244)):-any(_40244))])]),_55762,_55763)
+
+==>
+
+   LOOP:
+
+      Forbidden Pairs: []
+      Dependants: [(y_t6,y_t8)]
+      Treated Predicates: [(y_t6,y_t8)]
+      ReplacementHistory: [none]
+
+   LOOP:
+
+      Forbidden Pairs: []
+      Dependants: [(y_t6,y_t8)]
+      Treated Predicates: [(y_t6,y_t8)]
+      ReplacementHistory: [none]
+
+   LOOP:
+
+      Forbidden Pairs: []
+      Dependants: [(y_t6,y_t8)]
+      Treated Predicates: [(y_t6,y_t8)]
+      ReplacementHistory: [none]
+
+----------------------------------------------------
+
+Answer: Bug in shorten:shortenToFixPoint eliminated.
+        Bug in shorten:shorten eliminated. Moreover:
+        upperBound enhanced such that subType cases
+        are detected early before the upperBound con-
+        struction starts. widening enhanced with the
+        new compression facility for better output.
+        The example given above seems to work OK now.
+
+[SG:18.9.2001]
+
+----------------------------------------------------

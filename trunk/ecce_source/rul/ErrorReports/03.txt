@@ -1,0 +1,102 @@
+Datum: Tue, 11 Sep 2001 10:33:19 +0100 
+Von: Michael Leuschel <mal@ecs.soton.ac.uk> 
+An:  sg@ecs.soton.ac.uk 
+Betreff: Problem  
+
+Das war eines der Probleme:
+
+### WARNING CALL HAS FAILED !
+###
+ 
+partition_goal([t(_105849),
+                t(s(s(_105849))),
+                rul__constraint__declaration([t16(s(_105849))],
+                                             [proc(any/1,
+                                                   [(any(_86382):-true)]),
+                                              proc(x_t0/1,
+                                                   [(x_t0(s(_86365)):-x_t2(_86365))]),
+                                              proc(x_t2/1,
+                                                   [(x_t2(0):-true)]),
+                                              proc(any/1,
+                                                   [(any(_86333):-true)]),
+                                              proc(y_t0/1,
+                                                   [(y_t0(s(_86316)):-y_t2(_86316))]),
+                                              proc(y_t2/1,
+                                                   [(y_t2(0):-true)]),
+                                              proc(y_t6/1,
+                                                   [(y_t6(s(_86365)):-y_t8(_86365))]),
+                                              proc(y_t8/1,
+                                                   [(y_t8(s(_86263)):-any(_86263))]),
+                                              proc(t16/1,
+                                                   [(t16(s(_86365)):-t17(_86365))]),
+                                              proc(t17/1,[])])
+                 ],
+                 _108394)
+
+
+Also das goal [t(_105849),t(s(s(_105849)))] mit den RUL constraints oben 
+scheint irgendwie proSiNo:l_goalRULification Probleme zu bereiten.
+
+----
+
+Datum: Tue, 11 Sep 2001 10:41:57 +0100 
+Von: Michael Leuschel <mal@ecs.soton.ac.uk> 
+An:  Stefan Gruner <sg@ecs.soton.ac.uk> 
+Betreff: Problem 
+
+
+Hier ist das/ein Problem:
+
+| ?- 
+goalRULification(t(s(s(_144))),
+                 _4190,
+                 rul__constraint__declaration([t16(s(_144))],
+                                              [proc(any/1,
+                                                    [(any(_444):-true)]),
+                                               proc(x_t0/1,
+                                                    [(x_t0(s(_580)):-x_t2(_580))]),
+                                               proc(x_t2/1,
+                                                    [(x_t2(0):-true)]),
+                                               proc(any/1,
+                                                    [(any(_850):-true)]),
+                                               proc(y_t0/1,
+                                                    [(y_t0(s(_986)):-y_t2(_986))]),
+                                               proc(y_t2/1,
+                                                    [(y_t2(0):-true)]),
+                                               proc(y_t6/1,
+                                                    [(y_t6(s(_580)):-y_t8(_580))]),
+                                               proc(y_t8/1,
+                                                    [(y_t8(s(_1444)):-any(_1444))]),
+                                               proc(t16/1,
+                                                    [(t16(s(_580)):-t17(_580))]),
+                                               proc(t17/1,[])]),
+                  _4184).
+
+no
+
+==============================================================================
+
+ANTWORT: Mir ist aufgefallen dass der problematische Aufruf 2 any-definitionen
+         enthaelt, was eigentlich nicht sein darf. Ich mache 2 Tests: einmal
+         mit der doppelten any-Definition, und einmal bereinigt mit nur einer
+         any-Definition.
+
+	 a) Beidesmal "no", ob nun eine any-Definition oder doppeltes any.
+            [Dennoch sollten mehrfache any-Definitionen mithilfe der dazu
+	    schon bereitgestellten auxil-Prozeduren entfernt werden!]
+
+	 b) Obiger Fehler scheint in einer Hilfsprozedur zu stecken,
+            naemlich auxil:progSize. Ich pruefe dies...
+
+	 c) Ergebnis: Die leere Definition proc(t17/1,[]) verursacht das
+            Scheitern; progSize verlangt nicht-leere Definitionen als Input.
+
+	 d) BugFix: progSize wirft nun eine Warnung bei leeren Definitionen.
+
+	 e) Weitere Untersuchung: leere Definitionen duerfen eigentlich nicht
+            vorkommen! Ich vermute die Ursache fuer die Generierung der leeren
+            Definition irgendwo im modul proSiNo oder im modul interSection. 
+            Ich pruefe dies. [===> siehe nachfolgende Fehler-Notiz 04.txt]
+
+===============================================================[SG:11.09.2001]
+
