@@ -1,3 +1,6 @@
+SICSTUS=/Users/leuschel/bin/bin/sicstus
+SPLD=/Users/leuschel/bin/bin/spld
+
 all: sav sicsexe
 
 ecce:  *.pl */*.pl
@@ -20,12 +23,12 @@ clean:
 
 sav:
 	@echo "Creating sav file..."
-	sicstus -l ecce_sicstus.pl --goal "save_program('ecce_sicstus.sav'),halt."
+	${SICSTUS} -l ecce_sicstus.pl --goal "save_program('ecce_sicstus.sav'),halt."
 	@echo "...done!"
 	@echo 
 
 sicsexe:
 	@echo "Creating Sicstus executable..."
-	spld --static --output ecce --resources=./ecce_sicstus.sav=/ecce_sicstus.sav
+	${SPLD} --static --output ecce --resources=./ecce_sicstus.sav=/ecce_sicstus.sav
 	@echo "...done!"
 	@echo 	

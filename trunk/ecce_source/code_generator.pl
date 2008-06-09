@@ -855,15 +855,16 @@ print_body1([Call|T]) :-
 
 print_call(Call) :-
 	(is_negative_literal(Call,NegatedAtom)
-	-> (print_bold('\\+('),print_atom(NegatedAtom),print_bold(')'))
+	-> (print_bold('\\+('),filter_print_atom(NegatedAtom),print_bold(')'))
 	;  ((nonvar(Call),infix_predicate(Call),Call =.. [Pred,Arg1,Arg2])
-	    -> (filter_print_atom(Arg1),print(' '),print(Pred),print(' '),
-		filter_print_atom(Arg2))
+	    -> (filter_print_atom(Arg1),
+	        print(' '),print(Pred),print(' '),
+		    filter_print_atom(Arg2))
 	    ; filter_print_atom(Call)
 	   )
 	).
 
-
+filter_print_atom('jit_merge_point') :- !, print('true /* jit_merge_point */ ').
 filter_print_atom(':'(Module,Pred)) :- !,
 	filter_print_atom(Module),print(':'),
 	filter_print_atom(Pred).

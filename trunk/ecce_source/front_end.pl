@@ -188,6 +188,9 @@ set_options(RecognisedOptions) :-
 set_options(_).
 
 pe_for_front_end(PEAtom,RecognisedOptions) :-
+   time(pe_for_front_end2(PEAtom,RecognisedOptions),T),
+   print('% Total time for specialisation: '),print(T),print(' ms'),nl.
+pe_for_front_end2(PEAtom,RecognisedOptions) :-
           pe_without_pp(PEAtom,RealPEGoal),
           gen_dot_file(RecognisedOptions),
           pe_post_process(RealPEGoal).
