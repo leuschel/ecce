@@ -11,3 +11,5 @@ convex: sav
 	spld --static --output convex --resources=./cli_convex_analyser.sav=/cli_convex_analyser.sav
 	@echo "...done!"
 	@echo 	
+test: convex
+	./convex test_input.pl

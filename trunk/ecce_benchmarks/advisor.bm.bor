@@ -2,7 +2,7 @@ test(1) :-
     what_to_do_today(first_of_may,sunny,A), 
     print([what_to_do_today(first_of_may,sunny,A)]), 
     nl.
-bench :- time_log(bm100,'$ECCE_BENCHMARKS/bench.time.bor.log').
+bench :- time_log(bm100,'bench.time.bor.log').
 bm100 :- 
     bm10.
 bm100 :- 
@@ -3044,11 +3044,8 @@ bm :-
 bm :- 
     what_to_do_today(first_of_may,nice,wash_your_car), 
     fail.
-:- reconsult('$ECCE_BENCHMARKS/orig/advisor.pro').
-:- [time].
-:- ((test(X),fail) ; true).
-:- add_new_time_log_entry('advisor.bm','$ECCE_BENCHMARKS/bench.time.bor.log').
-:- bench.
-:- bench.
-:- bench.
-:- halt.
+:- ensure_loaded('/Users/leuschel/svn_root/ecce/ecce_benchmarks/orig/advisor.pro').
+:- ensure_loaded(time).
+main(_) :- test(X),fail.
+main(_) :- add_new_time_log_entry('advisor.bm','bench.time.bor.log'),  bench, bench, bench, halt.
+:- main([]).

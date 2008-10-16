@@ -865,6 +865,7 @@ print_call(Call) :-
 	).
 
 filter_print_atom('jit_merge_point') :- !, print('true /* jit_merge_point */ ').
+filter_print_atom('promote_ground'(X)) :- !, print('true /* promote_ground/1 */ ').
 filter_print_atom(':'(Module,Pred)) :- !,
 	filter_print_atom(Module),print(':'),
 	filter_print_atom(Pred).

@@ -177,7 +177,7 @@ print_exception(error(syntax_error(StartLine,EndLine,Err,Str),_Pred)) :- !,
   write(user_error,'*** '), write(user_error,Err),nl(user_error),
   write(user_error,'*** '), write(user_error,Str),nl(user_error).
 print_exception(E) :- write(user_error,'*** '),
-  write(user_error,E),nl(user_errror).
+  write(user_error,E),nl(user_error).
   
 
 set_options(RecognisedOptions) :-
