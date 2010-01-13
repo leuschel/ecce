@@ -15,6 +15,7 @@ conjunction(1,[app(X,Y,Z),app(Z,V,[1,2,3]),app(VV,WW,[1])]).
 last_conjunction_id(1).
 
 
+
 add_conjunction(Conj,ID) :- conjunction(ID,Conj),!. % to do: use hashing on skeleton
 add_conjunction(Conj,ID) :- retract(last_conjunction_id(LID)),
   ID1 is LID+1, assert(last_conjunction_id(ID1)),
@@ -50,6 +51,13 @@ pe :- open_conjunction(ID,Conj),!,
            unfold_conjunction(Conj,ID)
      ),pe.
  pe :- print(finished),nl,pr.
+
+
+% BUP
+
+:- dynamic bup_answer/2.
+%bup_step :- conjunction(ID,Conj),
+%            findall(X, trans(ID,unfold(..
 
 
 % SPLITTING CONJUNCTIONS
