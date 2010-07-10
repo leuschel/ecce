@@ -28,8 +28,8 @@
 	gt_node_goal(ParID,ParGoal),
 	pp_cll(msg_can_be_taken(Goal,ParGoal)),
 	(not(instance_of(ParGoal,Goal))
-	 -> (true) /* blow whistle */
-	 ;  (instance_of(Goal,ParGoal)) /* we have a variant, also blow */
+	 -> true /* blow whistle */
+	 ;  instance_of(Goal,ParGoal) /* we have a variant, also blow */
 	).
 'whistle.notmoregeneral:find_growing_among_ancestors'(ParID,Goal,Chtree,WhistlGoalID) :-
 	gt_node_descends_from(ParID,ParID2,_LeafLocalID),

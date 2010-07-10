@@ -52,12 +52,14 @@ l_varlist2([X|T],L,R) :-
 
 stop :- halt.
 
+:- meta_predicate time(:,*).
 time(Goal,Time) :- 
 	statistics(runtime,[Global1,_]),
 	call(Goal),
 	statistics(runtime,[Global2,_TimeSinceLastStat]),
 	Time is Global2 - Global1.
 
+:- meta_predicate time(:).
 time(Goal) :-
 	time(Goal,Time),
 	print('Time for goal: '),print(Goal),

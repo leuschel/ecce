@@ -188,8 +188,11 @@ set_options(RecognisedOptions) :-
 set_options(_).
 
 pe_for_front_end(PEAtom,RecognisedOptions) :-
-   time(pe_for_front_end2(PEAtom,RecognisedOptions),T),
-   print('% Total time for specialisation: '),print(T),print(' ms'),nl.
+	statistics(runtime,[Global1,_]),
+    pe_for_front_end2(PEAtom,RecognisedOptions), % having problems in Ciao with calling time/1 here
+	statistics(runtime,[Global2,_TimeSinceLastStat]),
+	Time is Global2 - Global1,
+    print('% Total time for specialisation: '),print(Time),print(' ms'),nl.
 pe_for_front_end2(PEAtom,RecognisedOptions) :-
           pe_without_pp(PEAtom,RealPEGoal),
           gen_dot_file(RecognisedOptions),
@@ -385,7 +388,7 @@ action(112,P):- /* p: partially evaluate an atom */
 	           assertz_fact(last_pd_query(Atom))
 		  )
 	),
-	time(pe(Atom),T),nl,
+	time(main_functions:pe(Atom),T),nl,
 	print('Full transformation time (with code generation): '), print(T),
 	print(' ms'),nl,
 	front_end(PP).

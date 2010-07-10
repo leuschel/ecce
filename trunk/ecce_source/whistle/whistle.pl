@@ -26,6 +26,7 @@
 :- use_module('whistle.eco.pl').
 :- use_module('whistle.homo.pl').
 :- use_module('whistle.notmoregeneral.pl').
+:- use_module('whistle.setnotmoregeneral.pl').
 :- use_module('whistle.set.homo.pl').
 :- use_module('whistle.none.pl').
 :- use_module('whistle.conj-termsize.pl').
@@ -48,7 +49,8 @@ whistle(ID,G,Ch,W) :-
 %'whistle:dispatch'(106,ID,G,Ch,W) :- 'whistle.chconj-termsize-set':whistle'(ID,G,Ch,W).
 'whistle:dispatch'(101,ID,G,Ch,W) :- 'whistle.eco:whistle'(ID,G,Ch,W).
 'whistle:dispatch'(104,ID,G,Ch,W) :- 'whistle.homo:whistle'(ID,G,Ch,W).
-'whistle:dispatch'(109,ID,G,Ch,W) :- 'whistle.notmoregeneral:whistle'(ID,G,Ch,W).
+%'whistle:dispatch'(109,ID,G,Ch,W) :- 'whistle.notmoregeneral:whistle'(ID,G,Ch,W).
+'whistle:dispatch'(109,ID,G,Ch,W) :- 'whistle.setnotmoregeneral:whistle'(ID,G,Ch,W).
 'whistle:dispatch'(115,ID,G,Ch,W) :- 'whistle.set.homo:whistle'(ID,G,Ch,W).
 'whistle:dispatch'(117,ID,G,Ch,W) :- 'whistle.none:whistle'(ID,G,Ch,W).
 'whistle:dispatch'(118,ID,G,Ch,W) :- 'whistle.conj-termsize:whistle'(ID,G,Ch,W).

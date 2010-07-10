@@ -29,8 +29,8 @@
 	pp_cll(msg_can_be_taken(Goal,ParGoal)),
 	debug_print(test_for_growing_with(ParGoal)),debug_nl,
 	(instance_of(ParGoal,Goal)
-	 -> (debug_print(par_inst_of),debug_nl,fail)
-	 ;  (true)
+	 -> debug_print(par_inst_of),debug_nl,fail
+	 ;  true
 	),
 	homeomorphic_embedded(ParGoal,Goal),
 	debug_print('atom growing detected'),debug_nl,

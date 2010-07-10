@@ -51,7 +51,7 @@
 :- set_prolog_flag(single_var_warnings,off).
 
 print_ecce_version :- print(' '),print('2.0').
-print_ecce_release :- print('Release 1, November 2003').
+print_ecce_release :- print('Release 2, July 2010').
 
 /* file: dynpreds.pl */
 

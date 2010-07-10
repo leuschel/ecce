@@ -310,33 +310,39 @@ simplify_call(X,X).
 /* print_specialised_program/0 */
 /* --------------------------- */
 
+% call if you want to get the specialised goals in sorted order
+get_specialised_goal_in_order(Goal,MsvGoal,FilteredGoal) :-
+  findall(g(G,M,F),cg_filter_goal(_NodeID,G,M,F),List),
+  sort(List,SL),
+  member(g(Goal,MsvGoal,FilteredGoal),SL).
+
 print_specialised_program :-
 	newparagraph,print('/'),print('* Specialised Predicates: '),nl,
     generate_slice_instead_of_spec_prog(no), /* only print spec preds if no slicing */
 	print_html('<OL> '),
-	cg_filter_goal(_NodeID,Goal,MsvGoal,FGoal),
-        (variant_of(MsvGoal,Goal) -> (Var=yes) ; (Var=no) ),
+	get_specialised_goal_in_order(Goal,MsvGoal,FGoal),
+        (variant_of(MsvGoal,Goal) -> Var=yes ; Var=no ),
 	    numbervars(FGoal,0,NrOfVars),
 	    N2 is NrOfVars + 26,
 	    numbervars(Goal,N2,_), /* these are redundant arguments */
 	    print_html('<LI> '),
 	    filter_print_atom(FGoal),
 	    print_body(MsvGoal),
-            ((Var=yes) -> true
-             ; (print(' MSV of '), print_body(Goal))
+            (Var=yes -> true
+             ; print(' MSV of '), print_body(Goal)
             ), nl,
 	fail.
 print_specialised_program :-
 	print_html(' </OL> '),
 	print('*'),print('/'),newparagraph,nl,
 	spec_clause(SpecClauseNr,FGoal,Body),
-	((SpecClauseNr = filter_comment)
+	(SpecClauseNr = filter_comment
 	-> (nl,print('/'),print('* '),
 	    numbervars(g(FGoal,Body),0,_),
 	    print_em(FGoal), print_em(' --> '),
 	    print_em(Body),print(' *'),print('/'),newparagraph
 	   )
-	;  ((SpecClauseNr = keep_original_program)
+	;  (SpecClauseNr = keep_original_program
 		-> (print('/'),print('* '),
 	    	    print_bold(' KEEP ORIGINAL PROGRAM FOR CORRECTNESS !! '),
 	     	    print(' *'),print('/'),newparagraph)
