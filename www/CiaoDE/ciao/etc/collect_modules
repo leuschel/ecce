@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Usage: $0 module_name
+
+# echo ":- use_package([])." >> $1.pl
+
+echo "use_module(library(gen_asr_file))." >> $1
+
+for f in *.pl ; do
+    if grep '^:- *module(' $f > /dev/null ; then
+       echo "make_po('$f')." >> $1
+       echo "gaf('$f')." >> $1
+       echo "display(user_error,'$f')." >> $1
+       echo "nl(user_error)." >> $1
+    fi
+done
+
+for d in * ; do
+    if test -d $d ; then
+       if  test ! -f $d/Makefile -a \
+                ! -f $d/.NOCOMPILE -a \
+                ! -f $d/NOCOMPILE ; then
+#                ! -f $d/.nodistribute -a \
+#                ! -f $d/.NODISTRIBUTE -a \
+#                ! -f $d/NODISTRIBUTE      \
+          for f in $d/*pl ; do
+              if grep -s '^:- *module(' $f > /dev/null ; then
+                 echo "make_po(library('$f'))." >> $1
+                 echo "gaf(library('$f'))." >> $1
+                 echo "display(user_error,'$f')." >> $1
+                 echo "nl(user_error)." >> $1
+              fi
+          done
+       fi
+    fi
+done
+
+echo "nl." >> $1
+

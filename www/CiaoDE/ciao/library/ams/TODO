@@ -1,0 +1,10 @@
+
+- comprobar el control de errores
+- no hay manera de restringir los imports mas que en ams al llamar!
+- hay problemas de transformacion al pasar el Goal: 
+   los numeros dejan de ser numeros!! (no funciona is/2)
+- se queda frito con algunos errores, e.g.: undefined predicate 
+
+- ?que pasa si el modulo activo tiene use_module's?
+- ?que pasa con el estado del modulo activo (assert y demas)?
+- ?y las declaraciones (multifile, data, metapredicate, etc.)?

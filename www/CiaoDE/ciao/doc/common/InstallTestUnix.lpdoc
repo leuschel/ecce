@@ -1,0 +1,54 @@
+
+@begin{itemize}
+
+@item Typing @apl{ciao} (or @apl{ciaosh}) should start the typical
+      Prolog top-level shell. 
+
+@item In the top-level shell, Prolog library modules should load
+      correctly. Type for example @tt{use_module(library(dec10_io))} --you
+      should get back a prompt with no errors reported.
+
+      @comment{See the Ciao manuals (and the examples in
+      @tt{$(CIAOSRC)/examples/suite} and @tt{$(CIAOSRC)/examples}).}
+
+@item To exit the top level shell, type @tt{halt.} as usual, or
+      @key{^D}.
+
+@item Typing @apl{ciaoc} should produce the help message from the Ciao
+      @concept{standalone compiler}.
+
+@item Typing @apl{ciao-shell} should produce a message saying
+      that no code was found. This is a Ciao application which can be
+      used to write @concept{scripts} written in Prolog, i.e., files
+      which do not need any explicit compilation to be run. 
+
+@end{itemize}
+
+@noindent 
+Also, the following documentation-related actions should work:
+
+@begin{itemize} 
+
+@item If the @apl{info} program is installed, typing @tt{info} should
+      produce a list of manuals which @em{should include Ciao
+      manual(s) in a separate area} (you may need to log out and back
+      in so that your shell variables are reinitialized for this to
+      work).
+
+@item Opening with a @concept{WWW browser} (e.g., @apl{netscape}) the
+      directory or @tt{URL} corresponding to the @tt{DOCROOT} setting 
+      should show a series of Ciao-related manuals. Note that
+      @index{style sheets} should be activated for correct formatting
+      of the manual.
+
+@item Typing @tt{man ciao} should produce a man page with some very
+      basic general information on Ciao (and pointing to the on-line
+      manuals).
+
+@item The @tt{DOCROOT} directory should contain the manual also in
+      the other formats such as @tt{postscript} or @tt{pdf} which
+      specially useful for printing. See @ref{Printing manuals (Un*x)}
+      for instructions.
+
+@end{itemize}
+

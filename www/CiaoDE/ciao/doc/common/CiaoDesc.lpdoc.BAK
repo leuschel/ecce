@@ -1,0 +1,67 @@
+
+@bf{Ciao} is a @index{public domain}, @em{next generation} programming
+environment which supports the development and efficient compilation
+of @em{logic programs}, @em{constraint logic programs} (CLP),
+@em{functional logic programs}, and @em{object-oriented logic
+programs}. @bf{Ciao} includes standard @bf{ISO-Prolog}
+as a sublanguage and a program development environment similar to that
+of traditional Prolog and CLP implementations. However, @bf{Ciao}
+extends the Prolog language and improves on traditional Prolog
+programming environments in a number of significant ways:
+
+@begin{itemize} 
+
+@item @bf{Ciao} offers support for @em{programming in the large} with
+      a robust module/object system, module-based automatic
+      incremental compilation (with no need for makefiles), an
+      assertion language for declaring (@em{optional}) program
+      properties (including types and modes, but also determinacy,
+      non-failure, cost, etc.), automatic static inference and
+      static/dynamic checking of such assertions, etc.
+
+@item @bf{Ciao} also offers support for @em{programming in the small}
+      producing small executables (including only those builtins used
+      by the program) and support for writing scripts in Prolog.
+
+@item The @bf{Ciao} compiler generates several forms of
+      architecture-independent and stand-alone executables, which run
+      with very competitive speed and efficiency.  Library modules can
+      be compiled into compact bytecode or C source files, and linked
+      statically, dynamically, or autoloaded.
+
+@item @bf{Ciao} supports concurrency (threads), distributed execution,
+      concurrent built-in database, and parallelism.
+
+@item The @bf{Ciao} programming environment includes a classical
+      top-level with a rich emacs interface source-level debugger
+      and a large number of @em{libraries} providing a wide range of
+      additional functionality, including persistence, higher-order,
+      functions, objects, sockets, foreign language interfaces (C,
+      Java, tcltk, etc.), WWW programming, relational DB interfaces,
+      support for several control rules, etc.
+
+@item The @bf{Ciao} language has been designed from the ground up to
+      be highly extensible (in a modular way) and to allow modular
+      program development, global program analysis, and static
+      debugging and optimization via source to source program
+      transformation, including automatic parallelization.  
+
+@item The latter tasks are performed by the @bf{Ciao preprocessor}
+      (@apl{ciaopp}, distributed separately). The @bf{Ciao} system
+      also includes a rich @apl{emacs} interface and a number of
+      execution visualization tools.
+
+@item The @bf{Ciao} programming environment also includes @apl{lpdoc},
+      an automatic documentation generator for LP/CLP programs.  It
+      processes Prolog files adorned with (@bf{Ciao}) assertions and
+      machine-readable comments and generates manuals in many formats
+      including @tt{postscript}, @tt{pdf}, @tt{texinfo}, @tt{info},
+      @tt{HTML}, @tt{man}, etc. , as well as on-line help, ascii
+      @tt{README} files, entries for indices of manuals (@tt{info},
+      WWW, ...), and maintains WWW distribution sites.
+
+@end{itemize}
+
+@bf{Ciao} is distributed under the @concept{GNU General Public
+License}, version 2, as published by the Free Software Foundation,
+Inc., 675 Mass Ave, Cambridge, MA 02139, USA.

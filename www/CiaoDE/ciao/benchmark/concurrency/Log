@@ -1,0 +1,152 @@
+clip, 2 processors                         salmon, 1 processor
+
+broadcasting and relinquishing:
+
+Goals finished in 1965 ms.                 Goals finished in 914 ms.         
+Goals finished in 1923 ms.                 Goals finished in 901 ms.         
+Goals finished in 1932 ms.                 Goals finished in 868 ms.         
+Goals finished in 1928 ms.                 Goals finished in 910 ms.         
+Goals finished in 1940 ms.                 Goals finished in 878 ms.         
+Goals finished in 1942 ms.                 Goals finished in 851 ms.         
+add numbers, two processes                 add numbers, two processes        
+result(1250025000)                         result(1250025000)                
+time(5816)                                 time(2152)                        
+result(1250025000)                         result(1250025000)                
+time(5740)                                 time(1947)                        
+result(1250025000)                         result(1250025000)                
+time(5770)                                 time(1937)                        
+result(1250025000)                         result(1250025000)                
+time(5751)                                 time(1718)                        
+result(1250025000)                         result(1250025000)                
+time(5767)                                 time(1950)                        
+add numbers, several processes             add numbers, several processes    
+result(50005000)                           result(50005000)                  
+time(113404)                               time(1873)                        
+result(50005000)                           result(50005000)                  
+time(33147)                                time(1036)                        
+result(50005000)                           result(50005000)                  
+time(10091)                                time(1095)                        
+result(50005000)                           result(50005000)                  
+time(10718)                                time(1805)                        
+result(50005000)                           result(50005000)                  
+time(19389)                                time(1566)                        
+Philosophers                               Philosophers                      
+time(3180)                                 time(3223)                        
+time(2600)                                 time(3059)                        
+time(3405)                                 time(3090)                        
+time(3368)                                 time(2980)                        
+time(3415)                                 time(3015)                        
+
+                                           
+broadcasting and no relinquishing:
+
+Goals finished in 1041 ms.                 Goals finished in 823 ms.      
+Goals finished in 994 ms.                  Goals finished in 803 ms.      
+Goals finished in 984 ms.                  Goals finished in 803 ms.      
+Goals finished in 985 ms.                  Goals finished in 799 ms.      
+Goals finished in 985 ms.                  Goals finished in 798 ms.      
+Goals finished in 989 ms.                  Goals finished in 787 ms.      
+add numbers, two processes                 add numbers, two processes     
+result(1250025000)                         result(1250025000)             
+time(3178)                                 time(1828)                     
+result(1250025000)                         result(1250025000)             
+time(3198)                                 time(1390)                     
+result(1250025000)                         result(1250025000)             
+time(3055)                                 time(1602)                     
+result(1250025000)                         result(1250025000)             
+time(3149)                                 time(1404)                     
+result(1250025000)                         result(1250025000)             
+time(2142)                                 time(1825)                     
+add numbers, several processes             add numbers, several processes 
+result(50005000)                           result(50005000)               
+time(2190)                                 time(22204)                    
+result(50005000)                           result(50005000)               
+time(2368)                                 time(469)                      
+result(50005000)                           result(50005000)               
+time(2272)                                 time(14249)                    
+result(50005000)                           result(50005000)               
+time(2059)                                 time(27087)                    
+result(50005000)                           result(50005000)               
+time(2236)                                 time(36625)                    
+Philosophers                               Philosophers                   
+time(3354)                                 time(3364)                     
+time(3035)                                 time(3205)                     
+time(3487)                                 time(2728)                     
+time(3241)                                 time(2662)                     
+time(3590)                                 time(3050)                     
+
+
+signaling and no relinquishing:
+
+Goals finished in 1031 ms.                 Goals finished in 836 ms.      
+Goals finished in 995 ms.                  Goals finished in 801 ms.      
+Goals finished in 994 ms.                  Goals finished in 806 ms.      
+Goals finished in 992 ms.                  Goals finished in 811 ms.      
+Goals finished in 993 ms.                  Goals finished in 808 ms.      
+Goals finished in 984 ms.                  Goals finished in 810 ms.      
+add numbers, two processes                 add numbers, two processes     
+result(1250025000)                         result(1250025000)             
+time(3285)                                 time(1851)                     
+result(1250025000)                         result(1250025000)             
+time(3226)                                 time(1566)                     
+result(1250025000)                         result(1250025000)             
+time(3129)                                 time(1402)                     
+result(1250025000)                         result(1250025000)             
+time(3186)                                 time(1603)                     
+result(1250025000)                         result(1250025000)             
+time(3012)                                 time(1511)                     
+add numbers, several processes             add numbers, several processes 
+result(50005000)                           result(50005000)               
+time(1808)                                 time(2952)                     
+result(50005000)                           result(50005000)               
+time(1617)                                 time(4189)                     
+result(50005000)                           result(50005000)               
+time(1827)                                 time(25945)                    
+result(50005000)                           result(50005000)               
+time(1928)                                 time(10270)                    
+result(50005000)                           result(50005000)               
+time(2009)                                 time(20487)                    
+Philosophers                               Philosophers                   
+time(1832)                                 time(1926)                     
+time(1441)                                 time(2001)                     
+time(1377)                                 time(1956)                     
+time(1370)                                 time(1975)                     
+time(1377)                                 time(1932)                     
+
+
+signaling and relinquishing:
+
+Goals finished in 1821 ms.                 Goals finished in 992 ms.     
+Goals finished in 1865 ms.                 Goals finished in 880 ms.     
+Goals finished in 1860 ms.                 Goals finished in 871 ms.     
+Goals finished in 1761 ms.                 Goals finished in 868 ms.     
+Goals finished in 1866 ms.                 Goals finished in 874 ms.     
+Goals finished in 1856 ms.                 Goals finished in 855 ms.     
+add numbers, two processes                 add numbers, two processes    
+result(1250025000)                         result(1250025000)            
+time(5675)                                 time(2063)                    
+result(1250025000)                         result(1250025000)            
+time(5618)                                 time(1613)                    
+result(1250025000)                         result(1250025000)            
+time(5663)                                 time(1673)                    
+result(1250025000)                         result(1250025000)            
+time(5596)                                 time(1690)                    
+result(1250025000)                         result(1250025000)            
+time(5564)                                 time(1574)                    
+add numbers, several processes             add numbers, several processes
+result(50005000)                           result(50005000)              
+time(33562)                                time(1663)                    
+result(50005000)                           result(50005000)              
+time(18870)                                time(866)                     
+result(50005000)                           result(50005000)              
+time(37053)                                time(1255)                    
+result(50005000)                           result(50005000)              
+time(3091)                                 time(1424)                    
+result(50005000)                           result(50005000)              
+time(4764)                                 time(1406)                    
+Philosophers                               Philosophers                  
+time(2099)                                 time(2071)                    
+time(1798)                                 time(2003)                    
+time(1759)                                 time(2036)                    
+time(1760)                                 time(2139)                    
+time(1764)                                 time(2021)                    

@@ -1,0 +1,92 @@
+This directory holds the C sources comprising emulator and runtime
+system support of CIAO Prolog.  The files are:
+
+	Makefile - installation script
+	README - this text
+	access.h - access macros for principal WAM areas
+	alloc.c - allocation of principal WAM areas
+	alloc.h - initial allocation parameters
+	bignum.c - support for arbitrary size integers
+	builtin.c - support for bootstrap and debugging
+	cmnd.c - low level debugger command interpreter
+	commands.h - low level debugger command definitions
+	configure.c - program to sense certain system properties
+	datadefs.h - includes common header files
+	foreign.c - foreign language interface support code
+	format.c - support for format/[2,3] predicates
+	gauge.c - support for profiling predicates
+	gcdatadefs.h - extra memory access macros for heap gc
+	gcsupport.h - utility macros for heap gc
+	heapgc.c - term heap garbage collector
+	help.c - low level debugger help texts
+	indexing.c - support for the incremental clause compiler
+	initial.c - system initialization
+	initial.h - extern defs for global Prolog terms
+	inout.c - input/output predicates
+	instr2name.c - disassembler
+	instrdefs.h - emulator instruction definitions
+	interface.c - low level debugger interface code
+	interface.h - low level debugger interface macros definitions
+	interrupt.c - interrupt handlers
+	kernel.asm - Sun-3 native code m4 macros
+	kernel.mac - Sun-3 native code assembler macros
+	kernel.s - Sun-3 native code assembler kernel
+	kernel_con.c - filter to create Sun-3 native code assembler defs
+	main.c - main program
+	makecase.c - meta-program for generating case statements
+	misc.c - predicates mainly for debugging support
+	nondet.c - non-deterministic predicates
+	objareas.c - database management support code
+	objareas.h - defs for symbol tables, databases, predicates
+	predtyp.h - defs for different kinds of predicates
+	qget.c - quick load token reader
+	qinstr2name.c - quick load disassembler
+	qinstrdefs.h - quick load instruction defs
+	qread.c - quick load reader
+	registers.c - principal WAM areas and registers
+	registers.h - extern defs of prinipal registers and areas
+	saverestore.c - save/1, save/2, save_program/1, restore/1, restore/2
+	shdisp_r.c - read mode version of non-unify instructions
+	shdisp_w.c - write mode version of non-unify instructions
+	stacks.c - code for growing areas when full
+	streams.c - stream handling primitives
+	string.c - low level debugger string utilities
+	support.c - general runtime support routines
+	support.h - general runtime support macros
+	term_support.c - term compiler for assert/record
+	termdefs.h - basic typedefs & memory access macros
+	timing.c - metering primitives
+	u1disp_r.c - read mode version of single unify instructions
+	u1disp_w.c - write mode version of single unify instructions
+	u2defs.h - defs for pairs of unify instructions
+	u2void_r.c - read mode version of 'unify_void' + unify instruction
+	u2void_w.c - write mode version of 'unify_void' + unify instruction
+	u2xval_r.c - read mode version of 'unify_x_value' + unify instruction
+	u2xval_w.c - write mode version of 'unify_x_value' + unify instruction
+	u2xvar_r.c - read mode version of 'unify_x_variable' + unify instruction
+	u2xvar_w.c - write mode version of 'unify_x_variable' + unify instruction
+	u2yval_r.c - read mode version of 'unify_y_value' + unify instruction
+	u2yval_w.c - write mode version of 'unify_y_value' + unify instruction
+	u2yvar_r.c - read mode version of 'unify_y_variable' + unify instruction
+	u2yvar_w.c - write mode version of 'unify_y_variable' + unify instruction
+	wam.c - emulator kernel
+	wam.h - emulator macros
+	wambuiltin.c - routines for 'call_builtin' procedures
+	wambuiltin.h - externs for 'call_builtin' procedures
+	wamfunction.c - routines for 'call_function' procedures
+	wamfunction.h - externs for 'call_function' procedures
+	wamgauge_r.c - read mode version of profiling insns
+	wamgauge_w.c - write mode version of profiling insns
+	wamsupport.c - basic emulator support
+	float_const.c - constants for the float to string conversor
+	float_const.h - externs constants for the float to string conversor
+	float_to_str.c - float to string conversor
+	float_to_str.h - float to string conversor
+	hashtab.c - an efficient hash table implementation
+	hashtab.h - an efficient hash table implementation
+	lookupa.c - part of hashtab.c, find the hash code
+	lookupa.h - part of hashtab.c, find the hash code
+	recycle.c - part of hashtab.c, manages memory
+	recycle.h - part of hashtab.c, manages memory
+	standard.h - part of hashtab.c, standard definitions and types
+	

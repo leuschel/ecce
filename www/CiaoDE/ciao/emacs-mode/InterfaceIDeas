@@ -1,0 +1,25 @@
+
+- Shrink and expand method definitions. Button on the left margin to
+  do it. 
+
+- Fill in automatically comment headers: look at the closest method
+  and take pred name, args, types, etc. from there.
+
+- you can get a list of TODO: comments in the code hitting F6 (they
+  appear attached to a tree of the source code)
+
+- Marks automatically in read errors and in yellow areas which are
+  condidates for refactoring, with suggestions on what to do ('this
+  variable is unused'). Dos it incrementally (do it by running the
+  compiler priodically in the background).
+
+- Projects have a 'code style' file which controls tabbing, and other
+  style things.
+
+- Can find automatically (almost-)duplicated code. 
+
+- If you change a method or variable name it is changed in every
+  place.
+
+- Look at refactoring stuff for Java: safe_delete, etc. 
+

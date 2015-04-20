@@ -1,0 +1,27 @@
+#VRML V2.0 utf8
+
+
+PROTO NurbsCurve [ field   SFBool   debug          FALSE
+                   field   SFInt32  segments      20
+                   field   MFFloat  knotSequence   0
+                   field   MFFloat  controlPoints  0 ] {
+
+    DEF ILS IndexedLineSet {
+      coord
+          Coordinate { }
+      coordIndex []
+    }
+    DEF curve Script {
+      field    SFBool   debug         IS debug
+      field    SFInt32  segments      IS segments
+      field    MFFloat  knotSequence  IS knotSequence
+      field    MFFloat  controlPoints IS controlPoints
+      eventOut SFNode   coord_changed
+      eventOut MFInt32  coordIndex_changed
+
+      url "NurbsCurve.class"
+    }
+
+    ROUTE curve.coord_changed       TO  ILS.set_coord
+    ROUTE curve.coordIndex_changed  TO  ILS.set_coordIndex
+}

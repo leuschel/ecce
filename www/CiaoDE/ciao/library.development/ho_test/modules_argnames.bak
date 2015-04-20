@@ -1,0 +1,53 @@
+:- include(ho).
+
+:- load_compilation_module(ho_module_tr).
+:- add_term_trans(ho_module_tr/2).
+:- include(library(argnames)).
+
+%% This defines a fixed-name access to the methods.
+:- argnames lists(member,append).
+%% This defines the module. List/1 is >local<.
+define_module(lists(Member,Append)) :-
+
+	( List([]) :- true ),
+	( List([_|T]) :- List(T) ),
+	
+	( Member(X,[X|Y]) :- List(Y) ),
+	( Member(X,[_|Y]) :- Member(X,Y) ),
+
+	( Append([],Y,Y) :- List(Y) ),
+	( Append([X|Y],Z,[X|W]) :- Append(Y,Z,W) ).
+
+
+%% Note that the counter itself is local (inaccessible from the outside).
+:- argnames counter(inc).
+
+define_module(counter(Inc)) :-
+
+	( Counter(0) :- true ),
+
+	( Inc(NX) :- 
+	       ( Counter(X) -: true ), 
+	       write('Old counter is '),write(X),nl,
+	       NX is X+1, 
+	       ( Counter(NX) :- true )
+	).
+
+
+main(X) :-
+ 	Lists = lists${},                   % Lists new lists,
+ 	import_module(Lists), 
+
+	display(Lists::member(X,[1,2,3])).
+
+%% %% This uses the module. 
+%% main(X) :-
+%% 	Lists = lists${},                   % Lists new lists,
+%% 	import_module(Lists), 
+%% 	
+%% 	Lists = lists${member => M},        % Lists:member(X,[1,2,3])
+%% 	M(X,[1,2,3]).
+
+import_module(M) :- define_module(M).
+
+

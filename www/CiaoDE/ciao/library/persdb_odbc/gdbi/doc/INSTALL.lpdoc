@@ -1,0 +1,117 @@
+
+
+
+   @subsection{Software Requirements}
+   
+   @begin{itemize}
+
+   @item On the database management side, a @concept{Database Manager
+   System (DBMS)} and its 32-bit ODBC driver must be
+   installed. @concept{ODBC data source}s can then be defined in the
+   Win95/NT machine.
+
+   @item On the client-to-database interface side, a @concept{database
+   mediator server} must be running. @tt{Server.exe} is the name of this
+   Win95/NT executable. See @em{How to install Server.exe} section.
+
+   @item To enable the communication, the Win95/NT machine @concept{IP
+   address} and the @concept{port number} used are specified.  Then,
+   this port number must be available to this eventuality.
+
+   @bf{Note:} @em{For the moment, the server application listens to
+   the machine port 2020. No other port numbers are currenlty
+   allowed.}
+
+   @end{itemize}
+
+   @subsection{How to install Server.exe}
+
+   Next are a number of different ways to install @tt{Server.exe}. Try
+   the first alternative. If this succeeds, ignore the rest. Else, try
+   the next alternative.
+
+   @begin{itemize}
+
+   @item Copy the @concept{shared DLL version} of @tt{Server.exe} to
+   the (or each) Win95/NT machine containing the database(s) that you
+   want to access. Run it and open an @concept{ODBC data source}. If
+   no error is displayed, the @tt{Server} is correctly installed (and
+   the following alternatives are unnecessary). Else, this
+   @concept{shared DLL version} is probably needing some other
+   @concept{DLL libraries} which it cannot find. If the problems are
+   related to @concept{MFC libraries} versions, copy @file{MFC42.DLL}
+   and @file{MSVCRT.DLL} to the @tt{Server.exe} NT directory and try
+   again.
+
+   @item Copy the @concept{static executable} version of
+   @tt{Server.exe} to your Win95/NT machine. Run it and open an
+   @concept{ODBC data source}. If no error is displayed, @tt{Server}
+   is correctly installed (and the following alternatives are
+   unnecessary).
+
+   This static executable requires no DLL's. The price to pay is the
+   executable size. In theory, any Win95/NT machine with the
+   appropiate 32-bit ODBC driver could run this static .exe. But
+   theory does not always agree with reality, so maybe the next choice
+   will be useful.
+
+   @item Compile the @tt{Server} sources to obtain a shared DLL named 
+   @tt{Server.exe}. Use @concept{Visual C++ 5.0} compiler or a later version.
+
+   @end{itemize}
+
+   @subsection{Database Mediator Server directories}
+
+   Two executable versions (dynamic and static versions) are distributed to
+   run the @concept{database mediator server} in a Windows NT/95
+   environment. Source files are also available. Meaning and differences
+   are explained in @em{How to install Server.exe} section.
+
+   @begin{itemize}
+
+   @item @bf{DLLExecutables directory.} Contains @tt{Server} executable
+   compiled as a @concept{shared DLL}, and two additional DLL's which
+   may be needed (@em{How to install Server.exe} section).
+
+   @item @bf{StaticExecutables directory.} Contains @tt{Server} executable
+   statically compiled.
+
+   @item @bf{ServerSources directory.} Contains @tt{Server} source files, 
+   written in @concept{Visual C++ 5.0}.
+
+   @end{itemize}
+
+   @subsection{How to install an ODBC 32-bit data source}
+
+   Once the @concept{ODBC driver} is installed, and the @concept{database
+   file} is created, you may define an @concept{ODBC data source} making a
+   few simple steps (they can slightly differ depending on the
+   @concept{Database Manager System (DBMS)} used):
+
+   @begin{itemize}
+
+   @item @em{Start-Settings-Control Panel-ODBC 32}
+
+   @item Choose @em{User DSN} tab if you want the data source only visible
+   for you, or @em{System DSN} if you want it to be visible for all the
+   NT/W95 users.
+
+   @item Click on the @em{Add} button. Select the @concept{ODBC driver} you
+   want to use (e.g. @tt{Sybase SQL Anywhere}, @tt{Microsoft Access
+   Driver}, @tt{SQL Server}, ...). Then click @em{Finish}.
+
+   @item  Now you need to fill some fields (they can differ depending on the
+   @concept{ODBC driver}): 
+
+        @begin{itemize}
+	@item @em{Data Source Name:} this is the source name you are using to connect to.
+	@item @em{Description:} field to insert any comment.
+	@item @em{User ID, Password:} name and keyword to access to the data source.
+	@item @em{Database File:} the main file containing the database (.mdb, .db , ...).
+	@item @em{Others(optionals):} database name, server name, ...
+        @end{itemize}
+   @end{itemize}
+
+
+
+

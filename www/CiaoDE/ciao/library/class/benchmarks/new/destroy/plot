@@ -1,0 +1,10 @@
+set data style linespoints
+
+set ylabel "Execution time (ms)"
+set xlabel "Number of created instances"
+set title  "new/1 execution time against number of created instances"
+set pointsize 3
+
+plot "bench" index 0:1 title "" pt 2 
+
+pause -1 "Hit Enter to continue"

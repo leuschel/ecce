@@ -1,0 +1,153 @@
+in(1,[1])
+[[0|5]]
+local_store(1,[x(1,_175,_175)])
+sent(msg(3,1,ok?(a([x(1,_175,_175)]))))
+ackleft(1)
+sending(msg(2,1,marker(0)))
+sent_message
+sending(msg(3,1,marker(0)))
+sent_message
+do_agent(1)
+received(msg(1,2,marker(0)))
+current_marker_counter(0)
+pending_markers([marker(3),marker(2)])
+marker(0)
+do_agent(1)
+received(msg(1,3,ack([x(3,10,10),x(2,4,4),x(1,5,5)])))
+current_marker_counter(0)
+pending_markers([marker(3)])
+ack([x(3,10,10),x(2,4,4),x(1,5,5)])
+Execution not terminated
+marker_counter_updated(0,1)
+ack(a(1))
+[[5|5]]
+
+unified
+1
+told
+sending(msg(2,1,marker(1)))
+sent_message
+sending(msg(3,1,marker(1)))
+sent_message
+added_propagation([x(3,10,10),x(2,4,4),x(1,5,5)],1,[x(1,5,5)],3)
+newackleft(0)
+do_agent(1)
+received(msg(1,2,marker(1)))
+current_marker_counter(1)
+pending_markers([marker(3),marker(2)])
+marker(1)
+do_agent(1)
+received(msg(1,3,marker(0)))
+current_marker_counter(1)
+pending_markers([marker(3)])
+marker(0)
+discarded_marker(0)
+do_agent(1)
+received(msg(1,3,marker(1)))
+current_marker_counter(1)
+pending_markers([marker(3)])
+marker(1)
+Moving...
+Prop finished?
+store(1,[])
+highers([])
+presumed_view([])
+Moving from propagation to search
+sending(msg(1,1,begin_labeling))
+sent_message
+sending(msg(2,1,begin_labeling))
+sent_message
+sending(msg(3,1,begin_labeling))
+sent_message
+do_agent(1)
+received(msg(1,1,begin_labeling))
+do_agent(1)
+received(msg(1,3,prop_ended))
+[waiting_for_labs(1,3)]
+No remaining prop_ended
+in(1,[1])
+[x(1,5,5)]
+sending(msg(3,1,ok?(a([x(1,5,5)]))))
+sent_message
+sending(msg(2,1,marker(1)))
+sent_message
+sending(msg(3,1,marker(1)))
+sent_message
+do_agent(1)
+received(msg(1,2,marker(1)))
+current_marker_counter(1)
+pending_markers([marker(3),marker(2)])
+marker(1)
+do_agent(1)
+received(msg(1,3,marker(1)))
+current_marker_counter(1)
+pending_markers([marker(3)])
+marker(1)
+Moving...
+store(1,[])
+highers([])
+presumed_view([])
+Global execution finished
+sending(msg(1,1,show_stats))
+sent_message
+sending(msg(2,1,show_stats))
+sent_message
+sending(msg(3,1,show_stats))
+sent_message
+do_agent(1)
+received(msg(1,1,show_stats))
+
+***************************************************
+STATISTICS OF AGENT 1
+*****************OK (propagation)**********************
+ok? messages received during propagation: 0
+
+******************ACK (propagation)********************
+1: ack from 3
+ack messages received during propagation: 1
+
+****************NO GOOD (propagation)******************
+no_good messages received during propagation (none, I hope): 0
+
+************NEGLECTED NO GOOD (propagation)************
+no_good messages neglected during propagation (none, I hope): 0
+
+************BEGIN LABELING (propagation)***************
+1: begin_labeling from 1
+begin_labeling messages received during propagation (one, I hope): 1
+
+***********PROPAGATION ENDED (propagation)*************
+1: prop_ended from 3
+End of propagation messages received: 1
+
+**********TERMINATION DETECTION (propagation)**********
+1: marker from 3
+1: marker from 3
+1: marker from 2
+1: marker from 2
+Termination detection messages (markers) received during propagation: 4
+
+********************OK (labeling)**********************
+ok? messages received during labeling: 0
+
+*******************ACK (labeling)**********************
+ack messages received during labeling: 0
+
+******************NO GOOD (labeling)*******************
+no_good messages received during labeling: 0
+
+************NEGLECTED NO GOOD (labeling)************
+no_good messages neglected during labeling: 0
+
+**************BEGIN LABELING (labeling)****************
+begin_labeling messages received during labeling (none, I hope): 0
+
+*************PROPAGATION ENDED (labeling)**************
+End of propagation messages received during labeling (none, I hope): 0
+
+************TERMINATION DETECTION (labeling)***********
+1: marker from 3
+1: marker from 2
+Termination detection messages (markers) received during labeling: 2
+
+do_agent(1)

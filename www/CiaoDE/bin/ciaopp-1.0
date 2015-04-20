@@ -1,0 +1,5 @@
+#!/bin/bash
+# Do not edit - automatically generated!
+
+APPHOME=/home/asap/asap-online-demo/CiaoDE/ciaopp
+/home/asap/asap-online-demo/CiaoDE/bin/ciaosh-1.13 -p "ciaopp ?- " -l ~/.ciaorc -u $APPHOME/ciaopp_exe.pl

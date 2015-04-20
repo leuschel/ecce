@@ -1,0 +1,154 @@
+1.- 1 agencia con 1 worker local al manager:
+    - sum_test: Se agota la memoria porque la exploracion se hace en
+    anchura y el arbol de busqueda resultante es demasiado
+    grande-->Favorecer busqueda en profundidad tipo prolog. 
+
+    - smm: Lo resuelve en un pis pas 412 ms.
+    - queens(8,_): Da casi todas las soluciones pero al final surge un
+    "Segmentation violation" seguramente porque se le acaba la memoria.
+
+    - Bottom line: Esta claro que de laguna manera hay que controlar el
+      numero de r_spaces que se tienen almacenados a la espera de
+      resolucion (su numero aumenta exponencialmente a cada paso de
+      labeling).
+
+2.- 1 agencia con 1 worker remota al manager:
+    - sum_test: Idem[1]: Malloc: Interrupted system call {ERROR: Memory
+    allocated out of addressable bounds!} 
+    - smm: Idem[1].
+    - queens(8,_): Como en [1] pero en este caso el mensaje de error es:
+    "unimplemented WAM instruction". Parece que se le acaba la memoria y le
+    falla la pinza.
+
+Bottom line: Elimino copy_term. Mo hacia falta copiar el store en cada paso
+de labeling porque esta encapsulado en la estructura r_space. Eso, si,
+ahora ojo con el backtracking. Tambien fuerzo a que la busqueda sea en
+profundidad y no en anchura, incluendo un identificador en el mensaje
+"explore". Haciendo esto:
+
+      - queens(8,_): Va genial. Tarda un poquito en encontrar las primeras
+      soluciones (7s, 3s, 2s...) pero las siguientes salen casi simultaneas.
+      - sum_test: Se nota la busqueda en profundidad. Encuentra soluciones
+      muy facilmente cuando antes las pasaba putas y agotaba la memoria.
+      - smm: Casi como en el caso no distribuido (ojo, solo tenemos un
+      worker!). Asi que va muy rapido.
+
+3.- 1 agencia con 2 worker remota al manager:
+    - smm: Demasiado pequeño. No da tiempo a dividir el trabajo.
+    - queens(8,_): ERROR: segmentation violation en la agencia.
+
+POR FIN: Habia un problema de comunicaciones que provocaba el error
+anterior. Arreglado, funciona bien.
+
+Observacion: algunos problemas muy perniciosos como sum_test no permten
+explotar bien el paralelismo porque tiene variables con muchas alternativas
+y al ser la busqueda en profundidad provoca que se ignoren los mensajes de
+share. 
+
+- Cambio de filosofia en el lableing: PITM y añado constraint.
+
+1.- 1 agencia con 1 worker local al manager:
+    - queens(8,_): Reduce los tiempos del principio a un maximo de 1191 ms
+    y todos los siguientes parecen quedar mas o menos igual a excepcion de
+    algun pico de menos de 1s.
+
+POR FIN POR FIN: el findnsols daba problemas y lo rompia todo en momentos
+de mucho acceso a los predicados concurrentes.
+
+Tambien he serializado las comunicaciones a traves de unos threads que se
+dedian exclusivamente a mandar mensajes, asegurandose de que el stream se
+usa de uno en uno.
+
+
+Pruebas con LDS:
+
+-queens de 12 reinas (secuencial: 1 sol 1599 ms, 80 sols 74210 ms).
+1 worker:
+   - 1 solucion:
+       LDS = 10-> Se tuesta al llegar a LDS = 5.
+       LDS = 3 -> 2612 ms
+       LDS = 2 -> 1071 ms (*)
+       LDS = 1 -> 1640 ms
+       LDS = 0 -> 1632 ms
+
+   - 80 soluciones:
+	LDS = 10-> Se tuesta al llegar a LDS = 5.
+	LDS = 3 -> 111372 ms
+	LDS = 2 ->  33121 ms (*)
+	LDS = 1 ->  41615 ms
+	LDS = 0 ->  41466 ms
+
+2 workers:
+   - 1 solucion:
+       LDS = 10-> No se tuesta (por la redundancia de workers). 16958 ms
+       LDS = 3 -> 2927 ms
+       LDS = 2 -> 1350 ms 
+       LDS = 1 -> 2008 ms
+       LDS = 0 -> 1327 ms (*)
+  
+   - 80 soluciones:
+	LDS = 10-> No se tuesta (por la redundancia de workers).
+	LDS = 3 -> 34580 ms
+	LDS = 2 -> 22881 ms
+	LDS = 1 -> 21813 ms
+	LDS = 0 -> 21708 ms (*)
+
+3 workers:
+   - 1 solucion:
+       LDS = 10-> Todos fritos
+       LDS = 3 -> 2588 ms
+       LDS = 2 -> 1555 ms (*)
+       LDS = 1 -> 2184 ms
+       LDS = 0 -> 2200 ms
+  
+   - 80 soluciones:
+	LDS = 10-> Todos fritos
+	LDS = 3 -> 31607 ms
+	LDS = 2 -> 28580 ms
+	LDS = 1 -> 29669 ms
+	LDS = 0 -> 23633 ms (*)
+
+Conclusion (para cualquier numero de workers): Para una sola solucion, con
+el valor apropiado de LDS, el sistema distribuido (o un sistema que vaya
+generando espacios computacionales sobre los que hacer labeling, en lugar de
+la tipica ejecucion prolog left-depth first) mejora al secuencial. Para
+varias soluciones, con cualquier LDS, el sistema distribuido siempre es mas
+rapido que el secuencial.
+
+-DGR (secuencial: 6090 ms).
+
+1 worker:
+       LDS = 10-> 17029 ms
+       LDS = 3 -> 15439 ms
+       LDS = 2 -> 16154 ms
+       LDS = 1 ->  1019 ms (*)
+       LDS = 0 ->  1371 ms
+
+2 workers:
+       LDS = 10-> Todos fritos
+       LDS = 3 ->  2302 ms
+       LDS = 2 ->  2168 ms
+       LDS = 1 ->  1386 ms (*)
+       LDS = 0 ->  1494 ms (En teoria, al compartir trabajo el espacio de
+       busqueda del worker que vaya a encontrar la solucion se reduce y
+       deberia encontrarla antes que en el caso anterior. El problema es el
+       overhead que se da en el protocolo de reparto de trabajo).
+
+3 workers:
+       LDS = 10-> 18000 ms
+       LDS = 3 -> 12966 ms 
+       LDS = 2 ->  9718 ms
+       LDS = 1 ->  1466 ms (*)
+       LDS = 0 ->  1551 ms
+
+4 workers:
+       LDS = 10-> Todos fritos.
+       LDS = 3 ->   988 ms (*)!!!
+       LDS = 2 ->  2017 ms
+       LDS = 1 ->  1788 ms
+       LDS = 0 ->  1583 ms
+
+Conclusion: Asintoticamente, cuantos mas workers tengas, mejor, porque asi
+reduces el espacio que le toca explorar a cada uno y llegas antes a la
+solucion.
+

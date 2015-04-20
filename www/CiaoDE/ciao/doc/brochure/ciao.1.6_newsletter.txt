@@ -1,0 +1,100 @@
+
+** Announcing Version 1.6 of the Ciao System **
+-----------------------------------------------
+
+Ciao is a public domain, next generation logic programming
+environment.
+
+Ciao is a complete Prolog system, supporting ISO-Prolog, but its novel
+modular design allows both restricting and extending the language.
+This makes it possible to work with fully declarative subsets of
+Prolog and also to extend these subsets (or ISO-Prolog) both
+syntactically and semantically.  Most importantly, these restrictions
+and extensions can be activated separately on each program module so
+that several extensions can coexist in the same application for
+different modules.
+
+Ciao currently includes extensions for feature terms (records),
+functional logic programming, higher-order (with predicate
+abstractions), constraints, object-oriented programming, persistence,
+several control rules (breadth-first search, iterative deepening,
+...), concurrency (threads/engines), distributed execution (agents),
+concurrent built-in database, and parallel execution.  Libraries also
+support WWW programming, sockets, external interfaces (C, Java, TclTk,
+relational databases, etc.), etc.
+
+Programming in the large is supported thanks to the robust
+module/class system, module-based automatic incremental compilation
+(with no need for makefiles), an assertion language for declaring
+(optional) program properties (including types, modes, determinacy,
+non-failure, cost, ...), automatic static inference and static/dynamic
+checking of such assertions, program optimization and parallelization,
+and powerful automatic documentation generation (the latter tasks
+performed by the CiaoPP preprocessor and the LPdoc autodocumenter).
+It is the novel modular design of Ciao which enables modular program
+development, effective global program analysis, and static debugging
+and optimization via source to source program transformation.
+
+Programming in the small is supported by having reduced size
+executables, which only include those builtins and libraries used by
+the program, and by supporting scripts written in Prolog.
+
+The compiler generates several forms of architecture-independent and
+stand-alone executables. Program modules can be compiled into compact
+bytecode and linked statically, dynamically, or autoloaded. The
+executables generated are very competitive in both performance and
+size with all current commercial and academic Prolog systems.
+
+The programming environment also offers a rich emacs interface (with
+direct access to top-level/debugger, preprocessor, and
+autodocumenter), embeddable source-level debugger with breakpoints,
+and some execution visualization tools.
+
+1.4 -> 1.6 improvements:
+------------------------
+
+-  Source-level debugger in emacs, breakpts.
+-  Debugger embeddable in executables.
+-  Many improvements to emacs interface.
+-  Menu-based interface to autodocumenter.
+-  Threads now available in Win32.
+-  Many improvements to threads.
+-  Modular clp(R) / clp(Q).
+-  Improved syntax for pred. abstractions.
+-  Library of higher-order list predicates.
+-  Better code expansion facilities (macros).
+-  Compressed object code/executables.
+-  The size of atoms is now unbound.
+-  Fast creation of new unique atoms.
+-  # of clauses/pred. essentially unbound.
+-  Delayed goals with freeze restored.
+-  Faster compilation and execution.
+-  Much faster fast write/read. 
+-  Improved documentation.
+-  Other new libraries.
+-  Improved installation/deinstallation.
+-  Many improvements to autodocumenter.
+-  Many bug fixes.
+
+1.0 -> 1.4 improvements:
+------------------------
+
+-  Automatic (re)compilation of foreign files.
+-  New version of O'Ciao objects, with improved performance. 
+-  New  (&Prolog-like) concurrency / multiengine primitives. 
+-  Support for predicate abstractions.
+-  Reexportation of predicates. 
+-  Precedence of importations changed: last one is now higher. 
+-  Modules can implicitly export all preds.
+-  Improved documentation.
+
+Contact / download info:
+------------------------
+
+http://www.clip.dia.fi.upm.es
+http://www.clip.dia.fi.upm.es/Software
+clip@clip.dia.fi.upm.es
+Manuel Hermenegildo / The CLIP Group
+Facultad de Informatica -- UPM
+E-28660 Boadilla del Monte, Madrid, SPAIN
+

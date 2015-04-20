@@ -1,0 +1,30 @@
+
+    This is a binary-tree based implementation of a memory manager
+written to work around bugs (or, in any case, strange behavior) of the
+Linux malloc() family of calls.
+
+    malloc() seems to return chunks of memory from different zones
+depending of the amount of memory asked for.  What hits Ciao is that
+those zones are more than 2^28 words apart, so words from different
+parts of the memory do not fit into the (encoded) 28 bit pointer Ciao
+uses internally almost everywhere.
+
+    A solution (the one we have adopted) is to put a memory manager
+layer on top of the malloc() routines.  This memory manager is called
+from within Ciao, and it allocates memory in blocks of a minimum size
+(determined at compile time) which happen to come from the same region
+of the virtual memory.  These blocks are internally split and returned
+to Ciao in the sizes requested by the main application.
+
+    I (mcarro@fi.upm.es) have written two versions of this memory
+manager: one based on a linear, partially memory-sorted list, and
+another which adds an ordered binary tree for faster retrieval of free
+blocks.  It turns out that in usual applications, the linear list
+gives marginally better performance, and, additionally, it is much
+simpler, so it is the one which comes by default with the system.
+
+    To use the binary tree implementation, simply copy the file
+own_malloc_bin.c to $(CIAOSRC)/engine, and change
+$(CIAOSRC)/engine/Makefile to use it; make a symbolic link to
+bin/$(ARCH), and recompile.
+

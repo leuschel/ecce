@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo "Copying current static compiler and engine to the bootstrap directory..."
+echo "(previous bootstrap will be backed up)"
+
+myself=`which $0`
+ROOTDIR=`dirname ${myself}`
+
+DATE=`date +%Y%m%d%H%M%S`
+
+NEWCIAOC=${ROOTDIR}/ciaoc/ciaoc
+OLDCIAOC=${ROOTDIR}/bootstrap/ciaoc.sta
+BACKUPCIAOC=${ROOTDIR}/bootstrap/backup/ciaoc.sta-${DATE}
+
+NEWCIAOENGINE=${ROOTDIR}/bin/LINUXi86/ciaoengine 
+OLDCIAOENGINE=${ROOTDIR}/bootstrap/ciaoengine.sta
+BACKUPCIAOENGINE=${ROOTDIR}/bootstrap/backup/ciaoengine.sta-${DATE}
+
+cp ${OLDCIAOC} ${BACKUPCIAOC}
+cp ${OLDCIAOENGINE} ${BACKUPCIAOENGINE}
+
+cp ${NEWCIAOC} ${OLDCIAOC}
+cp ${NEWCIAOENGINE} ${OLDCIAOENGINE}
+
+echo "Done"
+

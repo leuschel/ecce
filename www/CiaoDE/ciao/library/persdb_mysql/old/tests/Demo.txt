@@ -1,0 +1,13 @@
+open "/home/clip/Systems/ciao/library/persdb_sql/examples/dalet_example.pl"
+show table definitions
+C-c l
+show main1 (C-v)
+execute main1
+show main2 (C-v)
+execute main2
+show deletion & insertion (C-v)
+execute deletion
+execute main2
+execute insertion
+execute main2
+(Kill *CIAO* to free memory)

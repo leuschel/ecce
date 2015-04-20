@@ -1,0 +1,44 @@
+% To test: 
+% ciaoc segv.pl; ./segv
+
+:- module(_,_,[]).
+
+main :-
+	g(a, a, a),
+	g(a, b, a),
+	r(0, X),
+	s(X).
+
+crl(0, []) :- !.
+crl(N, [a|Xs]) :-
+	N1 is N - 1,
+	crl(N1, Xs).
+
+:- data g/3.
+g(a,a,a).
+g(a,b,a).
+
+s(_).
+
+r(N, [a|Xs]) :-
+	display(N), nl, 
+	M = a(a,a,a,a,a,a,a,a,a,a,a),
+	asserta_fact(t),
+        y(a, a, a),
+	N1 is N + 1,
+	r(N1, Xs).
+
+y(_, _, _) :-
+        e(a, a, a),
+	retract_fact(t),
+        e(a, a, a).
+y(_, _, _).
+
+:- concurrent t/0.
+
+e(_, _, _).
+e(_, _, _).
+
+
+
+

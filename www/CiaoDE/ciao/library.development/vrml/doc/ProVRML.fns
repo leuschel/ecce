@@ -1,0 +1,49 @@
+\initial {B}
+\entry {\code {bound/1:}}{21}
+\entry {\code {bound_double/1:}}{21}
+\entry {\code {boundary_check/3:}}{5}
+\entry {\code {boundary_rotation_first/2:}}{5}
+\entry {\code {boundary_rotation_last/2:}}{6}
+\initial {C}
+\entry {\code {children_nodes/1:}}{6}
+\entry {\code {create_dictionaries/1:}}{9}
+\initial {D}
+\entry {\code {dictionary/1:}}{22}
+\entry {\code {dictionary/6:}}{7}
+\entry {\code {dictionary_insert/5:}}{10}
+\entry {\code {dictionary_lookup/5:}}{10}
+\initial {E}
+\entry {\code {environment/1:}}{22}
+\initial {G}
+\entry {\code {generator/2:}}{19}
+\entry {\code {get_definition_dictionary/2:}}{9}
+\entry {\code {get_prototype_dictionary/2:}}{10}
+\initial {I}
+\entry {\code {is_dictionaries/1:}}{9}
+\initial {O}
+\entry {\code {out/1:}}{25}
+\initial {P}
+\entry {\code {parse/1:}}{22}
+\entry {\code {parser/2:}}{29}
+\initial {R}
+\entry {\code {read_page/2:}}{37}
+\entry {\code {read_terms_file/2:}}{25}
+\entry {\code {read_vrml_file/2:}}{26}
+\entry {\code {reserved_words/1:}}{6}
+\initial {T}
+\entry {\code {terms_file_to_vrml/2:}}{36}
+\entry {\code {terms_file_to_vrml_file/2:}}{36}
+\entry {\code {terms_to_vrml/2:}}{36}
+\entry {\code {terms_to_vrml_file/2:}}{36}
+\entry {\code {tree/1:}}{22}
+\initial {V}
+\entry {\code {vrml_file_to_terms/2:}}{35}
+\entry {\code {vrml_http_access/2:}}{37}
+\entry {\code {vrml_in_out/2:}}{37}
+\entry {\code {vrml_to_terms/2:}}{37}
+\entry {\code {vrml_web_to_terms/2:}}{35}
+\entry {\code {vrml_web_to_terms_file/2:}}{36}
+\initial {W}
+\entry {\code {whitespace/1:}}{23}
+\entry {\code {write_terms_file/2:}}{26}
+\entry {\code {write_vrml_file/2:}}{26}

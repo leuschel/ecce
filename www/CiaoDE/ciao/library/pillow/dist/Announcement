@@ -1,0 +1,28 @@
+PiLLoW 1.1 is available!
+
+PiLLoW version 1.1, included with the latest version of Ciao Prolog
+(1.6#1), is now available for SICStus 3.8, SWI Prolog 3.3, and YAP
+4.3.0.  Improvements from the previous version include handling of XML
+code, templates (HTML/XML code with 'named holes' which are associated
+to logical variables), and a reference manual.  Please see:
+
+  http://www.clip.dia.fi.upm.es/Software/pillow/
+
+for details. 
+
+The PiLLoW library (``Programming in Logic Languages on the Web'') is
+a public domain Internet/WWW programming library for Logic Programming
+Systems which simplifies the process of writing applications for this
+environment.  The library provides facilities for generating HTML or
+XML structured documents by handling them as Herbrand terms, producing
+HTML forms, writing form handlers, processing HTML templates,
+accessing and parsing WWW documents (either HTML or XML), accessing
+code posted at HTTP addresses, etc.  The PiLLoW library has been
+developed in the context of the &-Prolog and Ciao systems, but it has
+been adapted to a number of popular Logic Programming systems.  PiLLoW
+is distributed under the GNU Library General Public License.
+
+P.S. If you have ported PiLLoW to other Prologs, please let us know!
+
+
+

@@ -1,0 +1,216 @@
+# -*- mode: Makefile; -*-
+# ----------------------------------------------------------------------------
+# *** This is a COMMON settings file for all CIAO manuals.
+# *** Individual manuals have a minimal SETTINGS file which overrides these.
+# *** There is also a common Makefile pointer.
+# ----------------------------------------------------------------------------
+-include ../SETTINGS # (the - so that it does not complain at lower levels!)
+-include ../SHARED   # (the - so that it does not complain at lower levels!)
+# ----------------------------------------------------------------------------
+# 
+# ****             lpdoc document generation SETTINGS                  *****
+# 
+#         These SETTINGS should be changed to suit your application
+# 
+# The defaults listed are suggestions and/or the ones used for local 
+# installation in the CLIP group machines.
+# ----------------------------------------------------------------------------
+# List of all directories where the .pl files to be documented can be found
+# (separated by spaces; put explicit paths, i.e., do not use any variables)
+# You also need to specify all the paths of files used by those files!
+# 
+FILEPATHS =  $(SRC)/doc/common $(SRC)
+# $(SRC) from above
+# ----------------------------------------------------------------------------
+# List of all the *system* directories where .pl files used are
+# (separated by spaces; put explicit paths, i.e., do not use any variables)
+# You also need to specify all the paths of files used by those files!
+# You can put these in FILEPATHS instead. Putting them here only
+# means that the corresponding files will be assumed to be "system"
+# files in the documentation.
+# 
+SYSTEMPATHS = $(SRC)/lib \
+	      $(SRC)/lib/compiler \
+	      $(SRC)/lib/debugger \
+	      $(SRC)/lib/engine \
+	      $(SRC)/lib/assertions \
+	      $(SRC)/lib/metatypes \
+	      $(SRC)/lib/regtypes \
+	      $(SRC)/lib/foreign_interface \
+	      $(SRC)/library \
+	      $(SRC)/library/actmods \
+	      $(SRC)/library/agent \
+	      $(SRC)/library/andorra \
+	      $(SRC)/library/andprolog \
+	      $(SRC)/library/argnames \
+	      $(SRC)/library/assertions \
+	      $(SRC)/library/bf \
+	      $(SRC)/library/builtintables \
+	      $(SRC)/library/byrdbox \
+	      $(SRC)/library/class \
+	      $(SRC)/library/class \
+	      $(SRC)/library/class/examples \
+	      $(SRC)/library/clpq \
+	      $(SRC)/library/clpr \
+	      $(SRC)/library/concurrency \
+	      $(SRC)/library/det_hook \
+	      $(SRC)/library/emacs \
+	      $(SRC)/library/factsdb \
+	      $(SRC)/library/file_locks \
+	      $(SRC)/library/fly \
+	      $(SRC)/library/freeze \
+	      $(SRC)/library/functions \
+	      $(SRC)/library/fuzzy \
+	      $(SRC)/library/graphs \
+	      $(SRC)/library/graphs \
+	      $(SRC)/library/id \
+	      $(SRC)/library/indexer \
+	      $(SRC)/library/interface \
+	      $(SRC)/library/javall \
+	      $(SRC)/library/javall/Figs \
+	      $(SRC)/library/librowser \
+	      $(SRC)/library/math \
+	      $(SRC)/library/make \
+	      $(SRC)/library/objects \
+	      $(SRC)/library/objects/examples \
+	      $(SRC)/library/persdb \
+	      $(SRC)/library/persdb/examples \
+	      $(SRC)/library/persdb_sql_common \
+	      $(SRC)/library/persdb_mysql \
+	      $(SRC)/library/persdb_odbc \
+	      $(SRC)/library/pillow \
+	      $(SRC)/library/random \
+	      $(SRC)/library/remote \
+	      $(SRC)/library/sockets \
+	      $(SRC)/library/symfnames \
+	      $(SRC)/library/tcltk \
+	      $(SRC)/library/tcltk_obj \
+	      $(SRC)/library/toplevel \
+	      $(SRC)/library/tracing \
+	      $(SRC)/library/when \
+	      $(SRC)/library/xrefs \
+	      $(SRC)/library/xrefs/doc \
+              $(SRC)/contrib \
+	      $(SRC)/contrib/time_analyzer \
+	      $(SRC)/contrib/tester \
+	      $(SRC)/contrib/modtester \
+	      $(SRC)/contrib/gnuplot \
+	      $(SRC)/contrib/ddlist \
+              $(SRC)/contrib/chartlib \
+              $(SRC)/contrib/fd \
+	      $(SRC)/contrib/mycin \
+	      $(SRC)/contrib/provrml \
+              $(SRC)/contrib/xdr_handle \
+              $(SRC)/contrib/xml_path/doc 
+
+
+#	      $(SRC)/library/persdb_mysql 
+#	      $(SRC)/library/persdb_mysql/InfoFiles 
+
+
+# $(SRC) from above
+# ----------------------------------------------------------------------------
+# Here we define new operators for modes
+PATHSFILE = doc_ops
+# ----------------------------------------------------------------------------
+# Define this to be the main file name (include a path only if it
+# should appear in the documentation) 
+# 
+MAIN = # TO BE DEFINED at lower levels
+# ----------------------------------------------------------------------------
+# Select lpdoc options for main file (do lpdoc -h to get a list of options)
+# Leaving this blank produces most verbose manuals
+# -nobugs -noauthors -noversion -nochangelog -nopatches -modes 
+# -headprops -literalprops -noundefined -norefs -nobullet
+# 
+# MAINOPTS = -nobugs -nopatches
+MAINOPTS = -nopatches
+# ----------------------------------------------------------------------------
+# List of files to be used as components. These can be .pl files
+# or .src files (manually produced files in texinfo format). 
+# (include a path only if it should appear in the documentation, i.e.,
+# for sublibraries) 
+# 
+COMPONENTS = # TO BE DEFINED at lower levels
+# ----------------------------------------------------------------------------
+# Select lpdoc opts for component file(s) (do lpdoc -h to get list of opts)
+# Leaving this blank produces most verbose manuals
+# -nobugs -noauthors -noversion -nochangelog -nopatches 
+# -modes -headprops -literalprops -noundefined -norefs 
+# 
+# COMPOPTS = -nobugs -modes -noversion -nochangelog
+COMPOPTS = -noisoline -noengmods -propmods -nochangelog
+# ----------------------------------------------------------------------------
+# Define this to be the list of documentation formats to be generated by 
+# default when typing gmake (*** keep them in this order ***)
+# dvi ps ascii manl info infoindex html htmlindex 
+# 
+DOCFORMATS:=$(TARDOCFORMATS)
+# ----------------------------------------------------------------------------
+# Define this to be the list (separated by spaces) of indices to be 
+# generated ('all' generates all the supported indices)
+# Note: too many indices may exceed the capacity of texinfo!
+# concept lib apl pred prop regtype decl op modedef file global
+# all
+# 
+# INDICES=concept lib pred prop regtype decl op modedef file global
+INDICES=concept lib pred prop regtype decl global
+# ----------------------------------------------------------------------------
+# If you are using bibliographic references, define this to be the list 
+# (separated by commas, full paths, no spaces) of .bib files to be used 
+# to find them. 
+# 
+BIBFILES=/home/clip/bibtex/clip/clip,/home/clip/bibtex/clip/others
+# ----------------------------------------------------------------------------
+# Only need to change these if you will be installing the docs somewhere else
+# ----------------------------------------------------------------------------
+# Define this to be the dir in which you want the document(s) installed. 
+# 
+DOCDIR:=$(DOCDIR)
+# ----------------------------------------------------------------------------
+# Uncomment this for .dvi and .ps files to be compressed on installation
+# If uncommented, set it to path for gzip
+# 
+# COMPRESSDVIPS = gzip
+# ----------------------------------------------------------------------------
+# Define this to be the style sheet to copy for the html pages
+# Uncomment this to avoid using style sheets
+#
+# HTMLSTYLE= $(LIBDIR)/clip.css
+# This one used in distribution (overridden for distribution site):
+HTMLSTYLE= $(LIBDIR)/default.css
+# ----------------------------------------------------------------------------
+# Define this to be the permissions for automatically generated data files
+# 
+DATAMODE:=$(DATAMODE)
+# $(DATAMODE) from above
+# ----------------------------------------------------------------------------
+# Define this to be the perms for automatically generated dirs and exec files
+# 
+EXECMODE:=$(EXECMODE)
+# $(EXECMODE) from above
+# ----------------------------------------------------------------------------
+# The settings below are important only for generating html and info *indices*
+# ----------------------------------------------------------------------------
+# Define this to be files containing header and tail for the html index. 
+# Pointers to the files generated by lpdoc are placed in a document that 
+# starts with HTMLINDEXHEADFILE and finishes with HTMLINDEXTAILFILE
+# 
+# These ones used in distribution (overridden for distribution site):
+# HTMLINDEXHEADFILE = $(LIBDIR)/Indexhead.html
+# HTMLINDEXTAILFILE = $(LIBDIR)/Indextail.html
+HTMLINDEXHEADFILE = $(SRC)/doc/common/CiaoHead.html
+HTMLINDEXTAILFILE = $(SRC)/doc/common/CiaoTail.html
+# ----------------------------------------------------------------------------
+# Define this to be files containing header and tail for the info "dir" index. 
+# dir entries generated by lpdoc are placed in a "dir" file that 
+# starts with INFODIRHEADFILE and finishes with INFODIRTAILFILE
+#
+# These ones used in distribution (overridden for distribution site):
+# INFODIRHEADFILE = $(LIBDIR)/Indexhead.info
+# INFODIRTAILFILE = $(LIBDIR)/Indextail.info
+INFODIRHEADFILE = $(SRC)/doc/common/CiaoHead.info
+INFODIRTAILFILE = $(SRC)/doc/common/CiaoTail.info
+# ----------------------------------------------------------------------------
+# end of SETTINGS
+# ----------------------------------------------------------------------------

@@ -1,0 +1,114 @@
+From VM Mon Nov 26 10:54:41 2001
+X-VM-v5-Data: ([nil nil nil nil t nil nil nil nil]
+	["590" "Friday" "23" "November" "2001" "23:15:39" "+0100" "Francisco Bueno Carrillo" "bueno@clip.dia.fi.upm.es" "<200111232215.fANMFdP04995@clip.dia.fi.upm.es>" "16" "modular expansions, id, andorra, fuzzy, etc." "^Resent-date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Return-Path: <claudio@clip.dia.fi.upm.es>
+Received: from tsmtp10.mail.isp ([10.10.21.38]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GNEIUZ01.EI9 for <vaucheret@terra.es>; Mon, 26 Nov 2001
+          10:40:11 +0100 
+Received: from goofy.fi.upm.es ([138.100.8.23]) by
+          tsmtp10.mail.isp (Netscape Messaging Server 4.15 tsmtp10 Jul 26
+          2001 13:10:38) with ESMTP id GNEIUY02.7HY for
+          <vaucheret@terra.es>; Mon, 26 Nov 2001 10:40:10 +0100 
+Received: from conversion.relay.fi.upm.es by relay.fi.upm.es
+ (PMDF V6.0-025 #39635) id <01KB5NUMWL5C0008ZG@relay.fi.upm.es> for
+ vaucheret@terra.es; Mon, 26 Nov 2001 10:42:27 +0100 (MET)
+Received: from clip.dia.fi.upm.es (clip.dia.fi.upm.es [138.100.11.74])
+ by relay.fi.upm.es (PMDF V6.0-025 #39635)
+ with ESMTP id <01KB5NUMS35G0009NW@relay.fi.upm.es> for vaucheret@terra.es;
+ Mon, 26 Nov 2001 10:42:27 +0100 (MET)
+Received: (from claudio@localhost)	by clip.dia.fi.upm.es (8.11.2/8.8.7)
+ id fAQ9gRj07491; Mon, 26 Nov 2001 10:42:27 +0100
+Message-id: <200111232215.fANMFdP04995@clip.dia.fi.upm.es>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
+Resent-date: Mon, 26 Nov 2001 10:42:27 +0100 (CET)
+Resent-from: Claudio Vaucheret <claudio@clip.dia.fi.upm.es>
+Resent-to: vaucheret@terra.es
+Resent-message-id: <15362.3715.177647.211479@clip.dia.fi.upm.es>
+From: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+To: claudio@clip.dia.fi.upm.es
+Subject: modular expansions, id, andorra, fuzzy, etc.
+Date: Fri, 23 Nov 2001 23:15:39 +0100
+
+
+Claudio,
+
+Creo que si que hay una manera de saber si se ha hecho una expansion
+sobre un modulo mientras se esta expandiendo otro modulo que importaal
+anterior. En el itf de un modulo se queda la informacion sobre que
+paquetes utiliza. De forma que si haces la expansion "de segundo
+nivel" (cuando la informacion del itf esta accesible), puedes
+preguntar si el modulo importado M ha usado el mismo paquete con
+c_itf:base_name(M,B), c_itf:package(B,fuzzy), y si es asi hacer el
+cambio correspondiente. 
+
+Paco
+
+P.D.: A veces hasta yo me sorprendo de lo bien hecho que esta Ciao!!!
+       ;-)
+
+From VM Mon Nov 26 13:57:49 2001
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1206" "Monday" "26" "November" "2001" "12:22:59" "+0100" "claudio vaucheret" "vaucheret@terra.es" nil "35" "Re: modular expansions, id, andorra, fuzzy, etc." "^From:" nil nil "11" nil nil nil nil nil]
+	nil)
+Return-Path: <vaucheret@terra.es>
+Received: from tsmtp1.mail.isp ([10.10.21.10]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GNENP601.JK6 for <vaucheret@terra.es>; Mon, 26 Nov 2001
+          12:24:42 +0100 
+Received: from rosas.dia.fi.upm.es ([213.4.253.165]) by
+          tsmtp1.mail.isp (Netscape Messaging Server 4.15 tsmtp1 Jul 26
+          2001 13:10:38) with ESMTP id GNENM301.K7T; Mon, 26 Nov 2001
+          12:22:51 +0100 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <15362.9747.484307.634105@rosas.dia.fi.upm.es>
+In-Reply-To: <200111232215.fANMFdP04995@clip.dia.fi.upm.es>
+References: <200111232215.fANMFdP04995@clip.dia.fi.upm.es>
+X-Mailer: VM 6.97 under Emacs 21.1.1
+From: claudio vaucheret <vaucheret@terra.es>
+To: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+CC: claudio@clip.dia.fi.upm.es
+Subject: Re: modular expansions, id, andorra, fuzzy, etc.
+Date: Mon, 26 Nov 2001 12:22:59 +0100
+
+
+Paco,
+
+Al parecer esa infomacion solo esta disponible para los modulos que se
+estan compilando, si un modulo importado que usa el paquete ya esta
+compilado no aparece esta informacion mientras compilo el que lo
+importa. Quizas se podria cambiar para que permanezca. 
+Esto solucionaria el problema para id y andorra, para
+fuzzy todavia seria insuficiente pues en un modulo fuzzy puedo definir
+tanto predicados crisp como fuzzy y lo que necesito es distinguirlos.
+
+
+Francisco Bueno Carrillo writes:
+>> 
+>> Claudio,
+>> 
+>> Creo que si que hay una manera de saber si se ha hecho una expansion
+>> sobre un modulo mientras se esta expandiendo otro modulo que importaal
+>> anterior. En el itf de un modulo se queda la informacion sobre que
+>> paquetes utiliza. De forma que si haces la expansion "de segundo
+>> nivel" (cuando la informacion del itf esta accesible), puedes
+>> preguntar si el modulo importado M ha usado el mismo paquete con
+>> c_itf:base_name(M,B), c_itf:package(B,fuzzy), y si es asi hacer el
+>> cambio correspondiente. 
+>> 
+>> Paco
+>> 
+>> P.D.: A veces hasta yo me sorprendo de lo bien hecho que esta Ciao!!!
+>>        ;-)
+
+-- 
+Claudio Vaucheret
+claudio@clip.dia.fi.upm.es
+vaucheret@terra.es
+
+

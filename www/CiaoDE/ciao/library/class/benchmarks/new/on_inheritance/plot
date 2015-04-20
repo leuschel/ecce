@@ -1,0 +1,8 @@
+set data style linespoints
+# set yrange [0:3]
+plot "bench" index 0:1 title "new/1 execution time versus inheritance level"
+pause -1 "Hit Enter to continue"
+
+
+
+

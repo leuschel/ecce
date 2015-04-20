@@ -1,0 +1,11 @@
+db_def(valuation,'Valuation Inputs','Inputs del analista para el embudo final') .
+db_def(comps,'Companies for Comparables','') .
+db_def('~internal','{Internal WDBI Data}','Be careful when changing this!
+An error in an entry can cause malfunction of the whole system.') .
+db_def(trans,'Transactions','') .
+db_def(comps_db,'Inputs for Comparables','Inputs del analista para Comparables') .
+db_def(trans_db,'Inputs for Transactions','Inputs del analista para Transacciones') .
+db_def(macro_data,'Macro data','Currency changes, ...') .
+db_def(input_dcf_db,'Input DCF','Inputs del analista para ponderar preguntas.') .
+db_def(dcf_db,'Inputs for DCF model','Inputs del analista para DCF model') .
+db_def(approx_db,'Inputs for Approximation','Inputs del analista para la aproximación de valor (independientes de los de Comparables).') .

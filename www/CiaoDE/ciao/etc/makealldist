@@ -1,0 +1,69 @@
+#!/bin/bash
+
+
+echo
+echo
+echo "*** ======================================================================"
+echo "*** Update ciao installation"
+echo "*** ======================================================================"
+echo
+echo
+
+cd /home/clip/Systems/ciao-1.11
+make allnoquestions
+make uninstall
+make justinstall
+
+echo
+echo
+echo "*** ======================================================================"
+echo "*** Update lpdoc installation"
+echo "*** ======================================================================"
+echo
+echo
+
+cd /home/clip/Systems/lpdoc-2.0
+lpmake uninstall
+lpmake fullinstall
+
+echo
+echo
+echo "*** ======================================================================"
+echo "*** Install ciao distribution"
+echo "*** ======================================================================"
+echo
+echo
+
+cd /home/clip/Systems/ciao-1.11/dist
+lpmake uninstall
+lpmake install
+
+echo
+echo
+echo "*** ======================================================================"
+echo "*** Install lpdoc distribution"
+echo "*** ======================================================================"
+echo
+echo
+
+cd /home/clip/Systems/lpdoc-2.0/dist
+lpmake uninstall
+lpmake install
+
+echo
+echo
+echo "*** ======================================================================"
+echo "*** Install ciaopp distribution"
+echo "*** ======================================================================"
+echo
+echo
+
+CIAOPPSRC=/tmp/ciaopp
+rm -rf $CIAOPPSRC
+mkdir $CIAOPPSRC
+cd $CIAOPPSRC
+CVSROOT="/home/clip/CvsRoot" cvs co Systems/ciaopp
+#CVS_RSH=ssh CVSROOT="clip.dia.fi.upm.es:/home/clip/CvsRoot" cvs co Systems/ciaopp
+cd Systems/ciaopp/dist
+lpmake uninstall
+lpmake install

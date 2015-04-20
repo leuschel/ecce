@@ -1,0 +1,20 @@
+#!/bin/tcsh
+if ($?CIAOLIB) then
+
+ echo "O'CIAO assert/retract benchmark"
+ echo "-------------------------------"
+ echo
+
+ cd ${CIAOLIB}/library/class/benchmarks/assrt
+
+ echo "Compiling..."
+
+ ciaoc main_on_assrt
+
+ echo "Benchmarking..."
+
+ ./main_on_assrt 600
+
+ echo
+
+endif

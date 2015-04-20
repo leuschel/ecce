@@ -1,0 +1,28 @@
+package require BLT
+
+if { $tcl_version >= 8.0 } {
+    namespace import blt::*
+    namespace import -force blt::tile::*
+}
+#image create photo bgTexture -file ./images/chalk.gif
+#option add *tile			bgTexture
+#option add *label.background		bgTexture
+option add .header.font			-*-helvetica*-bold-r-*-*-14-*-*
+
+label .header -text "ERROR" -anchor center -pady 14
+ 
+label .error -text "The vectors must contain the same number of elements"
+#
+htext .footer -text {
+     %%
+    set w $htext(widget) 
+     button $w.quit -text quit -command exit 
+    $w append $w.quit 
+%% 
+}
+table . 0,0 .header -fill both 1,0 .error -fill both  2,0 .footer -fill both
+
+
+table configure . r2 -resize both
+
+

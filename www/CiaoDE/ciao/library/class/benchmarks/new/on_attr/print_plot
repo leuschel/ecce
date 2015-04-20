@@ -1,0 +1,4 @@
+set output "on_attr_bench.ps"
+set terminal postscript
+load "plot"
+

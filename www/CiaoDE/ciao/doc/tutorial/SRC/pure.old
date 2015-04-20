@@ -1,0 +1,1284 @@
+
+\section{Pure, Iso, and Ciao Prolog}
+\label{sec:prolog}
+
+Ciao is ISO conformant~\cite{iso-prolog}. However, the source language
+can be switched in a per module basis. This is done via packages.
+
+In the absence of any packages used by a module, the source language
+of the module is Ciao Prolog, which does not have all of the
+predicates defined in Iso Prolog. In order for the module source
+language to be full Iso Prolog, the \verb+iso+ package must be
+used. Thus, a full ISO module should begin with:
+\begin{quote}
+\begin{verbatim}
+:- module(...,[...],[...,iso,...]).
+\end{verbatim}
+\end{quote}
+
+However, the \verb+iso+ package is used by default by any file of the
+\verb+user+ module, provided that it does not explicitly use another
+package. If this is the case, then the \verb+iso+ package must be
+explicitly declared in the file with:
+\begin{quote}
+\begin{verbatim}
+:- use_package([...,iso,...]).
+\end{verbatim}
+\end{quote}
+
+The source language Ciao Prolog includes the following library
+predicates. All of them correspond to the \verb+engine+ library. All
+of them are ISO conformant (when they correspond to an ISO predicate).
+\begin{quote}
+\begin{verbatim}
+!/0                      current_module/1        nl/1                 
+,/2                      current_output/1        nnegint/1            
+->/2                     current_prolog_flag/2   nofileerrors/0       
+;/2                      current_stream/3        nogc/0               
+</2                      debug/1                 nonvar/1             
+=../2                    detach_attribute/1      not_further_inst/2   
+=/2                      display/1               note/1               
+=:=/2                    display/2               num/1                
+=</2                     display_list/1          number/1             
+==/2                     display_string/1        number_codes/2       
+=\=/2                    display_term/1          number_codes/3       
+>/2                      displayq/1              open/3               
+>=/2                     displayq/2              open_predicate/1     
+@</2                     erase/1                 operator_specifier/1 
+@=</2                    error/1                 peek_code/1          
+@>/2                     fail/0                  peek_code/2          
+@>=/2                    fileerrors/0            pop_prolog_flag/1    
+C/3                      float/1                 predname/1           
+\+/1                     flt/1                   prolog_flag/3        
+\==/2                    flush_output/0          prompt/2             
+abort/0                  flush_output/1          push_prolog_flag/2   
+absolute_file_name/2     functor/3               put_code/1           
+absolute_file_name/7     gc/0                    put_code/2           
+arg/3                    get1_code/1             regtype/1            
+arithexpression/1        get1_code/2             repeat/0             
+asserta_fact/1           get_arch/1              retract_fact/1       
+asserta_fact/2           get_attribute/2         retract_fact_nb/1    
+assertz_fact/1           get_code/1              retractall_fact/1    
+assertz_fact/2           get_code/2              sequence/2           
+atm/1                    get_os/1                sequence_or_list/2   
+atm_or_atm_list/1        getct/2                 set_fact/1           
+atom/1                   getct1/2                set_input/1          
+atom_codes/2             gnd/1                   set_output/1         
+atom_concat/3            ground/1                set_prolog_flag/2    
+atom_length/2            halt/0                  skip_code/1          
+atomic/1                 halt/1                  skip_code/2          
+attach_attribute/2       if/3                    sourcename/1         
+call/1                   inform_user/1           srcdbg_spy/6         
+callable/1               int/1                   stream/1             
+catch/3                  integer/1               stream_alias/1       
+character_code/1         intercept/3             stream_code/2        
+character_count/2        io_mode/1               string/1             
+ciaolibdir/1             is/2                    struct/1             
+clearerr/1               iso/1                   sub_atom/4           
+close/1                  line_count/2            tab/1                
+close_predicate/1        line_position/2         tab/2                
+code_class/2             list/1                  term/1               
+compare/3                list/2                  this_module/1        
+compat/2                 member/2                throw/1              
+constant/1               message/1               true/0               
+copy_term/2              message/2               type/2               
+current_fact/1           message_lns/4           update_attribute/2   
+current_fact/2           name/2                  var/1                
+current_fact_nb/1        nl/0                    warning/1            
+current_input/1                
+\end{verbatim}
+\end{quote}
+
+The full \verb+engine+ library is used by default by any module (or file of
+the \verb+user+ module), provided that it does not use any of the
+particular \verb+engine+ libraries explicitly. If one of them is
+explicitly imported, e.g.:
+\begin{quote}
+\begin{verbatim}
+:- use_module(engine(basic_props)).
+\end{verbatim}
+\end{quote}
+%
+then none of the others are implicitly imported. They must be
+explicitly imported, if required.
+
+Pure Prolog code can also be written in a module (or \verb+user+ file)
+by using the package \verb+pure+. This package prevents implicit
+importation of the \verb+engine+ libraries, and thus leaves the module
+with no visibility of any of the ``builtins'', except
+\verb+true/0+. In Pure Prolog you can only use predicates defined on
+your own and the cut (and \verb+true/0+).
+
+\subsection{Pure Prolog}
+\label{sec:pure}
+
+A {\bf predicate} represents a relation between its arguments. That
+the relation exists between concrete arguments is asserted (logically)
+with an {\bf atom}, like in:
+\begin{quote}
+\begin{verbatim}
+p(a,b)
+\end{verbatim}
+\end{quote}
+%
+which establishes that \verb+a+ and \verb+b+ are in the relation \verb+p+.
+
+Whatever relation a predicate means is up to the programmer. Whatever
+the arguments of an atom represent is also up to the programmer. For
+example, you may want \verb+p+ above to mean ``the parent of'',
+\verb+a+ represent your father, and \verb+b+ represent yourself. Thus,
+you'd be asserting that your father is (indeed!) your parent.
+
+You can use predicates with the same name but different number of
+arguments. For example, 
+\begin{quote}
+\begin{verbatim}
+p(a,b,c)
+\end{verbatim}
+\end{quote}
+%
+to mean that \verb+a+ and \verb+c+ are the parents of \verb+b+. Note
+that this is a relation between all three of them. 
+
+To distinguish predicates with the same name and different number of
+arguments, each predicate is uniquely identified by a {\bf predicate
+  spec}, made of the name and the arity (the number of arguments). For
+example, \verb+p/2+ and \verb+p/3+ above, which are indeed different
+relations. 
+
+In Prolog, predicates are procedures. Prolog works by executing
+procedure calls against the procedures defined in a program. The
+definition of a procedure is in terms of other procedure calls. Procedure
+calls are called {\bf goals}. Atoms are used for procedure calls and
+also for the procedure headers in the procedure definitions.
+
+A predicate definition consists of a series of clauses. A {\bf
+  clause} can be a fact or a rule. Rules have the form:
+\begin{quote}
+\begin{verbatim}
+p(A,B) :- father(A,B).
+p(A,B) :- mother(A,B).
+\end{verbatim}
+\end{quote}
+%
+and facts have the form:
+\begin{quote}
+\begin{verbatim}
+p(a,b).
+\end{verbatim}
+\end{quote}
+%
+so facts are like clauses without body.
+
+The \verb+:-+ is called the neck of the clause, the atom to its
+left, the head, and the atoms (separated by commas) to the right, the
+body of the clause. In facts the body is empty.
+
+The head of a clause is the procedure definition header, and its body
+is the sequence of goals (procedure calls) that defines the predicate
+in the head. Thus, a call to a procedure is executed by calling in
+turn the goals in a clause that defines the corresponding predicate.
+
+The funny thing is that there may be several clauses defining the same
+predicate. Thus, Prolog can choose which clause to use to execute a
+particular goal for that predicate. The way this works is called
+resolution with backtracking, and is explained below.
+
+The important thing to note is that in clause heads the arguments act
+as formal parameters, but in goals the arguments act as actual
+parameters. Thus, in the clauses above, the two rules mean,
+respectively:
+\begin{itemize}
+\item Whatever the actual parameters are upon calling \verb+p/2+,
+  execute a call to \verb+father/2+ with exactly the same parameters in
+  the same order.
+\item The same for \verb+mother/2+.
+\end{itemize}
+%
+and thus, both are defining correct conditions for two arguments to be
+in the relation ``parent of''. Both clauses are alternative (partial)
+definitions of such a relation. They define sufficient conditions for
+\verb+p/2+ to hold (logically).
+
+The fact above is a bit more subtle. Its meaning would be something
+like: ``Whatever the actual parameters are upon calling \verb+p/2+,
+they are in this relation if the first one is \verb+a+ and the second
+one is \verb+b+''.
+
+Note that lowercase arguments are like {\bf constants}: they specify a
+particular value. Uppercase arguments are {\bf variables}: they can be any
+value. To complicate things a bit, constants are sometimes also called
+atoms. Rules of thumb for writing constants and variables are:
+\begin{itemize}
+\item A constant is a string of letters or digits starting with a
+  lowercase letter, or any string of characters enclosed in single
+  quotes. 
+\item Numbers are also constants.
+\item A variable is a string of letters, digits or \verb+_+ starting
+  with an uppercase letter or \verb+_+.
+\end{itemize}
+%
+By the way, a predicate name is written with the same rule than for
+constants.
+
+However, constants and variables are not the only things you can put in
+the arguments of atoms. You can also use structured data. See below.
+
+At this point, you have probably noticed that execution can only
+terminate in facts. Executing a rule will produce more procedure
+calls, and execution continues. The only way to stop this is ending up
+in a fact. Therefore, if you write a program without facts, it is very
+likely that it does not terminate!
+
+When an execution terminates, two things might happen. With the example
+fact above, it might be the case that the first argument to the 
+goal executed for \verb+p/2+ is \verb+a+ and the second one is
+\verb+b+. In this case, everything works fine. The goal is said to
+succeed. However, if any of the arguments did not fit with the values
+given, Prolog can not conclude that they are in the relation. In this
+case the goal fails.
+
+It is when goals fail that Prolog has an opportunity to select a
+different clause to execute the same goal again. This is what
+backtracking does (but see below, anyway).
+
+Now, to simplify things a bit, consider predicate \verb+p/2+ defined
+only by the fact above. A goal like \verb+p(a,c)+ will fail, and
+Prolog says ``no'': \verb+a+ and \verb+c+ are not in the relation
+\verb+p+. At least, with the program that you have. It may be the case
+that \verb+c+ is your sibling, but you have not told this to Prolog!
+
+Anyway, the goal \verb+p(a,b)+ will succeed. But it is not the only
+goal that will succeed. All the following three goals will also
+succeed:
+\begin{quote}
+\begin{verbatim}
+p(a,B)                 p(A,b)              p(A,B)
+\end{verbatim}
+\end{quote}
+%
+where note that we are using variables.
+
+The meaning of, for example, the third one, is: ``Which two people
+\verb+A+ and \verb+B+ are in the relation \verb+p/2+?'' Of course,
+Prolog answers the correct thing:
+\begin{quote}
+\begin{verbatim}
+A = a,
+B = b
+\end{verbatim}
+\end{quote}
+%
+You can guess what the other two goals above mean.
+
+Note that in these examples we are using input and output
+parameters. In \verb+p(a,B)+ the \verb+a+ is an input parameter: its
+value is given fixed in the call. The \verb+B+ is an output parameter:
+it can be anything, and Prolog uses this variable to return the
+corresponding value, \verb+b+. We say that variable \verb+B+ has been
+{\bf bound} to the constant \verb+b+.
+
+The {\bf mode} of a goal is the particular characterization of each of
+its arguments as input or output. For a two-argument predicate like
+\verb+p/2+ there are four possible modes for any goal for it. In fact,
+there may be more, when structured data is used.
+
+\subsubsection{Data Structures and Unification}
+
+Arguments of atoms are terms. {\bf Terms} can be constants, variables
+or structured terms. {\bf Structured terms} are like atoms: a
+(structure) name followed by a number of arguments in between
+parentheses and separated by commas. The arguments must also be
+terms. For example, structured terms can be:
+\begin{quote}
+\begin{verbatim}
+p(a,B)                 p(A,b)              p(A,B)
+p(p(a,B),b)            p(p(A,B),B)         p(p(p(a,B),b),p(p(A,B),B))
+\end{verbatim}
+\end{quote}
+%
+and the only way to tell if these are structured terms or atoms is by
+their location in a program! Consider, for example:
+\begin{quote}
+\begin{verbatim}
+p(p(a,B),b) :- p(p(A,B),B), p(A,B).
+\end{verbatim}
+\end{quote}
+%
+where we can identify three atoms. Since these are atoms, there must
+be a predicate \verb+p/2+ (the predicate from which these atoms are
+built). In fact, the above clause is defining such a predicate.
+
+Now consider the clause head. The item \verb+p(a,B)+ appears in its
+first argument. Thus, it has to be a term. Therefore, we are using a
+structure \verb+p/2+. This structure happens to have the same spec
+than the former predicate, but they are different things!
+
+Atoms are used to define predicates and write goals. Structures are
+used to write structured data (terms). The structured term
+\verb+p(a,B)+ is nothing more than a register with two data items. The
+register is called \verb+p+ (in fact, \verb+p/2+, since it has two
+arguments). The data items it contains are the terms \verb+a+ for the
+first argument, and \verb+B+ (anything, since it is a variable) for
+the second argument.
+
+The name of a structure allows you to distinguish structured data
+which are different. For example, suppose you want to define a
+register for representing dates, with three arguments (month, day, and
+year), and a register to represent cars, also with three arguments
+(number of seats in the first row, the second row, and the third, if
+it is a van). You don't want to confuse these two different kinds of
+registers; thus, you use different names: e.g., \verb+date/3+ for the
+first one, \verb+car/3+ for the second one.
+
+In other languages, you would have to {\em define} a different type
+for each of the different registers. In Prolog, you simply {\em use}
+different names for each. There is nothing to declare for them.
+
+And here's how you reference the month, the day, and the year from a
+given date:
+\begin{quote}
+\begin{verbatim}
+month(date(M,_,_),M).    day(date(_,D,_),D).      year(date(_,_,Y),Y).
+\end{verbatim}
+\end{quote}
+%
+You are defining three predicates that set up the {\em relation}
+between a register and its components. The predicate \verb+month/2+
+defines that the month of a \verb+date/3+ register is its first
+component. The predicate \verb+day/2+ that the day of such registers
+is its second component. And \verb+year/2+ that the year is the third
+component.
+
+This works because of term unification. Unification is the only
+operation that you can perform on terms in Prolog. It allows to bind
+variables to their values. It also allows to check if two values are
+equal. It is used for input parameter passing. It is also used for
+returning output parameter values. Unification is simple and powerful.
+
+For example, consider goal \verb+month(Date,X)+, where variable
+\verb+Date+ is bound to the structure \verb+date(12,31,2000)+ when
+executing the goal. Unification will 
+provide for input parameter passing of this structure into the
+definition of \verb+month/2+. As a result, \verb+M+ is bound to
+\verb+12+. Unification will also provide for returning output
+parameter values in the second argument \verb+X+, because \verb+X+ is
+bound to \verb+M+, and the value of this one is \verb+12+. Therefore,
+execution will return \verb+X=12+.
+
+By the way, note how the use of structures augments the possible
+number of modes of a predicate. The structure \verb+date/3+ has 8
+possible modes, if only constants or variables are considered in its
+arguments (but other structures could also be used!). Provided this, 
+and that only the structure \verb+date/3+ is used in goals for
+predicate \verb+month/2+, and that it is used only in its first
+argument, then the two argument predicate will have up to 18 possible
+modes, instead of four. Consider the possible modes if some of the
+restrictions we have imposed was eliminated! (For example, using 
+\verb+date/3+ also in the second argument.)
+
+The {\bf unification} operation is represented by the binary operator
+$=$. An expression of the form $A=B$ is a unification {\bf equation}
+and represents that the terms $A$ and $B$ must be unified. Here is how
+unification works: 
+\begin{itemize}
+\item If $A$ is a variable, then bind it to $B$.
+\item If $B$ is a variable, then bind it to $A$.
+\item If both are constants then succeed if they are equal, fail if
+  not. 
+\item If one is a constant and the other one a structured term, fail.
+\item If both are structured terms but their structure names {\em or}
+  their structure arity are different, fail.
+\item If both are structured terms of the same structure name {\em and}
+  arity then proceed to unify their arguments pairwise.
+
+  I.e., if $A$ is $f(t_1,\ldots,t_n)$ and $B$ is
+  $f(s_1,\ldots,s_n)$ then proceed with the set of equations
+  $\{t_1=s_1,\ldots,t_n=s_n\}$.
+\end{itemize}
+%
+Note that once a variable is bound it keeps its value during the rest
+of the unification operation.
+%
+For example, here are terms that fail to unify:
+\begin{itemize}
+\item \verb+p(p(a,X),b)+ and \verb+p(b,Y)+
+\item \verb+p(f(a,X),X)+ and \verb+p(f(Y,q(Y)),q(a,b))+
+\end{itemize}
+%
+where the second one does not unify because of trying to bind the same
+variable to incompatible values.
+
+Here are terms that unify (and the corresponding bindings for their
+variables): 
+\begin{itemize}
+\item \verb+p(p(a,X),b)+ and \verb+p(p(A,B),B)+ with
+  $\{\verb+A+=\verb+a+, \verb+X+=\verb+b+, \verb+B+=\verb+b+\}$
+\item \verb+p(f(a,X),X)+ and \verb+p(Y,f(Z,Y))+ with
+  $\{\verb+Y+=\verb+f(a,f(Z,Y))+, \verb+X+=\verb+f(Z,f(a,Y))+\}$
+\end{itemize}
+%
+where note how bindings are transitively solved, e.g., the first one
+corresponds to 
+  $\{\verb+A+=\verb+a+, \verb+X+=\verb+B+, \verb+B+=\verb+b+\}$, but
+transitively solved w.r.t.\ \verb+B+.
+
+The engine library predicate \verb+=/2+ implements the unification
+operation. However, this is not available in Pure Prolog. But
+unification happens during execution of Prolog programs, because it is
+the heart of the execution mechanism, called resolution.
+
+\subsubsection{Resolution and Backtracking}
+
+Unification is the operation that is used by Prolog during execution
+to perform the matching between a goal and the head of the clauses
+that define the predicate of that goal. The matching is done as
+follows:
+\begin{itemize}
+\item Take the first clause defining the predicate.
+\item Unify the arguments of the clause head with the corresponding
+  arguments of the goal pairwise.
+\item If unification fails then undo all the bindings that might have
+  been done during the trial for unifying the arguments. Take the next
+  clause defining the predicate. Proceed as above.
+\item If there are no more clauses for the predicate, then fail the
+  whole matching.
+\end{itemize}
+
+Failure of unification causes that a clause is discarded and another
+clause is tried. Clauses are tried in the order in which they are
+written in the program, from top to bottom. This repeated trial of the
+different clauses of a predicate is called {\bf shallow backtracking}.
+
+Failure of unification with any clause is the source for failure of
+the execution, since it makes the whole matching fail. In this case
+deep backtracking is triggered. The {\bf resolution} mechanism that
+executes Prolog programs from a given goal is thus as follows:
+\begin{itemize}
+\item Match the goal with the clauses defining the predicate of the
+  goal. 
+\item If matching fails then backtrack the goal.
+\item If matching succeeds then the variables (both of the goal
+  and of the clause selected in the matching) are bound as by the
+  unification bindings. Continue: 
+\item For each goal in the body of the selected clause, proceed with
+  resolution of that goal from the beginning.
+\end{itemize}
+%
+Note that the description is recursive. A goal is ``resolved'' with a
+clause, and each body goal is in turn recursively resolved in the same
+way. 
+
+The above mechanism represents forwards execution: it keeps on calling
+one goal after another. The order in which the goals are called is the
+order in which they are written in the bodies of the program clauses,
+from left to right. For example, consider the previous two rules for
+\verb+p/2+ plus the following clauses:
+\begin{quote}
+\begin{verbatim}
+mother(c,b).
+
+father(a,b).
+father(b,bb).
+father(b,e).
+
+grandp(X,Y):- mother(X,Z), p(Z,Y).
+\end{verbatim}
+\end{quote}
+%
+where we have added a (partial) definition for ``grandparent of''. The
+execution of a goal \verb+grandp(A,B)+ is as follows (we put the goals
+being called in each clause in a line, and the subsequent goals
+below):
+\begin{quote}
+\begin{verbatim}
+grandp(A,B)
+mother(A,Z),   p(Z,B)
+  A=c Z=b,     p(b,B)
+               father(b,B)
+                 B=bb
+\end{verbatim}
+\end{quote}
+%
+and thus the {\em solution} is:
+\begin{quote}
+\begin{verbatim}
+A=c,
+B=bb
+\end{verbatim}
+\end{quote}
+
+When goals are subsequently resolved with clauses, it may happen that
+the same clause is used several times for different goals. In this
+case, each time a clause is used it is used with completely new
+variables, which are distinct of any other variable previously
+used. This is to say that the variables of a clause are local
+variables. For example, consider replacing the above clause for
+\verb+grandp/2+ by (the more complete definition):
+\begin{quote}
+\begin{verbatim}
+grandp(X,Y):- p(X,Z), p(Z,Y).
+\end{verbatim}
+\end{quote}
+%
+the previous goal is now executed as follows:
+\begin{quote}
+\begin{verbatim}
+grandp(A,B)
+p(A,Z),        p(Z,B)
+father(A,Z)
+  A=a Z=b,     p(b,B)
+               father(b,B)
+                 B=bb
+\end{verbatim}
+\end{quote}
+%
+where the first clause defining \verb+p/2+,
+\begin{quote}
+\begin{verbatim}
+p(X,Y):- father(X,Y).
+\end{verbatim}
+\end{quote}
+%
+is used twice, but each time the clause local variables, \verb+X+ and
+\verb+Y+, are bound to different values: the first time, formal
+parameter \verb+X+ is bound to \verb+A+, and \verb+A+=\verb+a+; the
+second time, \verb+X+ is bound to \verb+Z+, and \verb+Z+=\verb+b+. 
+
+If the matching fails then backtracking is performed. {\bf Deep
+backtracking} can be viewed as a mechanism for backwards execution, 
+as opposed to the former forwards execution.
+
+In the presentation of backtracking, we assume that facts are rules
+with a single atom \verb+true+ in the body, as in:
+\begin{quote}
+\begin{verbatim}
+p(a,b):- true.
+\end{verbatim}
+\end{quote}
+%
+where \verb+true/0+ is a predicate that always succeeds.
+
+The {\bf backtracking} mechanism for a goal that has failed to match
+any clause is as follows: 
+\begin{itemize}
+\item Take the clause to which the goal belongs.
+\item If the goal is the first one in that clause then take the goal
+  which matched with that clause, and:
+\begin{itemize}
+\item Undo all the bindings to variables performed by unification of
+  the goal taken with the clause.
+\item Re-execute that goal by the resolution mechanism, but
+  ignoring the clauses that have been already tried. 
+\item Continue forwards execution.
+\end{itemize}
+\item If the goal is not the first one, take the previous goal in the
+  clause and continue:
+\item Take the clause which matched with that goal during forwards
+  execution. 
+\item Select the last goal in that clause.
+\item Proceed to backtrack that goal from the beginning.
+\end{itemize}
+
+In forwards execution a goal is resolved with the first clause that
+matches. It is unified with the clause head, and the body goals are
+resolved in turn, left to right. In backwards execution body goals are
+traversed right to left, for each goal the last clause matched is
+selected and traversed in turn. When the first goal in a clause body
+is reached, resolution is re-started from the next clause.
+
+For example, consider the goal \verb+grandp(c,X)+ with the previous
+clause given for \verb+grandp/2+,
+\begin{quote}
+\begin{verbatim}
+grandp(c,X)
+p(c,Z),        p(Z,X)
+father(c,Z)
+   fail
+\end{verbatim}
+\end{quote}
+%
+since the failed goal is the first one in its clause, it backtracks to
+the previous (``parent'') goal, \verb+p(c,Z)+, which is re-executed
+with its second clause:
+\begin{quote}
+\begin{verbatim}
+p(c,Z),        p(Z,X)
+mother(c,Z)
+   Z=b,        p(b,X)
+               father(b,X)
+                 X=bb
+\end{verbatim}
+\end{quote}
+
+Now consider goal \verb+grandp(b,X)+, we have:
+\begin{quote}
+\begin{verbatim}
+grandp(b,X)
+p(b,Z),        p(Z,X)
+father(b,Z)
+   Z=bb        p(bb,X)
+               father(bb,X)
+                 fail
+\end{verbatim}
+\end{quote}
+%
+and backtracking causes re-execution of \verb+p(bb,X)+:
+\begin{quote}
+\begin{verbatim}
+   Z=bb        p(bb,X)
+               mother(bb,X)
+                 fail
+\end{verbatim}
+\end{quote}
+%
+and backtracking goes back through \verb+p(bb,X)+, which fails because
+there are no more clauses for it, then to the previous goal
+\verb+p(b,Z)+ and the last goal of the last clause matched for it,
+i.e., \verb+father(b,Z)+, which matched a fact (the last goal of it is
+\verb+true+, which is also the first one) and has another clause that
+matches: 
+\begin{quote}
+\begin{verbatim}
+father(b,Z)
+   Z=e         p(e,X)
+               father(e,X)
+                 fail
+\end{verbatim}
+\end{quote}
+%
+so that backtracking traverses the same path as before but now
+\verb+father(b,Z)+ has no more clauses and fails,
+triggering backtracking now to \verb+p(b,Z)+ so that:
+\begin{quote}
+\begin{verbatim}
+p(b,Z),        p(Z,X)
+mother(b,Z)
+   fail
+\end{verbatim}
+\end{quote}
+%
+and the whole computation fails: the answer is ``no''.
+
+
+\subsubsection{The Cut}
+
+The cut is a special atom of the form \verb+!+. It is a control
+construct which allows to save backtracking when it is not worth to
+continue backtracking. If there is a point where, after a failure, to
+continue backtracking will not result in a successful execution
+anyway, then the cut at that point will avoid this useless
+backtracking. 
+
+The cut does nothing in forwards execution but it modifies the
+backtracking mechanism presented above in the following way:
+\begin{itemize}
+\item If the goal is not the first one, take the previous goal in the
+  clause and continue:
+\item If that goal is a cut, then take the goal that matched the
+  clause, and:
+\begin{itemize}
+\item Undo all the bindings to variables performed by unification of
+  the goal taken with the clause.
+\item Take the clause to which that goal belongs.
+\end{itemize}
+\item Otherwise, the previous goal is not a cut, then take the clause
+  which matched with that goal during forwards execution. 
+\item Select the last goal in the clause taken either way above.
+\item Proceed to backtrack that goal from the beginning.
+\end{itemize}
+
+The effect of the cut is to skip backtracking to its left, since it
+stops the backwards right to left traversal of a clause body. It then
+causes backwards execution to ``jump'' to the goal matched with the current
+clause; thus, also skipping the remaining clauses for that goal. For
+example, replace the definition of \verb+grandp/2+ by:
+\begin{quote}
+\begin{verbatim}
+grandp(X,Y):- father(X,Z), !, p(Z,Y).
+grandp(X,Y):- mother(X,Z), p(Z,Y).
+\end{verbatim}
+\end{quote}
+%
+and execute goal \verb+grandp(b,X)+ as before:
+\begin{quote}
+\begin{verbatim}
+grandp(b,X)
+father(b,Z), !, p(Z,X)
+   Z=bb         p(bb,X)
+                father(bb,X)
+                  fail
+                mother(bb,X)
+                  fail
+\end{verbatim}
+\end{quote}
+%
+In this case, after having backtracked until re-execution of
+\verb+p(bb,X)+, no more backtracking is performed, since the cut
+prevents backtracking into alternatives of \verb+father(b,Z)+ (note
+that there is another clause that could match) and it also ``cuts'' the
+alternatives of \verb+grandp(b,X)+ (its second clause). 
+
+Therefore, the cut avoids backtracking over goals to its left in the
+body of the clause where it appears, and over clauses below the one
+where it appears.
+
+The aim of the cut is to avoid useless backtracking and thus improve
+performance of the program. However, it has semantic implications,
+since it can be used in a fashion very close to a conditional (an
+if-then-else). For example:
+\begin{quote}
+\begin{verbatim}
+max(X,Y,X):- X >= Y, !.
+max(X,Y,Y).
+\end{verbatim}
+\end{quote}
+%
+looks like a very natural definition of the maximum of two numbers:
+``{\em if} \verb+X+ is greater or equal than \verb+Y+, {\em then} the
+maximum is \verb+X+, {\em otherwise} (second clause) it is \verb+Y+''.
+
+However, such uses are very sensitive to the calling mode for the
+predicate. Predicate definitions which use the cut in this way may
+behave in unexpected ways for some modes. For example, the above
+definition works for the mode in which the first two arguments are
+input and the third is output, but the goal:
+\begin{quote}
+\begin{verbatim}
+max(5,2,2)
+\end{verbatim}
+\end{quote}
+%
+which has another different mode, since the third argument is also
+input, should fail (2 is not the maximum between 5 and 2) but it
+succeeds!  
+
+This has led in the literature to a classification of cuts as green,
+white, or red, depending on their semantic implications. For example,
+our cut in \verb+grandp/2+ is white, the cut in \verb+max/3+ is red.
+Consult technical bibliography for a discussion on this (for example,
+\cite{SterlingShapiro94}). 
+
+\subsubsection{Disjunctions and Conditionals}
+
+The complete syntax for (complex) goals also includes disjunctions and
+conditionals. A disjunction is of the form \verb+ A ; B+, where
+\verb+A+ and \verb+B+ are (complex) goals. Prolog will execute first
+\verb+A+. If it fails, or upon backtracking in backwards execution, it
+will then try \verb+B+. 
+
+A disjunction is similar to calling a new predicate that was defined by
+two (or more) clauses, one for each goal in the disjunction. Thus, the
+following two programs are (almost) equivalent:
+\begin{quote}
+\begin{verbatim}
+... :- ..., ( father(A,B), ! ; mother(A,B) ), ...
+\end{verbatim}
+\end{quote}
+%
+and:
+\begin{quote}
+\begin{verbatim}
+... :- ..., p(A,B), ...
+
+p(A,B):-
+    father(A,B), !.
+p(A,B):-
+    mother(A,B).
+\end{verbatim}
+\end{quote}
+%
+the only (but relevant!) difference being in that the cut in the
+disjunction will affect the clause in which it appears, but it won't
+with the second program.
+
+A program which is equivalent to the above one is:
+\begin{quote}
+\begin{verbatim}
+... :- ..., ( father(A,B) -> true ; mother(A,B) ), ...
+\end{verbatim}
+\end{quote}
+%
+where the \verb+->+ represents a cut. However, in this case, the cut
+is {\em local}. Therefore, \verb+->+ will not cut alternatives to the
+left of \verb+father(A,B)+ (nor the clauses below the one in which it
+appears).
+
+Constructs of the form \verb+ A -> B ; C + are conditionals: they can be
+read as ``{\em if \verb+A+ then \verb+B+ else \verb+C+}''. However,
+they represent cuts, and thus have the same sensitive behaviour to
+modes that was explained in the previous section. Cuts appearing in
+\verb+B+ or \verb+C+ behave the same as in a disjunction. No cut can
+appear in \verb+A+.
+
+
+\subsubsection{Terms, Constants, Lists, and Strings}
+
+The full syntax of terms includes decimal syntax for numbers,
+character codes for constants, and a special syntax for lists and for
+strings. 
+
+Numbers include integers, in decimal, binary, octal, or hexadecimal
+notation, and fixed or floating reals. In decimal notation integers
+are written as usual, either positive or negative. Integers may also be
+written in any base from 2 to 36, of which base 2 (binary), 8 (octal),
+and 16 (hexadecimal) are probably the most useful.  Letters \verb+A+
+through \verb+Z+ (upper or lower case) are used as digits for bases
+greater than 10. The numbering base is written in front of the
+number. E.g.: 
+\begin{quote}
+\begin{verbatim}
+15   2'1111   8'17   16'F
+\end{verbatim}
+\end{quote}
+%
+all represent the integer fifteen.
+
+There is also a special notation for character constants. For example:
+\begin{quote}
+\begin{verbatim}
+0'A   0'\x41   0'\101
+\end{verbatim}
+\end{quote}
+%
+are all equivalent to 65 (the character code for \verb+A+).
+\verb+0'+ followed by any character except \verb+\+ (backslash) is thus
+read as an integer.  If \verb+0'+ is followed by \verb+\+, the \verb+\+
+denotes the start of an {\em escape sequence} (see the reference manual).
+
+Numbers also include floats, which can be written in fixed-point
+notation or in floating-point notation. E.g.:
+\begin{quote}
+\begin{verbatim}
+1.0   -3.141   4.5E7   -0.12e+8   12.0e-9
+\end{verbatim}
+\end{quote}
+
+Note that there must be a decimal point in floats written with an exponent,
+and that there must be at least one digit before and after the decimal point.
+
+The full syntax of constants also includes:
+\begin{itemize}
+\item
+Any  sequence  of  alphanumeric characters (including \verb+_+), starting
+with a lower case letter.
+
+\item
+Any sequence from the following set of characters:
+\verb/+-*/\verb+/+\verb+\^<>=`~:.?@#$&+.
+
+\item
+Any sequence of characters delimited by single quotes.  If the single
+quote character is included in the sequence it must be written twice,
+e.g.: \verb+'can''t'+.  Backslashes in the sequence denote escape
+sequences.
+
+\item
+Any of: \verb+!+ \verb+;+ \verb+[]+ \verb+{}+
+
+Note that the bracket pairs are special: \verb+[]+ and \verb+{}+ are
+atoms but \verb+[+, \verb+]+, \verb+{+, and \verb+}+ are not.  However,
+when they are used as structure names, the form \verb+{X}+
+is allowed as an alternative to \verb+{}(X)+.  The form
+\verb+[X]+ is the normal notation for lists, as an alternative to
+\verb+.(X,[])+.
+\end{itemize}
+
+Lists are the simplest data structure that can be defined
+recursively. A list is either an empty list or a non-empty list
+constructed from an element and another list. The former is the base case
+and the latter the recursive case. In the recursive case, a list is
+built from another list and an additional element, using a so called
+{\em constructor} for lists. The constructor can then be viewed
+(although it is not!) as an operation for adding one element to a
+list, yielding another list. 
+
+Any structure name could be used for constructing lists. For example,
+constructed lists could be represented with \verb+l/2+, and the empty
+list with \verb+l/0+, as in:
+\begin{quote}
+\begin{verbatim}
+l(0,l(1,l(2,l(3,l))))
+\end{verbatim}
+\end{quote}
+%
+which represents the list of the four first natural numbers.
+
+However, it is customary in Prolog to use the \verb+./2+ structure
+name for constructing lists, and the \verb+[]+ constant for the empty
+list. Thus, the above list will be:
+\begin{quote}
+\begin{verbatim}
+.(0,.(1,.(2,.(3,[]))))
+\end{verbatim}
+\end{quote}
+
+Since {\bf lists} are heavily used, and the above notation is cumbersome,
+another special notation for lists is available. In this notation, the
+above list will be written:
+\begin{quote}
+\begin{verbatim}
+[0,1,2,3]
+\end{verbatim}
+\end{quote}
+%
+which is much more readable.
+
+The usual notation for lists is thus: \verb+[]+ for the empty list,
+and \verb+[X|L]+ for the list constructor. This one means that the
+list starts with the element \verb+X+ and is followed by the elements
+of the rest of the list, which is another list \verb+L+. E.g., the
+above list will be:
+\begin{quote}
+\begin{verbatim}
+[0|[1,2,3]]
+\end{verbatim}
+\end{quote}
+%
+i.e., a list starting with \verb+0+ and followed by the list
+\verb+[1,2,3]+. This equivalence can be applied again to the last list:
+\verb+[1,2,3]+ is equivalent to \verb+[1|[2,3]]+. And so on.
+
+Note that this notation does not add any new power to the language; it
+simply makes it more readable. This is what is usually called {\em
+  syntactic sugar}: \verb+[0,1,2,3]+ is syntactic sugar for
+\verb+[0|[1|[2|[3|[]]]]]+, which in turn is syntactic sugar for
+\verb+.(0,.(1,.(2,.(3,[]))))+ but all of them are the same thing.
+
+An special kind of lists are strings, which are lists of integers
+which represent character codes. They can be equivalently written as
+lists of integers or {\bf strings} of characters. For example, both
+terms below are exactly the same:
+\begin{quote}
+\begin{verbatim}
+"Ciao"   [67,105,97,111]
+\end{verbatim}
+\end{quote}
+%
+since the list on the right is made of the character codes for the
+characters in the string on the left.
+%
+If the double quote character is included in the string it must be
+written twice, e.g.: \verb+"Ciao stands for ""Ciao"""+.
+
+
+\subsection{Dynamic Predicates}
+\label{sec:dynamic}
+
+Dynamic predicates are predicates the definition of which can be
+changed during execution of the program. Thus, clauses for them can be
+added or deleted by the program itself.
+
+In order to recognize a predicate as dynamic, you have to declare it
+as in:
+\begin{quote}
+\begin{verbatim}
+:- dynamic p/1.
+\end{verbatim}
+\end{quote}
+%
+even if you don't provide clauses for it in the program (i.e., {\em
+  static} clauses).
+
+Clauses are added dynamically with the \verb+dynamic:assert/1+ family
+of library predicates (there are different versions of it, see the
+reference manual). For example, given the above declaration, the following
+compound goal:
+\begin{quote}
+\begin{verbatim}
+dynamic:assert(p(a)), p(X)
+\end{verbatim}
+\end{quote}
+%
+will answer \verb+X=a+.
+
+Clauses are deleted with \verb+dynamic:retract/1+. For example, the
+following: 
+\begin{quote}
+\begin{verbatim}
+dynamic:assert(p(a)), p(X), retract(p(Y)), p(Y)
+\end{verbatim}
+\end{quote}
+%
+will answer ``no'', since there are no clauses for \verb+p/1+ that
+match the last goal above.
+
+Note that a dynamic predicate without clauses defining it will always
+fail. Note also that \verb+retract/1+ retracts whatever unifies with
+its argument (in fact, the first clause that unifies).
+
+The assert/retract family of predicates are not backtrackable. This
+means that once a clause is added (or deleted), it remains in (or out
+of) the definition of the predicate, unless it is deleted (or added)
+again. Backtracking has no effect over this.
+
+However, backtracking causes retraction to be iterated. That is,
+\verb+retract(G)+ will continue retracting one clause after another
+upon backtracked, provided there remain clauses of dynamic predicates
+that unify with \verb+G+.
+
+In addition, the combination of backtracking and dynamic modifications
+of predicates has some characteristics that may seem a bit awkward:
+additions and deletions of clauses do not take effect during the
+execution of goals which can still be backtracked into. For example,
+the goal \verb+loop+ in program: 
+\begin{quote}
+\begin{verbatim}
+:- dynamic p/1.
+
+p(a).
+p(b).
+
+loop:-
+    retract(p(X)),
+    write('retracted '), write(p(X)), nl,
+    loop.
+\end{verbatim}
+\end{quote}
+%
+will write the following output:
+\begin{quote}
+\begin{verbatim}
+retracted p(a)
+retracted p(b)
+retracted p(b)
+\end{verbatim}
+\end{quote}
+%
+which may seem awkward, because it looks like the fact \verb+p(b)+ is
+retracted twice!
+
+The reason for this is the following. When the first goal \verb+loop+
+is resolved, the predicate \verb+p/1+ has two clauses. These two
+clauses {\em remain in effect} for all possible backtracking that may be
+done within the resolution of that call to \verb+loop+. But when the
+second (recursive) goal \verb+loop+ is called, the fact \verb+p(a)+
+has been retracted. Thus, for this second goal, only the clause
+\verb+p(b)+ is in effect. This fact is retracted and then a third call
+to \verb+loop+ is executed.
+
+Now, the execution of this third call to \verb+loop+ has nothing to
+retract, and fails. Backwards execution will try to re-execute the
+previous retract, but, since there was only one fact in effect for it,
+it fails. Backwards execution continues back to the first retract. But
+this one had two clauses in effect, and thus now re-executes
+successfully and retracts \verb+p(b)+. Thus, the three retractions
+performed by the program.
+
+A classical use of dynamic predicates is to implement global program
+data. In this case, the dynamic predicate is most of the times made
+only of facts, which hold the global data in their arguments. These
+predicates are declared in Ciao as in:
+\begin{quote}
+\begin{verbatim}
+:- data p/1.
+\end{verbatim}
+\end{quote}
+
+Data predicates can be manipulated with special, fast predicates for
+assertions, retractions, and consults: \verb+asserta_fact/1+,
+\verb+assertz_fact/1+, \verb+retract_fact/1+, \verb+current_fact/1+
+(and versions with two arguments).
+For example, the following predicates provide a global counter:
+\begin{quote}
+\begin{verbatim}
+:- data count/1.
+count(0).
+
+inc:- retract_fact(count(N)), N1 is N+1, asserta_fact(count(N1)).
+
+dec:- retract_fact(count(N)), N1 is N-1, asserta_fact(count(N1)).
+
+val(N):- current_fact(count(N)).
+\end{verbatim}
+\end{quote}
+
+
+\subsection{Higher Order}
+\label{sec:ho}
+
+The Ciao approach to higher order programming is basically the
+classical one in Prolog: to allow for converting a term into a goal
+and call it. This is achieved by the engine library predicate
+\verb+basiccontrol:call/1+, which allows writing things like:
+\begin{quote}
+\begin{verbatim}
+... :- ..., X=p(A), ..., call(X), ...
+\end{verbatim}
+\end{quote}
+%
+which has as a result that \verb+p(A)+ is called (with \verb+A+ bounded to
+the term that the execution had bounded it to at the time of calling
+\verb+call(X)+). 
+
+The call issued is a meta-call. Arguments of predicates which hold
+terms that will be called in such a way are called {\bf meta-arguments}. 
+Predicates which have meta-arguments are called {\bf
+  meta-predicates}. For example, in:
+\begin{quote}
+\begin{verbatim}
+apply(F,X,Y):- Goal =.. [F,X,Y], call(Goal).
+
+map([],_F,[]).
+map([X|Xs],F,[Y|Ys]) :- apply(F,X,Y), map(Xs,F,Ys).
+
+double_list(L1,L2):- map(L1,double,L2).
+
+inc1_list(L1,L2):- map(L1,inc1,L2).
+
+double(X,Y):- Y is 2*X.
+
+inc1(X,Y):- Y is X+1.
+\end{verbatim}
+\end{quote}
+%
+both \verb+map/3+ and \verb+apply/3+ are meta-predicates. The
+meta-arguments are the second argument of \verb+map/3+ and the first
+one of \verb+apply/3+. The predicates \verb+double/2+ and
+\verb+inc1/2+ will be meta-called from \verb+apply/3+.
+
+The package \verb+hiord+ allows to write meta-calls such as those of
+\verb+apply/3+ in a more friendly fashion. You could write, for
+example:
+\begin{quote}
+\begin{verbatim}
+:- use_package(hiord).
+
+map([],_F,[]).
+map([X|Xs],F,[Y|Ys]) :- F(X,Y), map(Xs,F,Ys).
+\end{verbatim}
+\end{quote}
+%
+instead of the \verb+map/3+ of above.
+
+Note that the higher order construction is \verb+F(X1,...,Xn)+,
+allowing any number of arguments. This construction corresponds to a
+family of predicates of the form \verb-call/n+1-. 
+
+Note also that \verb+F+ in this construction has to be bound to a term
+at the time of executing the construction (otherwise, there will be a
+runtime error). But it can be bound to any term, not just a constant
+for the name of a predicate, like in the above example. For example,
+you could also write: 
+\begin{quote}
+\begin{verbatim}
+double_list(L1,L2):- map(L1,times(2),L2).
+
+inc1_list(L1,L2):- map(L1,sum(1),L2).
+
+times(X,Y,Z):- Z is X*Y.
+
+sum(X,Y,Z):- Z is X+Y.
+\end{verbatim}
+\end{quote}
+%
+so that \verb+map/3+ will meta-call via \verb+F(X,Y)+ 
+the goals \verb+times(X,2,Y)+ and \verb+sum(X,1,Y)+, with the same
+effect that the first program above.
+
+Note that in the construction \verb+F(X1,...,Xn)+, the general rule to
+add arguments to \verb+F+ is: \verb+X1+ is added as the first argument
+of (the term bound in) \verb+F+, all others are added after the last
+argument of \verb+F+, and in the order \verb+X2+ to \verb+Xn+. 
+
+Meta-predicates need be declared in some cases when the meta-calls
+occur across modules. I.e., if you have a module which is using a
+meta-predicate defined in another module to call back to predicates
+defined in the first module. See section~\ref{sec:callback}.
+
+There is another higher order construction that allows to write
+predicates without giving them a name. The construction is called {\bf
+  predicate abstraction} and is enabled also by package \verb+hiord+.
+Predicate abstractions are like in:
+\begin{quote}
+\begin{verbatim}
+inc1_list(L1,L2):- map(L1,(''(X,Y) :- Y is X+1),L2).
+\end{verbatim}
+\end{quote}
+%
+which has the same effect as the previous definition of
+\verb+inc1_list/2+ but avoids having to define any auxiliary predicate
+like \verb+sum/3+ or \verb+inc1/2+.
+
+\comment{
+I need a volunteer to explain here the particularities of predicate
+abstractions!!!! (like the {\tt ||} construction and so on)
+}
+
+\subsection{Negation}
+
+ISO Prolog includes a negation construct \verb-\+-. Goals of the form
+\verb-\+ A- can be (almost) read as: ``{\em not} \verb+A+''. Prolog
+executes goal \verb+A+ and, if it succeeds, then \verb-\+ A- fails,
+but if it fails, then \verb-\+ A- succeeds.
+
+This kind of negation is called {\em negation as failure}, and is
+defined as follows:
+\begin{quote}
+\begin{verbatim}
+\+ A :- A, !, fail.
+\+ A .
+\end{verbatim}
+\end{quote}
+%
+where \verb+fail/0+ is a predicate that always fails.
+
+A more precise reading of negation as failure is: ``\verb-\+ A-
+fails when \verb+A+ succeeds and succeeds when \verb+A+ fails''.
+It is {\em not} logic negation, since the fact that Prolog cannot prove
+that \verb+A+ is true (it fails) does not mean that it is false: we
+simply don't know. The correct interpretation of \verb-\+ A- is thus:
+``\verb+A+ cannot be proven'' or simply ``\verb+A+ fails''.
+
+Since negation by failure is defined from the cut, it has the same
+drawbacks mentioned above: it is very sensitive to the calling
+mode. For example, with the following definition of \verb+father/2+:
+\begin{quote}
+\begin{verbatim}
+father(a,b).
+\end{verbatim}
+\end{quote}
+%
+if you call \verb+father(a,b)+ Prolog says ``yes'', and if you call
+\verb- \+ father(a,c)- Prolog says ``no''. However, if you call
+\verb+father(a,X)+ Prolog answers \verb+X=b+, but if you call
+\verb- \+ father(a,X)-, Prolog simply says ``no''. It won't tell
+you who is the \verb+X+ that is {\em not} the father of \verb+a+. This
+is in contrast with the usual behaviour of Prolog for positive
+(non-negated) atoms.
+
+In fact, the execution of negated goals will never bind their
+variables. This means that negated goals never give answers. But this
+characteristic is sometimes useful, for example, for checking goals. A goal
+\verb- \+ \+ A- will {\em check} that \verb+A+ is true, but without
+binding its variables. It is a dangerous feature, and it should
+be used with care.
+
+An example of its danger, and of the fact that negation by failure is
+not truly logic, is the following one. Suppose we want to check that
+no one is father of his/her father. We can do this with either:
+\begin{quote}
+\begin{verbatim}
+... :- ..., father(A,B), \+ father(B,A), ...
+\end{verbatim}
+\end{quote}
+%
+or:
+\begin{quote}
+\begin{verbatim}
+... :- ..., \+ father(A,B), father(B,A), ...
+\end{verbatim}
+\end{quote}
+%
+since both are logically equivalent. However, given the previous
+definition of \verb+father/2+, the first goal will succeed\ldots but
+the second one will fail! This is not logically consistent.
+
+As a rule of thumb, the use of \verb- \+ A- is safe when \verb+A+ is
+ground (it has no variables). Nevertheless, we recommend that the
+reader consults technical bibliography for a complete discussion on
+negation (for example, \cite{SterlingShapiro94}).  
+
+\comment{\subsection{Exceptions}}
+
+\comment{\subsection{Input/Output}}

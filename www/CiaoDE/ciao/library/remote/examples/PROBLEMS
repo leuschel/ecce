@@ -1,0 +1,8 @@
+
+Make sure the network interface is working; I do not why I cannot
+access an IP number without it being up (and the FIM connection is not
+enough: the name from the FIM is pinochoX).  This causes problems, as
+the current_host/1 returns the Internet name (and writes it to the
+info file), and client tries to connect to this name and fails.
+Patching this file with localhost, instead, works ---- but it is not
+really elegant, is it?  Hopefully this won't happen with a real net.

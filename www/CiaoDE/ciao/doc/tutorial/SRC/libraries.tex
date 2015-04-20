@@ -1,0 +1,201 @@
+
+\section{Libraries and Packages}
+\label{sec:lib}
+
+In many Prologs there is a rich set of builtin predicates:
+predicates which are pre-defined in the system. In Ciao there are no
+builtins. In its place, there is a rich set of system library modules,
+which can be imported on demand.
+
+In some applications code is used to modify the compilation of the
+program, rather than to augment the program code. This code is used
+only at compile-time, and is not part of the program executable. The
+concept of a package corresponds to libraries of this kind.
+
+\subsection{Library Modules}
+
+A library module is identified by a special qualifier to the name of
+the module, as in:
+\begin{quote}
+\begin{verbatim}
+:- use_module(library(lists),[list/1,append/3]).
+\end{verbatim}
+\end{quote}
+%
+which tells the compiler to look up for module \verb+lists+ in a
+predefined set of library paths.
+
+The default set of {\bf library paths} consists in the subdirectories
+\verb+lib+, \verb+library+, and \verb+contrib+ of the Ciao
+installation directory. The environment variable CIAOLIB can be set to
+a file system path, in which case this path is considered the parent
+directory of the former subdirectories, instead of the installation
+directory. 
+
+The set of library paths can also be extended by the programmer. See
+below. 
+
+Another special qualifier is \verb+engine+, which identifies the
+subdirectory \verb+lib/engine+. In the Ciao distribution, this
+subdirectory contains most of the classical builtins. See
+Section~\ref{sec:prolog} for a list.
+
+You can also define your own special qualifiers for library
+modules. These are useful in programs where you want to use particular
+libraries. For example, you can define a qualifier \verb+mylib+ to
+identify library modules used in a program. You can then use it as in:
+\begin{quote}
+\begin{verbatim}
+:- use_module(mylib(lists),[list/1,append/3]).
+\end{verbatim}
+\end{quote}
+%
+so that the module \verb+lists+ is looked up in a particular set of
+library paths associated with the qualifier \verb+mylib+, instead of
+in the standard set of library paths.
+
+The way to do this association is explained below.
+
+
+\subsection{Setting Library Paths: Extending the Compiler}
+\label{sec:paths}
+
+Library paths can be augmented by defining code that the compiler will
+use to search the library modules when the \verb+library+ qualifier is
+found in a use-module declaration. The way to do this is by defining a
+multifile dynamic predicate \verb+library_directory/1+ and make this
+definition visible to the compiler at compile-time of the program.
+
+For example, the following module is intended to be (dynamically)
+loaded into the compiler when compiling a given program. It defines two
+paths that contain library modules which are used by that program.
+\begin{quote}
+\begin{verbatim}
+:- module(program_paths,[]).
+
+:- multifile library_directory/1.
+:- dynamic library_directory/1.
+
+library_directory('./mylib/special').
+library_directory('/usr/local/lib/prologlib').
+\end{verbatim}
+\end{quote}
+
+The way to load this module into the compiler is with a declaration like:
+\begin{quote}
+\begin{verbatim}
+:- load_compilation_module(program_paths).
+\end{verbatim}
+\end{quote}
+%
+in the source code of the program which is compiled. The best place to
+put it is in the main file of the program.
+
+Alternatively, the \verb+-u+ option of the Ciao compiler
+(\verb+ciaoc+) can be used for this purpose. Thus, instead of having
+the above declaration in the main file, you can compile this main file
+(let it be \verb+main_file.pl+) as in:
+\begin{quote}
+\begin{verbatim}
+ciaoc -u program_paths main_file
+\end{verbatim}
+\end{quote}
+
+The same mechanism can be used to define particular library paths for
+the special library module qualifiers defined by the programmer. In
+this case you have to define a multifile dynamic predicate
+\verb+file_search_path/2+. For example, to associate the qualifier
+\verb+mylib+ to a particular path you can use:
+\begin{quote}
+\begin{verbatim}
+:- module(program_paths,[]).
+
+:- multifile file_search_path/2.
+:- dynamic file_search_path/2.
+
+file_search_path(mylib,'/home/mydir/prologlib').
+\end{verbatim}
+\end{quote}
+%
+and load this module into the compiler with a
+\verb+load_compilation_module+ declaration or the \verb+-u+ option of
+the compiler.
+
+The above declaration will force the compiler to search modules
+qualified by \verb+mylib+ in use-module declarations in the directory
+\verb+/home/mydir/prologlib+.
+
+Note that both \verb+library_directory/1+ and \verb+file_search_path/2+ can
+be defined by several clauses (and of different files). The precedence
+order that the compiler applies is the standard one for different
+clauses of the same file. However, when the clauses are from different
+files the order in which to search the library paths is unspecified.
+
+Note also that code which is dynamically loaded into the compiler must
+always be defined in a module.
+
+\subsection{Library Paths at Execution-time}
+
+Given the clear distinction in Ciao between compile-time and run-time,
+the library (or user) paths set up in the way described above work for
+compile-time, but they won't work at run-time. For example, if your
+program loads modules dynamically.
+
+In general, if a compile-time module (such as \verb+program_paths+
+above) is needed also at run-time, it has to be part of the
+program. This means: it has to be imported by some other program
+module. The classical way to do this is including a use-module
+declaration for it in the program main file. E.g., continuing the
+example of previous section, one would include:
+\begin{quote}
+\begin{verbatim}
+:- use_module(program_paths).
+\end{verbatim}
+\end{quote}
+%
+in \verb+main_file.pl+.
+
+
+
+\subsection{Packages}
+
+A package is a library which is intended for use at compile-time
+rather than at run-time. It therefore usually contains operator
+declarations and code expansion declarations, which are classically
+used at compile-time only (see Section~\ref{sec:expansions} for an
+account on these two features). It may also contain definitions for
+library paths. It can also contain any other code, which is then
+included in the module using the package, as if by the \verb+include+
+declaration (see the reference manual). 
+
+A package must be located in the library directories associated to the
+qualifier \verb+library+. It is used as in:
+\begin{quote}
+\begin{verbatim}
+:- use_package(assertions).
+\end{verbatim}
+\end{quote}
+%
+which has the effect of including the library file \verb+assertions.pl+
+within the file where the declaration appears.
+
+If the file is a module, then the form:
+\begin{quote}
+\begin{verbatim}
+:- module(m,[...],assertions).
+\end{verbatim}
+\end{quote}
+%
+can also be used as module (and package) declaration.
+
+The declaration of packages must be unique. Thus, either the extended
+module declaration or the use-package declaration must be used. More
+than one use-package declaration is not allowed. In order to declare
+the use of several packages, use a list of them, instead, as in:
+\begin{quote}
+\begin{verbatim}
+:- use_package([assertions,modes,pure]).
+\end{verbatim}
+\end{quote}
+
+See Section~\ref{sec:package} for an example of writing a package.

@@ -1,0 +1,22 @@
+CDbServer::DoFree recibe DbHandle y StmtHandle. 
+	De DbHandle saca el pDoc, y de ahí llama a pDoc->Free . 
+RECIBE COMANDO DE USUARIO.
+
+CDbServer::~CDbServer. 
+NADA.	
+
+CServerDoc::DoFree recibe un StmtHandle.
+	Busca en m_MapCursors qué CtSmtInfo (pStmtInfo) le corresponde,  cierra pStmtInfo->m_RecordSet , destruye pStmtInfo, borra la clave StmtHandle del diccionario y contesta ok. 
+CIERRA RECORDSET Y ELIMINA StmtHandle DEL DICCIONARIO.
+
+CServerDoc::~CServerDoc 
+	recorre m_MapCursors, destruyendo los CStmtInfo, y m_MapCursors->RemoveAll (elimina las claves CString). 
+DESTRUYE DICCIONARIO.
+
+CStmtInfo::~CStmtInfo
+	elimina el 'array' CODBCFieldInfo* m_FieldsInfo, primero fila a fila, y luego su elementos (los punteros), con m_FieldsInfo.RemoveAll
+	atributos de CStmtInfo: m_Recordset, m_FieldsInfo (array), m_FieldCount (int)
+DESTRUYE ARRAY DE CAMPOS ODBC
+
+Dejo que se destruyan las cosas al cerrar el documento (OnCloseDocument), supongo que por herencia caen m_RecordSet y la variable de tipo CPtrArray m_FieldsInfo. Se destruye CServerDoc, y el destructor tiene una llamada al destructor de CStmtInfo, que limpia todo pero no llama a los destructores de CRecordSet y CPtrArray, ni a CRecordSet::Close.
+Un logoff, por tanto, si es definitivo, supondrá la liberación de los recursos de CRecordSet, CPtrArray. Pero si no cierra la ventana, habría que buscar 

@@ -1,0 +1,19 @@
+?- use_module(aries).
+
+?- use_module(library(prolog_sys)).
+
+?- statistics(runtime, _), (w(L,C,G,N,"doctores", []), fail; true), statistics(runtime, Ts).
+
+Ts = [173040,1820] ? 
+
+yes
+?- statistics(runtime, _), (w(L,C,G,N,"doctores", []), fail; true), statistics(runtime, Ts).
+
+Ts = [174870,1830] ? 
+
+yes
+?- statistics(runtime, _), (w(L,C,G,N,"doctores", []), fail; true), statistics(runtime, Ts).
+
+Ts = [176690,1819] ? 
+
+yes

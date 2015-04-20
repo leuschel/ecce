@@ -1,0 +1,294 @@
+% -----------------------------------------------------------
+% Brochure for Ciao 1.10 announcement (for ICLP'03 and later)
+% -----------------------------------------------------------
+\documentclass{article}
+
+%\usepackage{utopia}
+\usepackage{twocolumn}
+\usepackage{fullpage}
+\usepackage{ciaocopy}
+\textwidth 15.8cm
+\tolerance=10000
+
+\makeatletter
+\def\subsection{\@startsection{subsection}{2}{\z@}{-1.0ex plus -1ex minus 
+ -.2ex}{0.7ex plus .2ex}{\normalsize\bf}}
+\makeatother
+
+\renewcommand{\baselinestretch}{0.95}
+\newcommand{\myitems}{
+\renewcommand{\baselinestretch}{0.5}
+\parsep 0pt \parindent 0pt \itemsep -4pt \topsep -3pt }
+
+\input{psfig}
+\input{/home/clip/Papers/clip_description/logo.tex}
+\newcommand{\ciao}{\psfig{figure=ciao_s.ps,width=2.5cm}}
+
+\begin{document}
+\textheight = 670pt
+\pagestyle{empty}
+
+\twocolumn[
+\noindent
+\hbox{
+\begin{Huge}
+{\bf The 
+\begin{minipage}[c]{0.3\textwidth}
+\ciao
+\end{minipage}
+1.10 Prolog System}\\
+\end{Huge}
+%\engcliplogo
+}
+\centerline{Ciao is \emph{free software} distributed under GNU
+  licenses}  
+\vspace{0.5\baselineskip}
+]
+
+\noindent
+Ciao provides a modern, high-performance, \emph{ISO-standard} Prolog
+system, with very significant extensions: its novel modular design
+allows both \emph{restricting} and \emph{extending} the language. This
+makes it possible to work with \emph{fully declarative subsets} of
+Prolog and also to \emph{extend} these subsets (or ISO-Prolog) both
+syntactically and semantically.  Most importantly, these restrictions
+and extensions can be activated separately on each program module so
+that several extensions can coexist in the same application for
+different modules.
+
+Ciao currently includes extensions for feature terms (records),
+functional logic programming, higher-order (with predicate
+abstractions), constraints, object-oriented programming, persistence,
+several control rules, concurrency, distributed execution (agents),
+concurrent built-in database, and parallel execution.  Libraries also
+support WWW programming, sockets, external interfaces, etc.\ (see the
+\textbf{Main Features} section.)
+
+\emph{Programming in the large} is supported thanks to a robust
+module/class system, module-based automatic incremental compilation
+(with no need for makefiles), an assertion language for declaring
+(\emph{optional}) program properties (including types, modes,
+determinacy, non-failure, cost, ...), automatic static inference and
+static/dynamic checking of such assertions, program optimization and
+parallelization, and powerful automatic documentation generation (the
+latter tasks performed by the \emph{CiaoPP preprocessor} and the
+\emph{LPdoc autodocumenter}).  It is the novel modular design of Ciao
+which enables modular program development, effective global program
+analysis, and static debugging and optimization via source to source
+program transformation.
+
+\emph{Programming in the small} is supported by having reduced size
+executables, which only include those builtins and libraries used by
+the program, and by supporting Prolog \emph{scripts}.
+
+The compiler generates several forms of architecture-independent and
+stand-alone executables. Program modules can be 
+%% compiled into compact bytecode and 
+linked statically, dynamically, or autoloaded. The executables
+generated are very competitive in both performance and size with all
+current commercial and academic Prolog systems.  
+%% Optimizing compilation to 100\% native code is undergoing work.
+
+The programming environment also offers a rich graphical interface
+(with direct access to top-level/debugger, preprocessor, and
+autodocumenter, based on Emacs), an embeddable source-level debugger
+with breakpoints, and execution visualization tools.
+
+\medskip
+%\hrule
+
+\subsection*{Why do we call it Ciao?}
+%After reading this brochure 
+The sharp reader may have already seen the logic behind the 'Ciao
+Prolog' name. Ciao means both \emph{hello} and \emph{goodbye}, and
+Ciao Prolog intends to be on one hand a really excellent, freely
+available ISO-Prolog system, for both academic and industrial use
+(including introducing users to Prolog and to classical constraint and
+logic programming) --- the \emph{hello} part.  But Ciao is also a
+new-generation, multiparadigm programming language and program
+development system which goes well beyond Prolog and other classical
+logic programming languages. And it has the advantage (when compared
+to other systems) that it does so while allowing full Prolog
+compatibility when needed.
+
+%% Ciao is a \emph{next generation} logic programming environment.
+
+\medskip\hrule
+
+\subsection*{Main Features of Ciao:}
+\begin{itemize}
+\myitems
+% General:
+\item Efficient, high-performance, bytecode-based engine, with garbage
+  collection, unbound precision integer arithmetic, built-in
+  concurrency capabilities, and many other features.
+%TA:
+\item  Full compliance with 
+%International Standard ISO/IEC 13211-1
+  ISO-Prolog.
+\item Generation of \textbf{multi-architecture} executables: Linux,
+  {\Large $*$}NIX, Mac OS X, Win32.
+\item User-friendly installation on all platforms.
+\item Advanced, graphical development environment with
+  integrated source-level debugging, syntax highlighting, 
+  on-line help, etc. (\texttt{emacs}-based).
+%% \item Source code debugger (with code highlighting).
+\item Debugger embeddable in executables.
+%TA:
+\item Exception handling.
+\item Source code autodocumenter (with a menu-based interface).
+\item Flexible customization of library paths and path aliases.
+%
+% Module system/Libraries:
+\item New generation, robust module system.
+\item Modular clp(R) / clp(Q).
+\item Higher-order syntax and predicate abstractions.
+% \item Library of higher-order list predicates.
+% \item Libraries for and-fair breadth-first and iterative deepening.
+\item Extensive, built in, and modular code expansion facilities
+  (macros) with operators local to modules.
+\item Attributed variables, DCGs.
+\item Backwards compatibility libraries (DEC-10 IO, Quintus-like
+  internal database, etc.). 
+\item Libraries of (commented) types, modes, and other properties to
+  be used in assertions (for debugging and documentation generation).
+\item Assertion-based declaration of meta-predicates.
+%
+% Programming styles:
+\item Several execution strategies available: Andorra, breadth-first,
+  iterative deepening.
+\item Object-oriented extensions.
+\item Bidirectional foreign interfaces: C, Java, TclTk, ProVRML.
+\item Interface to SQL, relational databases.
+\item Concurrency / multiengine primitives (\&Prolog-like). 
+%TA:
+\item Full thread support in Linux / Unix / Mac OS X / Win32.
+\item Access to operating system resources.
+%TA:
+\item Platform independent socket communication.
+%TA:
+\item Platform independent Prolog Makefiles.
+\item Delay predicates (when/2, freeze/1).
+\item Active modules (distr./agent programming).
+\item Remote loading of modules.
+\item Web/Internet programming: \emph{PiLLoW} library.
+\item WebDB WWW database interfacing.
+\item Programmer-transparent 
+  persistent predicates (files or relational database storage).
+\item Execution of fuzzy logic-based programs.
+%
+% Engine/Compiler features:
+\item Ciao CGI executables under IIS.
+\item Number of clauses/predicates essentially unbound.
+\item Unbound atom size.
+\item Fast creation of new unique atoms.
+\item Fast writing/reading (marshalling and unmarshalling) of terms.
+\item Compressed object code/executables. % on demand. 
+\item Fast compilation and startup. 
+\item Incremental stand-alone compiler with separate compilation.
+\item Automatic (re)compilation of foreign files.
+\item Attributed variables.
+\item Extensive, up to date documentation in multiple formats.
+\end{itemize}
+
+\hrule
+
+\subsection*{What's new / improved in 1.10?}
+\begin{itemize}
+\myitems
+\item Full ``Classic Prolog'' is now default behavior.
+\item New Mac OS X kernels supported. Improved compilation and
+  installation in all platforms. Compatibility with newer versions of
+  Cygwin. 
+%\item Double-click startup of programming environment.
+\item Error location extended. Error marks cleared automatically. % also when generating docs.
+\item Automatic / manual location of errors produced by Ciao
+  tools now customizable.
+\item Syntax-based coloring greatly improved.  Colors changed to make
+  programs more readable. Now also working on ASCII terminals (for
+  newer versions of \texttt{emacs}).
+\item Faces for syntax-based highlighting more customizable.
+\item Added new tool-bar button (and binding) to refontify
+  block/buffer.
+\item New icons and facilities in the environment for the
+  preprocessor.
+%\item Emacs-based environment improved.
+\item Improved \texttt{emacs} inferior (interaction) mode for Ciao and CiaoPP.
+\item Presentation of Ciao preprocessor output improved.
+\item Reorganized menus: help and customization grouped in separate
+  menus.
+\item \texttt{XEmacs} compatibility improved (thanks to A. Rigo).
+\item File aliasing to internal streams added.
+\item The \texttt{make} library has been improved.
+\item PiLLoW library improved in many ways.
+\item Tcl/Tk library improved and made more robust.
+\item Improved assertions package.
+\item Atom-to-term conversion library improved.
+\item Exceptions in active modules improved.
+\item DaVinci error processing improved.
+\item Persistent predicates improved.
+\item File locking capabilities included.
+\item New input/output facilities added to socket-related library.
+\item Added treatment of\- operators and 
+      \texttt{module:pred} calls to pretty-printer.
+\item Updated reporting of read syntax errors.
+\item Unbound length atoms now supported in all cases.
+\item C interface \texttt{.h} files reachable through a more standard
+  location (thanks to R. Bagnara).
+\item Compatibility with command line options of newer \texttt{gcc}
+  versions.
+\item Solved conflicts in predicate reexportation.
+\item Replication of clauses in some cases corrected (thanks to
+  S. Craig).
+\item Got rid of several SEGV problems.
+\item The number of significant decimal digits to be printed is now
+  computed accurately.
+\item The reader has improved its behavior w.r.t. non-terminated
+  comments.
+  
+\item The \texttt{xref} library treats void references now.
+\item Foreign predicates are now automatically declared as
+  implementation-defined ones.
+\item New utilities to build module frontiers.
+\item Facts defined in external files can now be automatically cached
+  on-demand.
+\item And, in general, new features in many libraries.
+\end{itemize}
+
+\hrule
+
+\subsection*{Additional contributions:\\ (in development or beta state)}
+\begin{itemize}
+\myitems
+\item clp(FD).
+\item XML querying and transformation to Prolog.
+\item XDR schema to HTML forms utility.
+\item Bidirectional list traversal library.
+\item Interface to GnuPlot.
+\item Libraries for execution time profiling.
+\end{itemize}
+%% \noindent
+%% \textbf{Ciao Prolog 1.10 will be available in short} 
+
+%% \noindent
+%% Release candidate versions are being posted at the Ciao Prolog WWW
+%% site.  We very much appreciate feedback on Ciao Prolog!
+
+%% \medskip
+%% \hrule
+
+\hrule
+
+\subsection*{Contact / download info:}
+\texttt{http://cliplab.org}\\ 
+\texttt{http://ciaoprolog.org}\\ 
+\texttt{ciao@clip.dia.fi.upm.es}\\ [2mm]
+The CLIP Group\\
+Tecnical University of Madrid, Spain\\
+University of New Mexico, USA\\
+%% Facultad de Inform\'{a}tica -- UPM\\
+%% E-28660 Boadilla del Monte, Madrid, SPAIN
+
+\hrule
+
+\end{document}

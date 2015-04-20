@@ -1,0 +1,17 @@
+#VRML V2.0 utf8 
+
+
+
+PROTO  Bandera [field SFImage a 2 3 0 4 0 0 4 1 2] {
+       Transform {
+	    translation 0 0 0
+	    children Shape {
+	      appearance Appearance {material NULL}
+	    }
+
+	}
+
+}
+
+
+

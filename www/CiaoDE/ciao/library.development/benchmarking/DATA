@@ -1,0 +1,14 @@
+24/12/98
+
+- bench-new on aguirre, swi-209:     109734 lips for 5000
+- bench-new on aguirre, ciao-0.7:    459259 lips for 5000
+- bench-new on aguirre, ciao-0.8:    457564 lips for 5000
+- bench-new on aguirre, sicstus-0.5: 380426 lips for 5000
+- bench-new on aguirre, sicstus-0.6: 463551 lips for 5000
+- bench-new on aguirre, sicstus-0.7: 375189 lips for 5000
+- bench-new on aguirre, sicstus215:  410596 lips for 5000 (compactcode)
+- bench-new on aguirre, sicstus218:  533333 lips for 5000 (compactcode)
+- bench-new on aguirre, sicstus3:    649214 lips for 5000 (compactcode)
+- bench-new on aguirre, sicstus3:   2384615 lips for 5000 (fasttcode)
+- bench-new on aguirre, bp:         1664430 lips for 5000 (comp to C)
+

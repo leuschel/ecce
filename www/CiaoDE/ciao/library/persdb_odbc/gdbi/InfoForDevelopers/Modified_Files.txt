@@ -1,0 +1,13 @@
+Files changed from your last Server version received (19-July-1998)
+===================================================================
+"21-7-1998" version:
+	Modified files: DbServer.cpp, DbServer.h,ServerDoc.h,ServerDoc.cpp.
+	The rest of the files haven't changed
+"17-8-1998" :
+	ServerToClientErrorMessages.h has been added
+"25-2-1999" version:
+	New files: Columnst.cpp, Columnst.h, TableSet.cpp, TableSet.h
+	Modified files: DbServer.cpp, DbServer.h, ServerDoc.cpp, ServerDoc.h, ServerToClientErrorMessages.h
+	The rest of the files haven't changed
+
+						CLIP, 1-June-1999

@@ -1,0 +1,23 @@
+- Target: What's the point here? Alternatives:
+
+  - Efficiency: Not looking for a good utilization of the available hardware
+  - Acceleration: Speedup wrt the non distributed case.
+
+- Figures: Speedup is supposed to be substantial for small search trees and
+	    almost linear with large search trees problems.
+
+1.- Set a measures way to get figures.
+2.- Get figures using copy and recomputation (ver como me lo monto para
+poder usar recomputacion de manera sencilla).
+3.- Añadir al manager un thread que escuche del binder si algun nuevo
+worker se quiere adherir a la computacion.
+4.- Probar distintas politicas de share (normalmente el CS mas joven para
+reducir el trasiego de mensajes).
+
+n.- Introducir LDS: Asociar valor LDS a cada r_s. Cuando se explora un r_s
+y se utiliza el LDS, metiendo los r_s resultantes al final de la pila,
+estos deben heredar el LDS del padre menos 1. Asi se abre el arbol de
+busqueda hasta cierto punto.
+
+- Adaptive heuristics election
+- Reparto "equitativo" del trabajo

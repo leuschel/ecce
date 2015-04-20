@@ -1,0 +1,98 @@
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++   25_2_99 Release  ++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+WHAT IS DIFFERENT IN THE 25_2_99 VERSION (SERVER INTERFACE to the client)
+========================================
+Server interface maintains compatibility with previous versions.
+
+Parsing: now when an apostrophe is read from the database, it is duplicated (i.e. 'Tom''s Dinner' is returned when "Tom's Dinner" is read). 
+	To avoid the duplication, simply replace the code in function "TryDuplicateApostrophes" (ServerDoc.cpp) by the line
+		return TRUE;
+
+New client commands: (see 'GDAServerCommands.txt' for Syntaxis)
+- DatabaseTables: to get the tables of a database.
+- TableAttributes: to get the name and type of a table's attributes.
+
+New message errors: (message contents in 'ServerToClientErrorMessages.h')
+- DatabaseTables: when database table can't be read
+- TableAttributes: when table is not specified, not found, or database tables can't be read
+
+
+
+
+
+ 
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++   17_8_98 Release  ++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ Nothing is new in 17_8_98 release in relation to 21_7_98 release, but the errors messages. A macros file has been added (ServerToClientErrorMessages.h), to keep consistency in this messages, and make easier the answer matching.
+
+NEW FILES
+=========
+ServerToClientErrorMessages.h
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++   21_7_98 Release  ++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+WHAT IS DIFFERENT IN THE 21_7_98 VERSION (SERVER INTERFACE to the client)
+========================================
+Server interface maintains compatibility with previous versions.
+
+New client commands: (see 'GDAServerCommands.txt' for Syntaxis)
+- LogonUser: to connect to the database. If the database is not running on the server, 'Server' application will run it.
+- DirectSql: is like the first version 'Sql' command. Sometimes it's useful to get all the possible answers (i.e. if we want to compile a 'db_findall' Prolog predicate).
+
+Modified client commands:
+- Logon: if the database is not running in the server, 'Server' application will run it.
+- Logoff: if a user close a DbHandle, and he has no more sessions in the same database, logoff will close the database connection in the server.
+
+Non-modified client commands:
+- Sql, Fetch
+
+Names 'Sql', 'Logon' have been kept for compatibility. 
+
+
+
+INTERNAL CHANGES (SOURCE CODE)
+================
+New functions
+_____________
+
+
+void CServerDoc::DoDirectSql(CString& Statement, CString& Sql, CString& Reply)
+- Object: Sql returns a statement handle from a SQL sentence. DirectSql returns the answer directly (i.e. a table in a SQL Select sentence).
+	Macro _FIRST_TABLE_ARGUMENT_NEEDED in the source code, lets not to receive the first argument of 'table(...,.....)'. In the code is not defined. If defined, attribute names will be received as the first argument. 
+
+int CDbServer::CountDbHandles(CServerDoc * pDoc); 
+- Object: a 'user' can make several connections to the same database. Then he will have several DbHandles associated to the same document. 'Logoff DbHandleN' only involves document destruction if no more pDoc DbHandles are opened. 
+
+CServerDoc::CString& GetUserName() { return m_DbAccess.m_strLogin; }
+- Object: FindDsnDocument used GetDataSourceName. FindDsnUserDocument needs also GetUserName.
+
+Modificated funcions
+____________________
+
+virtual void ParseMessage(CConnectedSocket* pSocket, CString Message);
+- Change object: to accept the new 'SQL user' commands, LogonUser and DirectSql.
+
+void CDbServer::DoLogon(CString& Params, CString& Reply, BOOL UserGiven);
+- Change object: to accept user connections ('LogonUser') and connections without user and password (previous Server version 'Logon')  
+
+void CDbServer::DoLogoff(CString& Params, CString& Reply);
+- Change object: to close database connection document and view in the server (if logoff the last handle connection).
+
+CServerDoc* CDbServer::FindDsnUserDocument(LPCTSTR Dsn, LPCTSTR User);
+- Change object: all the user connections to a database will be associated with a document according to its DataSourceName and UserName. Next connections will refer to the same document.
+
+

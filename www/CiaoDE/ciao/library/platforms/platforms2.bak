@@ -1,0 +1,208 @@
+:- module(platforms,_,[]).
+
+:- use_package(library(objects)).
+
+:- use_class(library(agents)).
+
+:- use_module(library(concurrency)).
+:- use_module(library(compiler)).
+:- use_module(library(read),[read/1]).
+:- use_module(library(system),[pause/1,time/1]).
+
+:- data ams_names/5.
+:- concurrent df_services/3.
+
+:- concurrent ready_tasks/2.
+:- concurrent running_tasks/2.
+:- concurrent finished_tasks/2.
+:- concurrent tasks_condition/2.
+
+
+
+:- multifile library_directory/1.
+:- dynamic library_directory/1.
+
+library_directory('c:/ciao-1.8p2Win32/library/agents/examples').
+
+init :-
+	this_module(Module),
+	display(Module),nl,
+	launch_ams,
+	check(ams_names(X,Y,Z,R,T)),
+	display(ams_names(X,Y,Z,R,T)),nl,
+	launch_df,
+	check(ams_names(X1,Y1,Z1,R1,T1)),
+	display(ams_names(X1,Y1,Z1,R1,T1)),nl,
+	launch_amm,
+	check(ams_names(X2,Y2,Z2,R2,T2)),
+	display(ams_names(X2,Y2,Z2,R2,T2)),nl.
+
+
+launch_ams:-
+%	agent_id(ams),
+	concurrent(AmsQueue/3),
+	eng_goal_id(Goal_id),
+	register(ams,_,ams,AmsQueue,Goal_id),
+	register_service(ams,[naming]).
+	
+launch_df:-
+%	agent_id(df),
+	concurrent(DfQueue/3),
+	eng_goal_id(Goal_id),
+	register(df,_,df,DfQueue,Goal_id),
+	register_service(df,[services]).
+
+launch_amm:-
+	concurrent(AmsQueue/3),
+	eng_goal_id(Goal_id),
+	register(amm,_,ams,AmsQueue,Goal_id),
+	register_service(amm,[managment]),
+	assertz_fact(tasks_condition(taskmanager,true)),
+	eng_call(start_taskmanager,create,create,Goal_id1),
+	assertz_fact(running_tasks(platforms:taskmanager,Goal_id1)),	
+	assertz_fact(tasks_condition(finishmanager,true)),
+	eng_call(start_finishmanager,create,create,Goal_id2),
+	assertz_fact(running_tasks(platforms:finishmanager,Goal_id2)).
+	
+add_task(Task,Condition):-
+	asserta_fact(tasks_condition(Task,Condition)),
+	asserta_fact(ready_tasks(Task,_)),
+	display('task' +  Task + 'added'),nl.
+
+remove_task(Task):-
+	retract_fact(tasks_condition(Task,_)),
+	asserta_fact(tasks_condition(Task,true)),
+	retract_fact(running_tasks(Task,Goal_id)),
+	asserta_fact(finished_tasks(Task,Goal_id)),
+	display('task' + Task + 'removed'),nl.
+
+continue_task(Task):-
+	current_fact(tasks_condition(Task,Condition)),
+	( call(Condition) ->
+	  !,
+	  retract_fact(running_tasks(Task,Goal_id)),
+	  asserta_fact(finished_tasks(Task,Goal_id)),
+	  fail
+	;
+	  true).
+
+continue_condition(Task,Condition):-
+	retract_fact(tasks_condition(Task,_)),
+	asserta_fact(tasks_condition(Task,Condition)).
+
+start_taskmanager:-
+	taskmanager,
+	( continue_task(taskmanager) ->
+	  eng_status,display('Redo' + taskmanger),nl,
+	  start_taskmanager
+	;
+	  display('TASKMANAGER FINISHED'),nl).
+
+
+taskmanager:-
+	( retract_fact(ready_tasks(Task,_)) ->
+	  display('Run' + Task),nl,
+	  eng_call(start_agent_task(Task),create,create,Goal_id2),
+	  display('Running' + Task),nl,eng_status,nl,
+	  asserta_fact(running_tasks(Task,Goal_id2))
+	;
+	  display('Error en taskmanager')).
+
+start_agent_task(:(Agent,Task)):-
+	Y = (Agent:do_task(Task)), call(Y).
+
+start_finishmanager:-
+	finishmanager,
+	( continue_task(finishmanager) ->
+	  eng_status,display('Redo' + finishmanager),nl,
+	  start_finishmanager
+	;
+	  display('FINISHMANAGER FINISHED'),nl).
+
+finishmanager:-
+	( retract_fact(finished_tasks(Task,Goal_id)) ->
+	  display('task' + Task + 'Deleted'),nl,
+	  eng_wait(Goal_id),
+	  eng_release(Goal_id)
+	;
+	  display('Error en finishmanager')).
+
+
+launch_agent(Agent,Module):-
+	( use_class(library(Module)) ->
+	  eng_call(startagent(Agent,Module),create,create,_)
+	;
+	  display('Error clase no encontrada')).
+
+	
+startagent(Agent_Name,Module):-
+	( current_fact_nb(ams_names(Agent_Name,_,_,_,_)) ->
+	  display('Nombre ya registrado'),
+	  fail
+	;
+	 Cons =.. [Module,Agent_Name],
+	 Agent_Id new Cons,
+	 concurrent(AgentQueue/3),
+	 eng_goal_id(Goal_Id),
+	 register(Agent_Name,Agent_Id,Module,AgentQueue,Goal_Id),
+	 Agent_Id:main).
+
+agent_id(Name,Id):-
+	current_fact_nb(ams_names(Name,Id,_,_,_)).
+
+send(Reciver,Msg,Sender):-
+	ams_names(Reciver,_,_,Queue,_),
+	Term =.. [Queue,Reciver,Msg,Sender],
+	assertz_fact(Term).
+
+recive(Sender,Msg,Reciver):-	
+	ams_names(Reciver,_,_,Queue,_),
+	Term =.. [Queue,Reciver,Msg,Sender],
+	retract_fact(Term).
+	  
+check_q(X,Q):-
+	ams_names(X,_,_,Queue,_),
+	Term =.. [Queue,X,Msg,Sender],
+	check(Term),
+	Q = [Msg,Sender].
+
+check_t(Task,ready,Goal):-
+	check(ready_tasks(Task,Goal)).
+
+check_t(Task,running,Goal):-
+	check(running_tasks(Task,Goal)).
+
+check_t(Task,finished,Goal):-
+	check(finished_tasks(Task,Goal)).
+
+check_agent(Agent,X):-
+	ams_names(Agent,Agent_Id,_,_,_),	
+	Y = (Agent_Id:check(X)),
+	call(Y).
+ 	
+check(X):-
+	current_fact_nb(X).
+
+register(Name,Obj_id,Module,Queue,Goal_id):-
+	( current_fact_nb(ams_names(Name,_,_,_,_)) ->
+	  display('Nombre ya registrado'),
+	  fail
+	;
+	  asserta_fact(ams_names(Name,Obj_id,Module,Queue,Goal_id))).
+
+register_service(Name,[Service]):-
+	asserta_fact(df_services(Service,Name,_L)).
+
+look_for_service(Name,[Service]):-
+	retract_fact_nb(df_services(Service,Name,L)),
+	assertz_fact(df_services(Service,Name,L)).
+
+ouput(Name,P):- 
+	display(Name),display('<<'),display(P),display('>>'),nl.
+
+input(Name,Q,I):-
+	display(Name),display(' ¿ '),display(Q),display(' ? '),
+	read(I).
+
+wait(Seconds):-
+	pause(Seconds).

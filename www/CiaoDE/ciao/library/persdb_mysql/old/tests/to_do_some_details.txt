@@ -1,0 +1,57 @@
+* Bad response when connection database doesn't work?
+
+%%%%%% TO REVIEW: 
+sql_persistent_location(lit_db,
+     db('litAccess','dba','sql','r2d5.dia.fi.upm.es':2020)).
+
+%% Declare DYNAMICALLY lit_authors/3 a persistent predicate, 
+%% storage in 'literature_db' 
+main4:- %% Declares dynamically a persistent predicate
+	make_sql_persistent(lit_authors(string,string,int),
+ 	      dba_authors(firstName,lastName,id), 
+ 	      literature_db).
+
+main5:- %% Prints an element of lit_authors
+	lit_authors(FirstName,LastName,Id),
+	format("Tuple: ~w \t ~w \t ~w \n",[FirstName, LastName, Id]).
+
+main5 execution:
+
+{ERROR: read/1 - syntax error (lns 1-1) 
+, | or ] expected in list:
+[ Error : Unknown 
+** here **
+statement handle ] . 
+}
+{ERROR (string2term): could not convert string [Error : Unknown statement handle  ]}
+{ERROR (db_client): in DB answer, received "Error : Unknown statement handle  "}
+		   .....   repeated until aborting  .......
+
+main6: no
+main7: ok
+main8 : same message
+
+That's maybe for the database (check it)
+
+
+* This error was returned when arity of first and second argument in a
+  sql_persistent declaration mismatched :
+
+{ERROR (pl2sql): in database goal customer($var$(variable1),$var$(variable2),$var$(variable3),$var$(variable4),$var$(variable5),$var$(variable6),$var$(variable7),$var$(variable8))}
+{ERROR (pl2sql): in conjunction customer($var$(variable1),$var$(variable2),$var$(variable3),$var$(variable4),$var$(variable5),$var$(variable6),$var$(variable7),$var$(variable8))}
+{ERROR (pl2sql): SQL translation failed for customer(_407,_408,_409,_410,_411,_412,_413,_414) / customer(_407,_408,_409,_410,_411,_412,_413,_414)}
+
+* When changing the number of attributes from an sql_persistent predicate
+  declaration (in the same Prolog session):
+
+{ERROR (pl2sql): in database goal customer($var$(variable1),$var$(variable2),$var$(variable3),$var$(variable4),$var$(variable5),$var$(variable6),$var$(variable7),$var$(variable8))}
+{ERROR (pl2sql): in conjunction customer($var$(variable1),$var$(variable2),$var$(variable3),$var$(variable4),$var$(variable5),$var$(variable6),$var$(variable7),$var$(variable8))}
+{ERROR (pl2sql): SQL translation failed for customer(_407,_408,_409,_410,_411,_412,_413,_414) / customer(_407,_408,_409,_410,_411,_412,_413,_414)}
+
+no
+
+* examples/dalet_cruel.pl :
+  - 'NULL' and unbound variables
+
+* unnidentified command sql in Server.exe when number of arguments is wrong
+

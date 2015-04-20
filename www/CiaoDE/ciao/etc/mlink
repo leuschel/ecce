@@ -1,0 +1,145 @@
+#!/bin/sh
+exec prolog_shell3 $0 "$@"
+
+:- use_module(library(system)).
+
+:- asserta(library_directory('/home/clip/Systems/ciao-0.3/lib')).
+:- ensure_loaded(library(sicstus3)).
+
+:- use_module(library(lists),[append/3]).
+:- use_module(library(sets),[insert/3]).
+:- use_module(library(dict),[dic_lookup/3,dic_replace/4]).
+
+main([Root,Home|Input]):-
+	"/"=[Slash],
+	%% check that root does not exist yet
+	name(Root,RootS),
+	mkdir(RootS),
+	%% determine which files are under which directories
+	make_list_atoms(Files,Input),
+	name(Home,HomeS),
+	sort(Files,Files_s),
+	order(Files_s,Slash,HomeS,Libs,Order),
+	%% make the subdirectories
+	sort(Libs,Libs_s),
+	make_list_atoms(Libs_s,LibsA),
+	format(user,'Making directories under ~w: ~q~n',[Root,LibsA]),
+	make_dirs(Libs_s,RootS),
+	%% make the link tree
+%%      make_dic_atoms(Order,AtomTree,[]),
+%% 	writeq(user,AtomTree), nl(user),
+	make_links(Order,RootS,HomeS).
+
+identify(String,Space,[File|Files]):-
+	append(File,[Space|Rest],String), !,
+	identify(Rest,Space,Files).
+identify(File,_Space,File).
+
+order(Files,Slash,Home,Libs,Order):-
+	order(Files,Slash,Home,[],Libs,_Void,Order).
+
+order([File|Files],Slash,Home,Lib0,Lib,Order0,Order):-
+	append(Home,Path,File), !,
+	strip_dir(Path,Slash,Dir,Name),
+	( Dir=[Slash]
+	-> Lib1=Lib0
+	 ; insert_sublibs(Lib0,Dir,Slash,Lib1)
+	),
+	dic_lookup(Order0,Dir,Val),
+	( Val=[Name]
+	-> Order1=Order0
+	 ; dic_replace(Order0,Dir,[Name|Val],Order1)
+	),
+	order(Files,Slash,Home,Lib1,Lib,Order1,Order).
+order([File|Files],Slash,Home,Lib0,Lib,Order0,Order):-
+	name(Name,File),
+	format('File ~q is not under the home directory~n',[Name]),
+	order(Files,Slash,Home,Lib0,Lib,Order0,Order).
+order([],_Slash,_Home,Lib,Lib,Order,Order).
+
+strip_dir(Path,Slash,Dir,Name):-
+	append(Dir0,[Slash|Path1],Path), !,
+	( Path=[Slash]
+	-> Name=Path1
+	 ; append(Dir0,[Slash|Dir1],Dir),
+	   strip_dir(Path1,Slash,Dir1,Name)
+	).
+strip_dir(Name,_Slash,[],Name).
+
+insert_sublibs(Libs0,Dir,Slash,Libs):-
+	insert_sublibs([Dir|Libs0],[],Dir,Slash,Libs).
+
+insert_sublibs(Libs0,Path,Dir,Slash,Libs):-
+	append([Slash|TopDir],[Slash|SubDir],Dir), !,
+	( SubDir=[]
+	-> Libs=Libs0
+	 ; append(Path,[Slash|TopDir],NewLib),
+	   Libs=[NewLib|Libs1],
+	   insert_sublibs(Libs0,NewLib,[Slash|SubDir],Slash,Libs1)
+	).
+insert_sublibs(_Libs0,_Path,Dir,_Slash,_Libs):-
+	name(SubDir,Dir),
+	format(user,'Cannot support subdir name: ~w~n',[SubDir]).
+
+make_dirs([Lib|Libs],Root):-
+	append(Root,Lib,LibS),
+	mkdir(LibS),
+	make_dirs(Libs,Root).
+make_dirs([],_Root).
+
+make_links(Order,_Root,_Home):- var(Order), !.
+make_links(dic(Dir,Files,Left,Right),Root,Home):-
+	append(Root,Dir,Sink),
+	append(Home,Dir,Source),
+	link_files(Files,Source,Sink),
+	make_links(Left,Root,Home),
+	make_links(Right,Root,Home).
+
+link_files([File|Files],SourceRoot,Sink):-
+	append(SourceRoot,File,Source),
+	name(SourceA,Source),
+	name(SinkA,Sink),
+	format(user,'Linking ~w into ~w~n',[SourceA,SinkA]),
+	symlink(Source,Sink),
+	link_files(Files,SourceRoot,Sink).
+link_files([],_SourceRoot,_Sink).
+
+make_dic_atoms(Order,List,List):- var(Order), !.
+make_dic_atoms(dic(Key,Val,Left,Right),[(KeyA,ValA)|Atoms],Tail):-
+	name(KeyA,Key),
+	make_list_atoms(Val,ValA),
+	make_dic_atoms(Left,Atoms,Tail0),
+	make_dic_atoms(Right,Tail0,Tail).
+
+make_list_atoms([X|Xs],[A|As]):-
+	name(A,X),
+	make_list_atoms(Xs,As).
+make_list_atoms([],[]).
+
+mkdir(Lib):-
+	append("mkdir ",Lib,String),
+	name(Command,String),
+	system(Command).
+
+symlink(Source,Sink):-
+	" "=[Space],
+	append(Source,[Space|Sink],Files),
+	append("ln -s ",Files,String),
+	name(Command,String),
+	system(Command).
+
+protect(X):-
+	on_exception(Error,X,
+	             format(user,'Error: ~q in ~q~n',[Error,X])
+		    ).
+
+succeed(X):- call(X), !.
+succeed(_).
+
+
+%% Control version comment prompting for the file.
+%% Local Variables: 
+%% mode: CIAO
+%% update-version-comments: "off"
+%% End:
+

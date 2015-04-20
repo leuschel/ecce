@@ -1,0 +1,5 @@
+ciaod: activate_module/2 no funciona con direccion fija (no mi culpa)
+
+ > > - add_workers(+N,-List) {N:integer, List:list of ids}
+ > > - add_workers(+NodeList,-List) {List of nodes, list of ids}
+ > > - worker_list(L) deberia decir donde esta cada uno?

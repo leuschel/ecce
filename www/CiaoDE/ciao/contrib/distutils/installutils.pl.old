@@ -1,0 +1,69 @@
+:- module(_,_,[functions]).
+
+:- use_module(library(terms)).
+:- use_module(library('make/system_extra')).
+
+% Implementation of most commonly used options when installing
+% documentation
+
+texclean(BaseMain) :-
+	del_endings_nofail(
+	[   '.aux','.cp','.cps','.fn','.fns','.ky','.kys','.log',
+	    '.tp','.tps','.op','.ops','.fi','.fis','.pd','.pds',
+	    '.pr','.prs','.ug','.ugs','.co','.cos','.fu','.fus',
+	    '.li','.lis','.pg','.pgs','.ap','.aps','.mo','.mos',
+	    '.gl','.gls','.toc','.te','.tes','.vr','.vrs','.de',
+	    '.des','.bbl','.blg'
+	],
+	BaseMain).
+
+texclean :-
+	del_file_nofail('texinfo.tex').
+%        ( _:libtexinfo(yes) -> del_file_nofail('texinfo.tex') ; true ).
+
+
+clean(BaseMain) :-
+	texclean(BaseMain),
+	del_endings_nofail(['refs.el','refs.aux','refs.blg'], BaseMain).
+
+clean :-
+	texclean,
+	delete_files(~ls('*~|*.asr|*.itf|*.po|autofig*.ppm')).
+
+distclean :-
+	clean,
+	delete_files(~ls('*.texic|*.refs')).
+
+realclean(BaseMain) :-
+	clean(BaseMain),
+	delete_files(~ls(~atom_concat(
+	   [ BaseMain,'*.texi','|',BaseMain,'*.dvi', '|',BaseMain,'*.ps', '|',
+	     BaseMain,'*.pdf', '|',BaseMain,'*.txt','|',BaseMain,'*.ascii', '|',
+             BaseMain,'.html','|','autofig*.ppm|autofig*.jpg|',
+	     BaseMain,'*.htmlindex','|',BaseMain,'*.htmlbullet','|',
+	     BaseMain,'*.htmlsumm','|',BaseMain,'*.l','|',
+	     BaseMain,'*.manl','|',BaseMain,'*.info*'
+           ]))),
+	clean_html_dir(BaseMain).
+
+braveclean :-
+	clean,
+	del_files_nofail(~ls('*.texic|*.refs|autofig*.eps|autofig*.txt')).
+
+clean_html_dir(BaseMain) :-
+	atom_concat([BaseMain,'_html'],HtmlDir),
+	atom_concat([BaseMain,'_html/'],RHtmlDir),
+	(  file_exists(HtmlDir)
+	->
+	   delete_files(add_preffix(
+	   ~ls(HtmlDir,
+	    ~atom_concat(
+	     [ BaseMain,'*.html','|',BaseMain,'.css','|','autofig*.jpg'
+	     ])),RHtmlDir)),
+%% Kludge:	
+	   delete_directory(HtmlDir)
+        ;  true ).
+
+distclean(BaseMain) :-
+	clean(BaseMain),
+	delete_files(~ls('*.texic|*.refs')).

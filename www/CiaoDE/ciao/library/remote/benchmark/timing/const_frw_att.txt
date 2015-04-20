@@ -1,0 +1,65 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+All variables > 0, size 10
+Time for size 10: 51
+Time for size 10: 52
+Time for size 10: 52
+Time for size 10: 51
+Time for size 10: 48
+Time for size 10: 66
+All variables > 0, size 50
+Time for size 50: 539
+Time for size 50: 554
+Time for size 50: 550
+Time for size 50: 409
+Time for size 50: 549
+Time for size 50: 538
+All variables > 0, size 100
+Time for size 100: 1195
+Time for size 100: 1230
+Time for size 100: 1193
+Time for size 100: 1189
+Time for size 100: 1236
+Time for size 100: 1195
+Fibonacci constraints, size 10
+Time for size 10: 247
+Time for size 10: 203
+Time for size 10: 219
+Time for size 10: 205
+Time for size 10: 208
+Time for size 10: 220
+Fibonacci constraints, size 50
+Time for size 50: 8819
+Time for size 50: 8710
+Time for size 50: 8787
+Time for size 50: 8736
+Time for size 50: 8721
+Time for size 50: 8749
+Fibonacci constraints, size 100
+Time for size 100: 42163
+Time for size 100: 42094
+Time for size 100: 42186
+Time for size 100: 42005
+Time for size 100: 41945
+Time for size 100: 42560
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+All variables > 0, size 10
+(/ (+ 51 52 52 51) 4) = 51
+All variables > 0, size 50
+(/ (+ 539 549 550 554) 4) = 548
+All variables > 0, size 100
+(/ (+ 1193 1195 1230 1236) 4) = 1213
+Fibonacci constraints, size 10
+(/ (+ 205 208 219 247) 4) = 219
+Fibonacci constraints, size 50
+(/ (+ 8721 8736 8787 8819) 4) = 8765
+Fibonacci constraints, size 100
+(/ (+ 42005 42094 42163 42186) 4) = 42112
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+(fset 'avrg
+   [?\C-  ?\C-n ?\C-n ?\C-n ?\C-n ?\C-n ?\C-e ?\M-b ?\C-x ?r ?k ?\M-x ?s ?o ?r ?t tab ?l ?i tab return ?\C-k ?\C-k ?\C-x ?\C-x ?\C-k ?\C-k ?( ?/ ?  ?( ?+ ?  ?\C-e ?\C-d ?  ?\C-e ?\C-d ?  ?\C-e ?\C-d ?  ?\C-e ?) ?  ?4 ?)])

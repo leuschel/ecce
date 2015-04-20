@@ -1,0 +1,10 @@
+
+{EXISTENCE ERROR: modif_time('/home/clip/Demo/Pruebas/qsort.pl',_40): procedure system:modif_time/2 does not exist}
+de momento mejor asi ...
+
+{EXISTENCE ERROR: use_module(c_itf:engine(internals),['$open'/3]) - arg 1: file engine(internals) does not exist}
+se soluciona con
+file_search_path(engine,E) :- comp_engine_directory(E).
+pero de momento no queremos que encuentre engine ... (comentado en user.pl)
+
+{EXISTENCE ERROR: modif_time('/home/clip/Demo/Pruebas/qsort.pl',_40): procedure system:modif_time/2 does not exist}

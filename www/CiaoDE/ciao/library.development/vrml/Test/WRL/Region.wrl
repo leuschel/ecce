@@ -1,0 +1,82 @@
+#VRML V2.0 utf8
+
+
+
+# Prototype for a box-shaped region
+
+
+
+PROTO Region [   # Prototype for a box-shaped region
+
+    field SFString name "no name"
+
+    field SFVec3f bboxCenter 0 0 0
+
+    field SFVec3f bboxSize 0 0 0
+
+    eventIn SFBool seenBy
+
+    eventOut SFBool canSee
+
+    field MFNode children []
+
+    ] {
+
+
+
+DEF SW Switch {
+
+    whichChoice -1
+
+    choice Group {
+
+        bboxCenter IS bboxCenter
+
+        bboxSize IS bboxSize
+
+        children IS children
+
+    }
+
+}
+
+
+
+DEF PS ProximitySensor {
+
+    center IS bboxCenter
+
+    size IS bboxSize
+
+    isActive IS canSee
+
+}
+
+
+
+DEF SC Script {
+
+    url "Region.class"
+
+    eventIn SFBool countThese IS seenBy
+
+    eventOut SFInt32 showChildren
+
+    field SFString name IS name
+
+    eventIn SFBool regionActive
+
+}
+
+
+
+ROUTE PS.isActive_changed TO SC.regionActive
+
+ROUTE SC.showChildren TO SW.whichChoice
+
+
+
+}  # end of PROTO
+
+
+

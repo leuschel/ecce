@@ -1,0 +1,24 @@
+SERVER COMMANDS SUMMARY
+=======================
+Syntaxis: sentence -> returned value
+
+*Logon <DataSourceName> -> <DbHandle>
+
+*LogonUser <UserName> <Password> <DataSourceName> -> <DbHandle>
+	(if password is NULL, "" is needed)
+
+*Sql <DbHandle> <SQLSentence> -> <StmtHandle>
+
+*Fetch <DbHandle> <StmtHandle> -> <Attribute1Value>,...,<AttributeNValue>
+
+*DirectSql <DbHandle> <SQLSentence> -> table([[<Attribute1ValueTuple1>,...,<AttributeNValueTuple1>],...,[<Attribute1ValueTupleM>,...,<AttributeNValueTupleM>]])
+
+*DatabaseTables <DbHandle> -> [<tableName1>,...,<tableNameN>]
+
+*TableAttributes <DbHandle> <TableName> -> [[<AttName1>,<Type1>],...,[<AttNameN>,<TypeN>]]
+
+*Logoff <DbHandle> 
+
+*Free <DbHandle> <StmtHandle>
+
+						CLIP, 25-February-1999

@@ -1,0 +1,17 @@
+HOW TO FIND THE CHANGES IN THE SOURCE CODE
+==========================================
+Previous to the changes, we've written the next labels in the source code:
+/**********  25-February-1999 Modification : **********/	
+/**********  25-February-1999 Insertion : **********/			
+/**********  25-February-1999 Deletion : **********/			
+Previous versions changes are labeled the same except the date 
+	(21-July-1998, 17-August-1998, 25-February-1999,).
+
+HOW TO FIND OUTSTANDING QUESTIONS IN THE SOURCE CODE
+==================================================== 
+/**********  25-February-1999 TO BE IMPROVED : **********/      
+/**********  25-February-1999 TO BE FINISHED : **********/
+/**********  25-February-1999 TO BE ADDED : **********/
+/**********  25-February-1999 TO BE REMOVED : **********/
+/**********  25-February-1999 TO BE REVISITED : **********/
+

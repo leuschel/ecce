@@ -1,0 +1,3231 @@
+type_arg(db,type,'',codename) .
+type_arg(db,defined_in,'',db_def) .
+type_arg(db,defined_as,'',db) .
+type_arg(table,type,'',codename) .
+type_arg(table,defined_in,'',table_def) .
+type_arg(table,defined_as,'',table) .
+type_arg(field,type,'',codename) .
+type_arg(field,defined_in,'',field_def) .
+type_arg(field,defined_as,'',field) .
+type_arg(type,type,'',codename) .
+type_arg(type,defined_in,'',type_def) .
+type_arg(type,defined_as,'',type) .
+type_arg(codename,size,'','20') .
+type_arg(name,size,'','30') .
+type_arg(description,width,'','40') .
+type_arg(description,height,'','4') .
+type_arg(smallnum,size,'','3') .
+type_arg(smallnum,sign,'',positive) .
+type_arg(boolean,value,'1',no) .
+type_arg(boolean,value,'2',yes) .
+type_arg(boolean,name,'1','No') .
+type_arg(boolean,name,'2','Yes') .
+type_arg(kind,value,'1',text) .
+type_arg(kind,name,'1','Text (single line)') .
+type_arg(kind,value,'2',textarea) .
+type_arg(kind,name,'2','Text (multiple lines)') .
+type_arg(kind,value,'3',options) .
+type_arg(kind,name,'3','Options from list') .
+type_arg(kind,value,'4',integer) .
+type_arg(kind,name,'4','Integer number') .
+type_arg(kind,value,'5',percent) .
+type_arg(kind,name,'5','Percentage') .
+type_arg(kind,value,'6',float) .
+type_arg(kind,name,'6','Number with decimals') .
+type_arg(kind,value,'7',identifier) .
+type_arg(kind,name,'7','Identifier') .
+type_arg(kind,value,'8',date) .
+type_arg(kind,name,'8','Date') .
+type_arg(kind,value,'9',computation) .
+type_arg(kind,name,'9','Result of a computation') .
+type_arg(kind,value,'10',conditional) .
+type_arg(kind,name,'10','Dependent on other field values') .
+type_arg(kind,value,'11',external_key) .
+type_arg(kind,name,'11','Values defined in a table') .
+type_arg(param,depends_on,'1',type) .
+type_arg(param,cond,'1','type_def(type,text)') .
+type_arg(param,type,'1',text_param) .
+type_arg(param,cond,'2','type_def(type,textarea)') .
+type_arg(param,type,'2',textarea_param) .
+type_arg(param,cond,'3','type_def(type,options)') .
+type_arg(param,type,'3',options_param) .
+type_arg(param,cond,'4','type_def(type,integer)') .
+type_arg(param,type,'4',integer_param) .
+type_arg(param,cond,'5','type_def(type,percent)') .
+type_arg(param,type,'5',percent_param) .
+type_arg(param,cond,'6','type_def(type,float)') .
+type_arg(param,type,'6',float_param) .
+type_arg(param,cond,'7','type_def(type,identifier)') .
+type_arg(param,type,'7',text_param) .
+type_arg(param,cond,'8','type_def(type,date)') .
+type_arg(param,type,'8',date_param) .
+type_arg(param,cond,'9','type_def(type,computation)') .
+type_arg(param,type,'9',computation_param) .
+type_arg(param,cond,'10','type_def(type,conditional)') .
+type_arg(param,type,'10',conditional_param) .
+type_arg(param,cond,'11','type_def(type,external_key)') .
+type_arg(param,type,'11',external_key_param) .
+type_arg(text_param,value,'1',size) .
+type_arg(textarea_param,value,'1',width) .
+type_arg(textarea_param,value,'2',height) .
+type_arg(options_param,value,'1',value) .
+type_arg(options_param,value,'2',name) .
+type_arg(integer_param,value,'1',size) .
+type_arg(integer_param,value,'2',sign) .
+type_arg(percent_param,value,'1',decimals) .
+type_arg(percent_param,value,'2',sign) .
+type_arg(float_param,value,'1',size) .
+type_arg(float_param,value,'2',decimals) .
+type_arg(float_param,value,'3',sign) .
+type_arg(date_param,value,'1',order) .
+type_arg(date_param,value,'2',help) .
+type_arg(date_param,value,'3',auto) .
+type_arg(computation_param,value,'1',size) .
+type_arg(computation_param,value,'2',input) .
+type_arg(computation_param,value,'3',result) .
+type_arg(conditional_param,value,'1',depends_on) .
+type_arg(conditional_param,value,'2',cond) .
+type_arg(conditional_param,value,'3',type) .
+type_arg(external_key_param,value,'1',type) .
+type_arg(external_key_param,value,'2',defined_in) .
+type_arg(external_key_param,value,'3',defined_as) .
+type_arg(param_value,depends_on,'1',param) .
+type_arg(param_value,cond,'1','=(param,size)') .
+type_arg(param_value,type,'1',smallnum) .
+type_arg(param_value,cond,'2','=(param,width)') .
+type_arg(param_value,type,'2',smallnum) .
+type_arg(param_value,cond,'3','=(param,height)') .
+type_arg(param_value,type,'3',smallnum) .
+type_arg(param_value,cond,'4','=(param,value)') .
+type_arg(param_value,type,'4',codename) .
+type_arg(param_value,cond,'5','=(param,name)') .
+type_arg(param_value,type,'5',name) .
+type_arg(param_value,cond,'6','=(param,sign)') .
+type_arg(param_value,type,'6',sign) .
+type_arg(param_value,cond,'7','=(param,decimals)') .
+type_arg(param_value,type,'7',smallnum) .
+type_arg(param_value,cond,'8','=(param,order)') .
+type_arg(param_value,type,'8',date_order) .
+type_arg(param_value,cond,'9','=(param,input)') .
+type_arg(param_value,type,'9',field) .
+type_arg(param_value,cond,'10','=(param,result)') .
+type_arg(param_value,type,'10',expression) .
+type_arg(param_value,cond,'11','=(param,depends_on)') .
+type_arg(param_value,type,'11',field) .
+type_arg(param_value,cond,'12','=(param,cond)') .
+type_arg(param_value,type,'12',expression) .
+type_arg(param_value,cond,'13','=(param,type)') .
+type_arg(param_value,type,'13',type) .
+type_arg(param_value,cond,'14','=(param,defined_in)') .
+type_arg(param_value,type,'14',table) .
+type_arg(param_value,cond,'15','=(param,defined_as)') .
+type_arg(param_value,type,'15',field) .
+type_arg(param_value,cond,'16','=(param,help)') .
+type_arg(param_value,type,'16',boolean) .
+type_arg(param_value,cond,'17','=(param,auto)') .
+type_arg(param_value,type,'17',boolean) .
+type_arg(sign,value,'1',positive) .
+type_arg(sign,value,'2',negative) .
+type_arg(date_order,value,'1',dmy) .
+type_arg(date_order,value,'2',mdy) .
+type_arg(date_order,value,'3',ymd) .
+type_arg(expression,size,'','60') .
+type_arg(percent,sign,'',positive) .
+type_arg(tran_weight,size,'','3') .
+type_arg(tran_weight,input,'1',dcf_weight) .
+type_arg(tran_weight,input,'2',comp_weight) .
+type_arg(tran_weight,result,'','100 - dcf_weight - comp_weight') .
+type_arg(smallname,size,'','15') .
+type_arg(ticker,type,'',smallname) .
+type_arg(ticker,defined_in,'',comps_info) .
+type_arg(ticker,defined_as,'',ticker) .
+type_arg(name40,size,'','40') .
+type_arg(name50,size,'','50') .
+type_arg(description60,width,'','60') .
+type_arg(description60,height,'','4') .
+type_arg(description40,width,'','40') .
+type_arg(description40,height,'','4') .
+type_arg(date_dmy,order,'',dmy) .
+type_arg(date_dmy,help,'',yes) .
+type_arg(ssector,depends_on,'1',sector) .
+type_arg(ssector_,value,'0','') .
+type_arg(ssector_,name,'0','_') .
+type_arg(sssector,depends_on,'1',sector) .
+type_arg(sssector,depends_on,'2',ssector) .
+type_arg(sssector_,value,'0','') .
+type_arg(sssector_,name,'0','_') .
+type_arg(ssssector,depends_on,'1',sector) .
+type_arg(ssssector,depends_on,'2',ssector) .
+type_arg(ssssector,depends_on,'3',sssector) .
+type_arg(ssssector_,value,'0','') .
+type_arg(ssssector_,name,'0','_') .
+type_arg(currency,value,'1','ATS') .
+type_arg(currency,value,'2','AUD') .
+type_arg(currency,value,'3','BEF') .
+type_arg(currency,value,'4','BRL') .
+type_arg(currency,value,'5','CAD') .
+type_arg(currency,value,'6','CHF') .
+type_arg(currency,value,'7','CHL') .
+type_arg(currency,value,'8','DEM') .
+type_arg(currency,value,'9','DKR') .
+type_arg(currency,value,'10','ESP') .
+type_arg(currency,value,'11','EUR') .
+type_arg(currency,value,'12','FIM') .
+type_arg(currency,value,'13','FRF') .
+type_arg(currency,value,'14','GBP') .
+type_arg(currency,value,'15','HKD') .
+type_arg(currency,value,'16','HUF') .
+type_arg(currency,value,'17','IDR') .
+type_arg(currency,value,'18','IEP') .
+type_arg(currency,value,'19','INR') .
+type_arg(currency,value,'20','ITL') .
+type_arg(currency,value,'21','JPY') .
+type_arg(currency,value,'22','KRW') .
+type_arg(currency,value,'23','MEP') .
+type_arg(currency,value,'24','MXN') .
+type_arg(currency,value,'25','MYR') .
+type_arg(currency,value,'26','NOK') .
+type_arg(currency,value,'27','NZD') .
+type_arg(currency,value,'28','PEN') .
+type_arg(currency,value,'29','PLN') .
+type_arg(currency,value,'30','PTE') .
+type_arg(currency,value,'31','RM') .
+type_arg(currency,value,'32','SEK') .
+type_arg(currency,value,'33','SGD') .
+type_arg(currency,value,'34','THB') .
+type_arg(currency,value,'35','TWD') .
+type_arg(currency,value,'36','USD') .
+type_arg(currency,value,'37','VEB') .
+type_arg(currency,value,'38','ZAR') .
+type_arg(month,value,'0','0') .
+type_arg(month,value,'1','1') .
+type_arg(month,value,'2','2') .
+type_arg(month,value,'3','3') .
+type_arg(month,value,'4','4') .
+type_arg(month,value,'5','5') .
+type_arg(month,value,'6','6') .
+type_arg(month,value,'7','7') .
+type_arg(month,value,'8','8') .
+type_arg(month,value,'9','9') .
+type_arg(month,value,'10','10') .
+type_arg(month,value,'11','11') .
+type_arg(month,value,'12','12') .
+type_arg(month,name,'0','Unknown') .
+type_arg(month,name,'1','January') .
+type_arg(month,name,'2','February') .
+type_arg(month,name,'3','March') .
+type_arg(month,name,'4','April') .
+type_arg(month,name,'5','May') .
+type_arg(month,name,'6','June') .
+type_arg(month,name,'7','July') .
+type_arg(month,name,'8','August') .
+type_arg(month,name,'9','September') .
+type_arg(month,name,'10','October') .
+type_arg(month,name,'11','November') .
+type_arg(month,name,'12','December') .
+type_arg(change_date,order,'',dmy) .
+type_arg(change_date,auto,'',yes) .
+type_arg(signed_amount,size,'','9') .
+type_arg(signed_amount,decimals,'','1') .
+type_arg(positive_amount,size,'','9') .
+type_arg(positive_amount,decimals,'','1') .
+type_arg(negative_amount,size,'','9') .
+type_arg(negative_amount,decimals,'','1') .
+type_arg(negative_amount,sign,'',negative) .
+type_arg(positive_amount,sign,'',positive) .
+type_arg(comps_year,value,'1','-2') .
+type_arg(comps_year,value,'2','-1') .
+type_arg(comps_year,value,'3','0') .
+type_arg(comps_year,value,'4','1') .
+type_arg(comps_year,value,'5','2') .
+type_arg(comps_year,name,'1','2001') .
+type_arg(comps_year,name,'2','2002') .
+type_arg(comps_year,name,'3','2003') .
+type_arg(comps_year,name,'4','2004') .
+type_arg(comps_year,name,'5','2005') .
+type_arg(trans_year,value,'1','-3') .
+type_arg(trans_year,value,'2','-2') .
+type_arg(trans_year,value,'3','-1') .
+type_arg(trans_year,value,'4','0') .
+type_arg(trans_year,value,'5','1') .
+type_arg(trans_year,name,'1','2000') .
+type_arg(trans_year,name,'2','2001') .
+type_arg(trans_year,name,'3','2002') .
+type_arg(trans_year,name,'4','2003') .
+type_arg(trans_year,name,'5','2004') .
+type_arg(percent_2d,sign,'',positive) .
+type_arg(percent_2d,decimals,'','2') .
+type_arg(geozone,value,'1','1') .
+type_arg(geozone,value,'2','2') .
+type_arg(geozone,value,'3','3') .
+type_arg(geozone,value,'4','4') .
+type_arg(geozone,value,'5','5') .
+type_arg(geozone,value,'6','6') .
+type_arg(geozone,value,'7','7') .
+type_arg(geozone,value,'8','8') .
+type_arg(geozone,value,'9','9') .
+type_arg(geozone,value,'10','10') .
+type_arg(geozone,value,'11','11') .
+type_arg(geozone,value,'12','12') .
+type_arg(geozone,value,'13','13') .
+type_arg(geozone,value,'14','14') .
+type_arg(geozone,value,'15','15') .
+type_arg(geozone,value,'16','16') .
+type_arg(geozone,name,'1','The World') .
+type_arg(geozone,name,'2','The Americas') .
+type_arg(geozone,name,'3','North America') .
+type_arg(geozone,name,'4','Central America') .
+type_arg(geozone,name,'5','South America') .
+type_arg(geozone,name,'6','Latinamerica') .
+type_arg(geozone,name,'7','Europe') .
+type_arg(geozone,name,'8','Western Europe') .
+type_arg(geozone,name,'9','Eastern Europe') .
+type_arg(geozone,name,'10','Africa') .
+type_arg(geozone,name,'11','Middle East/N. Africa') .
+type_arg(geozone,name,'12','Asia') .
+type_arg(geozone,name,'13','Asia Pacific') .
+type_arg(geozone,name,'14','Central Asia') .
+type_arg(geozone,name,'15','South & East Asia') .
+type_arg(geozone,name,'16','Australia/Oceania') .
+type_arg(country,value,'0','0') .
+type_arg(country,value,'1','1') .
+type_arg(country,value,'2','2') .
+type_arg(country,value,'3','3') .
+type_arg(country,value,'4','4') .
+type_arg(country,value,'5','5') .
+type_arg(country,value,'6','6') .
+type_arg(country,value,'7','7') .
+type_arg(country,value,'8','8') .
+type_arg(country,value,'9','9') .
+type_arg(country,value,'10','10') .
+type_arg(country,value,'11','11') .
+type_arg(country,value,'12','12') .
+type_arg(country,value,'13','13') .
+type_arg(country,value,'14','14') .
+type_arg(country,value,'15','15') .
+type_arg(country,value,'16','16') .
+type_arg(country,value,'17','17') .
+type_arg(country,value,'18','18') .
+type_arg(country,value,'19','19') .
+type_arg(country,value,'20','20') .
+type_arg(country,value,'21','21') .
+type_arg(country,value,'22','22') .
+type_arg(country,value,'23','23') .
+type_arg(country,value,'24','24') .
+type_arg(country,value,'25','25') .
+type_arg(country,value,'26','26') .
+type_arg(country,value,'27','27') .
+type_arg(country,value,'28','28') .
+type_arg(country,value,'29','29') .
+type_arg(country,value,'30','30') .
+type_arg(country,value,'31','31') .
+type_arg(country,value,'32','32') .
+type_arg(country,value,'33','33') .
+type_arg(country,value,'34','34') .
+type_arg(country,value,'35','35') .
+type_arg(country,value,'36','36') .
+type_arg(country,value,'37','37') .
+type_arg(country,value,'38','38') .
+type_arg(country,value,'39','39') .
+type_arg(country,value,'40','40') .
+type_arg(country,value,'41','41') .
+type_arg(country,value,'42','42') .
+type_arg(country,value,'43','43') .
+type_arg(country,value,'44','44') .
+type_arg(country,value,'45','45') .
+type_arg(country,value,'46','46') .
+type_arg(country,value,'47','47') .
+type_arg(country,value,'48','48') .
+type_arg(country,value,'49','49') .
+type_arg(country,value,'50','50') .
+type_arg(country,value,'51','51') .
+type_arg(country,value,'52','52') .
+type_arg(country,value,'53','53') .
+type_arg(country,value,'54','54') .
+type_arg(country,value,'55','55') .
+type_arg(country,value,'56','56') .
+type_arg(country,value,'57','57') .
+type_arg(country,value,'58','58') .
+type_arg(country,value,'59','59') .
+type_arg(country,value,'60','60') .
+type_arg(country,value,'61','61') .
+type_arg(country,value,'62','62') .
+type_arg(country,value,'63','63') .
+type_arg(country,value,'64','64') .
+type_arg(country,value,'65','65') .
+type_arg(country,value,'66','66') .
+type_arg(country,value,'67','67') .
+type_arg(country,value,'68','68') .
+type_arg(country,value,'69','69') .
+type_arg(country,value,'70','70') .
+type_arg(country,value,'71','71') .
+type_arg(country,value,'72','72') .
+type_arg(country,value,'73','73') .
+type_arg(country,value,'74','74') .
+type_arg(country,value,'75','75') .
+type_arg(country,value,'76','76') .
+type_arg(country,value,'77','77') .
+type_arg(country,value,'78','78') .
+type_arg(country,value,'79','79') .
+type_arg(country,value,'80','80') .
+type_arg(country,value,'81','81') .
+type_arg(country,value,'82','82') .
+type_arg(country,value,'83','83') .
+type_arg(country,value,'84','84') .
+type_arg(country,value,'85','85') .
+type_arg(country,value,'86','86') .
+type_arg(country,value,'87','87') .
+type_arg(country,value,'88','88') .
+type_arg(country,value,'89','89') .
+type_arg(country,value,'90','90') .
+type_arg(country,value,'91','91') .
+type_arg(country,value,'92','92') .
+type_arg(country,value,'93','93') .
+type_arg(country,value,'94','94') .
+type_arg(country,value,'95','95') .
+type_arg(country,value,'96','96') .
+type_arg(country,value,'97','97') .
+type_arg(country,value,'98','98') .
+type_arg(country,value,'99','99') .
+type_arg(country,value,'100','100') .
+type_arg(country,value,'101','101') .
+type_arg(country,value,'102','102') .
+type_arg(country,value,'103','103') .
+type_arg(country,value,'104','104') .
+type_arg(country,value,'105','105') .
+type_arg(country,value,'106','106') .
+type_arg(country,value,'107','107') .
+type_arg(country,value,'108','108') .
+type_arg(country,value,'109','109') .
+type_arg(country,value,'110','110') .
+type_arg(country,value,'111','111') .
+type_arg(country,value,'112','112') .
+type_arg(country,value,'113','113') .
+type_arg(country,value,'114','114') .
+type_arg(country,value,'115','115') .
+type_arg(country,value,'116','116') .
+type_arg(country,value,'117','117') .
+type_arg(country,value,'118','118') .
+type_arg(country,value,'119','119') .
+type_arg(country,value,'120','120') .
+type_arg(country,value,'121','121') .
+type_arg(country,value,'122','122') .
+type_arg(country,value,'123','123') .
+type_arg(country,value,'124','124') .
+type_arg(country,value,'125','125') .
+type_arg(country,value,'126','126') .
+type_arg(country,value,'127','127') .
+type_arg(country,value,'128','128') .
+type_arg(country,value,'129','129') .
+type_arg(country,value,'130','130') .
+type_arg(country,value,'131','131') .
+type_arg(country,value,'132','132') .
+type_arg(country,value,'133','133') .
+type_arg(country,value,'134','134') .
+type_arg(country,value,'135','135') .
+type_arg(country,value,'136','136') .
+type_arg(country,value,'137','137') .
+type_arg(country,value,'138','138') .
+type_arg(country,value,'139','139') .
+type_arg(country,value,'140','140') .
+type_arg(country,value,'141','141') .
+type_arg(country,value,'142','142') .
+type_arg(country,value,'143','143') .
+type_arg(country,value,'144','144') .
+type_arg(country,value,'145','145') .
+type_arg(country,value,'146','146') .
+type_arg(country,value,'147','147') .
+type_arg(country,value,'148','148') .
+type_arg(country,value,'149','149') .
+type_arg(country,value,'150','150') .
+type_arg(country,value,'151','151') .
+type_arg(country,value,'152','152') .
+type_arg(country,value,'153','153') .
+type_arg(country,value,'154','154') .
+type_arg(country,value,'155','155') .
+type_arg(country,value,'156','156') .
+type_arg(country,value,'157','157') .
+type_arg(country,value,'158','158') .
+type_arg(country,value,'159','159') .
+type_arg(country,value,'160','160') .
+type_arg(country,value,'161','161') .
+type_arg(country,value,'162','162') .
+type_arg(country,value,'163','163') .
+type_arg(country,value,'164','164') .
+type_arg(country,value,'165','165') .
+type_arg(country,value,'166','166') .
+type_arg(country,value,'167','167') .
+type_arg(country,value,'168','168') .
+type_arg(country,value,'169','169') .
+type_arg(country,value,'170','170') .
+type_arg(country,value,'171','171') .
+type_arg(country,value,'172','172') .
+type_arg(country,value,'173','173') .
+type_arg(country,value,'174','174') .
+type_arg(country,value,'175','175') .
+type_arg(country,value,'176','176') .
+type_arg(country,value,'177','177') .
+type_arg(country,value,'178','178') .
+type_arg(country,value,'179','179') .
+type_arg(country,value,'180','180') .
+type_arg(country,value,'181','181') .
+type_arg(country,value,'182','182') .
+type_arg(country,value,'183','183') .
+type_arg(country,value,'184','184') .
+type_arg(country,value,'185','185') .
+type_arg(country,value,'186','186') .
+type_arg(country,value,'187','187') .
+type_arg(country,value,'188','188') .
+type_arg(country,value,'189','189') .
+type_arg(country,value,'190','190') .
+type_arg(country,value,'191','191') .
+type_arg(country,value,'192','192') .
+type_arg(country,value,'193','193') .
+type_arg(country,value,'194','194') .
+type_arg(country,value,'195','195') .
+type_arg(country,value,'196','196') .
+type_arg(country,value,'197','197') .
+type_arg(country,value,'198','198') .
+type_arg(country,value,'199','199') .
+type_arg(country,value,'200','200') .
+type_arg(country,value,'201','201') .
+type_arg(country,value,'202','202') .
+type_arg(country,value,'203','203') .
+type_arg(country,value,'204','204') .
+type_arg(country,value,'205','205') .
+type_arg(country,value,'206','206') .
+type_arg(country,value,'207','207') .
+type_arg(country,value,'208','208') .
+type_arg(country,value,'209','209') .
+type_arg(country,value,'210','210') .
+type_arg(country,value,'211','211') .
+type_arg(country,value,'212','212') .
+type_arg(country,value,'213','213') .
+type_arg(country,value,'214','214') .
+type_arg(country,value,'215','215') .
+type_arg(country,value,'216','216') .
+type_arg(country,value,'217','217') .
+type_arg(country,value,'218','218') .
+type_arg(country,value,'219','219') .
+type_arg(country,value,'220','220') .
+type_arg(country,value,'221','221') .
+type_arg(country,value,'222','222') .
+type_arg(country,value,'223','223') .
+type_arg(country,value,'224','224') .
+type_arg(country,value,'225','225') .
+type_arg(country,value,'226','226') .
+type_arg(country,value,'227','227') .
+type_arg(country,value,'228','228') .
+type_arg(country,value,'229','229') .
+type_arg(country,value,'230','230') .
+type_arg(country,value,'231','231') .
+type_arg(country,value,'232','232') .
+type_arg(country,value,'233','233') .
+type_arg(country,value,'234','234') .
+type_arg(country,value,'235','235') .
+type_arg(country,name,'0','_Unspecified_') .
+type_arg(country,name,'1','Afghanistan') .
+type_arg(country,name,'2','Albania') .
+type_arg(country,name,'3','Algeria') .
+type_arg(country,name,'4','American Samoa') .
+type_arg(country,name,'5','Andorra') .
+type_arg(country,name,'6','Angola') .
+type_arg(country,name,'7','Anguilla') .
+type_arg(country,name,'8','Antarctica') .
+type_arg(country,name,'9','Antigua and Barbuda') .
+type_arg(country,name,'10','Argentina') .
+type_arg(country,name,'11','Armenia') .
+type_arg(country,name,'12','Aruba') .
+type_arg(country,name,'13','Australia') .
+type_arg(country,name,'14','Austria') .
+type_arg(country,name,'15','Azerbaidjan') .
+type_arg(country,name,'16','Bahamas') .
+type_arg(country,name,'17','Bahrain') .
+type_arg(country,name,'18','Bangladesh') .
+type_arg(country,name,'19','Barbados') .
+type_arg(country,name,'20','Belarus') .
+type_arg(country,name,'21','Belgium') .
+type_arg(country,name,'22','Belize') .
+type_arg(country,name,'23','Benin') .
+type_arg(country,name,'24','Bermuda') .
+type_arg(country,name,'25','Bhutan') .
+type_arg(country,name,'26','Bolivia') .
+type_arg(country,name,'27','Bosnia and Herzegovina') .
+type_arg(country,name,'28','Botswana') .
+type_arg(country,name,'29','Bouvet Island') .
+type_arg(country,name,'30','Brazil') .
+type_arg(country,name,'31','British Indian Ocean Territory') .
+type_arg(country,name,'32','Brunei Darussalam') .
+type_arg(country,name,'33','Bulgaria') .
+type_arg(country,name,'34','Burkina Faso') .
+type_arg(country,name,'35','Burundi') .
+type_arg(country,name,'36','Cambodia') .
+type_arg(country,name,'37','Cameroon') .
+type_arg(country,name,'38','Canada') .
+type_arg(country,name,'39','Cape Verde') .
+type_arg(country,name,'40','Cayman Islands') .
+type_arg(country,name,'41','Central African Republic') .
+type_arg(country,name,'42','Chad') .
+type_arg(country,name,'43','Chile') .
+type_arg(country,name,'44','China') .
+type_arg(country,name,'45','Christmas Island') .
+type_arg(country,name,'46','Cocos (Keeling) Islands') .
+type_arg(country,name,'47','Colombia') .
+type_arg(country,name,'48','Comoros') .
+type_arg(country,name,'49','Congo') .
+type_arg(country,name,'50','Cook Islands') .
+type_arg(country,name,'51','Costa Rica') .
+type_arg(country,name,'52','Cote d''Ivoire') .
+type_arg(country,name,'53','Croatia') .
+type_arg(country,name,'54','Cuba') .
+type_arg(country,name,'55','Cyprus') .
+type_arg(country,name,'56','Czech Republic') .
+type_arg(country,name,'57','Denmark') .
+type_arg(country,name,'58','Djibouti') .
+type_arg(country,name,'59','Dominica') .
+type_arg(country,name,'60','Dominican Republic') .
+type_arg(country,name,'61','East Timor') .
+type_arg(country,name,'62','Ecuador') .
+type_arg(country,name,'63','Egypt') .
+type_arg(country,name,'64','El Salvador') .
+type_arg(country,name,'65','Equatorial Guinea') .
+type_arg(country,name,'66','Eritrea') .
+type_arg(country,name,'67','Estonia') .
+type_arg(country,name,'68','Ethiopia') .
+type_arg(country,name,'69','Falkland Islands') .
+type_arg(country,name,'70','Faroe Islands') .
+type_arg(country,name,'71','Fiji') .
+type_arg(country,name,'72','Finland') .
+type_arg(country,name,'73','France') .
+type_arg(country,name,'74','Gabon') .
+type_arg(country,name,'75','Gambia') .
+type_arg(country,name,'76','Georgia') .
+type_arg(country,name,'77','Germany') .
+type_arg(country,name,'78','Ghana') .
+type_arg(country,name,'79','Gibraltar') .
+type_arg(country,name,'80','Greece') .
+type_arg(country,name,'81','Greenland') .
+type_arg(country,name,'82','Grenada') .
+type_arg(country,name,'83','Guadaloupe') .
+type_arg(country,name,'84','Guam') .
+type_arg(country,name,'85','Guatemala') .
+type_arg(country,name,'86','Guinea') .
+type_arg(country,name,'87','Guinea-Bissau') .
+type_arg(country,name,'88','Guyana') .
+type_arg(country,name,'89','Guyana (Fr.)') .
+type_arg(country,name,'90','Haiti') .
+type_arg(country,name,'91','Heard and McDonald Islands') .
+type_arg(country,name,'92','Honduras') .
+type_arg(country,name,'93','Hong Kong') .
+type_arg(country,name,'94','Hungary') .
+type_arg(country,name,'95','Iceland') .
+type_arg(country,name,'96','India') .
+type_arg(country,name,'97','Indonesia') .
+type_arg(country,name,'98','Iran') .
+type_arg(country,name,'99','Iraq') .
+type_arg(country,name,'100','Ireland') .
+type_arg(country,name,'101','Israel') .
+type_arg(country,name,'102','Italy') .
+type_arg(country,name,'103','Jamaica') .
+type_arg(country,name,'104','Japan') .
+type_arg(country,name,'105','Jordan') .
+type_arg(country,name,'106','Kazakhstan') .
+type_arg(country,name,'107','Kenya') .
+type_arg(country,name,'108','Kiribati') .
+type_arg(country,name,'109','Korea, North') .
+type_arg(country,name,'110','Korea, South') .
+type_arg(country,name,'111','Kuwait') .
+type_arg(country,name,'112','Kyrgyzstan') .
+type_arg(country,name,'113','Laos') .
+type_arg(country,name,'114','Latvia') .
+type_arg(country,name,'115','Lebanon') .
+type_arg(country,name,'116','Lesotho') .
+type_arg(country,name,'117','Liberia') .
+type_arg(country,name,'118','Libya') .
+type_arg(country,name,'119','Liechtenstein') .
+type_arg(country,name,'120','Lithuania') .
+type_arg(country,name,'121','Luxembourg') .
+type_arg(country,name,'122','Macau') .
+type_arg(country,name,'123','Macedonia') .
+type_arg(country,name,'124','Madagascar') .
+type_arg(country,name,'125','Malawi') .
+type_arg(country,name,'126','Malaysia') .
+type_arg(country,name,'127','Maldives') .
+type_arg(country,name,'128','Mali') .
+type_arg(country,name,'129','Malta') .
+type_arg(country,name,'130','Marshall Islands') .
+type_arg(country,name,'131','Martinique') .
+type_arg(country,name,'132','Mauritania') .
+type_arg(country,name,'133','Mauritius') .
+type_arg(country,name,'134','Mayotte') .
+type_arg(country,name,'135','Mexico') .
+type_arg(country,name,'136','Micronesia') .
+type_arg(country,name,'137','Moldova') .
+type_arg(country,name,'138','Monaco') .
+type_arg(country,name,'139','Mongolia') .
+type_arg(country,name,'140','Montserrat') .
+type_arg(country,name,'141','Morocco') .
+type_arg(country,name,'142','Mozambique') .
+type_arg(country,name,'143','Myanmar') .
+type_arg(country,name,'144','Namibia') .
+type_arg(country,name,'145','Nauru') .
+type_arg(country,name,'146','Nepal') .
+type_arg(country,name,'147','Netherlands') .
+type_arg(country,name,'148','Netherlands Antilles') .
+type_arg(country,name,'149','New Caledonia') .
+type_arg(country,name,'150','New Zealand') .
+type_arg(country,name,'151','Nicaragua') .
+type_arg(country,name,'152','Niger') .
+type_arg(country,name,'153','Nigeria') .
+type_arg(country,name,'154','Niue') .
+type_arg(country,name,'155','Norfolk Island') .
+type_arg(country,name,'156','Northern Mariana Islands') .
+type_arg(country,name,'157','Norway') .
+type_arg(country,name,'158','Oman') .
+type_arg(country,name,'159','Pakistan') .
+type_arg(country,name,'160','Palau') .
+type_arg(country,name,'161','Panama') .
+type_arg(country,name,'162','Papua New Guinea') .
+type_arg(country,name,'163','Paraguay') .
+type_arg(country,name,'164','Peru') .
+type_arg(country,name,'165','Philippines') .
+type_arg(country,name,'166','Pitcairn') .
+type_arg(country,name,'167','Poland') .
+type_arg(country,name,'168','Polynesia (Fr.)') .
+type_arg(country,name,'169','Portugal') .
+type_arg(country,name,'170','Puerto Rico') .
+type_arg(country,name,'171','Qatar') .
+type_arg(country,name,'172','Réunion') .
+type_arg(country,name,'173','Romania') .
+type_arg(country,name,'174','Russian Federation') .
+type_arg(country,name,'175','Rwanda') .
+type_arg(country,name,'176','Saint Helena') .
+type_arg(country,name,'177','Saint Kitts and Nevis') .
+type_arg(country,name,'178','Saint Lucia') .
+type_arg(country,name,'179','Saint Pierre and Miquelon') .
+type_arg(country,name,'180','Saint Vincent and the Grenadines') .
+type_arg(country,name,'181','Samoa') .
+type_arg(country,name,'182','San Marino') .
+type_arg(country,name,'183','São Tomé and Príncipe') .
+type_arg(country,name,'184','Saudi Arabia') .
+type_arg(country,name,'185','Senegal') .
+type_arg(country,name,'186','Seychelles') .
+type_arg(country,name,'187','Sierra Leone') .
+type_arg(country,name,'188','Singapore') .
+type_arg(country,name,'189','Slovakia') .
+type_arg(country,name,'190','Slovenia') .
+type_arg(country,name,'191','Solomon Islands') .
+type_arg(country,name,'192','Somalia') .
+type_arg(country,name,'193','South Africa') .
+type_arg(country,name,'194','South Georgia and the South Sandwich Islands') .
+type_arg(country,name,'195','Spain') .
+type_arg(country,name,'196','Sri Lanka') .
+type_arg(country,name,'197','Sudan') .
+type_arg(country,name,'198','Suriname') .
+type_arg(country,name,'199','Svalbard and Jan Mayen') .
+type_arg(country,name,'200','Swaziland') .
+type_arg(country,name,'201','Sweden') .
+type_arg(country,name,'202','Switzerland') .
+type_arg(country,name,'203','Syria') .
+type_arg(country,name,'204','Taiwan') .
+type_arg(country,name,'205','Tajikistan') .
+type_arg(country,name,'206','Tanzania') .
+type_arg(country,name,'207','Thailand') .
+type_arg(country,name,'208','Togo') .
+type_arg(country,name,'209','Tokelau') .
+type_arg(country,name,'210','Tonga') .
+type_arg(country,name,'211','Trinidad and Tobago') .
+type_arg(country,name,'212','Tunisia') .
+type_arg(country,name,'213','Turkey') .
+type_arg(country,name,'214','Turkmenistan') .
+type_arg(country,name,'215','Turks and Caicos Islands') .
+type_arg(country,name,'216','Tuvalu') .
+type_arg(country,name,'217','Uganda') .
+type_arg(country,name,'218','Ukraine') .
+type_arg(country,name,'219','United Arab Emirates') .
+type_arg(country,name,'220','United Kingdom') .
+type_arg(country,name,'221','United States') .
+type_arg(country,name,'222','Uruguay') .
+type_arg(country,name,'223','Uzbekistan') .
+type_arg(country,name,'224','Vanuatu') .
+type_arg(country,name,'225','Vatican City State') .
+type_arg(country,name,'226','Venezuela') .
+type_arg(country,name,'227','Viet Nam') .
+type_arg(country,name,'228','Virgin Islands, British') .
+type_arg(country,name,'229','Virgin Islands, U.S.') .
+type_arg(country,name,'230','Wallis and Fortuna Islands') .
+type_arg(country,name,'231','Western Sahara') .
+type_arg(country,name,'232','Yemen') .
+type_arg(country,name,'233','Yugoslavia') .
+type_arg(country,name,'234','Zambia') .
+type_arg(country,name,'235','Zimbabwe') .
+type_arg(country_zone,value,'0','0') .
+type_arg(country_zone,value,'1','1') .
+type_arg(country_zone,value,'2','2') .
+type_arg(country_zone,value,'3','3') .
+type_arg(country_zone,value,'4','4') .
+type_arg(country_zone,value,'5','5') .
+type_arg(country_zone,value,'6','6') .
+type_arg(country_zone,value,'7','7') .
+type_arg(country_zone,value,'8','8') .
+type_arg(country_zone,value,'9','9') .
+type_arg(country_zone,value,'10','10') .
+type_arg(country_zone,value,'11','11') .
+type_arg(country_zone,value,'12','12') .
+type_arg(country_zone,value,'13','13') .
+type_arg(country_zone,value,'14','14') .
+type_arg(country_zone,value,'15','15') .
+type_arg(country_zone,value,'16','16') .
+type_arg(country_zone,value,'17','32') .
+type_arg(country_zone,value,'18','33') .
+type_arg(country_zone,value,'19','34') .
+type_arg(country_zone,value,'20','35') .
+type_arg(country_zone,value,'21','36') .
+type_arg(country_zone,value,'22','37') .
+type_arg(country_zone,value,'23','38') .
+type_arg(country_zone,value,'24','39') .
+type_arg(country_zone,value,'25','40') .
+type_arg(country_zone,value,'26','41') .
+type_arg(country_zone,value,'27','42') .
+type_arg(country_zone,value,'28','43') .
+type_arg(country_zone,value,'29','44') .
+type_arg(country_zone,value,'30','45') .
+type_arg(country_zone,value,'31','46') .
+type_arg(country_zone,value,'32','47') .
+type_arg(country_zone,value,'33','48') .
+type_arg(country_zone,value,'34','49') .
+type_arg(country_zone,value,'35','50') .
+type_arg(country_zone,value,'36','51') .
+type_arg(country_zone,value,'37','52') .
+type_arg(country_zone,value,'38','53') .
+type_arg(country_zone,value,'39','54') .
+type_arg(country_zone,value,'40','55') .
+type_arg(country_zone,value,'41','56') .
+type_arg(country_zone,value,'42','57') .
+type_arg(country_zone,value,'43','58') .
+type_arg(country_zone,value,'44','59') .
+type_arg(country_zone,value,'45','60') .
+type_arg(country_zone,value,'46','61') .
+type_arg(country_zone,value,'47','62') .
+type_arg(country_zone,value,'48','63') .
+type_arg(country_zone,value,'49','64') .
+type_arg(country_zone,value,'50','65') .
+type_arg(country_zone,value,'51','66') .
+type_arg(country_zone,value,'52','67') .
+type_arg(country_zone,value,'53','68') .
+type_arg(country_zone,value,'54','69') .
+type_arg(country_zone,value,'55','70') .
+type_arg(country_zone,value,'56','71') .
+type_arg(country_zone,value,'57','72') .
+type_arg(country_zone,value,'58','73') .
+type_arg(country_zone,value,'59','74') .
+type_arg(country_zone,value,'60','75') .
+type_arg(country_zone,value,'61','76') .
+type_arg(country_zone,value,'62','77') .
+type_arg(country_zone,value,'63','78') .
+type_arg(country_zone,value,'64','79') .
+type_arg(country_zone,value,'65','80') .
+type_arg(country_zone,value,'66','81') .
+type_arg(country_zone,value,'67','82') .
+type_arg(country_zone,value,'68','83') .
+type_arg(country_zone,value,'69','84') .
+type_arg(country_zone,value,'70','85') .
+type_arg(country_zone,value,'71','86') .
+type_arg(country_zone,value,'72','87') .
+type_arg(country_zone,value,'73','88') .
+type_arg(country_zone,value,'74','89') .
+type_arg(country_zone,value,'75','90') .
+type_arg(country_zone,value,'76','91') .
+type_arg(country_zone,value,'77','92') .
+type_arg(country_zone,value,'78','93') .
+type_arg(country_zone,value,'79','94') .
+type_arg(country_zone,value,'80','95') .
+type_arg(country_zone,value,'81','96') .
+type_arg(country_zone,value,'82','97') .
+type_arg(country_zone,value,'83','98') .
+type_arg(country_zone,value,'84','99') .
+type_arg(country_zone,value,'85','100') .
+type_arg(country_zone,value,'86','101') .
+type_arg(country_zone,value,'87','102') .
+type_arg(country_zone,value,'88','103') .
+type_arg(country_zone,value,'89','104') .
+type_arg(country_zone,value,'90','105') .
+type_arg(country_zone,value,'91','106') .
+type_arg(country_zone,value,'92','107') .
+type_arg(country_zone,value,'93','108') .
+type_arg(country_zone,value,'94','109') .
+type_arg(country_zone,value,'95','110') .
+type_arg(country_zone,value,'96','111') .
+type_arg(country_zone,value,'97','112') .
+type_arg(country_zone,value,'98','113') .
+type_arg(country_zone,value,'99','114') .
+type_arg(country_zone,value,'100','115') .
+type_arg(country_zone,value,'101','116') .
+type_arg(country_zone,value,'102','117') .
+type_arg(country_zone,value,'103','118') .
+type_arg(country_zone,value,'104','119') .
+type_arg(country_zone,value,'105','120') .
+type_arg(country_zone,value,'106','121') .
+type_arg(country_zone,value,'107','122') .
+type_arg(country_zone,value,'108','123') .
+type_arg(country_zone,value,'109','124') .
+type_arg(country_zone,value,'110','125') .
+type_arg(country_zone,value,'111','126') .
+type_arg(country_zone,value,'112','127') .
+type_arg(country_zone,value,'113','128') .
+type_arg(country_zone,value,'114','129') .
+type_arg(country_zone,value,'115','130') .
+type_arg(country_zone,value,'116','131') .
+type_arg(country_zone,value,'117','132') .
+type_arg(country_zone,value,'118','133') .
+type_arg(country_zone,value,'119','134') .
+type_arg(country_zone,value,'120','135') .
+type_arg(country_zone,value,'121','136') .
+type_arg(country_zone,value,'122','137') .
+type_arg(country_zone,value,'123','138') .
+type_arg(country_zone,value,'124','139') .
+type_arg(country_zone,value,'125','140') .
+type_arg(country_zone,value,'126','141') .
+type_arg(country_zone,value,'127','142') .
+type_arg(country_zone,value,'128','143') .
+type_arg(country_zone,value,'129','144') .
+type_arg(country_zone,value,'130','145') .
+type_arg(country_zone,value,'131','146') .
+type_arg(country_zone,value,'132','147') .
+type_arg(country_zone,value,'133','148') .
+type_arg(country_zone,value,'134','149') .
+type_arg(country_zone,value,'135','150') .
+type_arg(country_zone,value,'136','151') .
+type_arg(country_zone,value,'137','152') .
+type_arg(country_zone,value,'138','153') .
+type_arg(country_zone,value,'139','154') .
+type_arg(country_zone,value,'140','155') .
+type_arg(country_zone,value,'141','156') .
+type_arg(country_zone,value,'142','157') .
+type_arg(country_zone,value,'143','158') .
+type_arg(country_zone,value,'144','159') .
+type_arg(country_zone,value,'145','160') .
+type_arg(country_zone,value,'146','161') .
+type_arg(country_zone,value,'147','162') .
+type_arg(country_zone,value,'148','163') .
+type_arg(country_zone,value,'149','164') .
+type_arg(country_zone,value,'150','165') .
+type_arg(country_zone,value,'151','166') .
+type_arg(country_zone,value,'152','167') .
+type_arg(country_zone,value,'153','168') .
+type_arg(country_zone,value,'154','169') .
+type_arg(country_zone,value,'155','170') .
+type_arg(country_zone,value,'156','171') .
+type_arg(country_zone,value,'157','172') .
+type_arg(country_zone,value,'158','173') .
+type_arg(country_zone,value,'159','174') .
+type_arg(country_zone,value,'160','175') .
+type_arg(country_zone,value,'161','176') .
+type_arg(country_zone,value,'162','177') .
+type_arg(country_zone,value,'163','178') .
+type_arg(country_zone,value,'164','179') .
+type_arg(country_zone,value,'165','180') .
+type_arg(country_zone,value,'166','181') .
+type_arg(country_zone,value,'167','182') .
+type_arg(country_zone,value,'168','183') .
+type_arg(country_zone,value,'169','184') .
+type_arg(country_zone,value,'170','185') .
+type_arg(country_zone,value,'171','186') .
+type_arg(country_zone,value,'172','187') .
+type_arg(country_zone,value,'173','188') .
+type_arg(country_zone,value,'174','189') .
+type_arg(country_zone,value,'175','190') .
+type_arg(country_zone,value,'176','191') .
+type_arg(country_zone,value,'177','192') .
+type_arg(country_zone,value,'178','193') .
+type_arg(country_zone,value,'179','194') .
+type_arg(country_zone,value,'180','195') .
+type_arg(country_zone,value,'181','196') .
+type_arg(country_zone,value,'182','197') .
+type_arg(country_zone,value,'183','198') .
+type_arg(country_zone,value,'184','199') .
+type_arg(country_zone,value,'185','200') .
+type_arg(country_zone,value,'186','201') .
+type_arg(country_zone,value,'187','202') .
+type_arg(country_zone,value,'188','203') .
+type_arg(country_zone,value,'189','204') .
+type_arg(country_zone,value,'190','205') .
+type_arg(country_zone,value,'191','206') .
+type_arg(country_zone,value,'192','207') .
+type_arg(country_zone,value,'193','208') .
+type_arg(country_zone,value,'194','209') .
+type_arg(country_zone,value,'195','210') .
+type_arg(country_zone,value,'196','211') .
+type_arg(country_zone,value,'197','212') .
+type_arg(country_zone,value,'198','213') .
+type_arg(country_zone,value,'199','214') .
+type_arg(country_zone,value,'200','215') .
+type_arg(country_zone,value,'201','216') .
+type_arg(country_zone,value,'202','217') .
+type_arg(country_zone,value,'203','218') .
+type_arg(country_zone,value,'204','219') .
+type_arg(country_zone,value,'205','220') .
+type_arg(country_zone,value,'206','221') .
+type_arg(country_zone,value,'207','222') .
+type_arg(country_zone,value,'208','223') .
+type_arg(country_zone,value,'209','224') .
+type_arg(country_zone,value,'210','225') .
+type_arg(country_zone,value,'211','226') .
+type_arg(country_zone,value,'212','227') .
+type_arg(country_zone,value,'213','228') .
+type_arg(country_zone,value,'214','229') .
+type_arg(country_zone,value,'215','230') .
+type_arg(country_zone,value,'216','231') .
+type_arg(country_zone,value,'217','232') .
+type_arg(country_zone,value,'218','233') .
+type_arg(country_zone,value,'219','234') .
+type_arg(country_zone,value,'220','235') .
+type_arg(country_zone,value,'221','236') .
+type_arg(country_zone,value,'222','237') .
+type_arg(country_zone,value,'223','238') .
+type_arg(country_zone,value,'224','239') .
+type_arg(country_zone,value,'225','240') .
+type_arg(country_zone,value,'226','241') .
+type_arg(country_zone,value,'227','242') .
+type_arg(country_zone,value,'228','243') .
+type_arg(country_zone,value,'229','244') .
+type_arg(country_zone,value,'230','245') .
+type_arg(country_zone,value,'231','246') .
+type_arg(country_zone,value,'232','247') .
+type_arg(country_zone,value,'233','248') .
+type_arg(country_zone,value,'234','249') .
+type_arg(country_zone,value,'235','250') .
+type_arg(country_zone,value,'236','251') .
+type_arg(country_zone,value,'237','252') .
+type_arg(country_zone,value,'238','253') .
+type_arg(country_zone,value,'239','254') .
+type_arg(country_zone,value,'240','255') .
+type_arg(country_zone,value,'241','256') .
+type_arg(country_zone,value,'242','257') .
+type_arg(country_zone,value,'243','258') .
+type_arg(country_zone,value,'244','259') .
+type_arg(country_zone,value,'245','260') .
+type_arg(country_zone,value,'246','261') .
+type_arg(country_zone,value,'247','262') .
+type_arg(country_zone,value,'248','263') .
+type_arg(country_zone,value,'249','264') .
+type_arg(country_zone,value,'250','265') .
+type_arg(country_zone,value,'251','266') .
+type_arg(country_zone,name,'0','_Unspecified_') .
+type_arg(country_zone,name,'1','< The World >') .
+type_arg(country_zone,name,'2','< The Americas >') .
+type_arg(country_zone,name,'3','< North America >') .
+type_arg(country_zone,name,'4','< Central America >') .
+type_arg(country_zone,name,'5','< South America >') .
+type_arg(country_zone,name,'6','< Latinamerica >') .
+type_arg(country_zone,name,'7','< Europe >') .
+type_arg(country_zone,name,'8','< Western Europe >') .
+type_arg(country_zone,name,'9','< Eastern Europe >') .
+type_arg(country_zone,name,'10','< Africa >') .
+type_arg(country_zone,name,'11','< Middle East/N. Africa >') .
+type_arg(country_zone,name,'12','< Asia >') .
+type_arg(country_zone,name,'13','< Asia Pacific >') .
+type_arg(country_zone,name,'14','< Central Asia >') .
+type_arg(country_zone,name,'15','< South & East Asia >') .
+type_arg(country_zone,name,'16','< Australia/Oceania >') .
+type_arg(country_zone,name,'17','Afghanistan') .
+type_arg(country_zone,name,'18','Albania') .
+type_arg(country_zone,name,'19','Algeria') .
+type_arg(country_zone,name,'20','American Samoa') .
+type_arg(country_zone,name,'21','Andorra') .
+type_arg(country_zone,name,'22','Angola') .
+type_arg(country_zone,name,'23','Anguilla') .
+type_arg(country_zone,name,'24','Antarctica') .
+type_arg(country_zone,name,'25','Antigua and Barbuda') .
+type_arg(country_zone,name,'26','Argentina') .
+type_arg(country_zone,name,'27','Armenia') .
+type_arg(country_zone,name,'28','Aruba') .
+type_arg(country_zone,name,'29','Australia') .
+type_arg(country_zone,name,'30','Austria') .
+type_arg(country_zone,name,'31','Azerbaidjan') .
+type_arg(country_zone,name,'32','Bahamas') .
+type_arg(country_zone,name,'33','Bahrain') .
+type_arg(country_zone,name,'34','Bangladesh') .
+type_arg(country_zone,name,'35','Barbados') .
+type_arg(country_zone,name,'36','Belarus') .
+type_arg(country_zone,name,'37','Belgium') .
+type_arg(country_zone,name,'38','Belize') .
+type_arg(country_zone,name,'39','Benin') .
+type_arg(country_zone,name,'40','Bermuda') .
+type_arg(country_zone,name,'41','Bhutan') .
+type_arg(country_zone,name,'42','Bolivia') .
+type_arg(country_zone,name,'43','Bosnia and Herzegovina') .
+type_arg(country_zone,name,'44','Botswana') .
+type_arg(country_zone,name,'45','Bouvet Island') .
+type_arg(country_zone,name,'46','Brazil') .
+type_arg(country_zone,name,'47','British Indian Ocean Territory') .
+type_arg(country_zone,name,'48','Brunei Darussalam') .
+type_arg(country_zone,name,'49','Bulgaria') .
+type_arg(country_zone,name,'50','Burkina Faso') .
+type_arg(country_zone,name,'51','Burundi') .
+type_arg(country_zone,name,'52','Cambodia') .
+type_arg(country_zone,name,'53','Cameroon') .
+type_arg(country_zone,name,'54','Canada') .
+type_arg(country_zone,name,'55','Cape Verde') .
+type_arg(country_zone,name,'56','Cayman Islands') .
+type_arg(country_zone,name,'57','Central African Republic') .
+type_arg(country_zone,name,'58','Chad') .
+type_arg(country_zone,name,'59','Chile') .
+type_arg(country_zone,name,'60','China') .
+type_arg(country_zone,name,'61','Christmas Island') .
+type_arg(country_zone,name,'62','Cocos (Keeling) Islands') .
+type_arg(country_zone,name,'63','Colombia') .
+type_arg(country_zone,name,'64','Comoros') .
+type_arg(country_zone,name,'65','Congo') .
+type_arg(country_zone,name,'66','Cook Islands') .
+type_arg(country_zone,name,'67','Costa Rica') .
+type_arg(country_zone,name,'68','Cote d''Ivoire') .
+type_arg(country_zone,name,'69','Croatia') .
+type_arg(country_zone,name,'70','Cuba') .
+type_arg(country_zone,name,'71','Cyprus') .
+type_arg(country_zone,name,'72','Czech Republic') .
+type_arg(country_zone,name,'73','Denmark') .
+type_arg(country_zone,name,'74','Djibouti') .
+type_arg(country_zone,name,'75','Dominica') .
+type_arg(country_zone,name,'76','Dominican Republic') .
+type_arg(country_zone,name,'77','East Timor') .
+type_arg(country_zone,name,'78','Ecuador') .
+type_arg(country_zone,name,'79','Egypt') .
+type_arg(country_zone,name,'80','El Salvador') .
+type_arg(country_zone,name,'81','Equatorial Guinea') .
+type_arg(country_zone,name,'82','Eritrea') .
+type_arg(country_zone,name,'83','Estonia') .
+type_arg(country_zone,name,'84','Ethiopia') .
+type_arg(country_zone,name,'85','Falkland Islands') .
+type_arg(country_zone,name,'86','Faroe Islands') .
+type_arg(country_zone,name,'87','Fiji') .
+type_arg(country_zone,name,'88','Finland') .
+type_arg(country_zone,name,'89','France') .
+type_arg(country_zone,name,'90','Gabon') .
+type_arg(country_zone,name,'91','Gambia') .
+type_arg(country_zone,name,'92','Georgia') .
+type_arg(country_zone,name,'93','Germany') .
+type_arg(country_zone,name,'94','Ghana') .
+type_arg(country_zone,name,'95','Gibraltar') .
+type_arg(country_zone,name,'96','Greece') .
+type_arg(country_zone,name,'97','Greenland') .
+type_arg(country_zone,name,'98','Grenada') .
+type_arg(country_zone,name,'99','Guadaloupe') .
+type_arg(country_zone,name,'100','Guam') .
+type_arg(country_zone,name,'101','Guatemala') .
+type_arg(country_zone,name,'102','Guinea') .
+type_arg(country_zone,name,'103','Guinea-Bissau') .
+type_arg(country_zone,name,'104','Guyana') .
+type_arg(country_zone,name,'105','Guyana (Fr.)') .
+type_arg(country_zone,name,'106','Haiti') .
+type_arg(country_zone,name,'107','Heard and McDonald Islands') .
+type_arg(country_zone,name,'108','Honduras') .
+type_arg(country_zone,name,'109','Hong Kong') .
+type_arg(country_zone,name,'110','Hungary') .
+type_arg(country_zone,name,'111','Iceland') .
+type_arg(country_zone,name,'112','India') .
+type_arg(country_zone,name,'113','Indonesia') .
+type_arg(country_zone,name,'114','Iran') .
+type_arg(country_zone,name,'115','Iraq') .
+type_arg(country_zone,name,'116','Ireland') .
+type_arg(country_zone,name,'117','Israel') .
+type_arg(country_zone,name,'118','Italy') .
+type_arg(country_zone,name,'119','Jamaica') .
+type_arg(country_zone,name,'120','Japan') .
+type_arg(country_zone,name,'121','Jordan') .
+type_arg(country_zone,name,'122','Kazakhstan') .
+type_arg(country_zone,name,'123','Kenya') .
+type_arg(country_zone,name,'124','Kiribati') .
+type_arg(country_zone,name,'125','Korea, North') .
+type_arg(country_zone,name,'126','Korea, South') .
+type_arg(country_zone,name,'127','Kuwait') .
+type_arg(country_zone,name,'128','Kyrgyzstan') .
+type_arg(country_zone,name,'129','Laos') .
+type_arg(country_zone,name,'130','Latvia') .
+type_arg(country_zone,name,'131','Lebanon') .
+type_arg(country_zone,name,'132','Lesotho') .
+type_arg(country_zone,name,'133','Liberia') .
+type_arg(country_zone,name,'134','Libya') .
+type_arg(country_zone,name,'135','Liechtenstein') .
+type_arg(country_zone,name,'136','Lithuania') .
+type_arg(country_zone,name,'137','Luxembourg') .
+type_arg(country_zone,name,'138','Macau') .
+type_arg(country_zone,name,'139','Macedonia') .
+type_arg(country_zone,name,'140','Madagascar') .
+type_arg(country_zone,name,'141','Malawi') .
+type_arg(country_zone,name,'142','Malaysia') .
+type_arg(country_zone,name,'143','Maldives') .
+type_arg(country_zone,name,'144','Mali') .
+type_arg(country_zone,name,'145','Malta') .
+type_arg(country_zone,name,'146','Marshall Islands') .
+type_arg(country_zone,name,'147','Martinique') .
+type_arg(country_zone,name,'148','Mauritania') .
+type_arg(country_zone,name,'149','Mauritius') .
+type_arg(country_zone,name,'150','Mayotte') .
+type_arg(country_zone,name,'151','Mexico') .
+type_arg(country_zone,name,'152','Micronesia') .
+type_arg(country_zone,name,'153','Moldova') .
+type_arg(country_zone,name,'154','Monaco') .
+type_arg(country_zone,name,'155','Mongolia') .
+type_arg(country_zone,name,'156','Montserrat') .
+type_arg(country_zone,name,'157','Morocco') .
+type_arg(country_zone,name,'158','Mozambique') .
+type_arg(country_zone,name,'159','Myanmar') .
+type_arg(country_zone,name,'160','Namibia') .
+type_arg(country_zone,name,'161','Nauru') .
+type_arg(country_zone,name,'162','Nepal') .
+type_arg(country_zone,name,'163','Netherlands') .
+type_arg(country_zone,name,'164','Netherlands Antilles') .
+type_arg(country_zone,name,'165','New Caledonia') .
+type_arg(country_zone,name,'166','New Zealand') .
+type_arg(country_zone,name,'167','Nicaragua') .
+type_arg(country_zone,name,'168','Niger') .
+type_arg(country_zone,name,'169','Nigeria') .
+type_arg(country_zone,name,'170','Niue') .
+type_arg(country_zone,name,'171','Norfolk Island') .
+type_arg(country_zone,name,'172','Northern Mariana Islands') .
+type_arg(country_zone,name,'173','Norway') .
+type_arg(country_zone,name,'174','Oman') .
+type_arg(country_zone,name,'175','Pakistan') .
+type_arg(country_zone,name,'176','Palau') .
+type_arg(country_zone,name,'177','Panama') .
+type_arg(country_zone,name,'178','Papua New Guinea') .
+type_arg(country_zone,name,'179','Paraguay') .
+type_arg(country_zone,name,'180','Peru') .
+type_arg(country_zone,name,'181','Philippines') .
+type_arg(country_zone,name,'182','Pitcairn') .
+type_arg(country_zone,name,'183','Poland') .
+type_arg(country_zone,name,'184','Polynesia (Fr.)') .
+type_arg(country_zone,name,'185','Portugal') .
+type_arg(country_zone,name,'186','Puerto Rico') .
+type_arg(country_zone,name,'187','Qatar') .
+type_arg(country_zone,name,'188','Réunion') .
+type_arg(country_zone,name,'189','Romania') .
+type_arg(country_zone,name,'190','Russian Federation') .
+type_arg(country_zone,name,'191','Rwanda') .
+type_arg(country_zone,name,'192','Saint Helena') .
+type_arg(country_zone,name,'193','Saint Kitts and Nevis') .
+type_arg(country_zone,name,'194','Saint Lucia') .
+type_arg(country_zone,name,'195','Saint Pierre and Miquelon') .
+type_arg(country_zone,name,'196','Saint Vincent and the Grenadines') .
+type_arg(country_zone,name,'197','Samoa') .
+type_arg(country_zone,name,'198','San Marino') .
+type_arg(country_zone,name,'199','São Tomé and Príncipe') .
+type_arg(country_zone,name,'200','Saudi Arabia') .
+type_arg(country_zone,name,'201','Senegal') .
+type_arg(country_zone,name,'202','Seychelles') .
+type_arg(country_zone,name,'203','Sierra Leone') .
+type_arg(country_zone,name,'204','Singapore') .
+type_arg(country_zone,name,'205','Slovakia') .
+type_arg(country_zone,name,'206','Slovenia') .
+type_arg(country_zone,name,'207','Solomon Islands') .
+type_arg(country_zone,name,'208','Somalia') .
+type_arg(country_zone,name,'209','South Africa') .
+type_arg(country_zone,name,'210','South Georgia and the South Sandwich Islands') .
+type_arg(country_zone,name,'211','Spain') .
+type_arg(country_zone,name,'212','Sri Lanka') .
+type_arg(country_zone,name,'213','Sudan') .
+type_arg(country_zone,name,'214','Suriname') .
+type_arg(country_zone,name,'215','Svalbard and Jan Mayen') .
+type_arg(country_zone,name,'216','Swaziland') .
+type_arg(country_zone,name,'217','Sweden') .
+type_arg(country_zone,name,'218','Switzerland') .
+type_arg(country_zone,name,'219','Syria') .
+type_arg(country_zone,name,'220','Taiwan') .
+type_arg(country_zone,name,'221','Tajikistan') .
+type_arg(country_zone,name,'222','Tanzania') .
+type_arg(country_zone,name,'223','Thailand') .
+type_arg(country_zone,name,'224','Togo') .
+type_arg(country_zone,name,'225','Tokelau') .
+type_arg(country_zone,name,'226','Tonga') .
+type_arg(country_zone,name,'227','Trinidad and Tobago') .
+type_arg(country_zone,name,'228','Tunisia') .
+type_arg(country_zone,name,'229','Turkey') .
+type_arg(country_zone,name,'230','Turkmenistan') .
+type_arg(country_zone,name,'231','Turks and Caicos Islands') .
+type_arg(country_zone,name,'232','Tuvalu') .
+type_arg(country_zone,name,'233','Uganda') .
+type_arg(country_zone,name,'234','Ukraine') .
+type_arg(country_zone,name,'235','United Arab Emirates') .
+type_arg(country_zone,name,'236','United Kingdom') .
+type_arg(country_zone,name,'237','United States') .
+type_arg(country_zone,name,'238','Uruguay') .
+type_arg(country_zone,name,'239','Uzbekistan') .
+type_arg(country_zone,name,'240','Vanuatu') .
+type_arg(country_zone,name,'241','Vatican City State') .
+type_arg(country_zone,name,'242','Venezuela') .
+type_arg(country_zone,name,'243','Viet Nam') .
+type_arg(country_zone,name,'244','Virgin Islands, British') .
+type_arg(country_zone,name,'245','Virgin Islands, U.S.') .
+type_arg(country_zone,name,'246','Wallis and Fortuna Islands') .
+type_arg(country_zone,name,'247','Western Sahara') .
+type_arg(country_zone,name,'248','Yemen') .
+type_arg(country_zone,name,'249','Yugoslavia') .
+type_arg(country_zone,name,'250','Zambia') .
+type_arg(country_zone,name,'251','Zimbabwe') .
+type_arg(positive_int,size,'','6') .
+type_arg(positive_int,sign,'',positive) .
+type_arg(share_price,size,'','9') .
+type_arg(share_price,decimals,'','2') .
+type_arg(share_price,sign,'',positive) .
+type_arg(tanto_por_uno,sign,'',positive) .
+type_arg(tanto_por_uno,decimals,'','3') .
+type_arg(tanto_por_uno,size,'','5') .
+type_arg(per_1_signed,decimals,'','3') .
+type_arg(per_1_signed,size,'','5') .
+type_arg(revenue_type,value,'1','1') .
+type_arg(revenue_type,value,'2','2') .
+type_arg(revenue_type,value,'3','3') .
+type_arg(revenue_type,value,'4','4') .
+type_arg(revenue_type,value,'5','5') .
+type_arg(revenue_type,value,'6','6') .
+type_arg(revenue_type,value,'7','7') .
+type_arg(revenue_type,value,'8','8') .
+type_arg(revenue_type,value,'9','9') .
+type_arg(revenue_type,value,'10','10') .
+type_arg(last_or_mean,value,'2',last) .
+type_arg(last_or_mean,value,'1',mean) .
+type_arg(multiple,value,'1',sales) .
+type_arg(multiple,value,'2',fcf) .
+type_arg(multiple,value,'3',ebitda) .
+type_arg(multiple,value,'4',ebit) .
+type_arg(multiple,value,'5',ebt) .
+type_arg(multiple,value,'6',per) .
+type_arg(multiple,value,'7',peg) .
+type_arg(multiple,name,'1','Sales') .
+type_arg(multiple,name,'2','FCF') .
+type_arg(multiple,name,'3','EBITDA') .
+type_arg(multiple,name,'4','EBIT') .
+type_arg(multiple,name,'5','EBT') .
+type_arg(multiple,name,'6','PER') .
+type_arg(multiple,name,'7','PEG') .
+type_arg(mark_0_5,value,'1','0') .
+type_arg(mark_0_5,value,'2','1') .
+type_arg(mark_0_5,value,'3','2') .
+type_arg(mark_0_5,value,'4','3') .
+type_arg(mark_0_5,value,'5','4') .
+type_arg(mark_0_5,value,'6','5') .
+type_arg(trcode,type,'',smallname) .
+type_arg(trcode,defined_in,'',trans_info) .
+type_arg(trcode,defined_as,'',trcode) .
+type_arg(value_interpretation,value,'0',-) .
+type_arg(value_interpretation,value,'1','E') .
+type_arg(value_interpretation,value,'2','F') .
+type_arg(smallfloat,size,'','4') .
+type_arg(smallfloat,decimals,'','2') .
+type_arg(smallfloat,sign,'',positive) .
+type_arg(year_code,value,'1','-2') .
+type_arg(year_code,value,'2','-1') .
+type_arg(year_code,value,'3','0') .
+type_arg(year_code,value,'4','1') .
+type_arg(year_code,value,'5','2') .
+type_arg(net_profit_when,value,'1',after) .
+type_arg(net_profit_when,value,'2',before) .
+type_arg(net_profit_when,name,'1','after dividends') .
+type_arg(net_profit_when,name,'2','before dividends') .
+type_arg(currency_change,size,'','9') .
+type_arg(currency_change,decimals,'','6') .
+type_arg(currency_change,sign,'',positive) .
+type_arg(input_dcf_variable,value,'1',direct_c) .
+type_arg(input_dcf_variable,value,'2',personnel_c) .
+type_arg(input_dcf_variable,value,'3',marketing_c) .
+type_arg(input_dcf_variable,value,'4',other_c) .
+type_arg(input_dcf_variable,value,'5',capex) .
+type_arg(input_dcf_variable,value,'6',revenue) .
+type_arg(input_dcf_variable,value,'7',revenue1) .
+type_arg(input_dcf_variable,value,'8',revenue2) .
+type_arg(input_dcf_variable,value,'9',revenue3) .
+type_arg(input_dcf_variable,value,'10',revenue4) .
+type_arg(input_dcf_variable,value,'11',revenue5) .
+type_arg(input_dcf_variable,value,'12',revenue6) .
+type_arg(input_dcf_variable,value,'13',revenue7) .
+type_arg(input_dcf_variable,value,'14',revenue8) .
+type_arg(input_dcf_variable,value,'15',revenue9) .
+type_arg(input_dcf_variable,value,'16',revenue10) .
+type_arg(input_dcf_variable,name,'1','Direct Costs') .
+type_arg(input_dcf_variable,name,'2','Personnel Costs') .
+type_arg(input_dcf_variable,name,'3','Marketing Costs') .
+type_arg(input_dcf_variable,name,'4','Other Operating Costs') .
+type_arg(input_dcf_variable,name,'5','Capex') .
+type_arg(input_dcf_variable,name,'6','Revenue') .
+type_arg(input_dcf_variable,name,'7','Revenue 1') .
+type_arg(input_dcf_variable,name,'8','Revenue 2') .
+type_arg(input_dcf_variable,name,'9','Revenue 3') .
+type_arg(input_dcf_variable,name,'10','Revenue 4') .
+type_arg(input_dcf_variable,name,'11','Revenue 5') .
+type_arg(input_dcf_variable,name,'12','Revenue 6') .
+type_arg(input_dcf_variable,name,'13','Revenue 7') .
+type_arg(input_dcf_variable,name,'14','Revenue 8') .
+type_arg(input_dcf_variable,name,'15','Revenue 9') .
+type_arg(input_dcf_variable,name,'16','Revenue 10') .
+type_arg(qname,value,'1','24_7_customer_support') .
+type_arg(qname,value,'2','ISP_services') .
+type_arg(qname,value,'3','SLA_contingency_provisions') .
+type_arg(qname,value,'4','SLA_includes') .
+type_arg(qname,value,'5','SLA_performance_provisions') .
+type_arg(qname,value,'6','SLA_security_provisions') .
+type_arg(qname,value,'7','VPNs_services') .
+type_arg(qname,value,'8',access_your_own_ISP_com) .
+type_arg(qname,value,'9',access_your_own_ISP_con) .
+type_arg(qname,value,'10',advertising_occupied) .
+type_arg(qname,value,'11',advertising_revenues) .
+type_arg(qname,value,'12',applications_purchased) .
+type_arg(qname,value,'13',associated_retailers) .
+type_arg(qname,value,'14',automatically_picked_goods) .
+type_arg(qname,value,'15',available_applications) .
+type_arg(qname,value,'16',average_billable_hours) .
+type_arg(qname,value,'17',average_billing_rate) .
+type_arg(qname,value,'18',average_delivery_time) .
+type_arg(qname,value,'19',average_discount_online) .
+type_arg(qname,value,'20',average_employees_in) .
+type_arg(qname,value,'21',average_number_subscribers) .
+type_arg(qname,value,'22',average_rack_utilization) .
+type_arg(qname,value,'23',average_revenue_per_seat) .
+type_arg(qname,value,'24',average_size) .
+type_arg(qname,value,'25',average_space_utilization) .
+type_arg(qname,value,'26',avg_utilization_rates) .
+type_arg(qname,value,'27',bandwith_ratio) .
+type_arg(qname,value,'28',belongs_to_retail_hub) .
+type_arg(qname,value,'29',billable_employees) .
+type_arg(qname,value,'30',billable_proportion) .
+type_arg(qname,value,'31',billable_turnover_ratio) .
+type_arg(qname,value,'32',billing_rate_billable_em) .
+type_arg(qname,value,'33',billing_relationship) .
+type_arg(qname,value,'34',business_residential) .
+type_arg(qname,value,'35',buyer_seller_ratio) .
+type_arg(qname,value,'36',cantidad_monetaria) .
+type_arg(qname,value,'37',cantidad_monetaria2) .
+type_arg(qname,value,'38',capacity_additions) .
+type_arg(qname,value,'39',capacity_utilization_rate) .
+type_arg(qname,value,'40',centers_owned) .
+type_arg(qname,value,'41',characteristic_deal_size) .
+type_arg(qname,value,'42',churn_rate_com) .
+type_arg(qname,value,'43',churn_rate_for) .
+type_arg(qname,value,'44',churn_rate_mar) .
+type_arg(qname,value,'45',client_conversion_rate) .
+type_arg(qname,value,'46',community_content_products) .
+type_arg(qname,value,'47',competidores) .
+type_arg(qname,value,'48',competidores2) .
+type_arg(qname,value,'49',contrib_net_rev_app) .
+type_arg(qname,value,'50',contrib_net_rev_app_sol) .
+type_arg(qname,value,'51',contrib_net_rev_com) .
+type_arg(qname,value,'52',contrib_net_rev_con) .
+type_arg(qname,value,'53',contrib_net_rev_mar) .
+type_arg(qname,value,'54',contrib_net_rev_ser) .
+type_arg(qname,value,'55',contrib_net_rev_sol) .
+type_arg(qname,value,'56',cost_of_access_lines) .
+type_arg(qname,value,'57',cost_of_delivery) .
+type_arg(qname,value,'58',cost_of_equipment) .
+type_arg(qname,value,'59',cost_of_returning) .
+type_arg(qname,value,'60',cuota_clientes) .
+type_arg(qname,value,'61',cuota_clientes2) .
+type_arg(qname,value,'62',cuota_mercado) .
+type_arg(qname,value,'63',cuota_mercado2) .
+type_arg(qname,value,'64',currency) .
+type_arg(qname,value,'65',current_brand_awareness) .
+type_arg(qname,value,'66',customer_call_costs) .
+type_arg(qname,value,'67',customer_support_includes) .
+type_arg(qname,value,'68',customers_as_shareholders) .
+type_arg(qname,value,'69',customers_in_year) .
+type_arg(qname,value,'70',customers_portfolio) .
+type_arg(qname,value,'71',customers_renewal_rate) .
+type_arg(qname,value,'72',customization) .
+type_arg(qname,value,'73',data_center_utilization) .
+type_arg(qname,value,'74',data_centers_and_servers) .
+type_arg(qname,value,'75',data_centers_located) .
+type_arg(qname,value,'76',data_centers_owned) .
+type_arg(qname,value,'77',days_in_stock) .
+type_arg(qname,value,'78',days_returned_available) .
+type_arg(qname,value,'79',days_sales_outstanding) .
+type_arg(qname,value,'80',dedicated_access) .
+type_arg(qname,value,'81',delivered_goods_returned) .
+type_arg(qname,value,'82',delivery_system_used) .
+type_arg(qname,value,'83',developing_in_house) .
+type_arg(qname,value,'84',direct_competitors_app) .
+type_arg(qname,value,'85',direct_competitors_com) .
+type_arg(qname,value,'86',direct_competitors_con) .
+type_arg(qname,value,'87',direct_competitors_mar) .
+type_arg(qname,value,'88',direct_competitors_ser) .
+type_arg(qname,value,'89',direct_competitors_sol) .
+type_arg(qname,value,'90',distribution_network) .
+type_arg(qname,value,'91',distribution_network_time) .
+type_arg(qname,value,'92',employee_turnover_ratio) .
+type_arg(qname,value,'93',employees_at_year_end) .
+type_arg(qname,value,'94',established_relationships) .
+type_arg(qname,value,'95',excess_capacity) .
+type_arg(qname,value,'96',exchange_members_w_revenue) .
+type_arg(qname,value,'97',expected_ARPU) .
+type_arg(qname,value,'98',expected_churn_rate) .
+type_arg(qname,value,'99',expected_customers) .
+type_arg(qname,value,'100',facturacion) .
+type_arg(qname,value,'101',fee_implement_maintenance) .
+type_arg(qname,value,'102',first_mover_advantage) .
+type_arg(qname,value,'103',fragmented_suppliers) .
+type_arg(qname,value,'104',free_trial_period) .
+type_arg(qname,value,'105',homepage_languages) .
+type_arg(qname,value,'106',hours_billable_employees) .
+type_arg(qname,value,'107',how_identifies_customers) .
+type_arg(qname,value,'108',how_long_is_ASP) .
+type_arg(qname,value,'109',implement_solution_time) .
+type_arg(qname,value,'110',in_house_consulting) .
+type_arg(qname,value,'111',independent_e_market) .
+type_arg(qname,value,'112',independent_privacy_certif) .
+type_arg(qname,value,'113',independent_quality_certif) .
+type_arg(qname,value,'114',independent_security_certif) .
+type_arg(qname,value,'115',is_facilities_based) .
+type_arg(qname,value,'116',length_of_contracts) .
+type_arg(qname,value,'117',link_in_a_portal_percent) .
+type_arg(qname,value,'118',link_in_another_portal) .
+type_arg(qname,value,'119',listed_in_stock_exchange) .
+type_arg(qname,value,'120',logons_per_month) .
+type_arg(qname,value,'121',loyalty_programs) .
+type_arg(qname,value,'122',main_strengths) .
+type_arg(qname,value,'123',management_team) .
+type_arg(qname,value,'124',management_team_industry_m) .
+type_arg(qname,value,'125',management_team_soft_net) .
+type_arg(qname,value,'126',market_members_services) .
+type_arg(qname,value,'127',marketplace_platform) .
+type_arg(qname,value,'128',minutes_per_user) .
+type_arg(qname,value,'129',minutes_per_visit_com) .
+type_arg(qname,value,'130',monthly_ARPU_from) .
+type_arg(qname,value,'131',multiple_language_support) .
+type_arg(qname,value,'132',network_owned) .
+type_arg(qname,value,'133',num_business_residential) .
+type_arg(qname,value,'134',number_of_vendors) .
+type_arg(qname,value,'135',numero_clientes) .
+type_arg(qname,value,'136',numero_clientes2) .
+type_arg(qname,value,'137',offline_catalogue_retailer) .
+type_arg(qname,value,'138',offline_owned_share) .
+type_arg(qname,value,'139',offline_percent) .
+type_arg(qname,value,'140',operated_before_ASP) .
+type_arg(qname,value,'141',oversubscription_rate) .
+type_arg(qname,value,'142',own_software_solutions) .
+type_arg(qname,value,'143',owned_versus_leased) .
+type_arg(qname,value,'144',pages_per_minute) .
+type_arg(qname,value,'145',partnership_agreements) .
+type_arg(qname,value,'146',partnerships_specializing) .
+type_arg(qname,value,'147',payment_methods) .
+type_arg(qname,value,'148',percentage_marketing_costs) .
+type_arg(qname,value,'149',percentage_of_ownership) .
+type_arg(qname,value,'150',percentage_of_ownership_app) .
+type_arg(qname,value,'151',percentage_of_ownership_mar) .
+type_arg(qname,value,'152',percentage_share_capital) .
+type_arg(qname,value,'153',perfect_order_rate) .
+type_arg(qname,value,'154',persona_juridica) .
+type_arg(qname,value,'155',persona_juridica2) .
+type_arg(qname,value,'156',personalization_tools) .
+type_arg(qname,value,'157',planning_to_move_to_IPv6) .
+type_arg(qname,value,'158',premium_content_partners) .
+type_arg(qname,value,'159',pricing_model) .
+type_arg(qname,value,'160',privacy_policy) .
+type_arg(qname,value,'161',products_services_offered) .
+type_arg(qname,value,'162',promoting_integration) .
+type_arg(qname,value,'163',proveedores_en) .
+type_arg(qname,value,'164',proveedores_en2) .
+type_arg(qname,value,'165',provides_credit) .
+type_arg(qname,value,'166',quality_recommendations) .
+type_arg(qname,value,'167',recurring_purchases) .
+type_arg(qname,value,'168',refund_not_SLA) .
+type_arg(qname,value,'169',registered_clients) .
+type_arg(qname,value,'170',registered_clients_by_end) .
+type_arg(qname,value,'171',repeat_customers_sales) .
+type_arg(qname,value,'172',retailers_joint_venture) .
+type_arg(qname,value,'173',return_methods) .
+type_arg(qname,value,'174',return_policy) .
+type_arg(qname,value,'175',return_policy_limit) .
+type_arg(qname,value,'176',revenue_largest_clients) .
+type_arg(qname,value,'177',revenue_members_by_end) .
+type_arg(qname,value,'178',revenue_members_percent) .
+type_arg(qname,value,'179',revenue_per_hosting_server) .
+type_arg(qname,value,'180',revenue_per_server_co_loca) .
+type_arg(qname,value,'181',revenue_per_server_managed) .
+type_arg(qname,value,'182',revenues_generated_in) .
+type_arg(qname,value,'183',seats_per_application) .
+type_arg(qname,value,'184',security_certifications) .
+type_arg(qname,value,'185',service_availability) .
+type_arg(qname,value,'186',share_content_costs) .
+type_arg(qname,value,'187',share_of_customers) .
+type_arg(qname,value,'188',share_of_network_owned) .
+type_arg(qname,value,'189',share_of_revenue) .
+type_arg(qname,value,'190',share_of_revenue_clients) .
+type_arg(qname,value,'191',share_of_revenue_sol) .
+type_arg(qname,value,'192',site_accessible_through) .
+type_arg(qname,value,'193',site_simultaneous_users) .
+type_arg(qname,value,'194',staff_dedication) .
+type_arg(qname,value,'195',staff_experience) .
+type_arg(qname,value,'196',subscribers_by_end_as) .
+type_arg(qname,value,'197',subscribers_number) .
+type_arg(qname,value,'198',telecom_media_shareholders) .
+type_arg(qname,value,'199',terminate_without_penalty) .
+type_arg(qname,value,'200',time_spent_per_logon) .
+type_arg(qname,value,'201',training_hours) .
+type_arg(qname,value,'202',training_hours_billable) .
+type_arg(qname,value,'203',transaction_fees) .
+type_arg(qname,value,'204',transaction_mecanisms) .
+type_arg(qname,value,'205',transactions_by_end) .
+type_arg(qname,value,'206',type_applications) .
+type_arg(qname,value,'207',type_of_SLA) .
+type_arg(qname,value,'208',types_of_access) .
+type_arg(qname,value,'209',types_of_access_na) .
+type_arg(qname,value,'210',types_of_access_share) .
+type_arg(qname,value,'211',unique_customers) .
+type_arg(qname,value,'212',unique_users_by_end) .
+type_arg(qname,value,'213',unique_users_number) .
+type_arg(qname,value,'214',user_to_modem_ratio) .
+type_arg(qname,value,'215',value_added_services) .
+type_arg(qname,value,'216',value_of_stocks) .
+type_arg(qname,value,'217',version_of_IP_protocol) .
+type_arg(qname,value,'218',visits_per_month) .
+type_arg(qname,value,'219',visits_per_month_con) .
+type_arg(qname,value,'220',voice_over_IP) .
+type_arg(qname,value,'221',xml_tagging_harmonisation) .
+type_arg(form_year,value,'0','_') .
+type_arg(form_year,value,'1','-3') .
+type_arg(form_year,value,'2','-2') .
+type_arg(form_year,value,'3','-1') .
+type_arg(form_year,value,'4','0') .
+type_arg(form_year,value,'5','1') .
+type_arg(form_year,value,'6','2') .
+type_arg(form_year,value,'7','3') .
+type_arg(form_year,value,'8','4') .
+type_arg(smalltext,size,'','3') .
+type_arg(revenue_concept,value,'1',revenue1) .
+type_arg(revenue_concept,value,'2',revenue2) .
+type_arg(revenue_concept,value,'3',revenue3) .
+type_arg(revenue_concept,value,'4',revenue4) .
+type_arg(revenue_concept,value,'5',revenue5) .
+type_arg(revenue_concept,value,'6',revenue6) .
+type_arg(revenue_concept,value,'7',revenue7) .
+type_arg(revenue_concept,value,'8',revenue8) .
+type_arg(revenue_concept,value,'9',revenue9) .
+type_arg(revenue_concept,value,'10',revenue10) .
+type_arg(revenue_concept,name,'1','Revenue 1') .
+type_arg(revenue_concept,name,'2','Revenue 2') .
+type_arg(revenue_concept,name,'3','Revenue 3') .
+type_arg(revenue_concept,name,'4','Revenue 4') .
+type_arg(revenue_concept,name,'5','Revenue 5') .
+type_arg(revenue_concept,name,'6','Revenue 6') .
+type_arg(revenue_concept,name,'7','Revenue 7') .
+type_arg(revenue_concept,name,'8','Revenue 8') .
+type_arg(revenue_concept,name,'9','Revenue 9') .
+type_arg(revenue_concept,name,'10','Revenue 10') .
+type_arg(dcf_year,value,'0','0') .
+type_arg(dcf_year,value,'1','1') .
+type_arg(dcf_year,value,'2','2') .
+type_arg(dcf_year,value,'3','3') .
+type_arg(dcf_year,value,'4','4') .
+type_arg(concept,value,'1',revenue1) .
+type_arg(concept,value,'2',revenue2) .
+type_arg(concept,value,'3',revenue3) .
+type_arg(concept,value,'4',revenue4) .
+type_arg(concept,value,'5',revenue5) .
+type_arg(concept,value,'6',revenue6) .
+type_arg(concept,value,'7',revenue7) .
+type_arg(concept,value,'8',revenue8) .
+type_arg(concept,value,'9',revenue9) .
+type_arg(concept,value,'10',revenue10) .
+type_arg(concept,value,'11',direct_c) .
+type_arg(concept,value,'12',personnel_c) .
+type_arg(concept,value,'13',marketing_c) .
+type_arg(concept,value,'14',other_c) .
+type_arg(concept,name,'1','Revenue 1') .
+type_arg(concept,name,'2','Revenue 2') .
+type_arg(concept,name,'3','Revenue 3') .
+type_arg(concept,name,'4','Revenue 4') .
+type_arg(concept,name,'5','Revenue 5') .
+type_arg(concept,name,'6','Revenue 6') .
+type_arg(concept,name,'7','Revenue 7') .
+type_arg(concept,name,'8','Revenue 8') .
+type_arg(concept,name,'9','Revenue 9') .
+type_arg(concept,name,'10','Revenue 10') .
+type_arg(concept,name,'11','Direct Costs') .
+type_arg(concept,name,'12','Personnel Costs') .
+type_arg(concept,name,'13','Marketing Costs') .
+type_arg(concept,name,'14','Other Costs') .
+type_arg(scenario_concept,value,'1',revenue) .
+type_arg(scenario_concept,value,'2',capex) .
+type_arg(scenario_concept,value,'3',marketing_c) .
+type_arg(scenario_concept,value,'4',personnel_c) .
+type_arg(scenario_concept,name,'1','Revenue') .
+type_arg(scenario_concept,name,'2','Capex') .
+type_arg(scenario_concept,name,'3','Marketing Costs') .
+type_arg(scenario_concept,name,'4','Personnel Costs') .
+type_arg(scenario,value,'1',crec) .
+type_arg(scenario,value,'2',cons) .
+type_arg(scenario,name,'1','Crecimiento') .
+type_arg(scenario,name,'2','Conservador') .
+type_arg(option,value,'1','1') .
+type_arg(option,value,'2','2') .
+type_arg(p_base,size,'','3') .
+type_arg(p_base,input,'1',p_cons) .
+type_arg(p_base,input,'2',p_crec) .
+type_arg(p_base,result,'','100 - p_cons - p_crec') .
+type_arg(signed_percent,decimals,'','3') .
+type_arg(sector,value,'0','') .
+type_arg(sector,name,'0','_') .
+type_arg(sector,value,'1','1') .
+type_arg(sector,name,'1','Alimentación y bebidas') .
+type_arg(sector,value,'2','2') .
+type_arg(sector,name,'2','Artes gráficas y producción de contenidos') .
+type_arg(sector,value,'3','23') .
+type_arg(sector,name,'3','Automoción y componentes, material de transporte ') .
+type_arg(sector,value,'4','3') .
+type_arg(sector,name,'4','Comercio minorista') .
+type_arg(sector,value,'5','4') .
+type_arg(sector,name,'5','Construcción y Materiales') .
+type_arg(sector,value,'6','5') .
+type_arg(sector,name,'6','Consultoría, Auditoría, Asesoría') .
+type_arg(sector,value,'7','6') .
+type_arg(sector,name,'7','Cuidado personal y productos del hogar') .
+type_arg(sector,value,'8','7') .
+type_arg(sector,name,'8','Ecológico y reciclado') .
+type_arg(sector,value,'9','8') .
+type_arg(sector,name,'9','Editoriales') .
+type_arg(sector,value,'10','9') .
+type_arg(sector,name,'10','Educación y Formación') .
+type_arg(sector,value,'11','10') .
+type_arg(sector,name,'11','Electrónica') .
+type_arg(sector,value,'12','11') .
+type_arg(sector,name,'12','Energía y Servicios públicos') .
+type_arg(sector,value,'13','12') .
+type_arg(sector,name,'13','Entretenimiento y Ocio') .
+type_arg(sector,value,'14','13') .
+type_arg(sector,name,'14','Envases y embalajes') .
+type_arg(sector,value,'15','14') .
+type_arg(sector,name,'15','Hostelería') .
+type_arg(sector,value,'16','15') .
+type_arg(sector,name,'16','Industria del papel') .
+type_arg(sector,value,'17','16') .
+type_arg(sector,name,'17','Industria maderera y del corcho') .
+type_arg(sector,value,'18','17') .
+type_arg(sector,name,'18','Industrias manufactureras diversas') .
+type_arg(sector,value,'19','18') .
+type_arg(sector,name,'19','Ingeniería y Maquinaria') .
+type_arg(sector,value,'20','19') .
+type_arg(sector,name,'20','Inmobiliaria') .
+type_arg(sector,value,'21','20') .
+type_arg(sector,name,'21','Intermediación y servicios financieros') .
+type_arg(sector,value,'22','21') .
+type_arg(sector,name,'22','Internet') .
+type_arg(sector,value,'23','22') .
+type_arg(sector,name,'23','Logística') .
+type_arg(sector,value,'24','24') .
+type_arg(sector,name,'24','Medios de Comunicación') .
+type_arg(sector,value,'25','25') .
+type_arg(sector,name,'25','Metalurgia y fabricación de productos metálicos') .
+type_arg(sector,value,'26','26') .
+type_arg(sector,name,'26','Química') .
+type_arg(sector,value,'27','27') .
+type_arg(sector,name,'27','Salud') .
+type_arg(sector,value,'28','28') .
+type_arg(sector,name,'28','Sector farmacéutico') .
+type_arg(sector,value,'29','29') .
+type_arg(sector,name,'29','Sector primario: producción, distribución y servicios relacionados') .
+type_arg(sector,value,'30','30') .
+type_arg(sector,name,'30','Servicios a empresas y particulares') .
+type_arg(sector,value,'31','31') .
+type_arg(sector,name,'31','Tabaco') .
+type_arg(sector,value,'32','32') .
+type_arg(sector,name,'32','Tecnología') .
+type_arg(sector,value,'33','33') .
+type_arg(sector,name,'33','Telecomunicaciones') .
+type_arg(sector,value,'34','34') .
+type_arg(sector,name,'34','Textil, confección, cuero y calzado') .
+type_arg(sector,value,'35','35') .
+type_arg(sector,name,'35','Transporte') .
+type_arg(sector,value,'36','36') .
+type_arg(sector,name,'36','Viajes y turismo') .
+type_arg(ssector,cond,'1','=(sector,"1")') .
+type_arg(ssector,type,'1',ssector1) .
+type_arg(ssector1,value,'0','') .
+type_arg(ssector1,name,'0','_') .
+type_arg(ssector1,value,'1','1') .
+type_arg(ssector1,name,'1','Distribuidor mayorista') .
+type_arg(ssector1,value,'2','2') .
+type_arg(ssector1,name,'2','Distribuidor minorista') .
+type_arg(ssector1,value,'3','3') .
+type_arg(ssector1,name,'3','Elaboración y conservación de alimentos') .
+type_arg(ssector,cond,'2','=(sector,"2")') .
+type_arg(ssector,type,'2',ssector2) .
+type_arg(ssector2,value,'0','') .
+type_arg(ssector2,name,'0','_') .
+type_arg(ssector2,value,'1','1') .
+type_arg(ssector2,name,'1','Impresión, encuadernación, acabado y composición de documentos y publicaciones') .
+type_arg(ssector2,value,'2','2') .
+type_arg(ssector2,name,'2','Marketing, etc.') .
+type_arg(ssector2,value,'3','3') .
+type_arg(ssector2,name,'3','Producción de contenidos') .
+type_arg(ssector2,value,'4','4') .
+type_arg(ssector2,name,'4','Reproducción de soportes de sonido, video e informática') .
+type_arg(ssector,cond,'3','=(sector,"3")') .
+type_arg(ssector,type,'3',ssector3) .
+type_arg(ssector3,value,'0','') .
+type_arg(ssector3,name,'0','_') .
+type_arg(ssector3,value,'1','1') .
+type_arg(ssector3,name,'1','Alimentación y bebidas') .
+type_arg(ssector3,value,'2','2') .
+type_arg(ssector3,name,'2','Automoción') .
+type_arg(ssector3,value,'3','3') .
+type_arg(ssector3,name,'3','Bienes de ocio, deportes y entretenimiento') .
+type_arg(ssector3,value,'4','4') .
+type_arg(ssector3,name,'4','Combustibles') .
+type_arg(ssector3,value,'5','5') .
+type_arg(ssector3,name,'5','Contenedores y Packaging') .
+type_arg(ssector3,value,'6','6') .
+type_arg(ssector3,name,'6','Cuidado personal y productos del hogar') .
+type_arg(ssector3,value,'7','7') .
+type_arg(ssector3,name,'7','Electrodomésticos') .
+type_arg(ssector3,value,'8','8') .
+type_arg(ssector3,name,'8','Electrónica y hardware informático') .
+type_arg(ssector3,value,'9','9') .
+type_arg(ssector3,name,'9','Envases y embalajes') .
+type_arg(ssector3,value,'10','10') .
+type_arg(ssector3,name,'10','Joyería y bienes de lujo') .
+type_arg(ssector3,value,'11','11') .
+type_arg(ssector3,name,'11','Libros, música y relacionados') .
+type_arg(ssector3,value,'12','12') .
+type_arg(ssector3,name,'12','Minorista general') .
+type_arg(ssector3,value,'13','13') .
+type_arg(ssector3,name,'13','Mobiliario') .
+type_arg(ssector3,value,'14','14') .
+type_arg(ssector3,name,'14','Otro comercio minorista') .
+type_arg(ssector3,value,'15','15') .
+type_arg(ssector3,name,'15','Química') .
+type_arg(ssector3,value,'16','16') .
+type_arg(ssector3,name,'16','Regalos y Juguetes') .
+type_arg(ssector3,value,'17','17') .
+type_arg(ssector3,name,'17','Salud y productos médicos') .
+type_arg(ssector3,value,'18','18') .
+type_arg(ssector3,name,'18','Software') .
+type_arg(ssector3,value,'19','19') .
+type_arg(ssector3,name,'19','Suministros de oficina') .
+type_arg(ssector3,value,'20','20') .
+type_arg(ssector3,name,'20','Tabaco') .
+type_arg(ssector3,value,'21','21') .
+type_arg(ssector3,name,'21','Textil y complementos') .
+type_arg(ssector,cond,'4','=(sector,"4")') .
+type_arg(ssector,type,'4',ssector4) .
+type_arg(ssector4,value,'0','') .
+type_arg(ssector4,name,'0','_') .
+type_arg(ssector4,value,'1','1') .
+type_arg(ssector4,name,'1','Construcciones y contratas') .
+type_arg(ssector4,value,'2','2') .
+type_arg(ssector4,name,'2','Fabricante de materiales de construcción') .
+type_arg(ssector4,value,'3','3') .
+type_arg(ssector4,name,'3','Promoción de inmuebles') .
+type_arg(ssector4,value,'4','4') .
+type_arg(ssector4,name,'4','Servicios relacionados y mantenimiento de infraestructuras') .
+type_arg(ssector,cond,'5','=(sector,"5")') .
+type_arg(ssector,type,'5',ssector5) .
+type_arg(ssector5,value,'0','') .
+type_arg(ssector5,name,'0','_') .
+type_arg(ssector5,value,'1','1') .
+type_arg(ssector5,name,'1','Asesoría') .
+type_arg(ssector5,value,'2','2') .
+type_arg(ssector5,name,'2','Auditoría') .
+type_arg(ssector5,value,'3','3') .
+type_arg(ssector5,name,'3','Consultoría') .
+type_arg(ssector,cond,'6','=(sector,"6")') .
+type_arg(ssector,type,'6',ssector6) .
+type_arg(ssector6,value,'0','') .
+type_arg(ssector6,name,'0','_') .
+type_arg(ssector6,value,'1','1') .
+type_arg(ssector6,name,'1','Accesorios de cuidado personal') .
+type_arg(ssector6,value,'2','2') .
+type_arg(ssector6,name,'2','Accesorios derivados de papel') .
+type_arg(ssector6,value,'3','3') .
+type_arg(ssector6,name,'3','Accesorios para el hogar') .
+type_arg(ssector6,value,'4','4') .
+type_arg(ssector6,name,'4','Cosmética y productos de cuidado personal') .
+type_arg(ssector6,value,'5','5') .
+type_arg(ssector6,name,'5','Jabones, detergentes y otros productos del hogar') .
+type_arg(ssector,cond,'7','=(sector,"7")') .
+type_arg(ssector,type,'7',ssector7) .
+type_arg(ssector7,value,'0','') .
+type_arg(ssector7,name,'0','_') .
+type_arg(ssector7,value,'1','1') .
+type_arg(ssector7,name,'1','Depuración de líquidos') .
+type_arg(ssector7,value,'2','2') .
+type_arg(ssector7,name,'2','Reciclaje de chatarra y desechos') .
+type_arg(ssector7,value,'3','3') .
+type_arg(ssector7,name,'3','Reciclaje de materiales') .
+type_arg(ssector7,value,'4','4') .
+type_arg(ssector7,name,'4','Recogida de resíduos') .
+type_arg(ssector7,value,'5','5') .
+type_arg(ssector7,name,'5','Recuperación de materiales') .
+type_arg(ssector,cond,'8','=(sector,"8")') .
+type_arg(ssector,type,'8',ssector8) .
+type_arg(ssector8,value,'0','') .
+type_arg(ssector8,name,'0','_') .
+type_arg(ssector8,value,'1','1') .
+type_arg(ssector8,name,'1','Edición de libros') .
+type_arg(ssector8,value,'2','2') .
+type_arg(ssector8,name,'2','Edición de música') .
+type_arg(ssector8,value,'3','3') .
+type_arg(ssector8,name,'3','Edición de periódicos') .
+type_arg(ssector8,value,'4','4') .
+type_arg(ssector8,name,'4','Edición de revistas') .
+type_arg(ssector8,value,'5','5') .
+type_arg(ssector8,name,'5','Otras ediciones') .
+type_arg(ssector8,value,'6','6') .
+type_arg(ssector8,name,'6','Producción de contenidos') .
+type_arg(ssector8,value,'7','7') .
+type_arg(ssector8,name,'7','Publicaciones periódicas coleccionables') .
+type_arg(ssector,cond,'9','=(sector,"9")') .
+type_arg(ssector,type,'9',ssector9) .
+type_arg(ssector9,value,'0','') .
+type_arg(ssector9,name,'0','_') .
+type_arg(ssector9,value,'1','1') .
+type_arg(ssector9,name,'1','Academias, centros de estudios diversos') .
+type_arg(ssector9,value,'2','2') .
+type_arg(ssector9,name,'2','Colegios, institutos, centros de formación pre-universitaria') .
+type_arg(ssector9,value,'3','3') .
+type_arg(ssector9,name,'3','Formación dirigida a empresas, conferencias') .
+type_arg(ssector9,value,'4','4') .
+type_arg(ssector9,name,'4','Guarderías y escuelas infantiles') .
+type_arg(ssector9,value,'5','5') .
+type_arg(ssector9,name,'5','Universidades, centros de formación superior y de postgrado') .
+type_arg(ssector,cond,'10','=(sector,"10")') .
+type_arg(ssector,type,'10',ssector10) .
+type_arg(ssector10,value,'0','') .
+type_arg(ssector10,name,'0','_') .
+type_arg(ssector10,value,'1','1') .
+type_arg(ssector10,name,'1','Componentes electrónicos') .
+type_arg(ssector10,value,'2','2') .
+type_arg(ssector10,name,'2','Electrodomésticos') .
+type_arg(ssector10,value,'3','3') .
+type_arg(ssector10,name,'3','Informática') .
+type_arg(ssector10,value,'4','4') .
+type_arg(ssector10,name,'4','Telefonía') .
+type_arg(ssector,cond,'11','=(sector,"11")') .
+type_arg(ssector,type,'11',ssector11) .
+type_arg(ssector11,value,'0','') .
+type_arg(ssector11,name,'0','_') .
+type_arg(ssector11,value,'1','1') .
+type_arg(ssector11,name,'1','Electricidad') .
+type_arg(ssector11,value,'2','2') .
+type_arg(ssector11,name,'2','Petróleo y gas') .
+type_arg(ssector11,value,'3','3') .
+type_arg(ssector11,name,'3','Suministro de agua') .
+type_arg(ssector,cond,'12','=(sector,"12")') .
+type_arg(ssector,type,'12',ssector12) .
+type_arg(ssector12,value,'0','') .
+type_arg(ssector12,name,'0','_') .
+type_arg(ssector12,value,'1','1') .
+type_arg(ssector12,name,'1','Balnearios') .
+type_arg(ssector12,value,'2','2') .
+type_arg(ssector12,name,'2','Centros de vacaciones') .
+type_arg(ssector12,value,'3','3') .
+type_arg(ssector12,name,'3','Cines') .
+type_arg(ssector12,value,'4','4') .
+type_arg(ssector12,name,'4','Cruceros') .
+type_arg(ssector12,value,'5','5') .
+type_arg(ssector12,name,'5','Establecimientos de bebidas') .
+type_arg(ssector12,value,'6','6') .
+type_arg(ssector12,name,'6','Establecimientos deportivos') .
+type_arg(ssector12,value,'7','7') .
+type_arg(ssector12,name,'7','Juegos de azar') .
+type_arg(ssector12,value,'8','8') .
+type_arg(ssector12,name,'8','Otros servicios de Entretenimiento y Ocio') .
+type_arg(ssector12,value,'9','9') .
+type_arg(ssector12,name,'9','Parques temáticos') .
+type_arg(ssector12,value,'10','10') .
+type_arg(ssector12,name,'10','Producción de contenidos para el entretenimiento') .
+type_arg(ssector12,value,'11','11') .
+type_arg(ssector12,name,'11','Restaurantes') .
+type_arg(ssector12,value,'12','12') .
+type_arg(ssector12,name,'12','Teatros') .
+type_arg(ssector,cond,'13','=(sector,"13")') .
+type_arg(ssector,type,'13',ssector13) .
+type_arg(ssector13,value,'0','') .
+type_arg(ssector13,name,'0','_') .
+type_arg(ssector13,value,'1','1') .
+type_arg(ssector13,name,'1','Distribución mayorista') .
+type_arg(ssector13,value,'2','2') .
+type_arg(ssector13,name,'2','Distribución minorista de envases y embalajes') .
+type_arg(ssector13,value,'3','3') .
+type_arg(ssector13,name,'3','Fabricación') .
+type_arg(ssector,cond,'14','=(sector,"14")') .
+type_arg(ssector,type,'14',ssector14) .
+type_arg(ssector14,value,'0','') .
+type_arg(ssector14,name,'0','_') .
+type_arg(ssector14,value,'1','1') .
+type_arg(ssector14,name,'1','Establecimientos de bebidas') .
+type_arg(ssector14,value,'2','2') .
+type_arg(ssector14,name,'2','Hoteles') .
+type_arg(ssector14,value,'3','3') .
+type_arg(ssector14,name,'3','Restaurantes') .
+type_arg(ssector,cond,'15','=(sector,"15")') .
+type_arg(ssector,type,'15',ssector15) .
+type_arg(ssector15,value,'0','') .
+type_arg(ssector15,name,'0','_') .
+type_arg(ssector15,value,'1','1') .
+type_arg(ssector15,name,'1','Distribución mayorista') .
+type_arg(ssector15,value,'2','2') .
+type_arg(ssector15,name,'2','Distribución minorista de papel y cartón') .
+type_arg(ssector15,value,'3','3') .
+type_arg(ssector15,name,'3','Fabricación') .
+type_arg(ssector,cond,'16','=(sector,"16")') .
+type_arg(ssector,type,'16',ssector16) .
+type_arg(ssector16,value,'0','') .
+type_arg(ssector16,name,'0','_') .
+type_arg(ssector16,value,'1','1') .
+type_arg(ssector16,name,'1','Aserrado y cepillado de la madera') .
+type_arg(ssector16,value,'2','2') .
+type_arg(ssector16,name,'2','Fabricación de chapas, tableros y paneles') .
+type_arg(ssector16,value,'3','3') .
+type_arg(ssector16,name,'3','Fabricación de envases y embalajes de madera') .
+type_arg(ssector16,value,'4','4') .
+type_arg(ssector16,name,'4','Fabricación de estructuras de madera y carpintería para la construcción') .
+type_arg(ssector16,value,'5','5') .
+type_arg(ssector16,name,'5','Fabricación de otros productos de madera') .
+type_arg(ssector16,value,'6','6') .
+type_arg(ssector16,name,'6','Fabricación de productos de corcho') .
+type_arg(ssector16,value,'7','7') .
+type_arg(ssector16,name,'7','Industria de la madera') .
+type_arg(ssector16,value,'8','8') .
+type_arg(ssector16,name,'8','Industria del caucho') .
+type_arg(ssector16,value,'9','9') .
+type_arg(ssector16,name,'9','Industria del corcho') .
+type_arg(ssector16,value,'10','10') .
+type_arg(ssector16,name,'10','Taller de carpintería y ebanistería') .
+type_arg(ssector,cond,'17','=(sector,"17")') .
+type_arg(ssector,type,'17',ssector17) .
+type_arg(ssector17,value,'0','') .
+type_arg(ssector17,name,'0','_') .
+type_arg(ssector17,value,'1','1') .
+type_arg(ssector17,name,'1','Artículos de deporte') .
+type_arg(ssector17,value,'2','2') .
+type_arg(ssector17,name,'2','Artículos de regalo') .
+type_arg(ssector17,value,'3','3') .
+type_arg(ssector17,name,'3','Bisutería') .
+type_arg(ssector17,value,'4','4') .
+type_arg(ssector17,name,'4','Industrias manufactureras diversas') .
+type_arg(ssector17,value,'5','5') .
+type_arg(ssector17,name,'5','Instrumentos musicales') .
+type_arg(ssector17,value,'6','6') .
+type_arg(ssector17,name,'6','Joyería, orfebrería y medallas') .
+type_arg(ssector17,value,'7','7') .
+type_arg(ssector17,name,'7','Juegos y juguetes') .
+type_arg(ssector17,value,'8','8') .
+type_arg(ssector17,name,'8','Material sanitario') .
+type_arg(ssector17,value,'9','9') .
+type_arg(ssector17,name,'9','Muebles') .
+type_arg(ssector17,value,'10','10') .
+type_arg(ssector17,name,'10','Reciclaje de chatarra y desechos') .
+type_arg(ssector,cond,'18','=(sector,"18")') .
+type_arg(ssector,type,'18',ssector18) .
+type_arg(ssector18,value,'0','') .
+type_arg(ssector18,name,'0','_') .
+type_arg(ssector18,value,'1','1') .
+type_arg(ssector18,name,'1','Aparatos domésticos') .
+type_arg(ssector18,value,'2','2') .
+type_arg(ssector18,name,'2','Armas y municiones') .
+type_arg(ssector18,value,'3','3') .
+type_arg(ssector18,name,'3','Construcción aeronáutica') .
+type_arg(ssector18,value,'4','4') .
+type_arg(ssector18,name,'4','Construcción y reparación naval') .
+type_arg(ssector18,value,'5','5') .
+type_arg(ssector18,name,'5','Fabricación de material ferroviario') .
+type_arg(ssector18,value,'6','6') .
+type_arg(ssector18,name,'6','Instrumentos médicos') .
+type_arg(ssector18,value,'7','7') .
+type_arg(ssector18,name,'7','Instrumentos ópticos y de precisión') .
+type_arg(ssector18,value,'8','8') .
+type_arg(ssector18,name,'8','Maquinaria diversa de usos específicos') .
+type_arg(ssector18,value,'9','9') .
+type_arg(ssector18,name,'9','Maquinaria y material eléctrico') .
+type_arg(ssector18,value,'10','11') .
+type_arg(ssector18,name,'10','Motores, bombas, válvulas y otros') .
+type_arg(ssector18,value,'11','10') .
+type_arg(ssector18,name,'11','Máquinas-herramienta') .
+type_arg(ssector18,value,'12','12') .
+type_arg(ssector18,name,'12','Otra maquinaria, equipo y material mecánico de uso general') .
+type_arg(ssector18,value,'13','13') .
+type_arg(ssector18,name,'13','Otros proyectos de ingeniería') .
+type_arg(ssector18,value,'14','14') .
+type_arg(ssector18,name,'14','Proyectos llave en mano') .
+type_arg(ssector18,value,'15','15') .
+type_arg(ssector18,name,'15','Relojes') .
+type_arg(ssector18,value,'16','16') .
+type_arg(ssector18,name,'16','Tractores y maquinaria agraria') .
+type_arg(ssector18,value,'17','17') .
+type_arg(ssector18,name,'17','Válvulas, tubos, televisores y aparatos de recepción') .
+type_arg(ssector,cond,'19','=(sector,"19")') .
+type_arg(ssector,type,'19',ssector19) .
+type_arg(ssector19,value,'0','') .
+type_arg(ssector19,name,'0','_') .
+type_arg(ssector19,value,'1','1') .
+type_arg(ssector19,name,'1','Agente') .
+type_arg(ssector19,value,'2','2') .
+type_arg(ssector19,name,'2','Promotor') .
+type_arg(ssector19,value,'3','3') .
+type_arg(ssector19,name,'3','Propietario') .
+type_arg(ssector,cond,'20','=(sector,"20")') .
+type_arg(ssector,type,'20',ssector20) .
+type_arg(ssector20,value,'0','') .
+type_arg(ssector20,name,'0','_') .
+type_arg(ssector20,value,'1','1') .
+type_arg(ssector20,name,'1','Intermediarios de productos bancarios') .
+type_arg(ssector20,value,'2','2') .
+type_arg(ssector20,name,'2','Intermediarios de seguros') .
+type_arg(ssector20,value,'3','3') .
+type_arg(ssector20,name,'3','Intermediarios de servicios financieros especializados (agentes de bolsa, brokers, etc.)') .
+type_arg(ssector20,value,'4','4') .
+type_arg(ssector20,name,'4','Intermediarios en fusiones y adquisiciones de empresas') .
+type_arg(ssector,cond,'21','=(sector,"21")') .
+type_arg(ssector,type,'21',ssector21) .
+type_arg(ssector21,value,'0','') .
+type_arg(ssector21,name,'0','_') .
+type_arg(ssector21,value,'1','1') .
+type_arg(ssector21,name,'1','Application Service Providers (ASPs)') .
+type_arg(ssector21,value,'2','3') .
+type_arg(ssector21,name,'2','Internet Service Providers (ISPs)') .
+type_arg(ssector21,value,'3','4') .
+type_arg(ssector21,name,'3','Marketplace') .
+type_arg(ssector21,value,'4','5') .
+type_arg(ssector21,name,'4','Portales') .
+type_arg(ssector21,value,'5','2') .
+type_arg(ssector21,name,'5','e-Commerce') .
+type_arg(ssector,cond,'22','=(sector,"22")') .
+type_arg(ssector,type,'22',ssector22) .
+type_arg(ssector22,value,'0','') .
+type_arg(ssector22,name,'0','_') .
+type_arg(ssector22,value,'1','1') .
+type_arg(ssector22,name,'1','Envio por flete') .
+type_arg(ssector22,value,'2','2') .
+type_arg(ssector22,name,'2','Gestión de cadenas de abastecimiento') .
+type_arg(ssector22,value,'3','3') .
+type_arg(ssector22,name,'3','Logística exprés') .
+type_arg(ssector22,value,'4','4') .
+type_arg(ssector22,name,'4','Servicios de correos y actividades postales') .
+type_arg(ssector,cond,'23','=(sector,"23")') .
+type_arg(ssector,type,'23',ssector23) .
+type_arg(ssector23,value,'0','') .
+type_arg(ssector23,name,'0','_') .
+type_arg(ssector23,value,'1','1') .
+type_arg(ssector23,name,'1','Concesionario o distribuidor final') .
+type_arg(ssector23,value,'2','2') .
+type_arg(ssector23,name,'2','Construcción aeronáutica') .
+type_arg(ssector23,value,'3','3') .
+type_arg(ssector23,name,'3','Construcción y reparación naval') .
+type_arg(ssector23,value,'4','4') .
+type_arg(ssector23,name,'4','Fabricación de material ferroviario') .
+type_arg(ssector23,value,'5','5') .
+type_arg(ssector23,name,'5','Fabricante de componentes de vehículos') .
+type_arg(ssector23,value,'6','6') .
+type_arg(ssector23,name,'6','Fabricante de vehículos') .
+type_arg(ssector23,value,'7','7') .
+type_arg(ssector23,name,'7','Importador/Exportador o distribuidor mayorista') .
+type_arg(ssector23,value,'8','8') .
+type_arg(ssector23,name,'8','Mantenimiento y reparación de vehículos a motor') .
+type_arg(ssector23,value,'9','9') .
+type_arg(ssector23,name,'9','Servicios de ingeniería para la industria del automóvil') .
+type_arg(ssector23,value,'10','10') .
+type_arg(ssector23,name,'10','Venta al por menor de carburantes para la automoción') .
+type_arg(ssector23,value,'11','11') .
+type_arg(ssector23,name,'11','Venta de repuestos y accesorios a vehículos a motor') .
+type_arg(ssector23,value,'12','12') .
+type_arg(ssector23,name,'12','Venta, mantenimiento y repuestos de motocicletas y bicicletas') .
+type_arg(ssector,cond,'24','=(sector,"24")') .
+type_arg(ssector,type,'24',ssector24) .
+type_arg(ssector24,value,'0','') .
+type_arg(ssector24,name,'0','_') .
+type_arg(ssector24,value,'1','1') .
+type_arg(ssector24,name,'1','Distribución de contenidos') .
+type_arg(ssector24,value,'2','2') .
+type_arg(ssector24,name,'2','Edición de música') .
+type_arg(ssector24,value,'3','3') .
+type_arg(ssector24,name,'3','Edición de periódicos') .
+type_arg(ssector24,value,'4','4') .
+type_arg(ssector24,name,'4','Edición de revistas') .
+type_arg(ssector24,value,'5','5') .
+type_arg(ssector24,name,'5','Explotación de canales publicitarios exteriores') .
+type_arg(ssector24,value,'6','6') .
+type_arg(ssector24,name,'6','Explotación de otros caneles publicitarios') .
+type_arg(ssector24,value,'7','7') .
+type_arg(ssector24,name,'7','Otras ediciones') .
+type_arg(ssector24,value,'8','8') .
+type_arg(ssector24,name,'8','Producción de contenidos') .
+type_arg(ssector24,value,'9','9') .
+type_arg(ssector24,name,'9','Publicaciones periódicas coleccionables') .
+type_arg(ssector,cond,'25','=(sector,"25")') .
+type_arg(ssector,type,'25',ssector25) .
+type_arg(ssector25,value,'0','') .
+type_arg(ssector25,name,'0','_') .
+type_arg(ssector25,value,'1','1') .
+type_arg(ssector25,name,'1','Artículos de cuchillería, cerraduras y herrajes') .
+type_arg(ssector25,value,'2','2') .
+type_arg(ssector25,name,'2','Cisternas, depósitos, contenedores y calderas') .
+type_arg(ssector25,value,'3','3') .
+type_arg(ssector25,name,'3','Diversos productos metálicos') .
+type_arg(ssector25,value,'4','4') .
+type_arg(ssector25,name,'4','Elaboración intermedia de minerales') .
+type_arg(ssector25,value,'5','5') .
+type_arg(ssector25,name,'5','Elementos metálicos para la construcción') .
+type_arg(ssector25,value,'6','6') .
+type_arg(ssector25,name,'6','Explotación minera') .
+type_arg(ssector25,value,'7','7') .
+type_arg(ssector25,name,'7','Forja, estampación y embutición de metales') .
+type_arg(ssector25,value,'8','8') .
+type_arg(ssector25,name,'8','Fundición de metales') .
+type_arg(ssector25,value,'9','9') .
+type_arg(ssector25,name,'9','Generadores de vapor') .
+type_arg(ssector25,value,'10','10') .
+type_arg(ssector25,name,'10','Primera transformación y producción de otros metales') .
+type_arg(ssector25,value,'11','11') .
+type_arg(ssector25,name,'11','Productores de cable') .
+type_arg(ssector25,value,'12','12') .
+type_arg(ssector25,name,'12','Productos básicos de hierro, acero y otros') .
+type_arg(ssector25,value,'13','13') .
+type_arg(ssector25,name,'13','Tratamiento de metales, ingeniería mecánica') .
+type_arg(ssector25,value,'14','14') .
+type_arg(ssector25,name,'14','Tubos') .
+type_arg(ssector,cond,'26','=(sector,"26")') .
+type_arg(ssector,type,'26',ssector26) .
+type_arg(ssector26,value,'0','') .
+type_arg(ssector26,name,'0','_') .
+type_arg(ssector26,value,'1','1') .
+type_arg(ssector26,name,'1','Distribución mayorista') .
+type_arg(ssector26,value,'2','2') .
+type_arg(ssector26,name,'2','Distribución minorista o final') .
+type_arg(ssector26,value,'3','3') .
+type_arg(ssector26,name,'3','Fabricación') .
+type_arg(ssector,cond,'27','=(sector,"27")') .
+type_arg(ssector,type,'27',ssector27) .
+type_arg(ssector27,value,'0','') .
+type_arg(ssector27,name,'0','_') .
+type_arg(ssector27,value,'1','1') .
+type_arg(ssector27,name,'1','Aseguradores') .
+type_arg(ssector27,value,'2','2') .
+type_arg(ssector27,name,'2','Centros de día de cuidado hospitalario') .
+type_arg(ssector27,value,'3','3') .
+type_arg(ssector27,name,'3','Centros de día para ancianos') .
+type_arg(ssector27,value,'4','4') .
+type_arg(ssector27,name,'4','Centros penitenciarios') .
+type_arg(ssector27,value,'5','5') .
+type_arg(ssector27,name,'5','Funerarias') .
+type_arg(ssector27,value,'6','6') .
+type_arg(ssector27,name,'6','Hospitales') .
+type_arg(ssector27,value,'7','7') .
+type_arg(ssector27,name,'7','Otros servicios relacionados con la salud') .
+type_arg(ssector27,value,'8','8') .
+type_arg(ssector27,name,'8','Residencias de ancianos') .
+type_arg(ssector,cond,'28','=(sector,"28")') .
+type_arg(ssector,type,'28',ssector28) .
+type_arg(ssector28,value,'0','') .
+type_arg(ssector28,name,'0','_') .
+type_arg(ssector28,value,'1','1') .
+type_arg(ssector28,name,'1','Biotecnología de medicamentos') .
+type_arg(ssector28,value,'2','2') .
+type_arg(ssector28,name,'2','Distribuidores mayoristas') .
+type_arg(ssector28,value,'3','3') .
+type_arg(ssector28,name,'3','Distribuidores minoristas') .
+type_arg(ssector28,value,'4','4') .
+type_arg(ssector28,name,'4','Industria farmacéutica') .
+type_arg(ssector28,value,'5','5') .
+type_arg(ssector28,name,'5','Investigación y Desarrollo') .
+type_arg(ssector28,value,'6','6') .
+type_arg(ssector28,name,'6','Laboratorios farmacéuticos') .
+type_arg(ssector,cond,'29','=(sector,"29")') .
+type_arg(ssector,type,'29',ssector29) .
+type_arg(ssector29,value,'0','') .
+type_arg(ssector29,name,'0','_') .
+type_arg(ssector29,value,'1','1') .
+type_arg(ssector29,name,'1','Acuicultura') .
+type_arg(ssector29,value,'2','2') .
+type_arg(ssector29,name,'2','Distribuidor mayorista de materias primas') .
+type_arg(ssector29,value,'3','3') .
+type_arg(ssector29,name,'3','Elaboración intermedia de minerales') .
+type_arg(ssector29,value,'4','4') .
+type_arg(ssector29,name,'4','Explotación agrícola') .
+type_arg(ssector29,value,'5','5') .
+type_arg(ssector29,name,'5','Explotación agrícola y ganadera') .
+type_arg(ssector29,value,'6','6') .
+type_arg(ssector29,name,'6','Explotación de cotos de caza y pesca') .
+type_arg(ssector29,value,'7','7') .
+type_arg(ssector29,name,'7','Explotación ganadera') .
+type_arg(ssector29,value,'8','8') .
+type_arg(ssector29,name,'8','Explotación minera') .
+type_arg(ssector29,value,'9','9') .
+type_arg(ssector29,name,'9','Pesca') .
+type_arg(ssector29,value,'10','10') .
+type_arg(ssector29,name,'10','Producción de semillas') .
+type_arg(ssector29,value,'11','11') .
+type_arg(ssector29,name,'11','Selvicultura y explotación forestal') .
+type_arg(ssector29,value,'12','12') .
+type_arg(ssector29,name,'12','Servicios relacionados con ganadería, agricultura y pesca') .
+type_arg(ssector29,value,'13','13') .
+type_arg(ssector29,name,'13','Transformación de materias primas agricolas') .
+type_arg(ssector,cond,'30','=(sector,"30")') .
+type_arg(ssector,type,'30',ssector30) .
+type_arg(ssector30,value,'0','') .
+type_arg(ssector30,name,'0','_') .
+type_arg(ssector30,value,'1','1') .
+type_arg(ssector30,name,'1','Agencias de publicidad y relaciones públicas') .
+type_arg(ssector30,value,'2','2') .
+type_arg(ssector30,name,'2','Empresas de trabajo temporal y selección de personal') .
+type_arg(ssector30,value,'3','3') .
+type_arg(ssector30,name,'3','Otros servicios profesionales') .
+type_arg(ssector30,value,'4','4') .
+type_arg(ssector30,name,'4','Regalos de empresa') .
+type_arg(ssector30,value,'5','8') .
+type_arg(ssector30,name,'5','Servicios de Seguridad') .
+type_arg(ssector30,value,'6','5') .
+type_arg(ssector30,name,'6','Servicios de comidas y catering') .
+type_arg(ssector30,value,'7','6') .
+type_arg(ssector30,name,'7','Servicios de información comercial y financiera') .
+type_arg(ssector30,value,'8','7') .
+type_arg(ssector30,name,'8','Servicios de limpieza y mantenimiento de instalaciones') .
+type_arg(ssector30,value,'9','9') .
+type_arg(ssector30,name,'9','Servicios técnicos y de reparaciones') .
+type_arg(ssector30,value,'10','10') .
+type_arg(ssector30,name,'10','Suministros de oficina') .
+type_arg(ssector,cond,'31','=(sector,"31")') .
+type_arg(ssector,type,'31',ssector31) .
+type_arg(ssector31,value,'0','') .
+type_arg(ssector31,name,'0','_') .
+type_arg(ssector31,value,'1','1') .
+type_arg(ssector31,name,'1','Distribución mayorista de productos de tabaco') .
+type_arg(ssector31,value,'2','2') .
+type_arg(ssector31,name,'2','Distribución minorista de productos de tabaco') .
+type_arg(ssector31,value,'3','3') .
+type_arg(ssector31,name,'3','Elaboración de productos de tabaco') .
+type_arg(ssector31,value,'4','4') .
+type_arg(ssector31,name,'4','Producción primaria de tabaco') .
+type_arg(ssector,cond,'32','=(sector,"32")') .
+type_arg(ssector,type,'32',ssector32) .
+type_arg(ssector32,value,'0','') .
+type_arg(ssector32,name,'0','_') .
+type_arg(ssector32,value,'1','1') .
+type_arg(ssector32,name,'1','Biotecnología') .
+type_arg(ssector32,value,'2','2') .
+type_arg(ssector32,name,'2','Hardware e infraestructura IT') .
+type_arg(ssector32,value,'3','3') .
+type_arg(ssector32,name,'3','Software & servicios informáticos') .
+type_arg(ssector,cond,'33','=(sector,"33")') .
+type_arg(ssector,type,'33',ssector33) .
+type_arg(ssector33,value,'0','') .
+type_arg(ssector33,name,'0','_') .
+type_arg(ssector33,value,'1','1') .
+type_arg(ssector33,name,'1','Distribuidor de equipos e infraestructura') .
+type_arg(ssector33,value,'2','2') .
+type_arg(ssector33,name,'2','Distribuidor de servicios de telecomunicaciones') .
+type_arg(ssector33,value,'3','3') .
+type_arg(ssector33,name,'3','Fabricante de equipos e infraestructura') .
+type_arg(ssector,cond,'34','=(sector,"34")') .
+type_arg(ssector,type,'34',ssector34) .
+type_arg(ssector34,value,'0','') .
+type_arg(ssector34,name,'0','_') .
+type_arg(ssector34,value,'1','1') .
+type_arg(ssector34,name,'1','Acabado de textiles') .
+type_arg(ssector34,value,'2','2') .
+type_arg(ssector34,name,'2','Comercio minorista') .
+type_arg(ssector34,value,'3','3') .
+type_arg(ssector34,name,'3','Confección de prendas de cuero') .
+type_arg(ssector34,value,'4','4') .
+type_arg(ssector34,name,'4','Confección de prendas y otros') .
+type_arg(ssector34,value,'5','5') .
+type_arg(ssector34,name,'5','Distribución mayorista de productos de cuero semielaborados') .
+type_arg(ssector34,value,'6','6') .
+type_arg(ssector34,name,'6','Distribución mayorista de productos de cuero terminados') .
+type_arg(ssector34,value,'7','7') .
+type_arg(ssector34,name,'7','Distribución mayorista de productos textiles semielaborados') .
+type_arg(ssector34,value,'8','8') .
+type_arg(ssector34,name,'8','Distribución mayorista de productos textiles terminados') .
+type_arg(ssector34,value,'9','9') .
+type_arg(ssector34,name,'9','Fabricación de artículos de marroquinería, viaje y otros') .
+type_arg(ssector34,value,'10','10') .
+type_arg(ssector34,name,'10','Fabricación de calcetería y otros tejidos de punto') .
+type_arg(ssector34,value,'11','11') .
+type_arg(ssector34,name,'11','Fabricación de calzado') .
+type_arg(ssector34,value,'12','12') .
+type_arg(ssector34,name,'12','Fabricación de tejidos de punto') .
+type_arg(ssector34,value,'13','13') .
+type_arg(ssector34,name,'13','Fabricación de tejidos textiles') .
+type_arg(ssector34,value,'14','14') .
+type_arg(ssector34,name,'14','Otras industrias textiles') .
+type_arg(ssector34,value,'15','15') .
+type_arg(ssector34,name,'15','Otros artículos confeccionados con textiles excepto ropa') .
+type_arg(ssector34,value,'16','16') .
+type_arg(ssector34,name,'16','Preparación y teñido de pieles') .
+type_arg(ssector34,value,'17','17') .
+type_arg(ssector34,name,'17','Preparación, curtido y acabado de cuero') .
+type_arg(ssector34,value,'18','18') .
+type_arg(ssector34,name,'18','Preparado e hilado de fibras') .
+type_arg(ssector,cond,'35','=(sector,"35")') .
+type_arg(ssector,type,'35',ssector35) .
+type_arg(ssector35,value,'0','') .
+type_arg(ssector35,name,'0','_') .
+type_arg(ssector35,value,'1','1') .
+type_arg(ssector35,name,'1','Actividades anexas al transportes') .
+type_arg(ssector35,value,'2','2') .
+type_arg(ssector35,name,'2','Aeropuertos') .
+type_arg(ssector35,value,'3','3') .
+type_arg(ssector35,name,'3','Autopistas') .
+type_arg(ssector35,value,'4','4') .
+type_arg(ssector35,name,'4','Ferrocarriles') .
+type_arg(ssector35,value,'5','5') .
+type_arg(ssector35,name,'5','Otros tipos de transporte terrestre') .
+type_arg(ssector35,value,'6','6') .
+type_arg(ssector35,name,'6','Puertos') .
+type_arg(ssector35,value,'7','7') .
+type_arg(ssector35,name,'7','Transporte aéreo y espacial') .
+type_arg(ssector35,value,'8','8') .
+type_arg(ssector35,name,'8','Transporte marítimo') .
+type_arg(ssector35,value,'9','9') .
+type_arg(ssector35,name,'9','Transporte por carretera') .
+type_arg(ssector35,value,'10','10') .
+type_arg(ssector35,name,'10','Transporte por tubería') .
+type_arg(ssector,cond,'36','=(sector,"36")') .
+type_arg(ssector,type,'36',ssector36) .
+type_arg(ssector36,value,'0','') .
+type_arg(ssector36,name,'0','_') .
+type_arg(ssector36,value,'1','1') .
+type_arg(ssector36,name,'1','Agencia de viajes') .
+type_arg(ssector36,value,'2','2') .
+type_arg(ssector36,name,'2','Alquiler de coches') .
+type_arg(ssector36,value,'3','3') .
+type_arg(ssector36,name,'3','Centros de vacaciones') .
+type_arg(ssector36,value,'4','4') .
+type_arg(ssector36,name,'4','Compañías aéreas') .
+type_arg(ssector36,value,'5','5') .
+type_arg(ssector36,name,'5','Cruceros') .
+type_arg(ssector36,value,'6','6') .
+type_arg(ssector36,name,'6','Mayorista de viajes') .
+type_arg(ssector,cond,'37',[]) .
+type_arg(ssector,type,'37',ssector_) .
+type_arg(sssector,cond,'1','[=(sector,"1"), =(ssector,"1")]') .
+type_arg(sssector,type,'1',sssector1_1) .
+type_arg(sssector1_1,value,'0','') .
+type_arg(sssector1_1,name,'0','_') .
+type_arg(sssector1_1,value,'1','1') .
+type_arg(sssector1_1,name,'1','Alimentos básicos') .
+type_arg(sssector1_1,value,'2','2') .
+type_arg(sssector1_1,name,'2','Alimentos elaborados') .
+type_arg(sssector1_1,value,'3','3') .
+type_arg(sssector1_1,name,'3','Alimentos frescos') .
+type_arg(sssector1_1,value,'4','4') .
+type_arg(sssector1_1,name,'4','Bebidas alcohólicas') .
+type_arg(sssector1_1,value,'5','5') .
+type_arg(sssector1_1,name,'5','Bebidas no alcohólicas') .
+type_arg(sssector,cond,'2','[=(sector,"1"), =(ssector,"2")]') .
+type_arg(sssector,type,'2',sssector1_1) .
+type_arg(sssector,cond,'3','[=(sector,"1"), =(ssector,"3")]') .
+type_arg(sssector,type,'3',sssector1_3) .
+type_arg(sssector1_3,value,'0','') .
+type_arg(sssector1_3,name,'0','_') .
+type_arg(sssector1_3,value,'1','1') .
+type_arg(sssector1_3,name,'1','Aceites, grasas, margarinas') .
+type_arg(sssector1_3,value,'2','2') .
+type_arg(sssector1_3,name,'2','Aperitivos') .
+type_arg(sssector1_3,value,'3','3') .
+type_arg(sssector1_3,name,'3','Aves/conejo') .
+type_arg(sssector1_3,value,'4','4') .
+type_arg(sssector1_3,name,'4','Azúcar') .
+type_arg(sssector1_3,value,'5','5') .
+type_arg(sssector1_3,name,'5','Bebidas') .
+type_arg(sssector1_3,value,'6','6') .
+type_arg(sssector1_3,name,'6','Cacao, chocolate y confitería') .
+type_arg(sssector1_3,value,'7','7') .
+type_arg(sssector1_3,name,'7','Café, especias, preparados y otros') .
+type_arg(sssector1_3,value,'8','8') .
+type_arg(sssector1_3,name,'8','Carne') .
+type_arg(sssector1_3,value,'9','9') .
+type_arg(sssector1_3,name,'9','Cereales') .
+type_arg(sssector1_3,value,'10','10') .
+type_arg(sssector1_3,name,'10','Comida para animales') .
+type_arg(sssector1_3,value,'11','11') .
+type_arg(sssector1_3,name,'11','Congelados') .
+type_arg(sssector1_3,value,'12','12') .
+type_arg(sssector1_3,name,'12','Frutas y hortalizas') .
+type_arg(sssector1_3,value,'13','13') .
+type_arg(sssector1_3,name,'13','Helados') .
+type_arg(sssector1_3,value,'14','14') .
+type_arg(sssector1_3,name,'14','Molinería y almidones') .
+type_arg(sssector1_3,value,'15','15') .
+type_arg(sssector1_3,name,'15','Patatas') .
+type_arg(sssector1_3,value,'16','16') .
+type_arg(sssector1_3,name,'16','Pescado') .
+type_arg(sssector1_3,value,'17','17') .
+type_arg(sssector1_3,name,'17','Productos de panadería y pastelería de larga duración') .
+type_arg(sssector1_3,value,'18','18') .
+type_arg(sssector1_3,name,'18','Productos de panadería y pastelería frescos') .
+type_arg(sssector1_3,value,'19','19') .
+type_arg(sssector1_3,name,'19','Productos dietéticos, biológicos y especiales') .
+type_arg(sssector1_3,value,'20','20') .
+type_arg(sssector1_3,name,'20','Productos lácteos') .
+type_arg(sssector,cond,'4','[=(sector,"2"), =(ssector,"3")]') .
+type_arg(sssector,type,'4',sssector2_3) .
+type_arg(sssector2_3,value,'0','') .
+type_arg(sssector2_3,name,'0','_') .
+type_arg(sssector2_3,value,'1','1') .
+type_arg(sssector2_3,name,'1',cine) .
+type_arg(sssector2_3,value,'2','2') .
+type_arg(sssector2_3,name,'2','para CD-rom y similares') .
+type_arg(sssector2_3,value,'3','3') .
+type_arg(sssector2_3,name,'3','para Internet') .
+type_arg(sssector2_3,value,'4','4') .
+type_arg(sssector2_3,name,'4','para publicaciones escritas') .
+type_arg(sssector2_3,value,'5','5') .
+type_arg(sssector2_3,name,'5','para radio') .
+type_arg(sssector2_3,value,'6','6') .
+type_arg(sssector2_3,name,'6','para televisión') .
+type_arg(sssector2_3,value,'7','7') .
+type_arg(sssector2_3,name,'7','varios, otros') .
+type_arg(sssector,cond,'5','[=(sector,"4"), =(ssector,"1")]') .
+type_arg(sssector,type,'5',sssector4_1) .
+type_arg(sssector4_1,value,'0','') .
+type_arg(sssector4_1,name,'0','_') .
+type_arg(sssector4_1,value,'1','1') .
+type_arg(sssector4_1,name,'1','Alquiler de equipo de construcción sin operario') .
+type_arg(sssector4_1,value,'2','2') .
+type_arg(sssector4_1,name,'2','Alquiler equipo de construcción con operario') .
+type_arg(sssector4_1,value,'3','3') .
+type_arg(sssector4_1,name,'3','Construcción de autopistas, carreteras, campos de aterrizaje, vías férreas y campos deportivos') .
+type_arg(sssector4_1,value,'4','4') .
+type_arg(sssector4_1,name,'4','Construcción de cubiertas y estructuras de cerramiento') .
+type_arg(sssector4_1,value,'5','5') .
+type_arg(sssector4_1,name,'5','Construcción general de edificios y obras singulares de ingeniería civil') .
+type_arg(sssector4_1,value,'6','6') .
+type_arg(sssector4_1,name,'6','Demolición, movimientos de tierras, perforaciones y sondeos') .
+type_arg(sssector4_1,value,'7','7') .
+type_arg(sssector4_1,name,'7','Instalaciones y trabajos de acabado de edificios y obras') .
+type_arg(sssector4_1,value,'8','8') .
+type_arg(sssector4_1,name,'8','Obras hidráulicas') .
+type_arg(sssector4_1,value,'9','9') .
+type_arg(sssector4_1,name,'9','Otras construcciones especializadas') .
+type_arg(sssector,cond,'6','[=(sector,"4"), =(ssector,"2")]') .
+type_arg(sssector,type,'6',sssector4_2) .
+type_arg(sssector4_2,value,'0','') .
+type_arg(sssector4_2,name,'0','_') .
+type_arg(sssector4_2,value,'1','1') .
+type_arg(sssector4_2,name,'1','Cementos') .
+type_arg(sssector4_2,value,'2','2') .
+type_arg(sssector4_2,name,'2','Cementos especiales') .
+type_arg(sssector4_2,value,'3','3') .
+type_arg(sssector4_2,name,'3','Fabricación de artículos cerámicos') .
+type_arg(sssector4_2,value,'4','4') .
+type_arg(sssector4_2,name,'4','Fabricación de azulejos y baldosas de cerámica') .
+type_arg(sssector4_2,value,'5','5') .
+type_arg(sssector4_2,name,'5','Fabricación de cal y yeso') .
+type_arg(sssector4_2,value,'6','6') .
+type_arg(sssector4_2,name,'6','Fabricación de ladrillo, tejas y tierras cocidas') .
+type_arg(sssector4_2,value,'7','7') .
+type_arg(sssector4_2,name,'7','Fabricación y manipulación de vidrio') .
+type_arg(sssector4_2,value,'8','8') .
+type_arg(sssector4_2,name,'8','Industria de la piedra') .
+type_arg(sssector4_2,value,'9','9') .
+type_arg(sssector4_2,name,'9','Materiales de madera') .
+type_arg(sssector4_2,value,'10','10') .
+type_arg(sssector4_2,name,'10','Materiales derivados del plástico') .
+type_arg(sssector4_2,value,'11','11') .
+type_arg(sssector4_2,name,'11','Materiales metálicos') .
+type_arg(sssector4_2,value,'12','12') .
+type_arg(sssector4_2,name,'12','Otros materiales de construcción básicos') .
+type_arg(sssector4_2,value,'13','13') .
+type_arg(sssector4_2,name,'13','Otros materiales de construcción especiales') .
+type_arg(sssector,cond,'7','[=(sector,"5"), =(ssector,"1")]') .
+type_arg(sssector,type,'7',sssector5_1) .
+type_arg(sssector5_1,value,'0','') .
+type_arg(sssector5_1,name,'0','_') .
+type_arg(sssector5_1,value,'1','1') .
+type_arg(sssector5_1,name,'1','Asesoría contable') .
+type_arg(sssector5_1,value,'2','2') .
+type_arg(sssector5_1,name,'2','Asesoría financiera') .
+type_arg(sssector5_1,value,'3','3') .
+type_arg(sssector5_1,name,'3','Asesoría fiscal') .
+type_arg(sssector5_1,value,'4','4') .
+type_arg(sssector5_1,name,'4','Asesoría general') .
+type_arg(sssector5_1,value,'5','5') .
+type_arg(sssector5_1,name,'5','Asesoría jurídica') .
+type_arg(sssector5_1,value,'6','6') .
+type_arg(sssector5_1,name,'6','Gestorías') .
+type_arg(sssector5_1,value,'7','7') .
+type_arg(sssector5_1,name,'7','Intermediación en fusiones y adquisiciones de empresas') .
+type_arg(sssector,cond,'8','[=(sector,"5"), =(ssector,"3")]') .
+type_arg(sssector,type,'8',sssector5_3) .
+type_arg(sssector5_3,value,'0','') .
+type_arg(sssector5_3,name,'0','_') .
+type_arg(sssector5_3,value,'1','1') .
+type_arg(sssector5_3,name,'1','Consultoría creativa') .
+type_arg(sssector5_3,value,'2','2') .
+type_arg(sssector5_3,name,'2','Consultoría de calidad') .
+type_arg(sssector5_3,value,'3','3') .
+type_arg(sssector5_3,name,'3','Consultoría de ingeniería') .
+type_arg(sssector5_3,value,'4','4') .
+type_arg(sssector5_3,name,'4','Consultoría estratégica') .
+type_arg(sssector5_3,value,'5','5') .
+type_arg(sssector5_3,name,'5','Consultoría general') .
+type_arg(sssector5_3,value,'6','6') .
+type_arg(sssector5_3,name,'6','Consultoría informática y de Sistemas') .
+type_arg(sssector,cond,'9','[=(sector,"6"), =(ssector,"1")]') .
+type_arg(sssector,type,'9',sssector6_1) .
+type_arg(sssector6_1,value,'0','') .
+type_arg(sssector6_1,name,'0','_') .
+type_arg(sssector6_1,value,'1','1') .
+type_arg(sssector6_1,name,'1','Distribución') .
+type_arg(sssector6_1,value,'2','2') .
+type_arg(sssector6_1,name,'2','Fabricación') .
+type_arg(sssector,cond,'10','[=(sector,"6"), =(ssector,"3")]') .
+type_arg(sssector,type,'10',sssector6_1) .
+type_arg(sssector,cond,'11','[=(sector,"6"), =(ssector,"4")]') .
+type_arg(sssector,type,'11',sssector6_1) .
+type_arg(sssector,cond,'12','[=(sector,"6"), =(ssector,"5")]') .
+type_arg(sssector,type,'12',sssector6_1) .
+type_arg(sssector,cond,'13','[=(sector,"8"), =(ssector,"6")]') .
+type_arg(sssector,type,'13',sssector2_3) .
+type_arg(sssector,cond,'14','[=(sector,"10"), =(ssector,"1")]') .
+type_arg(sssector,type,'14',sssector10_1) .
+type_arg(sssector10_1,value,'0','') .
+type_arg(sssector10_1,name,'0','_') .
+type_arg(sssector10_1,value,'1','1') .
+type_arg(sssector10_1,name,'1','para electrodomésticos') .
+type_arg(sssector10_1,value,'2','2') .
+type_arg(sssector10_1,name,'2','para informática') .
+type_arg(sssector10_1,value,'3','3') .
+type_arg(sssector10_1,name,'3','para la industria en general') .
+type_arg(sssector10_1,value,'4','4') .
+type_arg(sssector10_1,name,'4','para telecomunicaciones') .
+type_arg(sssector,cond,'15','[=(sector,"10"), =(ssector,"2")]') .
+type_arg(sssector,type,'15',sssector10_2) .
+type_arg(sssector10_2,value,'0','') .
+type_arg(sssector10_2,name,'0','_') .
+type_arg(sssector10_2,value,'1','1') .
+type_arg(sssector10_2,name,'1','Distribuidor mayorista') .
+type_arg(sssector10_2,value,'2','2') .
+type_arg(sssector10_2,name,'2','Distribuidor minorista') .
+type_arg(sssector10_2,value,'3','3') .
+type_arg(sssector10_2,name,'3','Fabricante') .
+type_arg(sssector,cond,'16','[=(sector,"10"), =(ssector,"3")]') .
+type_arg(sssector,type,'16',sssector10_3) .
+type_arg(sssector10_3,value,'0','') .
+type_arg(sssector10_3,name,'0','_') .
+type_arg(sssector10_3,value,'1','1') .
+type_arg(sssector10_3,name,'1','Agendas electrónicas') .
+type_arg(sssector10_3,value,'2','2') .
+type_arg(sssector10_3,name,'2','Componentes de informática') .
+type_arg(sssector10_3,value,'3','3') .
+type_arg(sssector10_3,name,'3','Consumibles de informática') .
+type_arg(sssector10_3,value,'4','4') .
+type_arg(sssector10_3,name,'4','Desarrollo de software') .
+type_arg(sssector10_3,value,'5','6') .
+type_arg(sssector10_3,name,'5','Distribución de periféricos') .
+type_arg(sssector10_3,value,'6','7') .
+type_arg(sssector10_3,name,'6','Fabricación de periféricos') .
+type_arg(sssector10_3,value,'7','5') .
+type_arg(sssector10_3,name,'7','Ordenadores personales y servidores') .
+type_arg(sssector,cond,'17','[=(sector,"10"), =(ssector,"4")]') .
+type_arg(sssector,type,'17',sssector10_4) .
+type_arg(sssector10_4,value,'0','') .
+type_arg(sssector10_4,name,'0','_') .
+type_arg(sssector10_4,value,'1','1') .
+type_arg(sssector10_4,name,'1','Aparatos de telefonía fija') .
+type_arg(sssector10_4,value,'2','2') .
+type_arg(sssector10_4,name,'2','Aparatos de telefonía móvil') .
+type_arg(sssector10_4,value,'3','3') .
+type_arg(sssector10_4,name,'3','Centralitas') .
+type_arg(sssector10_4,value,'4','4') .
+type_arg(sssector10_4,name,'4','Otros equipos de telecomunicación') .
+type_arg(sssector,cond,'18','[=(sector,"12"), =(ssector,"6")]') .
+type_arg(sssector,type,'18',sssector12_6) .
+type_arg(sssector12_6,value,'0','') .
+type_arg(sssector12_6,name,'0','_') .
+type_arg(sssector12_6,value,'1','1') .
+type_arg(sssector12_6,name,'1','Deportes de alto riesgo') .
+type_arg(sssector12_6,value,'2','2') .
+type_arg(sssector12_6,name,'2','Otros deportes') .
+type_arg(sssector,cond,'19','[=(sector,"12"), =(ssector,"11")]') .
+type_arg(sssector,type,'19',sssector12_11) .
+type_arg(sssector12_11,value,'0','') .
+type_arg(sssector12_11,name,'0','_') .
+type_arg(sssector12_11,value,'1','1') .
+type_arg(sssector12_11,name,'1','Alta cocina') .
+type_arg(sssector12_11,value,'2','2') .
+type_arg(sssector12_11,name,'2','Bar/Restaurante') .
+type_arg(sssector12_11,value,'3','3') .
+type_arg(sssector12_11,name,'3','Catering') .
+type_arg(sssector12_11,value,'4','4') .
+type_arg(sssector12_11,name,'4','Comedores colectivos') .
+type_arg(sssector12_11,value,'5','5') .
+type_arg(sssector12_11,name,'5','Comida rápida') .
+type_arg(sssector12_11,value,'6','6') .
+type_arg(sssector12_11,name,'6','Restaurantes especializados') .
+type_arg(sssector,cond,'20','[=(sector,"13"), =(ssector,"1")]') .
+type_arg(sssector,type,'20',sssector13_1) .
+type_arg(sssector13_1,value,'0','') .
+type_arg(sssector13_1,name,'0','_') .
+type_arg(sssector13_1,value,'1','1') .
+type_arg(sssector13_1,name,'1','Envases y embalajes de Aluminio') .
+type_arg(sssector13_1,value,'2','2') .
+type_arg(sssector13_1,name,'2','Envases y embalajes de Cristal') .
+type_arg(sssector13_1,value,'3','3') .
+type_arg(sssector13_1,name,'3','Envases y embalajes de Madera') .
+type_arg(sssector13_1,value,'4','4') .
+type_arg(sssector13_1,name,'4','Envases y embalajes de Metal') .
+type_arg(sssector13_1,value,'5','6') .
+type_arg(sssector13_1,name,'5','Envases y embalajes de PET') .
+type_arg(sssector13_1,value,'6','5') .
+type_arg(sssector13_1,name,'6','Envases y embalajes de Papel y Cartón') .
+type_arg(sssector13_1,value,'7','7') .
+type_arg(sssector13_1,name,'7','Envases y embalajes de Plástico') .
+type_arg(sssector,cond,'21','[=(sector,"13"), =(ssector,"3")]') .
+type_arg(sssector,type,'21',sssector13_1) .
+type_arg(sssector,cond,'22','[=(sector,"14"), =(ssector,"2")]') .
+type_arg(sssector,type,'22',sssector14_2) .
+type_arg(sssector14_2,value,'0','') .
+type_arg(sssector14_2,name,'0','_') .
+type_arg(sssector14_2,value,'1','1') .
+type_arg(sssector14_2,name,'1','Albergues, refugios, campings y otros') .
+type_arg(sssector14_2,value,'2','2') .
+type_arg(sssector14_2,name,'2','Balnearios') .
+type_arg(sssector14_2,value,'3','3') .
+type_arg(sssector14_2,name,'3','Centros de vacaciones') .
+type_arg(sssector14_2,value,'4','4') .
+type_arg(sssector14_2,name,'4','Hoteles de lujo') .
+type_arg(sssector14_2,value,'5','5') .
+type_arg(sssector14_2,name,'5','Hoteles no urbanos') .
+type_arg(sssector14_2,value,'6','6') .
+type_arg(sssector14_2,name,'6','Hoteles urbanos') .
+type_arg(sssector14_2,value,'7','7') .
+type_arg(sssector14_2,name,'7','Moteles, hostales y pensiones') .
+type_arg(sssector,cond,'23','[=(sector,"14"), =(ssector,"3")]') .
+type_arg(sssector,type,'23',sssector12_11) .
+type_arg(sssector,cond,'24','[=(sector,"15"), =(ssector,"1")]') .
+type_arg(sssector,type,'24',sssector15_1) .
+type_arg(sssector15_1,value,'0','') .
+type_arg(sssector15_1,name,'0','_') .
+type_arg(sssector15_1,value,'1','1') .
+type_arg(sssector15_1,name,'1','papel y cartón') .
+type_arg(sssector15_1,value,'2','2') .
+type_arg(sssector15_1,name,'2','pasta papelera') .
+type_arg(sssector,cond,'25','[=(sector,"15"), =(ssector,"3")]') .
+type_arg(sssector,type,'25',sssector15_1) .
+type_arg(sssector,cond,'26','[=(sector,"16"), =(ssector,"1")]') .
+type_arg(sssector,type,'26',sssector6_1) .
+type_arg(sssector,cond,'27','[=(sector,"16"), =(ssector,"2")]') .
+type_arg(sssector,type,'27',sssector6_1) .
+type_arg(sssector,cond,'28','[=(sector,"16"), =(ssector,"3")]') .
+type_arg(sssector,type,'28',sssector6_1) .
+type_arg(sssector,cond,'29','[=(sector,"16"), =(ssector,"4")]') .
+type_arg(sssector,type,'29',sssector6_1) .
+type_arg(sssector,cond,'30','[=(sector,"16"), =(ssector,"5")]') .
+type_arg(sssector,type,'30',sssector6_1) .
+type_arg(sssector,cond,'31','[=(sector,"16"), =(ssector,"6")]') .
+type_arg(sssector,type,'31',sssector6_1) .
+type_arg(sssector,cond,'32','[=(sector,"16"), =(ssector,"7")]') .
+type_arg(sssector,type,'32',sssector6_1) .
+type_arg(sssector,cond,'33','[=(sector,"16"), =(ssector,"8")]') .
+type_arg(sssector,type,'33',sssector6_1) .
+type_arg(sssector,cond,'34','[=(sector,"16"), =(ssector,"9")]') .
+type_arg(sssector,type,'34',sssector6_1) .
+type_arg(sssector,cond,'35','[=(sector,"16"), =(ssector,"10")]') .
+type_arg(sssector,type,'35',sssector6_1) .
+type_arg(sssector,cond,'36','[=(sector,"17"), =(ssector,"1")]') .
+type_arg(sssector,type,'36',sssector6_1) .
+type_arg(sssector,cond,'37','[=(sector,"17"), =(ssector,"2")]') .
+type_arg(sssector,type,'37',sssector6_1) .
+type_arg(sssector,cond,'38','[=(sector,"17"), =(ssector,"3")]') .
+type_arg(sssector,type,'38',sssector6_1) .
+type_arg(sssector,cond,'39','[=(sector,"17"), =(ssector,"4")]') .
+type_arg(sssector,type,'39',sssector6_1) .
+type_arg(sssector,cond,'40','[=(sector,"17"), =(ssector,"5")]') .
+type_arg(sssector,type,'40',sssector6_1) .
+type_arg(sssector,cond,'41','[=(sector,"17"), =(ssector,"6")]') .
+type_arg(sssector,type,'41',sssector6_1) .
+type_arg(sssector,cond,'42','[=(sector,"17"), =(ssector,"7")]') .
+type_arg(sssector,type,'42',sssector6_1) .
+type_arg(sssector,cond,'43','[=(sector,"17"), =(ssector,"8")]') .
+type_arg(sssector,type,'43',sssector6_1) .
+type_arg(sssector,cond,'44','[=(sector,"17"), =(ssector,"9")]') .
+type_arg(sssector,type,'44',sssector6_1) .
+type_arg(sssector,cond,'45','[=(sector,"18"), =(ssector,"1")]') .
+type_arg(sssector,type,'45',sssector6_1) .
+type_arg(sssector,cond,'46','[=(sector,"18"), =(ssector,"2")]') .
+type_arg(sssector,type,'46',sssector6_1) .
+type_arg(sssector,cond,'47','[=(sector,"18"), =(ssector,"6")]') .
+type_arg(sssector,type,'47',sssector6_1) .
+type_arg(sssector,cond,'48','[=(sector,"18"), =(ssector,"7")]') .
+type_arg(sssector,type,'48',sssector6_1) .
+type_arg(sssector,cond,'49','[=(sector,"18"), =(ssector,"8")]') .
+type_arg(sssector,type,'49',sssector6_1) .
+type_arg(sssector,cond,'50','[=(sector,"18"), =(ssector,"9")]') .
+type_arg(sssector,type,'50',sssector6_1) .
+type_arg(sssector,cond,'51','[=(sector,"18"), =(ssector,"10")]') .
+type_arg(sssector,type,'51',sssector6_1) .
+type_arg(sssector,cond,'52','[=(sector,"18"), =(ssector,"11")]') .
+type_arg(sssector,type,'52',sssector6_1) .
+type_arg(sssector,cond,'53','[=(sector,"18"), =(ssector,"12")]') .
+type_arg(sssector,type,'53',sssector6_1) .
+type_arg(sssector,cond,'54','[=(sector,"18"), =(ssector,"13")]') .
+type_arg(sssector,type,'54',sssector6_1) .
+type_arg(sssector,cond,'55','[=(sector,"18"), =(ssector,"14")]') .
+type_arg(sssector,type,'55',sssector6_1) .
+type_arg(sssector,cond,'56','[=(sector,"18"), =(ssector,"15")]') .
+type_arg(sssector,type,'56',sssector6_1) .
+type_arg(sssector,cond,'57','[=(sector,"18"), =(ssector,"16")]') .
+type_arg(sssector,type,'57',sssector6_1) .
+type_arg(sssector,cond,'58','[=(sector,"18"), =(ssector,"17")]') .
+type_arg(sssector,type,'58',sssector6_1) .
+type_arg(sssector,cond,'59','[=(sector,"21"), =(ssector,"1")]') .
+type_arg(sssector,type,'59',sssector21_1) .
+type_arg(sssector21_1,value,'0','') .
+type_arg(sssector21_1,name,'0','_') .
+type_arg(sssector21_1,value,'1','1') .
+type_arg(sssector21_1,name,'1','ASP - horizontal') .
+type_arg(sssector21_1,value,'2','2') .
+type_arg(sssector21_1,name,'2','ASP - vertical') .
+type_arg(sssector,cond,'60','[=(sector,"21"), =(ssector,"2")]') .
+type_arg(sssector,type,'60',sssector21_2) .
+type_arg(sssector21_2,value,'0','') .
+type_arg(sssector21_2,name,'0','_') .
+type_arg(sssector21_2,value,'1','1') .
+type_arg(sssector21_2,name,'1','B2B - Bienes') .
+type_arg(sssector21_2,value,'2','2') .
+type_arg(sssector21_2,name,'2','B2B - Servicios') .
+type_arg(sssector21_2,value,'3','3') .
+type_arg(sssector21_2,name,'3','B2C') .
+type_arg(sssector,cond,'61','[=(sector,"21"), =(ssector,"3")]') .
+type_arg(sssector,type,'61',sssector21_3) .
+type_arg(sssector21_3,value,'0','') .
+type_arg(sssector21_3,name,'0','_') .
+type_arg(sssector21_3,value,'1','1') .
+type_arg(sssector21_3,name,'1','Acceso y servicios de Internet') .
+type_arg(sssector21_3,value,'2','2') .
+type_arg(sssector21_3,name,'2','Proveedor de acceso (solamente)') .
+type_arg(sssector21_3,value,'3','3') .
+type_arg(sssector21_3,name,'3','Servicios de Internet (sin acceso)') .
+type_arg(sssector,cond,'62','[=(sector,"21"), =(ssector,"4")]') .
+type_arg(sssector,type,'62',sssector21_4) .
+type_arg(sssector21_4,value,'0','') .
+type_arg(sssector21_4,name,'0','_') .
+type_arg(sssector21_4,value,'1','1') .
+type_arg(sssector21_4,name,'1','B2B - horizontal') .
+type_arg(sssector21_4,value,'2','2') .
+type_arg(sssector21_4,name,'2','B2B - vertical') .
+type_arg(sssector21_4,value,'3','3') .
+type_arg(sssector21_4,name,'3','B2C') .
+type_arg(sssector21_4,value,'4','4') .
+type_arg(sssector21_4,name,'4','C2C') .
+type_arg(sssector,cond,'63','[=(sector,"21"), =(ssector,"5")]') .
+type_arg(sssector,type,'63',sssector21_5) .
+type_arg(sssector21_5,value,'0','') .
+type_arg(sssector21_5,name,'0','_') .
+type_arg(sssector21_5,value,'1','1') .
+type_arg(sssector21_5,name,'1','Portal Horizontal o generalista') .
+type_arg(sssector21_5,value,'2','2') .
+type_arg(sssector21_5,name,'2','Portal Vertical o temático') .
+type_arg(sssector,cond,'64','[=(sector,"23"), =(ssector,"1")]') .
+type_arg(sssector,type,'64',sssector23_1) .
+type_arg(sssector23_1,value,'0','') .
+type_arg(sssector23_1,name,'0','_') .
+type_arg(sssector23_1,value,'1','1') .
+type_arg(sssector23_1,name,'1','Autobuses') .
+type_arg(sssector23_1,value,'2','2') .
+type_arg(sssector23_1,name,'2','Automóviles') .
+type_arg(sssector23_1,value,'3','3') .
+type_arg(sssector23_1,name,'3','Bicicletas, motocicletas y otros') .
+type_arg(sssector23_1,value,'4','4') .
+type_arg(sssector23_1,name,'4','Camiones') .
+type_arg(sssector23_1,value,'5','5') .
+type_arg(sssector23_1,name,'5','Componentes') .
+type_arg(sssector23_1,value,'6','6') .
+type_arg(sssector23_1,name,'6','Material ferroviario, aeronáutico y naval') .
+type_arg(sssector23_1,value,'7','7') .
+type_arg(sssector23_1,name,'7','Tractores y maquinaria agrícola') .
+type_arg(sssector23_1,value,'8','8') .
+type_arg(sssector23_1,name,'8','Vehículos especiales') .
+type_arg(sssector,cond,'65','[=(sector,"23"), =(ssector,"5")]') .
+type_arg(sssector,type,'65',sssector23_5) .
+type_arg(sssector23_5,value,'0','') .
+type_arg(sssector23_5,name,'0','_') .
+type_arg(sssector23_5,value,'1','1') .
+type_arg(sssector23_5,name,'1','Autobuses') .
+type_arg(sssector23_5,value,'2','2') .
+type_arg(sssector23_5,name,'2','Automóviles') .
+type_arg(sssector23_5,value,'3','3') .
+type_arg(sssector23_5,name,'3','Bicicletas') .
+type_arg(sssector23_5,value,'4','4') .
+type_arg(sssector23_5,name,'4','Camiones') .
+type_arg(sssector23_5,value,'5','5') .
+type_arg(sssector23_5,name,'5','Motocicletas') .
+type_arg(sssector23_5,value,'6','6') .
+type_arg(sssector23_5,name,'6','Otros') .
+type_arg(sssector23_5,value,'7','7') .
+type_arg(sssector23_5,name,'7','Tractores y maquinaria agrícola') .
+type_arg(sssector23_5,value,'8','8') .
+type_arg(sssector23_5,name,'8','Vehículos especiales') .
+type_arg(sssector,cond,'66','[=(sector,"23"), =(ssector,"6")]') .
+type_arg(sssector,type,'66',sssector23_5) .
+type_arg(sssector,cond,'67','[=(sector,"23"), =(ssector,"7")]') .
+type_arg(sssector,type,'67',sssector23_1) .
+type_arg(sssector,cond,'68','[=(sector,"24"), =(ssector,"1")]') .
+type_arg(sssector,type,'68',sssector24_1) .
+type_arg(sssector24_1,value,'0','') .
+type_arg(sssector24_1,name,'0','_') .
+type_arg(sssector24_1,value,'1','1') .
+type_arg(sssector24_1,name,'1','a través de Internet') .
+type_arg(sssector24_1,value,'2','2') .
+type_arg(sssector24_1,name,'2','a través de publicaciones escritas') .
+type_arg(sssector24_1,value,'3','3') .
+type_arg(sssector24_1,name,'3',cine) .
+type_arg(sssector24_1,value,'4','4') .
+type_arg(sssector24_1,name,'4','en CD-rom y similares') .
+type_arg(sssector24_1,value,'5','5') .
+type_arg(sssector24_1,name,'5','por radio') .
+type_arg(sssector24_1,value,'6','6') .
+type_arg(sssector24_1,name,'6','por televisión') .
+type_arg(sssector24_1,value,'7','7') .
+type_arg(sssector24_1,name,'7','varios, otros') .
+type_arg(sssector,cond,'69','[=(sector,"24"), =(ssector,"8")]') .
+type_arg(sssector,type,'69',sssector2_3) .
+type_arg(sssector,cond,'70','[=(sector,"25"), =(ssector,"1")]') .
+type_arg(sssector,type,'70',sssector6_1) .
+type_arg(sssector,cond,'71','[=(sector,"25"), =(ssector,"2")]') .
+type_arg(sssector,type,'71',sssector6_1) .
+type_arg(sssector,cond,'72','[=(sector,"25"), =(ssector,"3")]') .
+type_arg(sssector,type,'72',sssector6_1) .
+type_arg(sssector,cond,'73','[=(sector,"25"), =(ssector,"4")]') .
+type_arg(sssector,type,'73',sssector25_4) .
+type_arg(sssector25_4,value,'0','') .
+type_arg(sssector25_4,name,'0','_') .
+type_arg(sssector25_4,value,'1','1') .
+type_arg(sssector25_4,name,'1','Combustibles') .
+type_arg(sssector25_4,value,'2','2') .
+type_arg(sssector25_4,name,'2','Materiales de construcción') .
+type_arg(sssector25_4,value,'3','3') .
+type_arg(sssector25_4,name,'3','Materiales para la industria química y farmacéutica') .
+type_arg(sssector25_4,value,'4','4') .
+type_arg(sssector25_4,name,'4','Otros') .
+type_arg(sssector25_4,value,'5','5') .
+type_arg(sssector25_4,name,'5','Piedras y metales preciosos') .
+type_arg(sssector,cond,'74','[=(sector,"25"), =(ssector,"5")]') .
+type_arg(sssector,type,'74',sssector6_1) .
+type_arg(sssector,cond,'75','[=(sector,"25"), =(ssector,"6")]') .
+type_arg(sssector,type,'75',sssector25_6) .
+type_arg(sssector25_6,value,'0','') .
+type_arg(sssector25_6,name,'0','_') .
+type_arg(sssector25_6,value,'1','1') .
+type_arg(sssector25_6,name,'1','Otros minerales') .
+type_arg(sssector25_6,value,'2','2') .
+type_arg(sssector25_6,name,'2','Piedras y metales preciosos') .
+type_arg(sssector25_6,value,'3','3') .
+type_arg(sssector25_6,name,'3','Productos energéticos') .
+type_arg(sssector,cond,'76','[=(sector,"25"), =(ssector,"9")]') .
+type_arg(sssector,type,'76',sssector6_1) .
+type_arg(sssector,cond,'77','[=(sector,"25"), =(ssector,"10")]') .
+type_arg(sssector,type,'77',sssector6_1) .
+type_arg(sssector,cond,'78','[=(sector,"25"), =(ssector,"12")]') .
+type_arg(sssector,type,'78',sssector6_1) .
+type_arg(sssector,cond,'79','[=(sector,"25"), =(ssector,"14")]') .
+type_arg(sssector,type,'79',sssector6_1) .
+type_arg(sssector,cond,'80','[=(sector,"26"), =(ssector,"1")]') .
+type_arg(sssector,type,'80',sssector26_1) .
+type_arg(sssector26_1,value,'0','') .
+type_arg(sssector26_1,name,'0','_') .
+type_arg(sssector26_1,value,'1','1') .
+type_arg(sssector26_1,name,'1','Barnices, pinturas y revestimientos') .
+type_arg(sssector26_1,value,'2','2') .
+type_arg(sssector26_1,name,'2','Fibras artificiales y sintéticas') .
+type_arg(sssector26_1,value,'3','3') .
+type_arg(sssector26_1,name,'3','Gases, colorantes, abonos y otros') .
+type_arg(sssector26_1,value,'4','4') .
+type_arg(sssector26_1,name,'4','Jabones, detergentes y productos del hogar') .
+type_arg(sssector26_1,value,'5','5') .
+type_arg(sssector26_1,name,'5','Otros productos químicos') .
+type_arg(sssector26_1,value,'6','6') .
+type_arg(sssector26_1,name,'6','Pesticidas y agroquímicos') .
+type_arg(sssector26_1,value,'7','7') .
+type_arg(sssector26_1,name,'7','Polímeros y productos derivados') .
+type_arg(sssector26_1,value,'8','8') .
+type_arg(sssector26_1,name,'8','Productos abrasivos') .
+type_arg(sssector26_1,value,'9','9') .
+type_arg(sssector26_1,name,'9','Productos cosméticos') .
+type_arg(sssector26_1,value,'10','10') .
+type_arg(sssector26_1,name,'10','Productos químicos para la industria farmacéutica') .
+type_arg(sssector,cond,'81','[=(sector,"26"), =(ssector,"2")]') .
+type_arg(sssector,type,'81',sssector26_1) .
+type_arg(sssector,cond,'82','[=(sector,"26"), =(ssector,"3")]') .
+type_arg(sssector,type,'82',sssector26_1) .
+type_arg(sssector,cond,'83','[=(sector,"29"), =(ssector,"2")]') .
+type_arg(sssector,type,'83',sssector29_2) .
+type_arg(sssector29_2,value,'0','') .
+type_arg(sssector29_2,name,'0','_') .
+type_arg(sssector29_2,value,'1','1') .
+type_arg(sssector29_2,name,'1','Productos agrícolas') .
+type_arg(sssector29_2,value,'2','2') .
+type_arg(sssector29_2,name,'2','Productos de ganadería/acuicultura') .
+type_arg(sssector29_2,value,'3','3') .
+type_arg(sssector29_2,name,'3','Productos de minería') .
+type_arg(sssector,cond,'84','[=(sector,"29"), =(ssector,"3")]') .
+type_arg(sssector,type,'84',sssector25_4) .
+type_arg(sssector,cond,'85','[=(sector,"29"), =(ssector,"4")]') .
+type_arg(sssector,type,'85',sssector29_4) .
+type_arg(sssector29_4,value,'0','') .
+type_arg(sssector29_4,name,'0','_') .
+type_arg(sssector29_4,value,'1','1') .
+type_arg(sssector29_4,name,'1','Cereales') .
+type_arg(sssector29_4,value,'2','2') .
+type_arg(sssector29_4,name,'2','Flores') .
+type_arg(sssector29_4,value,'3','3') .
+type_arg(sssector29_4,name,'3','Frutas y hortalizas') .
+type_arg(sssector29_4,value,'4','4') .
+type_arg(sssector29_4,name,'4','Olivos') .
+type_arg(sssector29_4,value,'5','5') .
+type_arg(sssector29_4,name,'5','Patatas') .
+type_arg(sssector29_4,value,'6','6') .
+type_arg(sssector29_4,name,'6','Setas y hongos') .
+type_arg(sssector,cond,'86','[=(sector,"29"), =(ssector,"7")]') .
+type_arg(sssector,type,'86',sssector29_7) .
+type_arg(sssector29_7,value,'0','') .
+type_arg(sssector29_7,name,'0','_') .
+type_arg(sssector29_7,value,'1','1') .
+type_arg(sssector29_7,name,'1','Avícola y cunícola') .
+type_arg(sssector29_7,value,'2','2') .
+type_arg(sssector29_7,name,'2','Criadores de perros') .
+type_arg(sssector29_7,value,'3','3') .
+type_arg(sssector29_7,name,'3','Equino') .
+type_arg(sssector29_7,value,'4','4') .
+type_arg(sssector29_7,name,'4','Ganado bravo') .
+type_arg(sssector29_7,value,'5','5') .
+type_arg(sssector29_7,name,'5','Otros') .
+type_arg(sssector29_7,value,'6','6') .
+type_arg(sssector29_7,name,'6','Porcino') .
+type_arg(sssector29_7,value,'7','7') .
+type_arg(sssector29_7,name,'7','Vacuno') .
+type_arg(sssector,cond,'87','[=(sector,"29"), =(ssector,"8")]') .
+type_arg(sssector,type,'87',sssector25_6) .
+type_arg(sssector,cond,'88','[=(sector,"32"), =(ssector,"1")]') .
+type_arg(sssector,type,'88',sssector32_1) .
+type_arg(sssector32_1,value,'0','') .
+type_arg(sssector32_1,name,'0','_') .
+type_arg(sssector32_1,value,'1','1') .
+type_arg(sssector32_1,name,'1','Instrumentación de medición biotecnológica') .
+type_arg(sssector32_1,value,'2','2') .
+type_arg(sssector32_1,name,'2','Investigación bio-genética') .
+type_arg(sssector,cond,'89','[=(sector,"34"), =(ssector,"2")]') .
+type_arg(sssector,type,'89',sssector34_2) .
+type_arg(sssector34_2,value,'0','') .
+type_arg(sssector34_2,name,'0','_') .
+type_arg(sssector34_2,value,'1','1') .
+type_arg(sssector34_2,name,'1','Complementos textiles excepto ropa') .
+type_arg(sssector34_2,value,'2','2') .
+type_arg(sssector34_2,name,'2','Prendas de cuero') .
+type_arg(sssector34_2,value,'3','3') .
+type_arg(sssector34_2,name,'3','Prendas de ropa') .
+type_arg(sssector34_2,value,'4','4') .
+type_arg(sssector34_2,name,'4','Tejidos y otros artículos textiles') .
+type_arg(sssector,cond,'90',[]) .
+type_arg(sssector,type,'90',sssector_) .
+type_arg(ssssector,cond,'1','[=(sector,"1"), =(ssector,"3"), =(sssector,"5")]') .
+type_arg(ssssector,type,'1',ssssector1_3_5) .
+type_arg(ssssector1_3_5,value,'0','') .
+type_arg(ssssector1_3_5,name,'0','_') .
+type_arg(ssssector1_3_5,value,'1','1') .
+type_arg(ssssector1_3_5,name,'1','Elaboración de cerveza') .
+type_arg(ssssector1_3_5,value,'2','2') .
+type_arg(ssssector1_3_5,name,'2','Elaboración de sidra y otras bebidas fermentadas') .
+type_arg(ssssector1_3_5,value,'3','3') .
+type_arg(ssssector1_3_5,name,'3','Elaboración de vinos') .
+type_arg(ssssector1_3_5,value,'4','4') .
+type_arg(ssssector1_3_5,name,'4','Fabricación de licores y bebidas destiladas') .
+type_arg(ssssector1_3_5,value,'5','5') .
+type_arg(ssssector1_3_5,name,'5','Fabricación de malta') .
+type_arg(ssssector1_3_5,value,'6','6') .
+type_arg(ssssector1_3_5,name,'6','Producción de aguas minerales y bebidas no alcohólicas') .
+type_arg(ssssector,cond,'2','[=(sector,"5"), =(ssector,"3"), =(sssector,"6")]') .
+type_arg(ssssector,type,'2',ssssector5_3_6) .
+type_arg(ssssector5_3_6,value,'0','') .
+type_arg(ssssector5_3_6,name,'0','_') .
+type_arg(ssssector5_3_6,value,'1','1') .
+type_arg(ssssector5_3_6,name,'1','Consultora/Integradora de soluciones') .
+type_arg(ssssector5_3_6,value,'2','2') .
+type_arg(ssssector5_3_6,name,'2','Proveedor/Desarrollador de soluciones informáticas a medida') .
+type_arg(ssssector5_3_6,value,'3','3') .
+type_arg(ssssector5_3_6,name,'3','Soporte de Hardware/software') .
+type_arg(ssssector,cond,'3','[=(sector,"10"), =(ssector,"1"), =(sssector,"1")]') .
+type_arg(ssssector,type,'3',sssector10_2) .
+type_arg(ssssector,cond,'4','[=(sector,"10"), =(ssector,"1"), =(sssector,"2")]') .
+type_arg(ssssector,type,'4',sssector10_2) .
+type_arg(ssssector,cond,'5','[=(sector,"10"), =(ssector,"1"), =(sssector,"3")]') .
+type_arg(ssssector,type,'5',sssector10_2) .
+type_arg(ssssector,cond,'6','[=(sector,"10"), =(ssector,"1"), =(sssector,"4")]') .
+type_arg(ssssector,type,'6',sssector10_2) .
+type_arg(ssssector,cond,'7','[=(sector,"10"), =(ssector,"3"), =(sssector,"1")]') .
+type_arg(ssssector,type,'7',ssssector10_3_1) .
+type_arg(ssssector10_3_1,value,'0','') .
+type_arg(ssssector10_3_1,name,'0','_') .
+type_arg(ssssector10_3_1,value,'1','1') .
+type_arg(ssssector10_3_1,name,'1','Distribución de agendas electrónicas') .
+type_arg(ssssector10_3_1,value,'2','2') .
+type_arg(ssssector10_3_1,name,'2','Fabricación de agendas electrónicas') .
+type_arg(ssssector,cond,'8','[=(sector,"10"), =(ssector,"3"), =(sssector,"2")]') .
+type_arg(ssssector,type,'8',ssssector10_3_2) .
+type_arg(ssssector10_3_2,value,'0','') .
+type_arg(ssssector10_3_2,name,'0','_') .
+type_arg(ssssector10_3_2,value,'1','1') .
+type_arg(ssssector10_3_2,name,'1','Distribución de componentes de informática') .
+type_arg(ssssector10_3_2,value,'2','2') .
+type_arg(ssssector10_3_2,name,'2','Fabricación de componentes de informática') .
+type_arg(ssssector,cond,'9','[=(sector,"10"), =(ssector,"3"), =(sssector,"3")]') .
+type_arg(ssssector,type,'9',ssssector10_3_3) .
+type_arg(ssssector10_3_3,value,'0','') .
+type_arg(ssssector10_3_3,name,'0','_') .
+type_arg(ssssector10_3_3,value,'1','1') .
+type_arg(ssssector10_3_3,name,'1','Distribución de consumibles de informática') .
+type_arg(ssssector10_3_3,value,'2','2') .
+type_arg(ssssector10_3_3,name,'2','Fabricación de consumibles de informática') .
+type_arg(ssssector,cond,'10','[=(sector,"10"), =(ssector,"3"), =(sssector,"5")]') .
+type_arg(ssssector,type,'10',ssssector10_3_5) .
+type_arg(ssssector10_3_5,value,'0','') .
+type_arg(ssssector10_3_5,name,'0','_') .
+type_arg(ssssector10_3_5,value,'1','1') .
+type_arg(ssssector10_3_5,name,'1','Distribución de ordenadores personales y servidores') .
+type_arg(ssssector10_3_5,value,'2','2') .
+type_arg(ssssector10_3_5,name,'2','Fabricación de ordenadores personales y servidores') .
+type_arg(ssssector10_3_5,value,'3','3') .
+type_arg(ssssector10_3_5,name,'3','Periféricos de informática') .
+type_arg(ssssector,cond,'11','[=(sector,"10"), =(ssector,"4"), =(sssector,"1")]') .
+type_arg(ssssector,type,'11',sssector6_1) .
+type_arg(ssssector,cond,'12','[=(sector,"10"), =(ssector,"4"), =(sssector,"2")]') .
+type_arg(ssssector,type,'12',sssector6_1) .
+type_arg(ssssector,cond,'13','[=(sector,"10"), =(ssector,"4"), =(sssector,"3")]') .
+type_arg(ssssector,type,'13',sssector6_1) .
+type_arg(ssssector,cond,'14','[=(sector,"10"), =(ssector,"4"), =(sssector,"4")]') .
+type_arg(ssssector,type,'14',sssector6_1) .
+type_arg(ssssector,cond,'15','[=(sector,"21"), =(ssector,"1"), =(sssector,"1")]') .
+type_arg(ssssector,type,'15',ssssector21_1_1) .
+type_arg(ssssector21_1_1,value,'0','') .
+type_arg(ssssector21_1_1,name,'0','_') .
+type_arg(ssssector21_1_1,value,'1','1') .
+type_arg(ssssector21_1_1,name,'1','Analytical') .
+type_arg(ssssector21_1_1,value,'2','2') .
+type_arg(ssssector21_1_1,name,'2','Aplicaciones Personales') .
+type_arg(ssssector21_1_1,value,'3','3') .
+type_arg(ssssector21_1_1,name,'3','Colaboración y comunicaciones') .
+type_arg(ssssector21_1_1,value,'4','4') .
+type_arg(ssssector21_1_1,name,'4','E-commerce') .
+type_arg(ssssector21_1_1,value,'5','5') .
+type_arg(ssssector21_1_1,name,'5','Gestión de clientes y ventas') .
+type_arg(ssssector21_1_1,value,'6','6') .
+type_arg(ssssector21_1_1,name,'6','Gestión de contenidos') .
+type_arg(ssssector21_1_1,value,'7','7') .
+type_arg(ssssector21_1_1,name,'7','Herramientas de billing') .
+type_arg(ssssector21_1_1,value,'8','8') .
+type_arg(ssssector21_1_1,name,'8','Sistemas de información e infraestructura') .
+type_arg(ssssector21_1_1,value,'9','9') .
+type_arg(ssssector21_1_1,name,'9','Soluciones ERM') .
+type_arg(ssssector,cond,'16','[=(sector,"21"), =(ssector,"1"), =(sssector,"2")]') .
+type_arg(ssssector,type,'16',ssssector21_1_2) .
+type_arg(ssssector21_1_2,value,'0','') .
+type_arg(ssssector21_1_2,name,'0','_') .
+type_arg(ssssector21_1_2,value,'1','1') .
+type_arg(ssssector21_1_2,name,'1','De Consumo') .
+type_arg(ssssector21_1_2,value,'2','2') .
+type_arg(ssssector21_1_2,name,'2','Energía y Agua') .
+type_arg(ssssector21_1_2,value,'3','3') .
+type_arg(ssssector21_1_2,name,'3','Finanzas') .
+type_arg(ssssector21_1_2,value,'4','4') .
+type_arg(ssssector21_1_2,name,'4','Industrial') .
+type_arg(ssssector21_1_2,value,'5','5') .
+type_arg(ssssector21_1_2,name,'5','Salud') .
+type_arg(ssssector21_1_2,value,'6','6') .
+type_arg(ssssector21_1_2,name,'6','Servicios') .
+type_arg(ssssector21_1_2,value,'7','7') .
+type_arg(ssssector21_1_2,name,'7','Tecnología') .
+type_arg(ssssector21_1_2,value,'8','8') .
+type_arg(ssssector21_1_2,name,'8','Telecomunicaciones') .
+type_arg(ssssector,cond,'17','[=(sector,"21"), =(ssector,"2"), =(sssector,"1")]') .
+type_arg(ssssector,type,'17',ssssector21_2_1) .
+type_arg(ssssector21_2_1,value,'0','') .
+type_arg(ssssector21_2_1,name,'0','_') .
+type_arg(ssssector21_2_1,value,'1','1') .
+type_arg(ssssector21_2_1,name,'1','De consumo') .
+type_arg(ssssector21_2_1,value,'2','2') .
+type_arg(ssssector21_2_1,name,'2','Industrial') .
+type_arg(ssssector21_2_1,value,'3','3') .
+type_arg(ssssector21_2_1,name,'3','Salud') .
+type_arg(ssssector21_2_1,value,'4','4') .
+type_arg(ssssector21_2_1,name,'4','Tecnología') .
+type_arg(ssssector,cond,'18','[=(sector,"21"), =(ssector,"2"), =(sssector,"2")]') .
+type_arg(ssssector,type,'18',ssssector21_2_2) .
+type_arg(ssssector21_2_2,value,'0','') .
+type_arg(ssssector21_2_2,name,'0','_') .
+type_arg(ssssector21_2_2,value,'1','1') .
+type_arg(ssssector21_2_2,name,'1','Finanzas') .
+type_arg(ssssector21_2_2,value,'2','2') .
+type_arg(ssssector21_2_2,name,'2','Salud') .
+type_arg(ssssector21_2_2,value,'3','3') .
+type_arg(ssssector21_2_2,name,'3','Servicios generales a empresas') .
+type_arg(ssssector,cond,'19','[=(sector,"21"), =(ssector,"2"), =(sssector,"3")]') .
+type_arg(ssssector,type,'19',ssssector21_2_3) .
+type_arg(ssssector21_2_3,value,'0','') .
+type_arg(ssssector21_2_3,name,'0','_') .
+type_arg(ssssector21_2_3,value,'1','1') .
+type_arg(ssssector21_2_3,name,'1','Bienes') .
+type_arg(ssssector21_2_3,value,'2','2') .
+type_arg(ssssector21_2_3,name,'2','Servicios & software') .
+type_arg(ssssector,cond,'20','[=(sector,"21"), =(ssector,"4"), =(sssector,"1")]') .
+type_arg(ssssector,type,'20',ssssector21_4_1) .
+type_arg(ssssector21_4_1,value,'0','') .
+type_arg(ssssector21_4_1,name,'0','_') .
+type_arg(ssssector21_4_1,value,'1','1') .
+type_arg(ssssector21_4_1,name,'1','Administración') .
+type_arg(ssssector21_4_1,value,'2','2') .
+type_arg(ssssector21_4_1,name,'2','Educación') .
+type_arg(ssssector21_4_1,value,'3','3') .
+type_arg(ssssector21_4_1,name,'3','Equipamiento y suministros Industriales') .
+type_arg(ssssector21_4_1,value,'4','4') .
+type_arg(ssssector21_4_1,name,'4','Finanzas y Seguros') .
+type_arg(ssssector21_4_1,value,'5','5') .
+type_arg(ssssector21_4_1,name,'5','Publicidad y promociones') .
+type_arg(ssssector21_4_1,value,'6','6') .
+type_arg(ssssector21_4_1,name,'6','Recursos Humanos') .
+type_arg(ssssector21_4_1,value,'7','7') .
+type_arg(ssssector21_4_1,name,'7','Servicios Legales') .
+type_arg(ssssector21_4_1,value,'8','8') .
+type_arg(ssssector21_4_1,name,'8','Suministros de Oficina') .
+type_arg(ssssector21_4_1,value,'9','9') .
+type_arg(ssssector21_4_1,name,'9','Viajes') .
+type_arg(ssssector,cond,'21','[=(sector,"21"), =(ssector,"4"), =(sssector,"2")]') .
+type_arg(ssssector,type,'21',ssssector21_4_2) .
+type_arg(ssssector21_4_2,value,'0','') .
+type_arg(ssssector21_4_2,name,'0','_') .
+type_arg(ssssector21_4_2,value,'1','1') .
+type_arg(ssssector21_4_2,name,'1','De Consumo') .
+type_arg(ssssector21_4_2,value,'2','2') .
+type_arg(ssssector21_4_2,name,'2','Energía y Agua') .
+type_arg(ssssector21_4_2,value,'3','3') .
+type_arg(ssssector21_4_2,name,'3','Finanzas') .
+type_arg(ssssector21_4_2,value,'4','4') .
+type_arg(ssssector21_4_2,name,'4','Industrial') .
+type_arg(ssssector21_4_2,value,'5','5') .
+type_arg(ssssector21_4_2,name,'5','Salud') .
+type_arg(ssssector21_4_2,value,'6','6') .
+type_arg(ssssector21_4_2,name,'6','Tecnología') .
+type_arg(ssssector21_4_2,value,'7','7') .
+type_arg(ssssector21_4_2,name,'7','Telecomunicaciones') .
+type_arg(ssssector,cond,'22','[=(sector,"21"), =(ssector,"4"), =(sssector,"3")]') .
+type_arg(ssssector,type,'22',ssssector21_4_3) .
+type_arg(ssssector21_4_3,value,'0','') .
+type_arg(ssssector21_4_3,name,'0','_') .
+type_arg(ssssector21_4_3,value,'1','1') .
+type_arg(ssssector21_4_3,name,'1','Bienes') .
+type_arg(ssssector21_4_3,value,'2','2') .
+type_arg(ssssector21_4_3,name,'2','Servicios y software') .
+type_arg(ssssector,cond,'23','[=(sector,"21"), =(ssector,"4"), =(sssector,"4")]') .
+type_arg(ssssector,type,'23',ssssector21_4_4) .
+type_arg(ssssector21_4_4,value,'0','') .
+type_arg(ssssector21_4_4,name,'0','_') .
+type_arg(ssssector21_4_4,value,'1','1') .
+type_arg(ssssector21_4_4,name,'1','Bienes') .
+type_arg(ssssector,cond,'24','[=(sector,"21"), =(ssector,"5"), =(sssector,"2")]') .
+type_arg(ssssector,type,'24',ssssector21_5_2) .
+type_arg(ssssector21_5_2,value,'0','') .
+type_arg(ssssector21_5_2,name,'0','_') .
+type_arg(ssssector21_5_2,value,'1','1') .
+type_arg(ssssector21_5_2,name,'1','Empresas') .
+type_arg(ssssector21_5_2,value,'2','2') .
+type_arg(ssssector21_5_2,name,'2','Particulares') .
+type_arg(ssssector,cond,'25',[]) .
+type_arg(ssssector,type,'25',ssssector_) .

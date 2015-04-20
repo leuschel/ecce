@@ -1,0 +1,45 @@
+#!/bin/tcsh
+if ($?CIAOLIB) then
+ echo "BENCHMARK: new/destroy performance versus number of attributes"
+ echo "--------------------------------------------------------------"
+
+ cd $CIAOLIB/library/class/benchmarks/new/on_attr
+
+
+ echo "compiling..."
+
+ rm -f *.itf *.po
+ ciaoc main_on_attr
+
+ echo "benchmarking, please, wait..."
+
+ if ( -e ./bench ) then
+    'rm' ./bench
+ endif
+ 
+ main_on_attr 1 500 >bench
+ echo "completed 1/8"
+ main_on_attr 5 500 >>bench
+ echo "completed 2/8"
+ main_on_attr 10 500 >>bench
+ echo "completed 3/8"
+ main_on_attr 50 500 >>bench
+ echo "completed 4/8"
+ main_on_attr 100 500 >>bench
+ echo "completed 5/8"
+ main_on_attr 200 500 >>bench
+ echo "completed 6/8"
+ main_on_attr 350 500 >>bench
+ echo "completed 7/8"
+ main_on_attr 500 500 >>bench
+ echo "completed 8/8"
+
+ # main_on_attr >bench
+
+ echo
+ echo "generating report..."
+ echo
+
+ gnuplot psplot
+
+endif

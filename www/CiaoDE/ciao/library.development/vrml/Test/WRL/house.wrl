@@ -1,0 +1,32 @@
+#VRML V2.0 utf8
+
+
+
+#Viewpoint { position 0 1.5 20 }
+
+#Viewpoint { position 0 22 0 orientation 1 0 0 -1.5708 }
+
+Viewpoint { position 0 22 20 orientation 1 0 0 -0.7854 }
+
+
+
+Transform { translation   0 0  0.0 children Inline { url "living.wrl" } }
+
+Transform { translation  -8 0  3.5 children Inline { url "garage.wrl" } }
+
+Transform { translation -10 0 -3.5 children Inline { url "storage.wrl" } }
+
+Transform { translation  -6 0 -3.5 children Inline { url "workshop.wrl" } }
+
+Transform { translation  -2 0 -5.0 children Inline { url "alcove.wrl" } }
+
+Transform { translation 4.5 0 -5.0 children Inline { url "kitchen.wrl" } }
+
+Transform { translation 6.5 0 -1.5 children Inline { url "bathroom.wrl" } }
+
+Transform { translation 6.5 0  1.5 children Inline { url "closet.wrl" } }
+
+Transform { translation 2.5 0  5.0 children Inline { url "porch.wrl" } }
+
+
+

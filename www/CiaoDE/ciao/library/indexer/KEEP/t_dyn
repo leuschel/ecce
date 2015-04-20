@@ -1,0 +1,16 @@
+
+'** hash index **'(foo(A,B,C,D),t,E,'** foo/4 index 1 **'(F,E)):-
+    integer(D),
+    ground(C),
+    nonvar(A),
+    true
+    -> ( hash_term(C,G),
+         functor(A,H,I),
+	 hash_term(H,J)),
+	 F is\(D,\(G,J)
+	 )
+     ;  true.
+'** hash index **'(foo(A,B,C,D),t,E,'** foo/4 index 2 **'(D,E)):-
+    integer(D),
+    true->true;true.
+

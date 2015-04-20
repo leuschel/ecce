@@ -1,0 +1,3 @@
+1) In SHARED, add to STATOBJ the .o file to be included.
+2) In engine/Makefile, add a rule for that object.
+3) In addmodules.c, add calls to initialize that module.

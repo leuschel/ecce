@@ -1,0 +1,28 @@
+#VRML V2.0 utf8
+#Example 11.11 - TextureTransform - Translation Example
+NavigationInfo {
+  type "EXAMINE"
+}
+Viewpoint {
+  position  -1.995 1.668 4.105
+  orientation       -0.639 -0.754 -0.153  0.617
+  fieldOfView       0.785
+}
+Group {
+  children  Shape {
+    appearance  Appearance {
+      material     Material {
+        ambientIntensity  0.25
+        diffuseColor      0.8 0.8 0.8
+      }
+      texture ImageTexture {
+        url     "mandrill.jpg"
+      }
+      textureTransform TextureTransform {
+        translation 0.5 0.5
+      }
+    }
+    geometry Box { }
+  }
+}
+#EOF

@@ -1,0 +1,33 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+MAKING_SHARED_LIBRARIES on SunOS 4.1.x
+
+compile objects with "-pic" switch 
+
+Using Sun C: 
+
+     $ cc -pic -o socklib.o socklib.c
+
+Using GNU C: 
+
+     $ gcc -fPIC -o socklib.o socklib.c
+
+load, and specify the .so file, including version number (shared objects). 
+
+     $ ld -o libsock.so.1.0 -assert pure-text socklib.o
+
+create static archive for unshared objects containing exported
+initialized data (if necessary).
+
+      $ ar cr libsock.sa.1.0 $(UNSHAREDOBJS)
+      $ ranlib libsock.sa.1.0
+
+link hooks to shared library to main programs using: 
+
+      $ ld -o main main.o -Llibdirectory -lsock
+
+Ref: Sun FORTRAN User's Guide, pp 60-66 
+
+Last edited, Mon Mar 11 14:16:11 1996, edit by Will Rogers 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

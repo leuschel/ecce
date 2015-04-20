@@ -1,0 +1,3 @@
+?- launch_goal(append(X, Y, [1,2,3]), Id).
+
+?- backtrack_goal(Id). -> does not fail after a number of backtrackings

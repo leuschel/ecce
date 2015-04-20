@@ -1,0 +1,103 @@
+Standard:
+
+Queens: 17609 milliseconds
+Fibonacci: 3909 milliseconds
+Naïve exponential: 6859 milliseconds
+Divide-and-conquer exponential: 1259 milliseconds
+Wave building (arrays):   5240
+Wave processing (arrays): 5929
+Wave building (original):   520
+Wave processing (original): 4630
+
+---------------------------------------------------------------------------
+
+No checks for no number or no expression in NDEREF
+
+Queens: 18539 milliseconds
+Fibonacci: 3990 milliseconds
+Naïve exponential: 6939 milliseconds
+Divide-and-conquer exponential: 1129 milliseconds
+Wave building (arrays):   4800
+Wave processing (arrays): 6089
+Wave building (original):   530
+Wave processing (original): 4670
+
+---------------------------------------------------------------------------
+
+"Numeric" variables cannot be bound to expressions
+(Note: format/2 uses this internally!)
+
+Queens: [17790] milliseconds
+Fibonacci: [3859] milliseconds
+Naïve exponential: [6690] milliseconds
+Divide-and-conquer exponential: [1070] milliseconds
+Wave building (arrays): 4270 milliseconds
+Wave processing (arrays): 5789 milliseconds
+Wave building (original): 510 milliseconds
+Wave processing (original): 4540 milliseconds
+
+---------------------------------------------------------------------------
+
+NDEREF specialized (no error checking, so code to be executed on var)
+
+Queens: [17489] milliseconds
+Fibonacci: [3899] milliseconds
+Naïve exponential: [6939] milliseconds
+Divide-and-conquer exponential: [1270] milliseconds
+Wave building (arrays): 6129 milliseconds
+Wave processing (arrays): 5790 milliseconds
+Wave building (original): 540 milliseconds
+Wave processing (original): 4520 milliseconds
+
+---------------------------------------------------------------------------
+
+Further simplification of NDEREF (avoid use of intermediate variable)
+
+Queens: [17500] milliseconds
+Fibonacci: [3890] milliseconds
+Naïve exponential: [6600] milliseconds
+Divide-and-conquer exponential: [1260] milliseconds
+Wave building (arrays): 4880 milliseconds
+Wave processing (arrays): 5759 milliseconds
+Wave building (original): 519 milliseconds
+Wave processing (original): 4580 milliseconds
+
+---------------------------------------------------------------------------
+
+Removing unused variables in functions (because of the former NDEREF
+change).  This should leave more CPU registers free.
+
+Queens: [17609] milliseconds
+Fibonacci: [3850] milliseconds
+Naïve exponential: [6599] milliseconds
+Divide-and-conquer exponential: [1259] milliseconds
+Wave building (arrays): 4819 milliseconds
+Wave processing (arrays): 5880 milliseconds
+Wave building (original): 540 milliseconds
+Wave processing (original): 4559 milliseconds
+
+---------------------------------------------------------------------------
+
+Changed "do" loop to "while" loop in NDEREF
+
+Queens: [17410] milliseconds
+Fibonacci: [3859] milliseconds
+Naïve exponential: [6600] milliseconds
+Divide-and-conquer exponential: [1270] milliseconds
+Wave building (arrays): 4129 milliseconds
+Wave processing (arrays): 5889 milliseconds
+Wave building (original): 530 milliseconds
+Wave processing (original): 4479 milliseconds
+
+---------------------------------------------------------------------------
+
+arg/3 with less checks --- could not remove them all!  why?
+
+Queens: [17480] milliseconds
+Fibonacci: [3830] milliseconds
+Naïve exponential: [6559] milliseconds
+Divide-and-conquer exponential: [1060] milliseconds
+Wave building (arrays): 4359 milliseconds
+Wave processing (arrays): 5859 milliseconds
+Wave building (original): 549 milliseconds
+Wave processing (original): 4520 milliseconds

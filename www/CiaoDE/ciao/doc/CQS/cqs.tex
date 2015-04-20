@@ -1,0 +1,18 @@
+\documentclass{article}
+
+\begin{document}
+\begin{itemize}
+\item Module names should be specific enough. Do not use names as
+  'main', 'utilities', 'c'.  Files intended to be included can have more
+  general names, as for example 'ops.pl' the source where oprerators for
+  a package are defined.
+    Rationale:  Module names are global in an entire application.  Too general
+  names in libraries may clash with user-defined module names.
+\item Name of multifile predicates should be specific enough. Do not use
+  names as 'p', 'info', 'relation'.  If the multifile predicate is not
+  to be defined in user code, use names with a \texttt{\$}.
+    Rationale:  Names of multifile predicates are global in an entire
+  application.  Too general names in libraries may clash with
+  names of multifile predicates defined by the user or in other libraries.
+\end{itemize}
+\end{document}

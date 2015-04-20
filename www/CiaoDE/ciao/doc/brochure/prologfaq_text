@@ -1,0 +1,329 @@
+*** Ciao entry for FAQ 2:
+
+- Name     : Ciao 1.4
+  Platforms: Linux, Win32 (95/98/NT), Solaris, SunOS, UNIX in general.
+  Available: http://www.clip.dia.fi.upm.es/Software/Ciao
+  E-mail   : Developers: ciao@clip.dia.fi.upm.es (Users: ciao-users@clip...)
+  Info     : Next generation LP/CLP system. Commercial functionality,but 
+             freely available w/source. ISO-Prolog + modules, networking,
+             multi-threading, clp(r), clp(q), interfaces (Java, C, tcltk, WWW,
+             databases/ODBC, ...), functions, higher-order, records, 
+             persistence, objects, assertions (types, modes, ...), 
+             source debugger, auto-documenter, static debugger, and more. 
+
+*** Ciao, etc. entry for FAQ 4:
+
+Ciao, PiLLoW, WebDB, etc.:
+  Web site:     http://www.clip.dia.fi.upm.es/Software
+  Users' group: ciao-users at clip.dia.fi.upm.es
+  Information:  ciao at clip.dia.fi.upm.es
+  Tech support: ciao-bugs at clip.dia.fi.upm.es
+
+
+*** For the 'other developments' section (FAQ 6):
+
+Some other languages bring new developments while also supporting
+Prolog syntax and functionality as an option:
+
+Ciao:
+  Web site:     http://www.clip.dia.fi.upm.es/Software
+  Users' group: ciao-users at clip.dia.fi.upm.es
+  Information:  ciao at clip.dia.fi.upm.es
+  Tech support: ciao-bugs at clip.dia.fi.upm.es
+
+*** Finally, I think there is possibly a missing FAQ (I answer this
+    one on the list once every couple of weeks). I am sending also
+    some possible text to answer it:
+
+'Can do I do Internet/WWW programming with Prolog:'
+
+Prolog is very suitable for this task. Several commercial and free
+implementations include special support for it. A page specifically on
+this topic (including some tutorials) is maintained at
+http://www.clip.dia.fi.upm.es/lpnet/lpnet.html 
+A public-domain library exists (PiLLoW) for several popular Prolog
+systems which helps in the task. See:
+http://www.clip.dia.fi.upm.es/Software/pillow
+
+--------------------------------------------
+
+*** Other Prologs (description):
+
+- Name     : ALF (Algebraic Logic Functional language)
+  Platforms: UNIX
+  Available: Anonymous FTP from ftp.germany.eu.net,
+             directory "pub/programming/languages/LogicFunctional".
+  E-mail   : opalla at julien.informatik.uni-dortmund.de (Rudolf Opalla).
+  Info     : WAM-based language with narrowing/rewriting
+
+- Name     : Aquarius Prolog 1.0. 
+  Platforms: UNIX
+  Available: http://www.info.ucl.ac.be/people/PVR/aquarius.html 
+  Info     : High performance, commercial functionality except debugging 
+             and modules.
+
+- Name     : Argo Prolog v.1.1
+  Platforms: Solaris 1.x and HP-UX 9.x.
+  Available: Anonymous ftp from ftp.csk.co.jp, directory
+             "/pub/CSK/argo_prolog".  
+  Contact  : doi at csk.co.jp (Takao Doi).
+
+- Name     : B-Prolog 3.2
+  Platforms: Win32, Solaris, SunOS, UNIX, FreeBSD and Linux 
+  Available: http://www.cad.mse.kyutech.ac.jp/people/zhou/bprolog.html
+  E-mail   : zhou at mse.kyutech.ac.jp (Neng-Fa Zhou)
+  Info     : Freely available for non-commercial use. For other use a 
+             license is needed. 
+
+- Name     : BinProlog 7.0
+  Platforms: Windows 95/98/NT, Linux and all major Unix platforms.
+  Available: http://www.binnetcorp.com/BinProlog/
+  E-mail   : binnetcorp at binnetcorp.com (Paul Tarau)
+  Info     : Download free evaluation copies and see online demos. 
+             Inexpensive Educational licensing available.Has 
+             built-in networking, multi-threading, mobile code and
+             distributed blackboards. Supports BinNet Internet 
+             Programming Tool kit (see http://www.binnetcorp.com/Internet).
+
+- Name     : Brain Aid Prolog (BAP) v1.4
+  Platforms: Transputer systems
+  Available: http://www.comnets.rwth-aachen.de/~ost/private.html 
+  Info     : BAP is a parallel prolog system for Transputer systems. 
+             Available under a Berkely style of copyright. 
+
+- Name     : clp(FD)
+  Platforms: UNIX
+  Available: anonymous FTP from ftp.inria.fr, directory
+             "/INRIA/Projects/ChLoE/LOGIC_PROGRAMMING/clp_fd".
+  Contact  : daniel.diaz at inria.fr (Daniel Diaz).
+  Info     : Constraint logic programming over finite domains. Requires 
+             GNU C v.2.4.5 or higher. 
+
+- Name     : clp(FD,S)
+  Platforms: UNIX
+  Available: http://pauillac.inria.fr/~georget/clp_fds/clp_fds.html
+  Contact  : Yan.Georget at inria.fr (Yan Georget).
+  Info     : Requires GNU C (gcc) version 2.4.5. or higher.
+
+- Name     : CLP(R)
+  Platforms: UNIX
+  Available: e-mail request from Joxan Jaffar, "joxan at watson.ibm.com".
+  Info     : Constraint logic programming language, for academic and 
+             research purposes only.
+
+- Name     : ECLiPSe Constraint Logic Programming System, subsuming Prolog.
+  Platforms: Solaris, SunOS, Linux Windows NT
+  Available: http://www.icparc.ic.ac.uk/eclipse/
+  Info     : License required, but free for research and educational 
+             purposes.
+
+- Name     : GNU Prolog 1.0.0
+  Platforms: SunOS/sparc, Solaris/sparc and GNU/Linux/ix86. 
+  Available: Anonymous ftp from ftp.inria.fr,
+             directory /INRIA/Projects/loco/gnu-prolog/.
+  E-mail   : daniel.diaz at inria.fr (Daniel Diaz) 
+
+- Name     : Jinni 2.27
+  Platforms: Java-based
+  Available: http://www.binnetcorp.com/Jinni .
+  Info     : Multi-threaded, Java based Prolog interpreter with
+             built-in networking, distributed blackboards and 
+             mobile code (inexpensive shareware licensing available). 
+
+- Name     : KLIC
+  Platforms: UNIX
+  Available: Anonymous FTP from ftp.icot.or.jp, file name 
+             "/ifs/symbolic-proc/unix/klic/klic.tgz". 
+  Info     : ICOT Free Software.  Concurrent logic programming. Tested on 
+             Sparcs, DEC 7000, Gateway P5-60.
+  Contact  : ifs at icot.or.jp
+
+- Name     : Logtalk 2.4.0
+  Platforms: Prolog pre-processor for any Operating System
+  Available: http://www.ci.uc.pt/logtalk/logtalk.html
+  E-mail   : pmoura at noe.ubi.pt (Paulo Moura)
+  Info     : Open source object-oriented extension to Prolog
+             available under Perl's Artisitc license.
+             Compatible with most Prolog compilers.
+
+- Name     : LPA MacProlog, demo version
+  Platforms: Apple Macintosh
+  Available: Anonymous FTP from aisun1.ai.uga.edu, directory ai.prolog
+             download "Contents" first.
+  
+- Name     : Mercury v0.8.1
+  Platforms: Runs on Solaris, SunOS, IRIX 5.x, HPUX, ULTRIX, AIX, Linux and
+             Windows 95.
+  Available: Anonymous ftp from turiel.cs.mu.oz.au, directory 
+             "/pub/mercury".  
+  Info     : http://www.cs.mu.oz.au/mercury.
+
+- Name     : Modular SB-Prolog (= SB-Prolog version 3.1 plus modules)
+  Platforms: SPARC, DECstation, MIPS, HP 9000 series, Sun 3.
+  Available: Anonymous FTP from ftp.dcs.ed.ac.uk (129.215.160.5)
+  Info     : Copy-lefted.
+
+- Name     : Newt Prolog
+  Platforms: Apple MessagePad Newton
+  Available: Currently only beta version available; download and 
+             more information on http://www.cfht.hawaii.edu/~jlv.
+  E-mail   : jlv at cfht.hawaii.edu
+
+- Name     : Open Prolog
+  Platforms: Apple Macintosh
+  Available: Anonymous FTP from its home site: ftp.cs.tcd.ie,
+             directory pub/languages/open-prolog. Also available from 
+             sumex-aim.stanford.edu, directory info-mac/Development.
+  E-mail   : brady at cs.tcd.ie (Michael Brady).
+
+- Name     : PIE2 
+  Platforms: Unknown
+  Available: On CompuServe in the AIEXPERT forum, interpreter and examples 
+             in PIE2.ZIP, documentation in PIEDOC.ZIP.  
+  E-mail   : ruggles at shell.com (Brent Ruggles).
+
+- Name     : Strawberry Prolog
+  Platforms: Windows 95/NT, plans for UNIX and Macintosh
+  Available: http://www.dobrev.com/
+  E-mail   : dimiter at dobrev.com
+
+- Name     : SWI Prolog
+  Platforms: UNIX, Windows 95/98/NT; poorly maintained: DOS, Amiga, OS/2
+             and others
+  Available: http://www.swi.psy.uva.nl/projects/SWI-Prolog/
+             Anonymous FTP from swi.psy.uva.nl (145.18.114.17),
+             directory pub/SWI-Prolog; or from ftp.th-darmstadt.de
+             (130.83.55.75), directory pub/programming/languages/prolog.
+  Info     : Distributed as source with binaries for some platforms. Free 
+             for educational and research usage. Portable, copy-lefted.
+
+- Name     : TPM (the Transparent Prolog Machine)
+  Platforms: Apple Macintosch
+  Available: Anonymous FTP from hcrl.open.ac.uk, directory /pub/software.
+  Info     : Demo LPA MacProlog with the TPM debugger built on top.
+
+- Name     : Trinc-Prolog 
+  Platforms: Window 95/98/NT 4.0, plans for Window 2000, Linux and Sun
+             Solaris
+  Available: http://www.trinc-prolog.com/
+  E-mail   : info at trinc-prolog.com
+
+- Name     : UPMAIL Tricia Prolog 
+  Platforms: Apple Macintosh
+  Available: Anonymous FTP from ftp.csd.uu.se (130.238.12.1), directory 
+             pub/Tricia; get README first.
+  Info     : UPMAIL is still available, but unsupported.
+
+- Name     : Visual Prolog 
+  Platforms: Win16/32, OS/2, Linux and SCO Unix
+  Available: http://www.visual-prolog.com and http://www.pdc.dk/vip
+  Info     : Includes all the facilities necessary to write mission
+             critical commercial-grade applications. Fully visual develop-
+             ment environment. Open architecture. Built-in database system 
+             and ODBC support. Visual Prolog Personal Edition is available
+             on a freeware license.
+
+- Name     : wamcc
+  Platforms: UNIX
+  Available: Anonymous FTP from ftp.inria.fr, directory
+             "/INRIA/Projects/ChLoE/LOGIC_PROGRAMMING/wamcc".
+  Info     : Compiler which translates Prolog to C via WAM.  Debuggers.  
+             Requires GNU C v.2.4.5 or higher.
+  Contact  : daniel.diaz at inria.fr (Daniel Diaz).
+
+- Name     : XSB
+  Platforms: Many, including SunOS, Linux and Windows
+  Available: Anonymous FTP from ftp.cs.sunysb.edu (130.245.1.40)
+             directory pub/XSB
+  E-mail   : xsb-contact at cs.sunysb.edu
+  Info     : system with SLG-resolution, HiLog syntax, and unification
+             factoring.
+
+- Name     : Yap 4.2.0
+  Platforms: UNIX-based platforms and Windows
+  Available: http://www.ncc.up.pt/~vsc/Yap/
+  E-mail   : vsc at ncc.up.pt (Vitor Santos Costa)
+  Info     : Yap is entirely written in C and Prolog and should be 
+             portable to most 32-bit and 64-bit Unix based platforms. 
+             A Windows port is also available. Yap4.2 is distributed 
+             under Perl's artistic license and can be freely
+  distributed.
+
+------
+
+*** Other Prologs (support):
+
+ALS (Applied Logic Systems): 
+  Information:  info at als.com
+  Sales:        sales at als.com
+  Tech support: support at als.com
+
+Amzi! inc.:
+  Information:  info at amzi.com
+  Sales:        sales at amzi.com
+  Support:      support at amzi.com
+
+BinNet Corporation:
+  Information:  info at binnetcorp.com
+  Sales:        sales at binnetcorp.com
+  Tech support: support at binnetcorp.com
+  Web site:     http://www.binnetcorp.com
+
+
+COSYTEC (CHIP V4):
+  Information:  cosytec at cosytec.fr
+  Support:      help at cosytec.fr
+
+ECLiPSe and Sepia:
+  Users' group: eclipse-users at icparc.ic.ac.uk
+  Information:  eclipse-request at icparc.ic.ac.uk
+  Tech support: eclipse-bugs at icparc.ic.ac.uk
+  Web site:     http://www.icparc.ic.ac.uk/eclipse
+
+Expert Systems Ltd. (Prolog-2):
+  Sales:        sales at expert.demon.co.uk
+  Support:      support at expert.demon.co.uk
+  Users' group: prolog2-request at hplb.hpl.hp.com
+
+GNU Prolog
+  Users' group: users-prolog-request at gnu.org
+  Bug reports:  bug-prolog at gnu.org
+  Web site:     http://pauillac.inria.fr/~diaz/gnu-prolog
+
+LPA:
+  Sales:        sales at lpa.co.uk
+  Tech support: support at lpa.co.uk
+  Web site:     http://www.lpa.co.uk/
+
+PDC Prolog:
+  PDC Prolog is the succesor to Turbo Prolog and the predecessor to
+  Visual Prolog. below).
+
+ProLog by BIM:
+  Contact:      prolog at bim.be (Kathleen Pierco)
+  Users' group: prolog-users-request at bim.be
+
+Quintus:
+  Users' group: quintus-users-request at sics.se
+  Sales:        qpsales at sics.se
+  Tech support: qpsupport at sics.se
+
+SICStus:
+  Users' group: sicstus-users-request at sics.se
+  Sales:        sicstus-request at sics.se
+  Tech support: sicstus-support at sics.se
+
+Trinc / Trinc-Prolog:
+  Information:  info at trinc-prolog.com
+  Sales:        sales at trinc-prolog.com
+  Support:      support at trinc-prolog.com
+
+Turbo Prolog:
+  Turbo Prolog is the predecessor of PDC Prolog (see above).
+
+Visual Prolog:
+  Information:  sales at pdc.dk (or sales at visual-prolog.com)
+  Sales:        sales at pdc.dk (or sales at visual-prolog.com)
+  Tech support: support at pdc.dk (or support at visual-prolog.com)
+  Web site:     http://www.visual-prolog.com/
+

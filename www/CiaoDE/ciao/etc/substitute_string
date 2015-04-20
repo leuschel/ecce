@@ -1,0 +1,19 @@
+#!/bin/sh
+
+command=$0
+substs=
+
+while [ -n "$4" ]; do
+  substs=${substs}" -e 's:$1:$2:g'"
+  shift 2
+done
+
+if [ -n "$3" -o -z "$substs" ]; then
+  echo "Usage: $command text1 subst1 text2 subst2 ... infile outfile"
+  exit 1
+fi
+
+# Override shell clobbering
+/bin/rm -f $2
+
+eval "sed $substs < '$1' > '$2'"

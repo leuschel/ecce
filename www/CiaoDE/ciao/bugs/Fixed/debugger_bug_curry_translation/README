@@ -1,0 +1,11 @@
+This code (provided Emilio Jesús Gallego Arias
+<egallego@babel.ls.fi.upm.es>) raises an error in the debugger.  
+
+1.- Load 'debugger_error.pl' in trace mode.
+2.- Call main/0.
+3.- Step on the debugger.  The 13th call, after the one printed as
+    "6  6  Call: user:tohnf(apply_list(..." hangs, and it aborts after
+    a while (with a "Memory allocated out of addressable bounds" error).
+
+The program works if called if tracing is not enabled.  It happens
+both in ciao-1.11 and ciao-1.10.

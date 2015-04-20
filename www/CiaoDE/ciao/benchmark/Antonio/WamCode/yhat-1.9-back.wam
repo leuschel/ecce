@@ -1,0 +1,18 @@
+clause(/(/(yHat,4),1), 
+   [builtin_2(35,2,1)
+   ,cutb
+   ,neck(4)
+   ,allocate
+   ,get_y_variable(0,3)
+   ,get_x_variable(3,2)
+   ,get_x_variable(2,1)
+   ,put_constant(0,1)
+   ,put_y_variable(1,4)
+   ,init([])
+   ,call(/(yHATloop,5),2)
+   ,put_y_value(1,0)
+   ,function_1(0,0,0,0,1)
+   ,get_y_value(0,0)
+   ,deallocate
+   ,execute(/(true,0))]).
+

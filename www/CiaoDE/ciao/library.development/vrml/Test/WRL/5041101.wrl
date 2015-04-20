@@ -1,0 +1,46 @@
+#VRML V2.0 utf8
+#Example 11.1 - Textures with Materials
+NavigationInfo {
+  type "EXAMINE"
+}
+Viewpoint {
+  position   0 0 8
+  orientation       0 0 1  0
+  fieldOfView       0.785398
+}
+Group {
+  children   [
+    Transform {
+      children Shape {       # Cube with texture but no material
+        appearance Appearance {
+        texture    ImageTexture {
+          url      "wood-1.jpg"
+          }
+        }
+        geometry   Box {
+        }
+      }
+      translation -2 0 0
+    }
+    Transform {
+      children Shape {           # Cube with texture and material
+        appearance  Appearance {
+          material  Material {
+            ambientIntensity    0.2
+            diffuseColor  0.8 0.5 0.15
+            specularColor 0.3 0.1 0
+            shininess     0.8
+          }
+          texture   ImageTexture {
+            url     "wood-1.jpg"
+          }
+        }
+        geometry    Box {
+        }
+      }
+      translation   2 0 0
+    }
+  ]
+}
+#EOF
+

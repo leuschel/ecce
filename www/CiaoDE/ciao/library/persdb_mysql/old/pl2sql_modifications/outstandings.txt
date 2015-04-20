@@ -1,0 +1,7 @@
+- Now a long string can be specified in the first argument of pl2sql
+  (ProjectionTerm). In the translation appears as 
+		    attribute ='the long string in question ...'
+
+  To check what happens in the database server side if the string contains
+  apostrophes not duplicated '
+

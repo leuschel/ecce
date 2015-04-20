@@ -1,0 +1,10 @@
+use_module(library(system)).
+cd('/home/clip/Systems/lpdoc-1.9/src').
+use_module(dirs_auto).
+debug_module(autodoc).
+debug_module(lpdoc).
+trace_lines.
+trace.
+use_module(lpdoc).
+handle_args(['-l','/home/clip/Systems/ciao/..','/home/clip/Systems/ciao/emacs-mode','/home/clip/Systems/ciao/emacs-mode/doc','/home/clip/Systems/ciao/doc/common','/home/clip/Systems/ciao','-s','/home/clip/Systems/ciao/lib','/home/clip/Systems/ciao/lib/engine','/home/clip/Systems/ciao/lib/assertions','/home/clip/Systems/ciao/lib/metatypes','/home/clip/Systems/ciao/lib/regtypes','/home/clip/Systems/ciao/lib/foreign_interface','/home/clip/Systems/ciao/library','/home/clip/Systems/ciao/library/actmods','/home/clip/Systems/ciao/library/assertions','/home/clip/Systems/ciao/library/bf','/home/clip/Systems/ciao/library/builtintables','/home/clip/Systems/ciao/library/byrdbox','/home/clip/Systems/ciao/library/class','/home/clip/Systems/ciao/library/interface','/home/clip/Systems/ciao/library/clpqr_src','/home/clip/Systems/ciao/library/file_locks','/home/clip/Systems/ciao/library/fly','/home/clip/Systems/ciao/library/functions','/home/clip/Systems/ciao/library/graphs','/home/clip/Systems/ciao/library/javall','/home/clip/Systems/ciao/library/librowser','/home/clip/Systems/ciao/library/math','/home/clip/Systems/ciao/library/objects','/home/clip/Systems/ciao/library/objects/examples','/home/clip/Systems/ciao/library/class','/home/clip/Systems/ciao/library/class/examples','/home/clip/Systems/ciao/library/persdb','/home/clip/Systems/ciao/library/persdb/examples','/home/clip/Systems/ciao/library/persdb_sql','/home/clip/Systems/ciao/library/persdb_sql/InfoFiles','/home/clip/Systems/ciao/library/pillow','/home/clip/Systems/ciao/library/random','/home/clip/Systems/ciao/library/sockets','/home/clip/Systems/ciao/library/tcltk','/home/clip/Systems/ciao/library/tracing','/home/clip/Systems/ciao/library/graphs','/home/clip/Systems/ciao/library/xrefs/doc','/home/clip/Systems/ciao/library/andprolog','/home/clip/Systems/ciao/contrib','-i','concept','usage','-u','-p','1','-main','CiaoMode.pl']).
+a

@@ -1,0 +1,54 @@
+#VRML V2.0 utf8
+#Example 11.8 - MovieTexture - stopTime from script node
+NavigationInfo {
+  type	"EXAMINE"
+}
+Viewpoint {
+  position  -1.995 1.668 4.105
+  orientation       -0.639 -0.754 -0.153  0.617
+  fieldOfView       0.785
+}
+Group {
+  children  [
+    DEF Start_Movie TouchSensor {
+    }
+    Shape {
+      appearance    Appearance {
+        material        Material {
+          ambientIntensity      0.25
+          diffuseColor  0.8 0.8 0.8
+          shininess     0.2
+        }
+        texture      DEF Test_Movie MovieTexture {
+          url       "pyro.mps"
+          loop      TRUE
+          startTime 0
+          stopTime  1
+        }
+      }
+      geometry      Box {
+      }
+    }
+    Sound {
+      source      USE Test_Movie
+      minFront    8
+      maxFront    20
+      minBack     5
+      maxBack     15
+    }
+    DEF Stop_It Script {      # Stop Movie after 6 seconds
+      eventOut     SFTime      stopTime_changed
+      eventIn      SFTime      set_startTime
+      url    "javascript:function set_startTime(value) { stopTime_changed = value + 6; }"
+    }
+  ]
+}
+ROUTE Start_Movie.touchTime TO Stop_It.set_startTime
+ROUTE Start_Movie.touchTime TO Test_Movie.set_startTime
+ROUTE Stop_It.stopTime_changed TO Test_Movie.set_stopTime
+#EOF
+
+
+
+
+

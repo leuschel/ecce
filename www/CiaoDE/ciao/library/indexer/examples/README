@@ -1,0 +1,5 @@
+
+These examples just give a flavour of the behaviour of the indexer package.
+
+t.pl     is a (very) simple program
+t_out.pl is the resulting expanded code

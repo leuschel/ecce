@@ -1,0 +1,15 @@
+
+@cindex{emacs, download}
+@cindex{downloading emacs}
+
+The emacs editor (in all its versions: Un*x, Windows, etc.) can be
+downloaded from, for example, @uref{http://www.emacs.org/}, and also
+from the many GNU mirror sites worldwide (See
+@uref{http://www.gnu.org/} for a list), in the @tt{gnu/emacs} and
+@tt{gnu/windows/emacs} directories.   You can
+find answers to frequently asked questions (FAQ) about @apl{emacs} in
+general at @uref{http://www.gnu.org/software/emacs/emacs-faq.text} and
+about the Windows version at
+@uref{http://www.gnu.org/software/emacs/windows/ntemacs.html} (despite
+the @apl{ntemacs} name it runs fine also as is on Win9X and Win2000
+machines).

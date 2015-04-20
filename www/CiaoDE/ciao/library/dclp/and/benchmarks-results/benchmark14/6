@@ -1,0 +1,330 @@
+in(5,[5,4])
+in(4,[5,4])
+[[2|10]]
+[[0|8]]
+local_store(6,[x(5,_767,_767),x(4,_821,_821)])
+do_agent(6)
+received(msg(6,1,marker(0)))
+not_source
+not_quiescent(6,1,0)
+quiescence_detector_launched
+do_agent(6)
+received(msg(6,5,ok?(a([x(5,_1015,_1015),x(3,_969,_969)]))))
+ack(ok?(a([x(5,_1015,_1015),x(3,_969,_969)])))
+newParent
+asserted(parent(6,5))
+ok?(a(5,[x(5,_1015,_1015),x(3,_969,_969)]))
+b
+checking_agent_view(6)
+[v(6,a(5,[x(5,_1162,_1162),x(3,_1116,_1116)]))]
+fetched
+consistent
+L exists
+local_assignment(a(6,[x(5,_1248,_1248),x(4,_1202,_1202)]))
+a
+consistent?
+consistent!
+[[3|10]]
+[[0|8]]
+
+unified
+5
+told
+k(1)
+ackleft_cv(0)
+sending(msg(5,6,ack([x(5,_1248,_1248),x(4,_1202,_1202)])))
+sent_message
+store(6,[5,4])
+highers([1,2,3,4,5])
+presumed_view([3,4])
+do_agent(6)
+received(msg(6,3,ok?(a([x(4,_1616,_1616),x(3,_1576,_1576)]))))
+ack(ok?(a([x(4,_1616,_1616),x(3,_1576,_1576)])))
+newParent
+asserted(parent(6,3))
+ok?(a(3,[x(4,_1616,_1616),x(3,_1576,_1576)]))
+b
+checking_agent_view(6)
+[v(6,a(3,[x(4,_1847,_1847),x(3,_1807,_1807)])),v(6,a(5,[x(5,_1769,_1769),x(3,_1723,_1723)]))]
+fetched
+consistent
+L exists
+local_assignment(a(6,[x(5,_1945,_1945),x(4,_1899,_1899)]))
+a
+consistent?
+consistent!
+[[3|10]]
+[[0|8]]
+
+unified
+5
+4
+not_told
+k(1)
+ackleft_cv(0)
+sending(msg(3,6,ack([x(5,_1945,_1945),x(4,_1899,_1899)])))
+sent_message
+store(6,[5,4])
+highers([1,2,3,4,5])
+presumed_view([3,4])
+do_agent(6)
+received(msg(6,3,ok?(a([x(4,_2595,_2595),x(3,_2505,_2505)]))))
+ack(ok?(a([x(4,_2595,_2595),x(3,_2505,_2505)])))
+newParent
+asserted(parent(6,3))
+ok?(a(3,[x(4,_2595,_2595),x(3,_2505,_2505)]))
+a
+checking_agent_view(6)
+[v(6,a(3,[x(4,_2964,_2964),x(3,_2874,_2874)])),v(6,a(5,[x(5,_2836,_2836),x(3,_2790,_2790)]))]
+fetched
+consistent
+L exists
+local_assignment(a(6,[x(5,_3112,_3112),x(4,_3016,_3016)]))
+a
+consistent?
+consistent!
+[[3|10]]
+[[0|8]]
+
+unified
+5
+4
+not_told
+k(1)
+ackleft_cv(0)
+sending(msg(3,6,ack([x(5,_3112,_3112),x(4,_3016,_3016)])))
+sent_message
+store(6,[5,4])
+highers([1,2,3,4,5])
+presumed_view([3,4])
+do_agent(6)
+received(msg(6,4,ok?(a([x(5,_3984,_3984),x(2,_3938,_3938)]))))
+ack(ok?(a([x(5,_3984,_3984),x(2,_3938,_3938)])))
+newParent
+asserted(parent(6,4))
+ok?(a(4,[x(5,_3984,_3984),x(2,_3938,_3938)]))
+b
+checking_agent_view(6)
+[v(6,a(4,[x(5,_4351,_4351),x(2,_4305,_4305)])),v(6,a(3,[x(4,_4259,_4259),x(3,_4169,_4169)])),v(6,a(5,[x(5,_4131,_4131),x(3,_4085,_4085)]))]
+fetched
+consistent
+L exists
+local_assignment(a(6,[x(5,_4597,_4597),x(4,_4401,_4401)]))
+a
+consistent?
+consistent!
+[[3|10]]
+[[0|8]]
+
+unified
+5
+4
+not_told
+k(1)
+ackleft_cv(0)
+sending(msg(4,6,ack([x(5,_4597,_4597),x(4,_4401,_4401)])))
+sent_message
+store(6,[5,4])
+highers([1,2,3,4,5])
+presumed_view([3,4])
+view_is_complete(6)
+do_agent(6)
+received(msg(6,4,ok?(a([x(5,_6312,_6312),x(2,_6216,_6216)]))))
+ack(ok?(a([x(5,_6312,_6312),x(2,_6216,_6216)])))
+newParent
+asserted(parent(6,4))
+ok?(a(4,[x(5,_6312,_6312),x(2,_6216,_6216)]))
+a
+checking_agent_view(6)
+[v(6,a(4,[x(5,_6817,_6817),x(2,_6721,_6721)])),v(6,a(3,[x(4,_6675,_6675),x(3,_6585,_6585)])),v(6,a(5,[x(5,_6547,_6547),x(3,_6501,_6501)]))]
+fetched
+consistent
+L exists
+local_assignment(a(6,[x(5,_7163,_7163),x(4,_6867,_6867)]))
+a
+consistent?
+consistent!
+[[5|10]]
+[[0|8]]
+
+unified
+5
+told
+k(1)
+ackleft_cv(0)
+sending(msg(4,6,ack([x(5,_7163,_7163),x(4,_6867,_6867)])))
+sent_message
+do_agent(6)
+received(msg(6,3,ok?(a([x(4,_9213,_9213),x(3,_8973,_8973)]))))
+ack(ok?(a([x(4,_9213,_9213),x(3,_8973,_8973)])))
+newParent
+asserted(parent(6,3))
+ok?(a(3,[x(4,_9213,_9213),x(3,_8973,_8973)]))
+a
+checking_agent_view(6)
+[v(6,a(3,[x(4,_10218,_10218),x(3,_9978,_9978)])),v(6,a(4,[x(5,_9938,_9938),x(2,_9842,_9842)])),v(6,a(5,[x(5,_9804,_9804),x(3,_9758,_9758)]))]
+fetched
+consistent
+L exists
+local_assignment(a(6,[x(5,_10970,_10970),x(4,_10574,_10574)]))
+a
+consistent?
+consistent!
+[[5|10]]
+[[0|6]]
+
+unified
+5
+4
+told
+k(1)
+ackleft_cv(0)
+sending(msg(3,6,ack([x(5,_10970,_10970),x(4,_10574,_10574)])))
+sent_message
+do_agent(6)
+received(msg(6,4,ok?(a([x(5,_13690,_13690),x(2,_13594,_13594)]))))
+ack(ok?(a([x(5,_13690,_13690),x(2,_13594,_13594)])))
+newParent
+asserted(parent(6,4))
+ok?(a(4,[x(5,_13690,_13690),x(2,_13594,_13594)]))
+a
+checking_agent_view(6)
+[v(6,a(4,[x(5,_15295,_15295),x(2,_15199,_15199)])),v(6,a(3,[x(4,_14853,_14853),x(3,_14613,_14613)])),v(6,a(5,[x(5,_14575,_14575),x(3,_14529,_14529)]))]
+fetched
+consistent
+L exists
+local_assignment(a(6,[x(5,_16891,_16891),x(4,_15945,_15945)]))
+a
+consistent?
+consistent!
+[[6|10]]
+[[0|6]]
+
+unified
+5
+told
+k(1)
+ackleft_cv(0)
+sending(msg(4,6,ack([x(5,_16891,_16891),x(4,_15945,_15945)])))
+sent_message
+do_agent(6)
+received(msg(6,1,begin_labeling))
+No remaining prop_ended
+sending(msg(3,6,prop_ended))
+sent_message
+sending(msg(4,6,prop_ended))
+sent_message
+[]
+do_agent(6)
+received(msg(6,3,ok?(a([x(4,_24085,0)]))))
+ok?(a(3,[x(4,_24085,0)]))
+b
+checking_agent_view(6)
+[v(6,a(3,[x(4,_25756,0)]))]
+fetched
+consistent
+L exists
+local_assignment(a(6,[]))
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[]
+do_agent(6)
+received(msg(6,4,ok?(a([x(5,_27848,6)]))))
+ok?(a(4,[x(5,_27848,6)]))
+b
+checking_agent_view(6)
+[v(6,a(4,[x(5,_32697,6)])),v(6,a(3,[x(4,_31069,0)]))]
+fetched
+consistent
+L exists
+local_assignment(a(6,[]))
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[]
+do_agent(6)
+received(msg(6,1,marker(1)))
+not_source
+store(6,[5,4])
+highers([1,2,3,4,5])
+presumed_view([3,4])
+quiescent
+sending(msg(1,6,marker(1)))
+sent_message
+do_agent(6)
+received(msg(6,1,marker(1)))
+not_source
+store(6,[5,4])
+highers([1,2,3,4,5])
+presumed_view([3,4])
+quiescent
+sending(msg(1,6,marker(1)))
+sent_message
+do_agent(6)
+received(msg(6,1,show_stats))
+
+***************************************************
+STATISTICS OF AGENT 6
+*****************OK (propagation)**********************
+6: ok? from 4
+6: ok? from 3
+6: ok? from 4
+6: ok? from 4
+6: ok? from 3
+6: ok? from 3
+6: ok? from 5
+ok? messages received during propagation: 7
+
+******************ACK (propagation)********************
+ack messages received during propagation: 0
+
+****************NO GOOD (propagation)******************
+no_good messages received during propagation (none, I hope): 0
+
+************NEGLECTED NO GOOD (propagation)************
+no_good messages neglected during propagation (none, I hope): 0
+
+************BEGIN LABELING (propagation)***************
+6: begin_labeling from 1
+begin_labeling messages received during propagation (one, I hope): 1
+
+***********PROPAGATION ENDED (propagation)*************
+End of propagation messages received: 0
+
+**********TERMINATION DETECTION (propagation)**********
+6: marker from 1
+Termination detection messages (markers) received during propagation: 1
+
+********************OK (labeling)**********************
+6: ok? from 4
+6: ok? from 3
+ok? messages received during labeling: 2
+
+*******************ACK (labeling)**********************
+ack messages received during labeling: 0
+
+******************NO GOOD (labeling)*******************
+no_good messages received during labeling: 0
+
+************NEGLECTED NO GOOD (labeling)************
+no_good messages neglected during labeling: 0
+
+**************BEGIN LABELING (labeling)****************
+begin_labeling messages received during labeling (none, I hope): 0
+
+*************PROPAGATION ENDED (labeling)**************
+End of propagation messages received during labeling (none, I hope): 0
+
+************TERMINATION DETECTION (labeling)***********
+6: marker from 1
+6: marker from 1
+Termination detection messages (markers) received during labeling: 2
+
+do_agent(6)

@@ -1,0 +1,53 @@
+
+:- module(cache_rt,[asserta_fact/1,assertz_fact/1,cache_call/2],[]).
+
+:- use_module(library(counters)).
+:- use_module(library(read)).
+
+cache_call(File,H):-
+	count(H,Val),
+	call_cached(H,Val,File).
+
+call_cached(H,_Val,_File):-
+	current_fact(asserta_ed(H)).
+call_cached(H,_Val,File):-
+        open(File,read,S),
+	exe(S,H).
+call_cached(H,Val,_File):-
+	current_fact(assertz_ed(H,V)),
+	V =< Val.
+
+exe(S,H):-
+	repeat,
+	  read(S,X),
+	  ( X==end_of_file,
+	    !,
+	    close(S),
+	    fail
+	  ; X=H ).
+
+:- data asserta_ed/1, assertz_ed/2.
+
+asserta_fact(F):-
+	data_facts:asserta_fact(asserta_ed(F)).
+
+assertz_fact(F):-
+	curr_count(F,Val),
+	data_facts:assertz_fact(assertz_ed(F,Val)).
+
+% No way for retract!!!!!
+retract_fact(F):-
+	data_facts:retract_fact(asserta_ed(F)).
+retract_fact(F):-
+	do_that_on_the_file.
+retract_fact(F):-
+	data_facts:retract_fact(assertz_ed(F,_)).
+
+count(H,Val):-
+	inccounter(H,Val), !.
+count(H,1):-
+	setcounter(H,2).
+
+curr_count(H,Val):-
+	getcounter(H,Val), !.
+curr_count(_H,0).

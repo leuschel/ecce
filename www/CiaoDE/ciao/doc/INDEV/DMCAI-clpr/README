@@ -1,0 +1,19 @@
+Files in this directory:
+              
+	INSTALLATION		Instructions to build the CLP clone,
+				RESEARCH SOFTWARE DISCLAIMER and 
+				USER AGREEMENT.
+
+	README         		this file
+
+	clp.2.1.6.patch         patch script to produce the DMCAI CLP clone 
+				from SICStus2.1 at patchlevel #6
+
+	clp.tex			Manual for the CLP clone, texinfo format
+
+	types.pl 		Tiny application
+
+	dump.pl			Prolog part of DMCAI CLP
+	settings.pl             Prolog part of DMCAI CLP
+	toplevel.pl             Prolog part of DMCAI CLP
+

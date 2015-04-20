@@ -1,0 +1,4001 @@
+% -*- texinfo -*-
+\input texinfo
+
+@setfilename ciao
+@setchapternewpage odd
+
+@unnumbered Introduction
+
+@cindex WAM
+This manual describes a Prolog system developed at the Swedish Institute
+of Computer Science.  The system consists of a @dfn{WAM} emulator
+written in C, a library and runtime system written in C and Prolog and
+an interpreter and a compiler written in Prolog.  The Prolog engine is a
+Warren Abstract Machine (WAM) emulator defined by D.H.D. Warren in
+@cite{An Abstract Prolog Instruction Set}, Tech. Note 309, SRI
+International, Menlo Park, CA, 1983.  Two modes of compilation are
+available: in-core i.e. incremental, and file-to-file. @refill
+
+When compiled, a predicate will run about 8 times faster and use store
+more economically.  However, it is recommended that the new user should
+gain experience with the interpreter before attempting to use the compiler.
+The interpreter facilitates the development and testing of Prolog programs
+as it provides powerful debugging facilities.  It is only worthwhile
+compiling programs which are well-tested and are to be used extensively.
+
+The CIAO language follows the mainstream Prolog tradition in terms of
+syntax and built-in predicates, and is largely compatible with
+DECsystem-10 Prolog and Quintus Prolog (@cite{Quintus Prolog Reference
+Manual version 10}, Quintus Computer Systems, Inc, Mountain View, 1987).
+It also contains primitives for data-driven and object-oriented
+programming.
+
+Certain aspects of the Prolog system are unavoidably installation
+dependent.  Whenever there are differences, this manual describes the UPM
+installation which runs under Berkeley UNIX. @xref{Installation Intro}.
+
+This manual is based on the @cite{DECsystem-10 Prolog User's Manual} by
+D.L. Bowen (editor), L. Byrd, F.C.N. Pereira, L.M. Pereira, D.H.D. Warren.
+
+Quintus and Quintus Prolog are trademarks of Quintus Computer Systems,
+Inc.  UNIX is a trademark of Bell Laboratories.  DEC is a trademark of
+Digital Equipment Corporation.
+
+@chapter How to run Prolog
+
+CIAO offers the user an interactive programming environment with
+tools for incrementally building programs, debugging programs by following
+their executions, and modifying parts of programs without having to start
+again from scratch.
+
+The text of a Prolog program is normally created in a file or a number of
+files using one of the standard text editors.  The Prolog interpreter can
+then be instructed to read in programs from these files; this is called
+@dfn{consulting} the file.  Alternatively, the Prolog compiler can be used
+for @dfn{compiling} the file.
+
+@section Getting Started
+@cindex running
+
+CIAO is typically started from one of the UNIX shells by entering the
+shell command (@pxref{Installation Intro}):
+
+@example
+% ciao
+@end example
+
+@noindent
+The interpreter responds with a message of identification and the prompt
+@samp{| ?- } as soon as it is ready to accept input, thus:
+
+@example
+CIAO 0.0 (based on SICStus 0.7 #9): Fri Jan 24 19:04:22 MET 1997
+| ?-
+@end example
+
+During program development it is often convenient to run in a GNU Emacs
+ciao window, available by the Emacs command 
+
+@example
+M-x run-ciao
+@end example
+
+@noindent
+The GNU Emacs CIAO mode that comes with the CIAO system provides a host
+of commands for incremental program development (@pxref{Installation
+Intro}).
+
+@cindex top level
+@cindex query
+@cindex command
+When CIAO is initialised it looks for a file @file{~/.ciaorc} and
+consults it, if it exists.
+
+At this point the interpreter is expecting input of a directive, i.e. a
+@dfn{query} or @dfn{command}. @xref{Directives}.  You cannot type in
+clauses immediately (@pxref{Inserting Clauses}).  While typing in a
+directive, the prompt (on following lines) becomes @samp{ }.  That is,
+the @samp{?-} appears only for the first line of the directive, and
+subsequent lines are indented. @refill
+
+@section Reading in Programs
+@cindex consulting
+@cindex reading in
+
+A program is made up of a sequence of clauses, possibly interspersed with
+directives to the interpreter.  The clauses of a predicate do not have to
+be immediately consecutive, but remember that their relative order may be
+important (@pxref{Procedural}).
+
+To input a program from a file @var{file}, just type the filename inside list
+brackets (followed by full-stop and carriage-return), thus:
+
+@example
+| ?- [@var{file}].
+@end example
+
+@noindent
+This instructs the interpreter to read in (@dfn{consult}) the program.
+Note that it may be necessary to surround the file specification
+@var{file} with single quotes to make it a legal Prolog atom; e.g.
+
+@example
+| ?- ['myfile.pl'].
+
+| ?- ['/usr/prolog/somefile'].
+@end example
+
+@noindent
+The specified file is then read in.  Clauses in the file are stored ready
+to be interpreted, while any directives are obeyed as they are encountered.
+When the end of the file is found, the interpreter displays on the terminal
+the time spent for read-in.  This indicates the completion of the directive.
+
+Predicates that expect the name of a Prolog source file as an argument
+use @code{absolute_file_name/2} (@pxref{Stream Pred}) to look up the
+file.  This predicate will first search for a file with the suffix
+@samp{.pl} added to the name given as an argument.  If this fails it
+will look for a file with no extra suffix added.  There is also support
+for libraries.
+
+In general, this directive can be any list of filenames, such as:  
+
+@example
+| ?- [myprog,extras,tests].
+@end example
+
+@noindent
+In this case all three files would be consulted.
+
+The clauses for all the predicates in the consulted files will replace any
+existing clauses for those predicates, i.e. any such previously existing
+clauses in the database will be deleted.
+
+@cindex reconsult
+Note that @code{consult/1} in CIAO behaves like @code{reconsult/1}
+in DEC-10 Prolog. @refill
+
+@section Inserting Clauses at the Terminal
+@cindex user
+
+Clauses may also be typed in directly at the terminal, although this is
+only recommended if the clauses will not be needed permanently, and are few
+in number.  To enter clauses at the terminal, you must give the special
+directive:
+
+@example
+| ?- [user].
+|
+@end example
+
+@noindent
+and the new prompt @samp{| } shows that the interpreter is now in a state where
+it expects input of clauses or directives.  To return to interpreter top
+level, type @kbd{^D}.  The interpreter responds thus:
+
+@example
+@{user consulted, 20 msec 200 bytes@}
+@end example
+
+@section Directives:  Queries and Commands
+@cindex directive
+
+@dfn{Directives} are either @dfn{queries} or @dfn{commands}.  Both are
+ways of directing the system to execute some goal or goals.
+
+In the following, suppose that list membership has been defined by:
+
+@example
+member(X, [X|_]).
+member(X, [_|L]) :- member(X, L).
+@end example
+
+@noindent
+(Notice the use of anonymous variables written @samp{_}.)
+
+The full syntax of a query is @samp{?-} followed by a sequence of goals.
+E.g. @refill
+
+@example
+?- member(b, [a,b,c]).
+@end example
+
+At interpreter top level (signified by the initial prompt of @samp{| ?- }), a
+query may be abbreviated by omitting the @samp{?-} which is already included
+in the prompt.  Thus a query at top level looks like this:
+
+@example
+| ?- member(b, [a,b,c]).
+@end example
+
+@noindent
+Remember that Prolog terms must terminate with a full stop (@kbd{.}
+followed by whitespace), and that therefore Prolog will not execute
+anything until you have typed the full stop (and then @key{RET},
+carriage-return) at the end of the query.
+
+If the goal(s) specified in a query can be satisfied, and if there are
+no variables as in this example, then the system answers
+
+@example
+yes
+@end example
+
+@noindent
+and execution of the query terminates.
+
+If variables are included in the query, then the final value of each
+variable is displayed (except for anonymous variables).  Thus the query
+
+@example
+| ?- member(X, [a,b,c]).
+@end example
+
+@noindent
+would be answered by 
+
+@example
+X = a
+@end example
+
+@noindent
+At this point the interpreter is waiting for input of either just a
+carriage-return (@key{RET}) or else a @kbd{;} followed by @key{RET}.
+Simply typing @key{RET} terminates the query; the interpreter responds
+with @samp{yes}.  However, typing @kbd{;} causes the system to
+@dfn{backtrack} (@pxref{Procedural}) looking for alternative solutions.
+If no further solutions can be found it outputs @samp{no}. @refill
+
+The outcome of some queries is shown below, where a number preceded by
+@kbd{_} is a system-generated name for a variable.  
+
+@example
+| ?- member(X, [tom,dick,harry]).
+
+X = tom @kbd{;}
+X = dick @kbd{;}
+X = harry @kbd{;}
+
+no
+| ?- member(X, [a,b,f(Y,c)]), member(X, [f(b,Z),d]).
+
+X = f(b,c),
+Y = b,
+Z = c
+
+yes
+| ?- member(X, [f(_),g]).
+
+X = f(_52)
+
+yes
+| ?-
+@end example
+
+Commands are like queries except that 
+
+@enumerate
+
+@item
+Variable bindings are not displayed if and when the command succeeds.
+
+@item
+You are not given the chance to backtrack through other solutions.  
+@end enumerate
+
+@noindent
+Commands start with the symbol @samp{:-}.  (At top level this is simply
+written after the prompted @w{@samp{| ?- }} which is then effectively
+overridden.)  Any required output must be programmed explicitly; e.g. the
+command: @refill
+
+@example
+:- member(3, [1,2,3]), write(ok).
+@end example
+
+@noindent
+directs the system to check whether @code{3} belongs to the list
+@code{[1,2,3]}.  Execution of a command terminates when all the goals in
+the command have been successfully executed.  Other alternative solutions
+are not sought.  If no solution can be found, the system gives: @refill
+
+@example
+@{WARNING: goal failed: :- @var{Goal}@}
+@end example
+
+@noindent
+as a warning.
+
+The principal use for commands (as opposed to queries) is to allow files
+to contain directives which call various predicates, but for which you do
+not want to have the answers printed out.  In such cases you only want to
+call the predicates for their effect, i.e. you don't want terminal
+interaction in the middle of consulting the file.  A useful example would
+be the use of a directive in a file which consults a whole list of other
+files, e.g.
+
+@example
+:- [ bits, bobs, main, tests, data, junk ].
+@end example
+
+@noindent
+If a command like this were contained in the file @file{myprog} then typing
+the following at top-level would be a quick way of reading in your entire
+program:
+
+@example
+| ?- [myprog].
+@end example
+
+When simply interacting with the top-level of the Prolog interpreter this
+distinction between queries and commands is not normally very important.
+At top-level you should just type queries normally.  In a file, if you
+wish to execute some goals then you should use a command; i.e. a directive
+in a file must be preceded by @samp{:-}, otherwise it would be treated as a
+clause.
+
+@section Syntax Errors
+@cindex syntax errors
+
+Syntax errors are detected during reading.  Each clause, directive or in
+general any term read in by the built-in predicate @code{read/1} that
+fails to comply with syntax requirements is displayed on the terminal as
+soon as it is read.  A mark indicates the point in the string of symbols
+where the parser has failed to continue analysis.  e.g.
+
+@example
+member(X, X:L).
+@end example
+
+@noindent
+gives:
+
+@example
+** atom follows expression **
+member ( X , X
+** here **
+: L )
+@end example
+
+@noindent
+if @kbd{:} has not been declared as an infix operator.
+
+Note that any comments in the faulty line are not displayed with the error
+message.  If you are in doubt about which clause was wrong you can use the
+@code{listing/1} predicate to list all the clauses which were successfully
+read-in, e.g.
+
+@example
+| ?- listing(member).
+@end example
+
+@section Undefined Predicates
+@cindex undefined predicate
+@findex unknown/2
+
+There is a difference between predicates that have no definition and
+predicates that have no clauses.  The latter case is meaningful e.g.
+for dynamic predicates (@pxref{Declarations}) that clauses are being
+added to or removed from.  There are good reasons for treating calls to
+undefined predicates as errors, as such calls easily arise from typing
+errors. @refill
+
+The system can optionally catch calls to predicates that have no
+definition.  The state of the catching facility can be:
+
+@itemize @bullet
+
+@item
+@code{trace}, which causes calls to undefined predicates to be
+reported and the debugging system to be entered at the earliest
+opportunity (the default state); @refill
+
+@item
+@code{fail}, which causes calls to such predicates to fail. @refill
+@end itemize
+
+Calls to predicates that have no clauses are not caught.
+
+The built-in predicate @code{unknown(@var{?OldState}, @var{?NewState})}
+unifies @var{OldState} with the current state and sets the state to
+@var{NewState}.  It fails if the arguments are not appropriate.  The
+built-in predicate @code{debugging/0} prints the value of this state
+along with its other information.  @refill
+
+@section Program Execution And Interruption
+@cindex execution
+@cindex interruption
+Execution of a program is started by giving the interpreter a directive
+which contains a call to one of the program's predicates.
+
+Only when execution of one directive is complete does the interpreter
+become ready for another directive.  However, one may interrupt the normal
+execution of a directive by typing @kbd{^C}.  This @kbd{^C} interruption
+has the effect of suspending the execution, and the following message is
+displayed: @refill
+
+@example
+Prolog interruption (h or ? for help) ?
+@end example
+
+@noindent
+At this point the interpreter accepts one-letter commands corresponding to
+certain actions.  To execute an action simply type the corresponding
+character (lower or upper case) followed by @key{RET}.  The possible commands
+are:
+
+@table @kbd
+
+@item a
+abort the current computation.
+
+@item b
+invoke the Prolog interpreter recursively.
+
+@item c
+continue the execution.
+
+@item d
+enable debugging. @xref{Debug Intro}.
+
+@item e
+exit from CIAO, closing all files.
+
+@item h
+@itemx ?
+list available commands.
+
+@item t
+enable trace. @xref{Trace}.
+@end table
+
+If the standard input stream is not connected to the terminal, e.g. by
+redirecting standard input to a file or a UNIX pipe, the above @kbd{^C}
+interrupt options are not available.  Instead, typing @kbd{^C} causes
+CIAO to exit, and no terminal prompts are printed.
+
+
+@section Exiting From The Interpreter
+@cindex exiting
+
+To exit from the interpreter and return to the shell either type
+@kbd{^D} at interpreter top level, or call the built-in predicate
+@code{halt/0}, or use the @kbd{e} (exit) command following a @kbd{^C}
+interruption.
+
+@section Nested Executions---Break and Abort
+@cindex nested execution
+@cindex break
+@findex break/0
+
+The Prolog system provides a way to suspend the execution of your program
+and to enter a new incarnation of the top level where you can issue
+directives to solve goals etc.  This is achieved by issuing the directive
+(@pxref{Execution}):
+
+@example
+| ?- break.
+@end example
+
+@noindent
+This causes a recursive call to the Prolog interpreter, indicated by the
+message:
+
+@example
+@{ Break level 1 @}
+@end example
+
+@noindent
+You can now type queries just as if the interpreter were at top level.
+
+If another call of @code{break/0} is encountered, it moves up to level 2,
+and so on.  To close the break and resume the execution which was
+suspended, type @kbd{^D}.  The debugger state and current input and output
+streams will be restored, and execution will be resumed at the procedure
+call where it had been suspended after printing the message: @refill
+
+@example
+@{ End break @}
+@end example
+
+@noindent
+Alternatively, the suspended execution can be aborted by calling the
+built-in predicate @code{abort/0}.  @refill
+
+@cindex abort
+@findex abort/0
+A suspended execution can be aborted by issuing the directive:  
+
+@example
+| ?- abort.
+@end example
+
+@noindent
+within a break.  In this case no @kbd{^D} is needed to close the break;
+@emph{all} break levels are discarded and the system returns right back
+to top-level.  IO streams remain open, but the debugger is switched off.
+@code{abort/0} may also be called from within a program. @refill
+
+@section Saving and Restoring Program States
+@cindex saving
+@cindex restoring
+@cindex program state
+@findex save/1
+
+Once a program has been read, the interpreter will have available all the
+information necessary for its execution.  This information is called a
+@dfn{program state}.
+
+The state of a program may be saved on disk for future execution.  To
+save a program into a file @var{File}, perform the directive:
+
+@example
+| ?- save(@var{File}).
+@end example
+
+@noindent
+This predicate may be called at any time, for example it may be useful to
+call it in a break in order to save an intermediate execution state.
+The file @var{File} becomes an executable file. @xref{Installation Intro}.
+
+@findex restore/1
+Once a program has been saved into a file @var{File}, the following directive
+will restore the interpreter to the saved state:
+
+@example
+| ?- restore(@var{File}).
+@end example
+
+@noindent
+After execution of this directive, which may be given in the same
+session or at some future date, the interpreter will be in
+@emph{exactly} the same state as existed immediately prior to the call
+to @code{save/1}.  Thus if you saved a program as follows: @refill
+
+@example
+| ?- save(myprog), write('myprog restored').
+@end example
+
+@noindent
+then on restoring you will get the message @samp{myprog restored} printed
+out.
+
+@findex save_program/1
+A partial program state, containing only the user defined predicates may
+also be saved with the directive:
+
+@example
+| ?- save_program(@var{File}).
+@end example
+
+@noindent
+The file @var{File} becomes an executable file. @xref{Installation Intro}.
+After restoring a partial program state, the interpreter will reinitialise
+itself.
+
+Note that when a new version of the Prolog system is installed, all program
+files saved with the old version become obsolete.
+
+@chapter Debugging
+@cindex debugging
+
+
+
+@section Basic Debugging Predicates
+@cindex debugging predicates
+
+The interpreter provides a range of built-in predicates for control of the
+debugging facilities.  The most basic predicates are as follows:
+
+@table @code
+
+@item debug
+@findex debug/0
+Switches the debugger on.  (It is initially off.)  In order for the
+full range of control flow information to be available it is necessary to
+have this on from the start.  When it is off the system does not remember
+invocations that are being executed.  (This is because it is expensive and
+not required for normal running of programs.)  You can switch @var{Debug
+Mode} on in the middle of execution, either from within your program or
+after a @kbd{^C} (see trace below), but information prior to this will just
+be unavailable. @refill
+
+@item nodebug
+@findex nodebug/0
+Switches the debugger off.  If there are any spy-points set then they
+will be kept but disabled. @refill
+
+@item debugging
+@findex debugging/0
+Prints onto the terminal information about the current debugging state.
+This will show: @refill
+
+@enumerate
+
+@item
+Whether undefined predicates are being trapped.
+
+@item
+Whether the debugger is switched on.
+
+@item
+What spy-points have been set (see below).
+
+@item
+What mode of leashing is in force (see below).
+
+@item
+What the interpreter maxdepth is (see below).
+@end enumerate
+@end table
+
+@section Tracing
+@cindex tracing
+
+The following built-in predicate may be used to commence an exhaustive
+trace of a program.
+
+@table @code
+
+@item trace
+@findex trace/0
+Switches the debugger on, if it is not on already, and ensures that the
+next time control enters a procedure box, a message will be produced and
+you will be asked to interact.  The effect of trace can also be achieved
+by typing @kbd{t} after a @kbd{^C} interruption of a program. @refill
+
+@noindent
+At this point you have a number of options. @xref{Debug Options}.  In
+particular, you can just type @key{RET} (carriage-return) to @dfn{creep}
+(or single-step) into your program.  If you continue to creep through your
+program you will see every entry and exit to/from every invocation box.
+You will notice that the interpreter stops at all ports.  However, if this
+is not what you want, the following built-in predicate gives full control
+over the ports at which you are prompted: @refill
+
+@item leash(@var{+Mode})
+@findex leash/1
+Leashing Mode is set to @var{Mode}.  Leashing Mode determines the ports
+of procedure boxes at which you are to be prompted when you Creep
+through your program.  At unleashed ports a tracing message is still
+output, but program execution does not stop to allow user interaction.
+Note that the ports of spy-points are always leashed (and cannot be
+unleashed).  @var{Mode} can be a subset of the following, specified as a
+list: @refill
+
+@table @code
+
+@item call
+Prompt on Call.
+
+@item exit
+Prompt on Exit.
+
+@item redo
+Prompt on Redo.
+
+@item fail
+Prompt on Fail.
+@end table
+
+@noindent
+The initial value of @var{Leashing Mode} is @code{[call,exit,redo,fail]}
+(full leashing).
+
+@item notrace
+@findex notrace/0
+Equivalent to @code{nodebug}. @refill
+@end table
+
+@section Spy-points
+@cindex spy-point
+
+For programs of any size, it is clearly impractical to creep through the
+entire program.  @dfn{Spy-points} make it possible to stop the program
+whenever it gets to a particular predicate which is of interest.  Once
+there, one can set further spy-points in order to catch the control flow
+a bit further on, or one can start creeping.
+
+Setting a spy-point on a predicate indicates that you wish to see all
+control flow through the various ports of its invocation boxes.  When
+control passes through any port of a procedure box with a spy-point set on
+it, a message is output and the user is asked to interact.  Note that
+the current mode of leashing does not affect spy-points: user
+interaction is requested on @emph{every} port.
+
+Spy-points are set and removed by the following built-in predicates which
+are also standard operators:
+
+@table @code
+
+@item spy @var{+Spec}
+@findex spy/1
+Sets spy-points on all the predicates given by @var{Spec}.  @var{Spec}
+is either an atom, a predicate spec, or a list of such specifications.
+An atom is taken as meaning all the predicates whose name is that atom.
+If you specify an atom but there is no definition for this predicate (of
+any arity) then nothing will be done.  You cannot place a spy-point on
+an undefined predicate.  If you set some spy-points when the debugger is
+switched off then it will be automatically switched on. @refill
+
+@item nospy @var{+Spec}
+@findex nospy/1
+This is similar to spy @var{Spec} except that all the predicates given
+by @var{Spec} will have previously set spy-points removed from them.
+@refill
+
+@item nospyall
+@findex nospyall/0
+This removes all the spy-points that have been set. @refill
+@end table
+
+@noindent
+The options available when you arrive at a spy-point are described later.
+@xref{Debug Options}.
+
+@node Consult,  , Debug Options, Debug Intro
+@comment  node-name,  next,  previous,  up
+@section Consulting during Debugging
+@cindex reconsult
+
+It is possible, and sometimes useful, to consult a file whilst in the
+middle of program execution.  Predicates, which have been successfully
+executed and are subsequently redefined by a consult and are later
+reactivated by backtracking, will not notice the change of their
+definitions.  In other words, it is as if every predicate, when called,
+creates a virtual copy of its definition for backtracking purposes.
+@refill
+
+@node Load Intro, Built Intro, Debug Intro, Top
+@comment  node-name,  next,  previous,  up
+@chapter Loading Programs
+@cindex loading
+
+Programs can be loaded in three different ways: consulted or compiled
+from source files, or loaded from object files.  The latter is the
+fastest way of loading programs, but of course requires that the
+programs have been compiled to object files first.  Object files may be
+handy when developing large applications consisting of many source
+files, but are not strictly necessary since it is possible to save and
+restore entire execution states (@pxref{Misc Pred}).
+
+Consulted, or interpreted, predicates are equivalent to, but slower
+than, compiled ones.  Although they use different representations, the
+two types of predicates can call each other freely.
+
+The CIAO compiler produces compact and efficient code, running
+about 8 times faster than consulted code, and requiring much less
+runtime storage.  Compiled Prolog programs are comparable in efficiency
+with LISP programs for the same task.  However, against this,
+compilation itself takes about twice as long as consulting and some
+debugging aids, such as tracing, are not applicable to compiled code.
+Spy-points can be placed on compiled predicates, however.  @refill
+
+The compiler operates in two different modes, controlled by the
+``Compilation mode'' flag (see @code{prolog_flag/3}).  The possible
+states of the flag are:
+
+@table @code
+@item compactcode
+Compilation produces byte-coded abstract instructions (the default).
+
+@c @item fastcode
+@c Compilation produces native machine instructions.  Only available for
+@c Sun-3 computers.  Native code runs about 3 times faster than byte code.
+
+@item profiledcode
+Compilation produces byte-coded abstract instructions instrumented to
+produce execution profiling data.  @xref{Profiling}.
+@end table
+
+@noindent
+The compilation mode can be changed by issuing the directive:
+
+@example
+| ?- prolog_flag(compiling, @var{OldValue}, @var{NewValue}).
+@end example
+
+A Prolog program consists of a sequence of @dfn{sentences}
+(@pxref{Sentence}).  Commands and queries encountered among the
+sentences are executed immediately as they are encountered, unless they
+can be interpreted as @dfn{declarations} (@pxref{Declarations}), which
+affect the treatment of forthcoming clauses.  Clauses are loaded as they
+are encountered.
+
+A Prolog program may also contain a list of sentences (including the
+empty list).  This is treated as equivalent to those sentences occurring
+in place of the list.  This feature makes it possible to have
+@code{term_expansion/2} (@pxref{Definite}) "return" a list of sentences,
+instead of a single sentence.
+
+@section Predicates which Load Code
+
+@cindex consulting
+@findex consult/1
+To consult a program, issue the directive:
+
+@example
+| ?- consult(Files).
+@end example
+
+@noindent
+where @var{Files} is either the name of a file (including the file
+@file{user}) or a list of filenames instructs the interpreter to read-in
+the program which is in the files.  For example: @refill
+
+@example
+| ?- consult([dbase,'extras.pl',user]).
+@end example
+
+When a directive is read it is immediately executed.  Any predicate
+defined in the files erases any clauses for that predicate already
+present in the interpreter.  If the old clauses were loaded from a
+different file than the present one, the user will be queried first
+whether (s)he really wants the new definition.  However, for existing
+predicates which have been declared as @code{multifile} (see below) new
+clauses will be added to the predicate, rather than replacing the old
+clauses.  If clauses for some predicate appear in more than one file,
+the later set will effectively overwrite the earlier set.  The division
+of the program into separate files does not imply any module
+structure---any predicate can call any other.
+
+@code{consult/1}, used in conjunction with @code{save/1} and
+@code{restore/1}, makes it possible to amend a program without having to
+restart from scratch and consult all the files which make up the
+program.  The consulted file is normally a temporary ``patch'' file
+containing only the amended predicate(s).  Note that it is possible to
+call @code{consult(user)} and then enter a patch directly on the
+terminal (ending with @kbd{^D}).  This is only recommended for small,
+tentative patches. @refill
+
+@example
+| ?- [File|Files].
+@end example
+
+@noindent
+This is a shorthand way of consulting a list of files.  (The case where
+there is just one filename in the list was described earlier
+(@pxref{Reading In}).  @refill
+
+@cindex compile
+@findex compile/1
+To compile a program in-core, use the built-in predicate: @refill
+
+@example
+| ?- compile(Files).
+@end example
+
+@noindent
+where @var{Files} is specified just as for @code{consult/1}. @refill
+
+The effect of @code{compile/1} is very much like that of @code{consult},
+except all new predicates will be stored in compiled rather than
+consulted form.  However, predicates declared as dynamic (see below)
+will be stored in consulted form, even though @code{compile/1} is used.
+@refill
+
+@cindex fcompile
+@findex fcompile/1
+To compile a program into an object file, use the built-in predicate:
+
+@example
+| ?- fcompile(Files).
+@end example
+
+@noindent
+where @var{Files} is specified just as for @code{consult/1}.  For each
+filename in the list, the compiler will append the string @samp{.pl} to it
+and try to locate a source file with that name and compile it to an object
+file.  The object filename if formed by appending the string @samp{.ql} to
+the specified name.  The internal state of CIAO is not changed as
+result of the compilation. @refill
+
+@cindex load
+@findex load/1
+To load a program from a set of object files, use the built-in predicate:
+
+@example
+| ?- load(Files).
+@end example
+
+@noindent
+where @var{Files} is either a single object filename (specified without
+the trailing @samp{.ql}) or a list of filenames.  For each filename in
+the list, this predicate will first search for a file with the suffix
+@samp{.ql} added to the name given as an argument.  If this fails it will
+look for a file with no extra suffix added.  This directive has the same
+effect as if the source files had been compiled using @code{compile/1}
+directly (but see @pxref{Pitfalls}!).
+
+Finally, to ensure that some files has been compiled or loaded, use the
+built-in predicate:
+
+@example
+| ?- ensure_loaded(Files).
+@end example
+
+@noindent
+where @var{Files} is either a single filename or a list of filenames,
+similar to the arguments accepted by the above predicates.  The
+predicate takes the following action for each @var{File} in the list of
+filenames: @refill
+
+@enumerate
+@item
+If the @var{File} is @code{user}, @code{compile(user)} is
+performed;
+
+@item
+If @var{File} cannot be found, not even with a @samp{.pl} or
+@samp{.ql} extension, an error is signalled;
+
+@item
+If an object file is found which has not yet been loaded or which
+has been modified since it was last loaded, the file is loaded;
+
+@item
+If a source file is found which has not yet been loaded or which
+has been modified since it was last loaded, the file is compiled;
+
+@item
+If both a source file and an object file are found, item 3 or 4
+applies depending on which file was modified most recently;
+
+@item
+Otherwise, no action is taken.
+@end enumerate
+
+Note that @code{ensure_loaded/1} does @emph{not} cause object files to
+become recompiled.
+
+@node Declarations, Pitfalls, Load Predicates, Load Intro
+@comment  node-name,  next,  previous,  up
+@section Declarations
+@cindex declaration
+
+When a program is to be loaded, it is sometimes necessary to tell the
+system to treat some of the predicates specially.  This information is
+supplied by including @dfn{declarations} about such predicates in the
+source file, preceding any clauses for the predicates which they
+concern.  A declaration is written just as a command, beginning with
+@samp{:- }.  A declaration is effective from its occurrence through the
+end of file.
+
+Although declarations that affect more than one predicate may be
+collapsed into a single declaration, the recommended style is to write
+the declarations for a predicate immediately before its first clause.
+
+The following two declarations are relevant both in Quintus Prolog and in
+CIAO:
+
+@cindex multifile declaration
+@example
+:- multifile @var{PredSpec}, @dots{}, @var{PredSpec}.
+@end example
+
+@noindent
+causes the specified predicates to be @code{multifile}.  This means that
+if more clauses are subsequently loaded from other files for the same
+predicate, the new clauses will not replace the old ones, but will be
+added at the end instead.  The old clauses are erased only if the
+predicate is reloaded from its ``home file'' (the one containing the
+multifile declaration), if it is reloaded from a different file
+declaring the predicate as multifile (in which case the user is queried
+first), or if it is explicitly abolished.
+
+Furthermore the compilation mode of the ``home file'' determines the
+compilation mode of any subsequently loaded clauses.  For example, if
+the ``home file'' declares the predicate as multifile and dynamic, any
+subsequent clauses will be stored in consulted form even if loaded by
+@code{compile/1}.  If the ``home file'' was compiled to native code, any
+subsequent clauses will also be compiled to native code even if the
+compilation mode for the subsequent file was @code{compactcode}.
+
+Multifile declarations @emph{must precede} any other declarations for
+the same predicate(s)!
+
+@cindex dynamic declaration
+@example
+:- dynamic @var{PredSpec}, @dots{}, @var{PredSpec}.
+@end example
+
+@noindent
+@cindex dynamic predicate
+@cindex predicate, dynamic
+where each @var{PredSpec} is a predicate spec, causes the specified
+predicates to become @dfn{dynamic}, which means that other predicates
+may inspect and modify them, adding or deleting individual clauses.
+Dynamic predicates are always stored in consulted form even if a
+compilation is in progress.  This declaration is meaningful even if the
+file contains no clauses for a specified predicate---the effect is then
+to define a dynamic predicate with no clauses.
+
+The following declaration is not normally relevant in any Prologs but
+SICStus Prolog:
+
+@cindex wait declaration
+@example
+:- wait @var{PredSpec}, @dots{}, @var{PredSpec}.
+@end example
+
+@cindex blocking
+@noindent
+introduces an exception to the rule that goals be run strictly from left
+to right within a clause.  Goals for the specified predicates are
+@dfn{blocked} if the first argument of the goal is uninstantianted.  The
+behaviour of blocking goals on the first argument cannot be switched
+off, except by abolishing or redefining the predicate.
+@xref{Procedural}.
+
+The following two declarations are sometimes relevant in other Prologs,
+but are ignored by SICStus Prolog.  They are however accepted for
+compatibility reasons:
+
+@cindex public declaration
+@example
+:- public @var{PredSpec}, @dots{}, @var{PredSpec}.
+@end example
+
+@noindent
+In some Prologs, this declaration is necessary for making compiled 
+predicates visible for the interpreter.  In SICStus Prolog, any
+predicate may call any other, and all are visible.
+
+@cindex mode declaration
+@example
+:- mode @var{ModeSpec}, @dots{}, @var{ModeSpec}.
+@end example
+
+@noindent
+where each @var{ModeSpec} is a mode spec.  In some Prologs, this declaration
+helps reduce the size of the compiled code for a predicate, and may speed
+up its execution.  Unfortunately, writing mode declarations can be
+error-prone, and since errors in mode declaration do not show up while
+running the predicates interpretively, new bugs may show up when predicates
+are compiled.  SICStus Prolog ignores mode declarations.  However, mode
+declarations may be used as a commenting device, as they express the
+programmer's intention of data flow in predicates.  If you do so, use only
+the atoms @code{+}, @code{-}, and @code{?} as arguments in your mode specs,
+as in
+
+@example
+:- mode append(+, +, -).
+@end example
+
+@node Pitfalls, Indexing, Declarations, Load Intro
+@comment  node-name,  next,  previous,  up
+@section Pitfalls of File-To-File Compilation
+@cindex pitfalls of fcompile
+@cindex fcompile, pitfalls of
+
+When loading clauses belonging to a multifile predicate from an object
+file different from the predicate's ``home file'', the compilation mode
+used when the new clauses were compiled must match that of the current
+clauses.  Otherwise, the new clauses are ignored and a warning message
+is issued.
+
+When compiling to an object file, remember that directives occurring in
+the source file are executed at @emph{run time}, not at compile time.
+For instance, it does not work to include directives that assert clauses
+of @code{term_expansion/2} (q.v.) and rely on the new transformations to
+be effective for subsequent clauses of the same file or subsequent files
+of the same compilation.  For a definition of @code{term_expansion/2} to
+take effect, it should be loaded as a separate file before being used in
+the compilation of another file.
+
+Operator declarations (q.v.) are an exception to the above rule.  If the
+compiler encounters a command
+
+@example
+:- op(@var{P}, @var{T}, @var{N}).
+@end example
+
+@noindent
+that command will be executed at compile time as well as at run time.
+
+@node Indexing, Tail, Pitfalls, Load Intro
+@comment  node-name,  next,  previous,  up
+@section Indexing
+@cindex indexing
+
+The clauses of any predicate are @dfn{indexed} according to the
+principal functor of the first argument in the head of the clause.  This
+means that the subset of clauses which match a given goal, as far as the
+first step of unification is concerned, is found very quickly, in
+practically constant time (i.e. in a time independent of the number of
+clauses of the predicate).  This can be very important where there is a
+large number of clauses for a predicate.  Indexing also improves the
+Prolog system's ability to detect determinacy---important for conserving
+working storage.
+
+@node Tail,  , Indexing, Load Intro
+@comment  node-name,  next,  previous,  up
+@section Tail Recursion Optimisation
+@cindex tail recursion
+
+The compiler incorporates @dfn{tail recursion optimisation} to improve the
+speed and space efficiency of determinate predicates.
+
+When execution reaches the last goal in a clause belonging to some
+predicate, and provided there are no remaining backtrack points in the
+execution so far of that predicate, all of the predicate's local working
+storage is reclaimed @emph{before} the final call, and any structures it
+has created become eligible for garbage collection.  This means that
+programs can now recurse to arbitrary depths without necessarily
+exceeding core limits.  For example:
+
+@example
+cycle(State) :- transform(State, State1), cycle(State1).
+@end example
+
+@noindent
+where @code{transform/2} is a determinate predicate, can continue
+executing indefinitely, provided each individual structure, @var{State},
+is not too large.  The predicate cycle is equivalent to an iterative
+loop in a conventional language. @refill
+
+To take advantage of tail recursion optimisation one must ensure that
+the Prolog system can recognise that the predicate is determinate at the
+point where the recursive call takes place.  That is, the system must be
+able to detect that there are no other solutions to the current goal to
+be found by subsequent backtracking.  In general this involves reliance
+on the Prolog compiler's indexing and/or use of cut, @pxref{Cut}.
+
+@node Built Intro, Prolog Intro, Load Intro, Top
+@comment  node-name,  next,  previous,  up
+@chapter Built-In Predicates
+
+It is not possible to redefine built-in predicates.  An attempt to do so
+will give an error message.  @xref{Pred Summary}. @refill
+
+SICStus Prolog provides a wide range of built-in predicates to perform the
+following tasks:
+
+@display
+Input / Output
+     Reading-in Programs
+     Input and Output of Terms
+     Character IO
+     Stream IO
+     Dec-10 Prolog File IO
+Arithmetic
+Comparison of Terms
+Control
+Information about the State of the Program
+Meta-Logical
+Modification of the Program
+Internal Database
+All Solutions
+Interface to Foreign Language Functions
+Debugging
+Definite Clause Grammars
+Miscellaneous
+@end display
+
+@noindent
+The following descriptions of the built-in predicates are grouped according to
+the above categorisation of their tasks.
+
+@section Input / Output
+@cindex input
+@cindex output
+@cindex stream
+@cindex file
+
+There are two sets of file manipulation predicates in SICStus Prolog.
+One set is inherited from DEC-10 Prolog.  These predicates always refer
+to a file by name.  The other set of predicates is inherited from
+Quintus Prolog and refer to files as streams.  Streams correpond to the
+file pointers used at the operating system level. @refill
+
+A stream can be opened and connected to a filename or UNIX file
+descriptor for input or output by calling the predicate @code{open/3}.
+@code{open/3} will return a reference to a stream.  The stream may then
+be passed as an argument to various IO predicates.  The predicate
+@code{close/1} is used for closing a stream. @refill
+
+The possible formats of a stream are:
+
+@table @code
+
+@item '$stream'(@var{X},@var{Y})
+A stream connected to some file.  @var{X} and @var{Y} are integers.
+
+@item user_input
+The standard input stream, i.e. the terminal, usually.
+
+@item user_output
+The standard output stream, i.e. the terminal, usually.
+
+@item user_error
+The standard error stream.
+@end table
+
+@cindex current input stream
+@cindex current output stream
+The DEC-10 Prolog IO predicates manipulate streams implicitly, by
+maintaining the notion of a @dfn{current input stream} and a
+@dfn{current output stream}.  The current input and output streams are
+set to the @code{user_input} and @code{user_output} initially and for
+every new break (@pxref{Nested}).  The predicates @code{see/1} and
+@code{tell/1} can be used for setting the current input and output
+streams (respectively) to newly opened streams for particular files.
+The predicates @code{seen/0} and @code{told/0} close the current input
+and output streams (respectively), and reset them to the standard input
+and output streams.  The predicates @code{seeing/1} and @code{telling/1}
+are used for retrieving the filename associated with the current input
+and output streams (respectively).
+
+@cindex filename
+The possible formats of a filename are:
+
+@table @asis
+
+@item @code{user}
+This ``filename'' stands for the standard input or output stream,
+depending on context.  Terminal output is only guaranteed to be displayed
+after a newline is written or @code{ttyflush/0} is called. @refill
+
+@item @code{library(File)}
+where @var{File} is an atom, denotes a file @var{File} (with an optional
+@samp{.pl} suffix when consulting or compiling or an optional @samp{.ql}
+suffix in @code{load/1}) sought in the directory path(s) specified by
+the user defined predicate @code{library_directory/1}.  @refill
+
+@item @var{File}
+where @var{File} is any atom other than @code{user}, denotes a file
+@var{File} (with optional suffixes as above) sought in the current
+working directory.  @refill
+
+@end table
+
+Filename components beginning which with @samp{~} or @samp{$} are
+treated specially.  For example,
+
+@table @code
+
+@item '~/sample.pl'
+is equivalent to @file{'/home/sics/al/sample.pl'}, if
+@file{/home/sics/al} is the user's home directory.  (This is also
+equivalent to @file{'$HOME/sample.pl'} as explained below.)
+@refill
+
+@item '~clyde/sample.pl'
+is equivalent to @file{'/home/sics/clyde/sample.pl'}, if
+@file{/home/sics/clyde} is Clyde's home directory.
+@refill
+
+@item '$UTIL/sample.pl'
+is equivalent to @file{'/usr/local/src/utilities/sample.pl'}, if
+@file{/usr/local/src/utilities} is the value of the environment variable
+@code{UTIL}, as defined by the shell command @code{setenv}.
+@refill
+@end table
+
+Failure to open a file normally causes an abort.  This behaviour can be
+turned off and on by of the built-in predicates @code{nofileerrors/0}
+and @code{fileerrors/0} decribed below.  @refill
+
+@subsection Reading-in Programs
+
+If the predicates discussed in this section are invoked in the scope of the
+interactive toplevel, filenames are relative to the current working
+directory.  If invoked recursively, i.e. in the scope of another invocation
+of one of these predicates, filenames are relative to the directory of the
+file being read in.  @xref{Load Intro} for an introduction to these
+predicates. @refill
+
+@cindex loading
+@cindex consulting
+@cindex compilation
+
+@table @code
+
+@item consult(@var{+Files})
+@itemx reconsult(@var{+Files})
+@itemx []
+@itemx [@var{+File}|@var{+Files}]
+@findex consult/1
+@findex reconsult/1
+@findex []/0, consult
+@findex ./2, consult
+Consults the source file or list of files specified by @var{Files}.
+
+@item compile(@var{+Files})
+@findex compile/1
+Compiles the source file or list of files specified by @var{Files}.
+The compiled code is placed in-core, i.e. is added incrementally to the Prolog
+database. @refill
+
+@item fcompile(@var{+Files})
+@findex fcompile/1
+Compiles the source file or list of files specified by @var{Files}.  The
+suffix @samp{.pl} is added to the given filenames to yield the real source
+filenames.  The compiled code is placed on the object file or list of
+files formed by adding the suffix @samp{.ql} to the given filenames. @refill
+
+@item load(@var{+Files})
+@findex load/1
+Loads the object file or list of files specified by @var{Files}.
+
+@item ensure_loaded(@var{+Files})
+@findex ensure_loaded/1
+Compiles or loads the file or list of files specified by @var{Files},
+comparing last modified times with the time that the file was last read in.
+
+@item source_file(@var{?File})
+@itemx source_file(@var{?Pred},@var{?File})
+@findex source_file/1
+@findex source_file/2
+The predicate @var{Pred} is defined in the file @var{File}. @refill
+@end table
+
+@node Term IO, Char IO, Read In, Input Output
+@comment  node-name,  next,  previous,  up
+@subsection Input and Output of Terms
+@cindex term io
+
+Several IO predicates that use the current input or output stream
+available in an alternative version where the stream is specified
+explicitly.  The rule is that the stream is the first argument, which
+defaults to the current input or output stream, depending on context.
+@refill
+
+@table @code
+
+@item display(@var{?Term})
+@findex display/1
+The term @var{Term} is displayed @emph{onto the standard output stream}
+(which is not necessarily the current output stream) in standard
+parenthesised prefix notation. @refill
+
+
+
+@node Char IO, Stream Pred, Term IO, Input Output
+@comment  node-name,  next,  previous,  up
+@subsection{Character Input/Output}
+@cindex{char io}
+
+There are two sets of character IO predicates.  The first set uses the
+current input and output streams, while the second set always uses the
+standard input and output streams.  The first set is available in an
+alternative version where the stream is specified explicitly.  The rule
+is that the stream is the first argument, which defaults to the current
+input or output stream, depending on context.  
+
+
+@item get0(@var{?N})
+@itemx get0(@var{+Stream},@var{?N})
+@findex get0/1
+@findex get0/2
+@var{N} is the ASCII code of the next character read from @var{Stream}.
+@refill
+
+@item get(@var{?N})
+
+@item get(@var{+Stream},@var{?N})
+@findex get/2
+@var{N} is the ASCII code of the next non-blank non-layout character
+read from @var{Stream}. @refill
+
+@item skip(@var{+N})
+@itemx skip(@var{+Stream},@var{+N})
+@findex skip/1
+@findex skip/2
+Skips just past the next ASCII character code @var{N} from @var{Stream}.
+@var{N} may be an arithmetic expression. @refill
+
+@item put(@var{+N})
+@itemx put(@var{+Stream},@var{+N})
+@findex put/1
+@findex put/2
+ASCII character code @var{N} is output onto @var{Stream}.  @var{N} may
+be an arithmetic expression. @refill
+
+@item tab(@var{+N})
+@itemx tab(@var{+Stream},@var{+N})
+@findex tab/1
+@findex tab/2
+@var{N} spaces are output onto @var{Stream}.  @var{N} may be an
+arithmetic expression. @refill
+@end table
+
+The above predicates are the ones which are the most commonly used, as
+they can refer to any streams.  In most cases these predicates are
+sufficient, but there is one limitation: if you are writing to the
+terminal, the output is not guaranteed to be visible until a newline
+character is written.  If this line by line output is inadequate, you
+have to use @code{ttyflush/0} (see below). @refill
+
+The predicates which follow always refer to the terminal.  They are
+convenient for writing interactive programs which also perform file IO.
+
+@table @code
+
+@item ttynl
+@findex ttynl/0
+A new line is started on the standard output stream and its buffer is
+flushed. @refill
+
+@item ttyflush
+@findex ttyflush/0
+Flushes the standard output stream buffer.  Output to the terminal
+normally simply goes into an output buffer until such time as a newline
+is output.  Calling this predicate forces any characters in this buffer
+to be output immediately.  @refill
+
+@item ttyget0(@var{?N})
+@findex ttyget0/1
+@var{N} is the ASCII code of the next character input from the standard
+input stream. @refill
+
+@item ttyget(@var{?N})
+@findex ttyget/1
+@var{N} is the ASCII code of the next non-blank printable character from
+the standard input stream. @refill
+
+@item ttyput(@var{+N})
+@findex ttyput/1
+The ASCII character code @var{N} is output to the standard output
+stream.  @var{N} may be an arithmetic expression. @refill
+
+@item ttyskip(@var{+N})
+@findex ttyskip/1
+Skips to just past the next ASCII character code @var{N} from the
+standard input stream.  @var{N} may be an arithmetic expression. @refill
+
+@item ttytab(@var{+N})
+@findex ttytab/1
+@var{N} spaces are output to the standard output stream.  @var{N} may be
+an arithmetic expression. @refill
+@end table
+
+@node Stream Pred, File Pred, Char IO, Input Output
+@comment  node-name,  next,  previous,  up
+@subsection Stream IO
+
+The following predicates manipulate streams.  Character and line counts
+are maintained per stream.  All streams connected to the terminal,
+however, share the same set of counts.  For example, writing to
+@code{user_output} will advance the counts for @code{user_input}, if
+both are connected to the terminal.
+
+@table @code
+
+@item open(@var{+FileName},@var{+Mode},@var{-Stream})
+@findex open/3
+If @var{FileName} is a valid file name, the file is opened in mode
+@var{Mode} (invoking the UNIX function @code{fopen}) and the resulting
+stream is unified with @var{Stream}.  @var{Mode} is one of: @refill
+@table @code
+
+@item read
+Open the file for input.
+
+@item write
+Open the file for output.  The file is created if it does not already exist,
+the file will otherwise be truncated. @refill
+
+@item append
+Open the file for output.  The file is created if it does not already exist,
+the file will otherwise be appended to. @refill
+@end table
+
+If @var{FileName} is an integer, it is assumed to be a file descriptor
+passed to Prolog from a foreign function call.  The file descriptor is
+connected to a Prolog stream (invoking the UNIX function @code{fdopen})
+which is unified with @var{Stream}.  @refill
+
+@item close(@var{+X})
+@findex close/1
+If @var{X} is a stream the stream is closed.  If @var{X} is the name of
+a file opened by @code{see/1} or @code{tell/1} the corresponding stream
+is closed.  @refill
+
+@item absolute_file_name(@var{+RelativeName},@var{?AbsoluteName})
+@findex absolute_file_name/2
+This predicate is used by all predicates that refer to filenames for
+resolving these.  The argument @var{RelativeName} is interpreted as a
+filename according to the filename syntax rules (@pxref{Input Output}).
+If the specified file is found (possibly with a @samp{.pl} or @samp{.ql}
+extension if consulting or compiling source files or loading object
+files), @var{AbsoluteName} is unified with the full path name of this
+file.  If @var{RelativeName} is @code{user}, then @var{AbsoluteName} is
+also unified with @code{user}; this ``filename'' stands for the standard
+input or output stream, depending on context.
+@refill
+
+@item current_input(@var{?Stream})
+@findex current_input/1
+Unify @var{Stream} with the current input stream.
+
+@item current_output(@var{?Stream})
+@findex current_output/1
+Unify @var{Stream} with the current output stream.
+
+@item current_stream(@var{?FileName},@var{?Mode},@var{?Stream})
+@findex current_stream/3
+@var{Stream} is a stream which was opened in mode @var{Mode} and which
+is connected to the absolute file name @var{Filename} (an atom) or to
+the file descriptor @var{Filename} (an integer).  This predicate can be
+used for enumerating all currently open streams through backtracking.
+
+  The predicate
+@code{current_stream/3} is used for retrieving information about a
+stream, and for finding the currently existing streams.
+@refill
+
+@item set_input(@var{+Stream})
+@findex set_input/1
+Set the current input stream to @var{Stream}.
+
+@item set_output(@var{+Stream})
+@findex set_output/1
+Set the current output stream to @var{Stream}.
+
+@item flush_output(@var{+Stream})
+@findex flush_output/1
+Flush all internally buffered characters for @var{Stream} to the
+operating system. @refill
+
+@item library_directory(@var{?Directory})
+@findex library_directory/1
+@emph{A user defined predicate.}  This predicate specifies a set of
+directories to be searched when a file specification of the form
+@code{library(@var{Name})} is used.  The directories are searched until
+a file with the name @file{@var{Name}.@var{Suffix}} or @file{@var{Name}}
+is found (@pxref{Input Output}), where @var{Suffix} is @samp{ql} when
+loading object files and @samp{pl} otherwise. @refill
+
+Directories to be searched may be added by using @code{asserta/1} or
+@code{assertz/1} (@pxref{Modify Prog}), provided that
+@code{library_directory/1} has been declared to be dynamic: @refill
+
+@example
+| ?- assertz(library_directory(@var{Directory})).
+@end example
+
+@item open_null_stream(@var{-Stream})
+@findex open_null_stream/1
+Open an output stream to the null device.  Everything written to this stream
+will be thrown away. @refill
+
+@item character_count(@var{?Stream},@var{?Count})
+@findex character_count/2
+@var{Count} characters have been read from or written to the stream
+@var{Stream}.
+
+@item line_count(@var{?Stream},@var{?Count})
+@findex line_count/2
+@var{Count} lines have been read from or written to the stream
+@var{Stream}.
+
+@item line_position(@var{?Stream},@var{?Count})
+@findex line_position/2
+@var{Count} characters have been read from or written to the current
+line of the stream @var{Stream}.
+
+@item stream_code(@var{+Stream},@var{?StreamCode})
+@itemx stream_code(@var{?Stream},@var{+StreamCode})
+@findex stream_code/2
+@var{StreamCode} is the file descriptor (an integer) corresponding to
+the Prolog stream @var{Stream}.  This predicate is only useful when
+streams are passed between Prolog and C.  A C function wishing to
+perform I/O on a stream may compute the @code{FILE *} stream pointer as
+@samp{stdin + fd}, where @samp{fd} is the file descriptor passed from
+Prolog.  Conversely, the file descriptor can be computed as
+@samp{fileno(s)} from the @code{FILE *} stream pointer @samp{s}. @refill
+
+@emph{Warning:} Mixing C I/O and Prolog I/O on the same stream is not
+recommended practice.  The problem is that the character and line counts
+for a stream are only kept up to date for Prolog I/O (see
+@code{character_count/2}, @code{line_count/2}, and
+@code{line_position/2}. @refill
+
+@item fileerrors
+@findex fileerrors/0
+Undoes the effect of @code{nofileerrors/0}.
+
+@item nofileerrors
+@findex nofileerrors/0
+After a call to this predicate, failure to locate or open a file will
+cause the operation to fail instead of the default action, which is to
+type an error message and then abort execution. @refill
+@end table
+
+@node File Pred, IO Example, Stream Pred, Input Output
+@comment  node-name,  next,  previous,  up
+@subsection DEC-10 Prolog File IO
+
+The following predicates manipulate files.
+
+@table @code
+
+@item see(@var{+File})
+@findex see/1
+File @var{File} becomes the current input stream.  @var{File} may
+be a stream previously opened by @code{see/1} or a filename.  If it is a
+filename, the following action is taken: If there is a stream 
+opened by @code{see/1} associated with the same file already, then it
+becomes the current input stream.  Otherwise, the file @var{File}
+is opened for input and made the current input stream. @refill
+
+@item seeing(@var{?FileName})
+@findex seeing/1
+@var{FileName} is unified with the name of the current input file, if it
+was opened by @code{see/1}, with the current input stream, if it is not
+@code{user_input}, otherwise with @code{user}.
+
+@item seen
+@findex seen/0
+Closes the current input stream, and resets it to @code{user_input}.
+
+@item tell(@var{+File})
+@findex tell/1
+File @var{File} becomes the current output stream.  @var{File} may
+be a stream previously opened by @code{tell/1} or a filename.  If it is a
+filename, the following action is taken: If there is a stream 
+opened by @code{tell/1} associated with the same file already, then it
+becomes the current output stream.  Otherwise, the file @var{File}
+is opened for output and made the current output stream.
+
+@item telling(@var{?FileName})
+@findex telling/1
+@var{FileName} is unified with the name of the current output file, if
+it was opened by @code{tell/1}, with the current output stream, if
+it is not @code{user_output}, otherwise with @code{user}.
+
+@item told
+@findex told/0
+Closes the current output stream, and resets it to @code{user_output}.
+@end table
+
+@node IO Example,  , File Pred, Input Output
+@comment  node-name,  next,  previous,  up
+@subsection An Example
+
+Here is an example of a common form of file processing:  
+
+@example
+@group
+process_file(F) :-
+        seeing(OldInput),
+        see(F),                 % Open file F
+        repeat,
+          read(T),              % Read a term
+          process_term(T),      % Process it
+          T == end_of_file,     % Loop back if not at end of file
+        !,
+        seen,                   % Close the file
+        see(OldInput).
+@end group
+@end example
+
+@cindex repeat loop
+The above is an example of a @dfn{repeat loop}.  Nearly all sensible uses
+of @code{repeat/0} follow the above pattern.  Note the use of a cut to
+terminate the loop.
+
+
+@node Term Compare, Control, Arithmetic, Built Intro
+@comment  node-name,  next,  previous,  up
+@section Comparison of Terms
+@cindex term comparison
+@cindex comparing terms
+@cindex standard order
+
+
+@node Control, State Info, Term Compare, Built Intro
+@comment  node-name,  next,  previous,  up
+@section Control
+
+
+@item freeze(@var{+Goal})
+@findex freeze/1
+The @var{Goal} is blocked until it is ground.  This can be used e.g. for
+defining a sound form of negation by: @refill
+
+@example
+not(Goal) :- freeze((\+ Goal)).
+@end example
+
+@strong{@code{not/1} is not a built-in predicate.}
+
+@item freeze(@var{?X},@var{+Goal})
+@findex freeze/2
+Block @var{Goal} until @code{nonvar(@var{X})} (@pxref{Meta Logic})
+holds.  This is defined as if by:
+
+@example
+:- wait freeze/2.
+freeze(_, Goal) :- Goal.
+@end example
+
+@item frozen(@var{-Var},@var{?Goal})
+@findex frozen/2
+If some goal is blocked on the variable @var{Var}, then that goal is
+unified with @var{Goal}.  Otherwise, @var{Goal} is unified with the atom
+@code{true}. @refill
+
+
+@item call_residue(@var{+Goal},@var{?Vars})
+@findex call_residue/2
+The @var{Goal} is executed as if by @code{call/1}.  If after the
+execution there are still some subgoals of @var{Goal} that are blocked
+on some variables, then @var{Vars} is unified with the list of such
+variables.  Otherwise, @var{Vars} is unified with the empty list
+@code{[]}. @refill
+
+@end table
+
+@node State Info, Meta Logic, Control, Built Intro
+@comment  node-name,  next,  previous,  up
+@section Information about the State of the Program
+@cindex program state
+
+@table @code
+
+@item listing
+@findex listing/0
+Lists onto the current output stream all the clauses in the current
+interpreted program.  Clauses listed onto a file can be consulted back.
+@refill
+
+@item listing(@var{+A})
+@findex listing/1
+If @var{A} is just an atom, then the interpreted predicates for all
+predicates of that name are listed as for @code{listing/0}.  The
+argument @var{A} may also be a predicate spec in which case only the
+clauses for the specified predicate are listed.  Finally, it is possible
+for @var{A} to be a list of specifications of either type, e.g. @refill
+
+@example
+| ?- listing([concatenate/3, reverse, go/0]).
+@end example
+
+@item ancestors(@var{?Goals})
+@findex ancestors/1
+Unifies @var{Goals} with a list of ancestor goals for the current clause.
+The list starts with the parent goal and ends with the most recent ancestor
+coming from a call in a compiled clause.  @refill
+
+Only available when the debugger is switched on.
+
+@item subgoal_of(@var{?S})
+@findex subgoal_of/1
+Equivalent to the sequence of goals:  
+
+@example
+| ?- ancestors(@var{Goals}), member(@var{S}, @var{Goals}).
+@end example
+
+@noindent
+where the predicate @code{member/2} (not a built-in predicate)
+successively matches its first argument with each of the elements of its
+second argument.  @xref{Directives}. @refill
+
+Only available when the debugger is switched on.
+
+@item current_atom(@var{?Atom})
+@findex current_atom/1
+If @var{Atom} is instantiated then test if @var{Atom} is an Atom. @refill
+
+If @var{Atom} is unbound then generate (through backtracking) all currently
+known atoms, and return each one as @var{Atom}. @refill
+
+@item current_predicate(@var{?Name},@var{?Head})
+@findex current_predicate/2
+@var{Name} is the name of a user defined predicate, and @var{Head} is
+the most general goal for that predicate.  This predicate can
+be used to enumerate all user defined predicates through backtracking.
+@refill
+
+@item predicate_property(@var{?Head},@var{?Property})
+@findex predicate_property/2
+@var{Head} is the most general goal for an existing predicate,
+and @var{Property} is a property of that predicate, where the possible
+properties are @refill
+
+@itemize @bullet
+
+@item
+one of the atoms @code{built_in} (for built-in predicates) or
+@code{compiled} or @code{interpreted} (for user defined predicates).
+
+@item
+zero or more of the atoms @code{dynamic}, @code{multifile}, and
+@code{wait}, for predicates that have been declared to have these
+properties (@pxref{Declarations}).  N.B.  Since these atoms are all
+prefix operators with precedence greater than 1000 (@pxref{Operators}),
+they have to be written inside parentheses when they occur as arguments
+of a compound term, e.g.:
+
+@example
+| ?- predicate_property(Head, (dynamic)).
+@end example
+@end itemize
+
+This predicate can be used to enumerate all existing predicates and
+their properties through backtracking. @refill
+@refill
+@end table
+
+@node Meta Logic, Modify Prog, State Info, Built Intro
+@comment  node-name,  next,  previous,  up
+@section Meta-Logical
+@cindex meta-logical
+
+@table @code
+
+@item atom_chars(@var{?Const},@var{?CharList})
+@findex atom_chars/2
+The same as @code{name(@var{Const},@var{CharList})}, but @var{Const}
+is constrained to be an atom. @refill
+
+@item number_chars(@var{?Const},@var{?CharList})
+@findex number_chars/2
+The same as @code{name(@var{Const},@var{CharList})}, but @var{Const}
+is constrained to be a number. @refill
+@end table
+
+@node Modify Prog, Database, Meta Logic, Built Intro
+@comment  node-name,  next,  previous,  up
+@section Modification of the Program
+
+Note that a term @code{@var{Head} :- @var{Body}} must be enclosed in
+parentheses when it occurs as an argument of a compound term, as
+@samp{:-} is a standard infix operator with precedence greater than 1000
+(@pxref{Operators}), e.g.: @refill
+
+@example
+| ?- assert((@var{Head} :- @var{Body})).
+@end example
+
+Like recorded terms, the clauses of dynamic predicates also have
+unique implementation-defined identifiers.  Some of the predicates below
+have an additional argument which is this identifier.  This identifier
+makes it possible to access clauses directly instead of requiring a
+normal database (hash-table) lookup.  However it should be stressed that
+use of these predicates requires some extra care. @refill
+
+
+@node Database, All Solutions, Modify Prog, Built Intro
+@comment  node-name,  next,  previous,  up
+@section Internal Database
+@cindex database
+
+
+@table @code
+
+
+@item instance(@var{+Ref},@var{?Term})
+@findex instance/2
+A (most general) instance of the recorded term or clause whose
+implementation-defined identifier is @var{Ref} is unified with @var{Term}.
+@var{Ref} must be instantiated to a legal identifier. @refill
+
+
+@node All Solutions, Foreign, Database, Built Intro
+@comment  node-name,  next,  previous,  up
+@section All Solutions
+@cindex all solutions
+@cindex solutions, all
+
+@node Foreign, Debug Pred, All Solutions, Built Intro
+@comment  node-name,  next,  previous,  up
+@section Interface to Foreign Language Functions
+@cindex foreign
+
+Functions written in the C language (or any other language that uses the
+same calling conventions) may be called from Prolog.  Foreign language
+modules may be linked in as needed.  However: once a module has been linked
+in to the Prolog load image it is not possible to unlink the module.
+The foreign language function interface is due to Quintus Prolog.
+
+@table @code
+
+@item foreign_file(@var{+ObjectFile},@var{+Functions})
+@findex foreign_file/2
+@emph{A user defined predicate.}
+Specifies that a set of C language functions, to be called from Prolog,
+are to be found in @var{ObjectFile}. @var{Functions} is a list of functions
+exported by @var{ObjectFile}.  Only functions that are to be called from
+Prolog should be listed.  For example @refill
+
+@example
+foreign_file('terminal.o', [scroll,pos_cursor,ask]).
+@end example
+
+@noindent
+specifies that functions @code{scroll()}, @code{pos_cursor()} and
+@code{ask()} are to be found in object file @file{terminal.o}. @refill
+
+@item foreign(@var{+CFunctionName}, @var{+Predicate})
+@itemx foreign(@var{+CFunctionName}, @var{+Language}, @var{+Predicate})
+@findex foreign/2
+@findex foreign/3
+@emph{User defined predicates.} They specify the Prolog interface to a C
+function. @var{Language} is at present constrained to the atom @code{c}.
+@var{CFunctionName} is the name of a C function. @var{Predicate}
+specifies the name of the Prolog predicate that will be used to call
+@var{CFunction()}. @var{Predicate} also specifies how the predicate
+arguments are to be translated into the corresponding C arguments.
+@refill
+
+@example
+foreign(pos_cursor, c, move_cursor(+integer, +integer)).
+@end example
+
+The above example says that the C function @code{pos_cursor()} has two
+integer value arguments and that we will use the predicate
+@code{move_cursor/2} to call this function.  A goal @code{move_cursor(5, 23)}
+would translate into the C call @code{pos_cursor(5,23);}. @refill
+
+@item load_foreign_files(@var{+ObjectFiles},@var{+Libraries})
+@findex load_foreign_files/2
+Load (link) @var{ObjectFiles} into the Prolog load image. @var{ObjectFiles}
+is a list of C object files. @var{Libraries} is a list of libraries, the C
+library @code{'-lc'} will always be used and need not be specified.
+Example: @refill
+
+@example
+| ?- load_foreign_files(['terminal.o'], []).
+@end example
+@end table
+
+The third argument of the predicate @code{foreign/3} specifies how to translate
+between Prolog arguments and C arguments.
+
+@table @code
+
+@item Prolog: +integer
+
+@item C:      long
+The argument should be instantiated to an integer or a float.
+The call will otherwise fail. @refill
+
+@item Prolog: +float
+
+@item C:      double
+The argument should be instantiated to an integer or a float.
+The call will otherwise fail. @refill
+
+@item Prolog: +atom
+
+@item C:      unsigned long
+The argument should be instantiated to an atom.  The call will otherwise fail.
+Each atom in SICStus is associated with a unique integer.  This integer is
+passed as an unsigned long to the C function.  Note that the mapping between
+atoms and integers depends on the execution history. @refill
+
+@item Prolog: +string
+
+@item C:      char *
+The argument should be instantiated to an atom.  The call will otherwise fail.
+The C function will be passed the address of a text string containing
+the printed representation of the atom.  The C function should @emph{not}
+overwrite the string. @refill
+
+@item Prolog: +string(@var{N})
+
+@item C:      char *
+The argument should be instantiated to an atom.  The call will otherwise
+fail.  The printable representation of the string will be copied into a
+newly allocated buffer.  The string will be truncated if it is longer than
+@var{N} characters.  The string will be blank padded on the right if it is
+shorter than @var{N} characters.  The C function will be passed the address
+of the buffer.  The C function may overwrite the buffer. @refill
+
+@item Prolog: +address
+
+@item C:      char *
+The argument should be instantiated to an integer; the call will
+otherwise fail.  The argument should be either 0 or a pointer @var{P}
+previously passed from C to Prolog.  The value passed will be
+@code{NULL} or @var{P}, respectively, type converted to 
+@w{@code{(char *)}}. @refill
+
+@item Prolog: +address(@var{TypeName})
+
+@item C:      @var{TypeName} *
+The argument should be instantiated to an integer.  The call will
+otherwise fail.  The argument should be either 0 or a pointer @var{P}
+previously passed from C to Prolog.  The value passed will be
+@code{NULL} or @var{P}, respectively, type converted to
+@w{@code{(@var{TypeName} *)}}. @refill
+
+@item Prolog: -integer
+
+@item C:      long *
+The C function is passed a reference to an uninitialised @code{long}.
+The value returned will be converted to a Prolog integer.  The Prolog
+integer will be unified with the Prolog argument. @refill
+
+@item Prolog: -float
+
+@item C:      double *
+The C function is passed a reference to an uninitialised @code{double}.  The
+value returned will be converted to a Prolog float.  The Prolog float
+will be unified with the Prolog argument. @refill
+
+@item Prolog: -atom
+
+@item C:      unsigned long *
+The C function is passed a reference to an uninitialised @code{long}.
+The value returned should have been obtained earlier from a @code{+atom}
+type argument.  Prolog will attempt to associate an atom with the
+returned value.  The atom will be unified with the Prolog argument.
+@refill
+
+@item Prolog: -string
+
+@item C:      char **
+The C function is passed the address of an uninitialised @code{char *}.
+The returned string will be converted to a Prolog atom.  The atom will
+be unified with the Prolog argument.  C may reuse or destroy the string
+buffer during later calls. @refill
+
+@item Prolog: -string(@var{N})
+
+@item C:      char *
+The C function is passed a reference to a character buffer large enough
+to store an @var{N} character string.  The returned string will be
+stripped of trailing blanks and converted to a Prolog atom.  The atom
+will be unified with the Prolog argument. @refill
+
+@item Prolog: -address
+
+@item C:      char **
+The C function is passed the address of an uninitialised @code{char *}.
+The returned value, which must be @code{NULL} or a value created by
+@code{malloc()}, will be converted to a Prolog integer and unified with
+the Prolog argument. @refill
+
+@item Prolog: -address(@var{TypeName})
+
+@item C:      @var{TypeName} **
+The C function is passed the address of an uninitialised
+@code{@var{TypeName} *}.  The returned value, which must be @code{NULL}
+or a value created by @code{malloc()}, will be converted to a Prolog
+integer and unified with the Prolog argument. @refill
+
+@item Prolog: [-integer]
+
+@item C:      long @var{F}()
+The C function should return a @code{long}.  The value returned will be
+converted to a Prolog integer.  The Prolog integer will be unified with
+the Prolog argument. @refill
+
+@item Prolog: [-float]
+
+@item C:      double @var{F}()
+The C function should return a @code{double}.  The value returned will
+be converted to a Prolog float.  The Prolog float will be unified with
+the Prolog argument. @refill
+
+@item Prolog: [-atom]
+
+@item C:      unsigned long @var{F}()
+The C function should return an @code{unsigned long}.  The value
+returned should have been obtained earlier from a @code{+atom} type
+argument.  Prolog will attempt to associate an atom with the returned
+value.  The atom will be unified with the Prolog argument. @refill
+
+@item Prolog: [-string]
+
+@item C:      char *@var{F}()
+The C function should return a @code{char *}.  The returned string will
+be converted to a Prolog atom.  The atom will be unified with the Prolog
+argument.  C may reuse or destroy the string buffer during later calls.
+@refill
+
+@item Prolog: [-string(@var{N})]
+
+@item C:      char *@var{F}()
+The C function should return a @code{char *}.  The first @var{N}
+characters of the string will be copied and the copied string will be
+stripped of trailing blanks.  The stripped string will be converted to a
+Prolog atom.  The atom will be unified with the Prolog argument.  C may
+reuse or destroy the string buffer during later calls. @refill
+
+@item Prolog: [-address]
+
+@item C:      char *@var{F}()
+The C function should return a @code{char *}.  The returned value, which
+must be @code{NULL} or a value created by @code{malloc()}, will be
+converted to a Prolog integer and unified with the Prolog argument.
+@refill
+
+@item Prolog: [-address(@var{TypeName})]
+
+@item C:      @var{TypeName} *@var{F}()
+The C function should return a @code{@var{TypeName} *}.  The returned
+value, which must be @code{NULL} or a value created by @code{malloc()},
+will be converted to a Prolog integer and unified with the Prolog
+argument. @refill
+@end table
+
+Consider, for example, a function which returns the square root of its
+argument after checking that the argument is valid, defined in the file
+@file{math.c}:
+
+@example
+#include <math.h>
+#include <stdio.h>
+
+double sqrt_check(d)
+     double d;
+@{
+  if (d < 0.0)
+    d = 0.0,
+    fprintf(stderr, "can't take square root of a negative number\n");
+
+  return sqrt(d);
+@}
+@end example
+
+The Prolog interface to this function is defined in a file
+@file{math.pl}.  The function uses the @code{sqrt()} library function,
+and so the math library @samp{-lm} has to be included:
+
+@example
+foreign_file('math.o', [sqrt_check]).
+
+foreign(sqrt_check, c, sqrt(+float, [-float])).
+
+:- load_foreign_files(['math.o'], ['-lm']).
+@end example
+
+A simple session using this function could be:
+
+@example
+| ?- [math].
+
+@{consulting /home/sics/al/math.pl...@}
+@{math consulted, 160 msec 597 bytes@}
+
+yes
+| ?- sqrt(5.0, X).
+
+X = 2.23606797749979 ? 
+
+yes
+| ?- sqrt(-5.0, X).
+can't take square root of a negative number
+
+X = 0.0 ? 
+
+yes
+@end example
+
+Unfortunately, the foreign function interface is the least portable part
+of SICStus Prolog.  Therefore, we provide an alternative to the
+mechanism described above.  Using the alternative mechanism, the foreign
+code is statically linked with the emulator code and with @dfn{interface
+code}.  This interface code is created by first loading into SICStus Prolog
+@emph{all} @code{foreign_file/2} and @code{foreign/2-3} declarations that are
+going to be used by @code{load_foreign_files/2}, and then calling the
+predicate:
+
+@table @code
+@item prepare_foreign_files(@var{+ObjectFiles})
+@findex prepare_foreign_files/2
+where @var{ObjectFiles} is a list of @emph{all} the object files that
+are going to be used by @code{load_foreign_files/2}, generates the
+relevant interface code in @file{flinkage.c} in the current working
+directory.
+@end table
+
+Once the interface code has been generated, the foreign code can be
+statically linked with the emulator.  The whole procedure is best
+illustrated by an example.  We first exctract the declarations into a
+file @file{math2.pl}:
+
+@example
+foreign_file('math.o', [sqrt_check]).
+
+foreign(sqrt_check, c, sqrt(+float, [-float])).
+@end example
+
+@noindent
+and use them as follows:
+
+@example
+% prolog
+SICStus 0.7 #0: Thu Jun 7 10:40:30 MET DST 1990
+| ?- [math2], prepare_foreign_files(['math.o']).
+
+@{consulting /home/sics/al/math2.pl...@}
+@{math consulted, 20 msec 510 bytes@}
+@{flinkage.c generated, 20 msec@}
+
+yes
+| ?- ^D
+@{ End of SICStus execution, user time 0.100 @}
+% cc -c flinkage.c
+% setenv SP_PATH /usr/local/lib/sicstus0.7
+% cc $SP_PATH/Emulator/sp.o flinkage.o math.o -lm -o sp
+% ./sp -f -b $SP_PATH/Library/boot.ql
+booting SICStus...please wait
+SICStus 0.7 #0: Thu Jun 7 10:40:30 MET DST 1990
+| ?- [math].
+
+@{consulting /home/sics/al/math.pl...@}
+@{math consulted, 20 msec 597 bytes@}
+
+yes
+| ?- sqrt(5.0, X).
+
+X = 2.23606797749979 ? 
+
+yes
+@end example
+
+At this time, @code{save_program/1} can be called to create an
+executable saved state for quick start-up.  @xref{Installation Intro}.
+Notice that the semantics of @code{load_foreign_files/2} is somewhat
+different if user code is statically linked with the emulator: no
+dynamic linking of object files takes place; instead, the relevant
+predicates and functions are connected by searching the emulator's
+internal symbol tables, and the second argument is simply ignored.
+
+In general, to statically link the user code with the emulator, create
+the interface code (@file{flinkage.o}) and issue a Shell command
+
+@example
+% cc $SP_PATH/Emulator/sp.o flinkage.o OBJECTFILES LIBRARIES -o sp
+@end example
+
+@noindent
+where the environment variable @code{SP_PATH} should be defined as the
+name of the SICStus source code directory
+(@file{/usr/local/lib/sicstus0.7} in the example).
+
+@section Debugging
+
+@table @code
+
+@item unknown(@var{?OldState},@var{?NewState})
+@findex unknown/2
+Unifies @var{OldState} with the current state of the ``Action on unknown
+predicates'' flag, and sets the flag to @var{NewState}.  This flag
+determines whether or not the system is to catch calls to undefined
+predicates (@pxref{Undefined Predicates}).  The possible states of the
+flag are: @refill
+
+@table @code
+
+@item trace
+Causes calls to undefined predicates to be reported and the debugging
+system to be entered at the earliest opportunity (the default state).
+@refill
+
+@item fail
+Causes calls to such predicates to fail. @refill
+@end table
+
+@item debug
+@findex debug/0
+The debugger is switched on with tracing disabled. @xref{Basic}. @refill
+
+@item nodebug
+@itemx notrace
+@findex nodebug/0
+@findex notrace/0
+The debugger is switched off. @xref{Basic}. @refill
+debugging. @refill
+
+@item trace
+@findex trace/0
+The debugger is switched on with tracing enabled. @xref{Trace}. @refill
+
+@item leash(@var{+Mode})
+@findex leash/1
+Leashing Mode is set to @var{Mode}.  @xref{Trace}. @refill
+
+@item spy @var{+Spec}
+@findex spy/1
+Spy-points are placed on all the predicates given by @var{Spec}.
+@xref{Spy-Point}. @refill
+
+@item nospy @var{+Spec}
+@findex nospy/1
+Spy-points are removed from all the predicates given by @var{Spec}.
+@xref{Spy-Point}. @refill
+
+@item nospyall
+@findex nospyall/0
+This removes all the spy-points that have been set. @refill
+
+@item debugging
+@findex debugging/0
+Displays information about the debugger.  @xref{Basic}.  @refill
+@end table
+
+@node Profiling, Definite, Debug Pred, Built Intro
+@comment  node-name,  next,  previous,  up
+@section Execution Profiling
+
+@cindex execution profiling
+@cindex profiling, execution
+@cindex counter
+Execution profiling is a common aid for improving software performance.
+The SICStus Prolog compiler has the capability of instrumenting compiled
+code with @dfn{counters} which are initially zero and incremented
+whenever the flow of control passes a given point in the compiled code.
+This way the number of calls, backtracks, choicepoints created, etc.,
+can be counted for the instrumented predicates, and an estimate of the
+time spent in individual clauses and disjuncts can be calculated.
+
+The profiling package was written by M.M. Gorlick and C.F. Kesselman at
+the Aerospace Corporation (@cite{Timing Prolog Programs Without Clocks},
+Proc. Symposium on Logic Programming, pp. 426--432, IEEE Computer
+Society, 1987).
+
+Only compiled code can be instrumented.  To get an execution profile of
+a program, the compiler must first be told to produce instrumented code.
+This is done by issuing the directive:
+
+@example
+| ?- prolog_flag(compiling,_,profiledcode).
+@end example
+
+@noindent
+after which the program to be analyzed can be compiled as usual.  Any
+new compiled code will be instrumented while the compilation mode flag
+has the value @code{profiledcode}.
+
+The profiling data is generated by simply running the program.  The
+predicate @code{profile_data/4} (see below) makes available a selection
+of the data as a Prolog term.  The predicate @code{profile_reset/1}
+zeroes the profiling counters for a selection of the currently
+instrumented predicates. @refill
+
+
+@table @code
+@item profile_data(@var{+Files},@var{?Selection},@var{?Resolution},@var{-Data})
+@findex profile_data/4
+
+This unifies @var{Data} with profiling data collected from the
+predicates defined in @var{Files}, which should be either a single
+filename or a list of filenames, similar to the argument accepted by
+e.g. @code{compile/1}. @refill
+
+The @var{Selection} argument determines the kind of profiling data to be
+collected.  If uninstantiated, the predicate will backtrack over its
+possible values, which are: @refill
+
+@table @code
+@item calls
+All instances of entering a clause by a procedure call are counted.
+This is equivalent to counting all procedure calls @emph{that have not
+been determined to fail by indexing on the first argument}. @refill
+
+@item backtracks
+All instances of entering a clause by backtracking are counted.
+
+@item choice_points
+All instances of creating a choicepoint are counted.  This occurs,
+roughly, when the implementation determines that there are more than one
+possibly matching clauses for a procedure call, and when a disjunction
+is entered.
+
+@item shallow_fails
+All instances of backtracking ``early'' in a clause or disjunct when
+there are outstanding alternatives for the current procedure call are
+counted.
+
+@item deep_fails
+All instances of backtracking ``late'' in a clause or disjunct, or when
+there are no outstanding alternatives for the current procedure call,
+are counted.  The reason for distinguishing shallow and deep failures is
+that the former are considerably cheaper to execute than the latter.
+
+@item execution_time
+The execution time for the selected predicates, clauses, or disjuncts is
+estimated in artificial units.
+@end table
+
+The @var{Resolution} argument determines the level of resolution of the
+profiling data to be collected.  If uninstantiated, the predicate will
+backtrack over its possible values, which are: @refill
+
+@table @code
+@item predicate
+@var{Data} is a list of @code{@var{PredName}-@var{Count}}, where
+@var{Count} is a sum of the corresponding counts per clause.
+
+@item clause
+@var{Data} is a list of @code{@var{ClauseName}-@var{Count}}, where
+@var{Count} includes counts for any disjunctions occurring inside that
+clause.  Note, however, that the selections @code{calls} and
+@code{backtracks} do @emph{not} include counts for disjunctions.
+
+@item all
+@var{Data} is a list of @code{@var{InternalName}-@var{Count}}.  This is
+the finest resolution level, counting individual clauses and disjuncts.
+@end table
+
+@noindent
+Above, @var{PredName} is a predicate spec, @var{ClauseName} is a compound
+term @code{@var{PredName}/@var{ClauseNumber}}, and @var{InternalName} is
+either@*
+@var{ClauseName}---corresponding to a clause, or@*
+@code{(@var{ClauseName}-@var{DisjNo})/@var{Arity}/@var{AltNo}}---corresponding
+to a disjunct.
+
+@item profile_reset(@var{+Files})
+@findex profile_reset/1
+Zeroes all counters for predicates defined in @var{Files}, which should
+be either a single filename or a list of filenames, similar to the
+argument accepted by @code{profile_data/4}. @refill
+@end table
+
+@node Definite, Misc Pred, Profiling, Built Intro
+@comment  node-name,  next,  previous,  up
+@section Definite Clause Grammars
+@cindex grammars
+
+
+@node Misc Pred,  , Definite, Built Intro
+@comment  node-name,  next,  previous,  up
+@section Miscellaneous
+
+@table @code
+
+@item @var{X} = @var{Y}
+@findex =/2, unification
+Defined as if by the clause @code{Z=Z.}; i.e. @var{X} and @var{Y} are
+unified. @refill
+
+@item dif(@var{X},@var{Y})
+@findex dif/2
+Constrains @var{X} and @var{Y} to represent different terms i.e. to be
+non unifiable.  Calls to @code{dif/2} either succeed, fail, or are
+blocked depending on whether @var{X} and @var{Y} are sufficiently
+instantiated.  This predicate is due to Prolog II (see @cite{Prolog II:
+Manuel de Reference et Modele Theorique}, by A. Colmerauer, Groupe
+Intelligence Artificielle, Universite Aix-Marseille II, 1982). @refill
+
+For example:
+
+@example
+@group
+| ?- dif(X,a).
+
+X = _74,
+dif(_74,a) ?
+
+yes
+
+| ?- dif(X,a), X=a.
+
+no
+
+| ?- dif([X|a],[b|Y]), X=a.
+
+X = a,
+Y = _154 ?
+
+yes
+@end group
+@end example
+
+
+@item prolog_flag(@var{+FlagName},@var{?OldValue},@var{?NewValue})
+@findex prolog_flag/3
+Unify @var{OldValue} with the value of the flag @var{FlagName}, then set
+the value of @var{FlagName} to @var{NewValue}.  The possible flag names
+and values are: @refill
+
+@table @code
+
+@item character_escapes
+@code{on} or @code{off}.  Enable or disable character escaping.
+Currently this has @emph{no effect} in SICStus Prolog. @refill
+
+@item compiling
+Governs the mode in which @code{compile/1} and @code{fcompile/1}
+operate (@pxref{Load Intro}).
+
+@table @code
+@item compactcode
+Compilation produces byte-coded abstract instructions (the default).
+
+@item fastcode
+Compilation produces native machine instructions.  Only available for
+Sun-3 computers.
+
+@item profiledcode
+Compilation produces byte-coded abstract instructions instrumented to
+produce execution profiling data.  
+@end table
+
+@item debugging
+Corresponds to the predicates @code{debug/0}, @code{nodebug/0},
+@code{trace/0}, @code{notrace/0} (@pxref{Debug Pred}).
+
+@table @code
+@item trace
+Turn on trace mode. 
+
+@item debug
+Turn on the debugger.
+
+@item off
+Turn off trace mode and the debugger (the default).
+@end table
+
+@item fileerrors
+@code{on} or @code{off}.  Turn aborting on file errors on or off.
+Equivalent to @code{fileerrors/0} and @code{fileerrors/0}, respectively
+(@pxref{Stream Pred}).  Initially @code{on}.
+
+@item gc
+@code{on} or @code{off}.  Turn garbage collection on or off.
+Initially @code{on}.
+
+@item gc_margin
+@var{Margin}: Number of kilobytes.  If less than @var{Margin} kilobytes
+are reclaimed in a garbage collection then the size of the garbage
+collected area should be increased.  Also, no garbage collection is
+attempted unless the garbage collected area has at least @var{Margin}
+kilobytes.  Initially 500. @refill
+
+@item gc_trace
+Governs garbage collection trace messages.
+
+@table @code
+@item verbose
+Turn on verbose tracing of garbage collection.
+
+@item terse
+Turn on terse tracing of garbage collection. 
+
+@item off
+Turn off tracing of garbage collection (the default).
+@end table
+
+@item redefine_warnings
+@code{on} or @code{off}.  Enable or disable warning messages when a
+predicate is being redefined from a different file than its previous
+definition.  Initially @code{on}. @refill
+
+@item single_var_warnings
+@code{on} or @code{off}.  Enable or disable warning messages when a
+clause containing non-anonymous variables occurring once only is
+compiled or consulted.  Initially @code{on}. @refill
+
+@item unknown
+Corresponds to the predicate @code{unknown/2} (@pxref{Debug Pred}).
+
+@table @code
+@item trace
+Cause calls to undefined predicates to be reported and the debugging
+system to be entered at the earliest opportunity (the default).
+
+@item fail
+Cause calls to such predicates to fail.  
+@end table
+@end table
+
+@item prolog_flag(@var{+FlagName},@var{?OldValue})
+@findex prolog_flag/2
+This is a shorthand for
+
+@example
+prolog_flag(@var{FlagName},@var{OldValue},@var{OldValue})
+@end example
+
+@item copy_term(@var{?Term},@var{?CopyOfTerm})
+@findex copy_term/2
+@var{CopyOfTerm} is an independent copy of @var{Term}, with new
+variables substituted for all variables in @var{Term}.  It is defined as
+if by @refill
+
+@example
+copy_term(X, Y) :-
+        assert('copy of'(X)),
+        retract('copy of'(Y)).
+@end example
+
+@item numbervars(@var{?Term},@var{+N},@var{?M})
+@findex numbervars/3
+Unifies each of the variables in term @var{Term} with a special term, so
+that @code{write(@var{Term})} (or @code{writeq(@var{Term})})
+(@pxref{Term IO}) prints those variables as (@kbd{A} + (@var{i} mod
+26))(@var{i}/26) where @var{i} ranges from @var{N} to @var{M}-1.
+@var{N} must be instantiated to an integer.  If it is 0 you get the
+variable names A, B, @dots{}, Z, A1, B1, etc.  This predicate is used by
+@code{listing/0, listing/1} (@pxref{State Info}). @refill
+
+@item setarg(@var{+ArgNo},@var{+CompoundTerm},@var{?NewArg})
+@findex setarg/3
+Replace destructively argument @var{ArgNo} in @var{CompoundTerm} by
+@var{NewArg}.  The assignment is undone on backtracking.  @strong{This
+operation is only safe if there is no further use of the ``old'' value
+of the replaced argument}.  The use of this predicate is discouraged, as
+the idea of destructive replacement is alien to logic programming.
+@refill
+
+@item query_expansion(@var{+RawQuery},@var{?Query})
+@findex query_expansion/1
+@emph{A user defined predicate}, which may be used to transform queries
+entered at the terminal in response to the @samp{| ?-} prompt.  The
+Prolog interpreter will call this for every top-level query
+@var{RawQuery}.  If it succeeds, @var{Query} will be executed instead of
+@var{RawQuery}, but the variable bindings will be printed as usual upon
+completion.  This feature is useful e.g. to implement a simple command
+interpreter. @refill
+
+@item save(@var{+File})
+@findex save/1
+The system saves the current state of the system into file @var{File}.
+When it is restored, Prolog will resume execution that called @code{save/1}.
+@xref{Saving}. @refill
+
+@item save(@var{+File},@var{?Return})
+@findex save/2
+Saves the current system state in @var{File} just as
+@code{save(@var{File})}, but in addition unifies @var{Return} to 0 or 1
+depending on whether the return from the call occurs in the original
+incarnation of the state or through a call @code{restore(@var{File})}
+(respectively). @refill
+
+@item save_program(@var{+File})
+@findex save_program/1
+The system saves the currently defined predicates into file @var{File}.
+When it is restored, Prolog will reinitialise itself. @xref{Saving}. @refill
+
+@item restore(@var{+File})
+@findex restore/1
+The system is returned to the system state previously saved to file
+@var{File}. @xref{Saving}. @refill
+
+@item reinitialise
+@findex reinitialise/0
+This predicate can be used to force the initialisation behaviour to take
+place at any time.  When SICStus is initialised it looks for a file
+@file{~/.sicstusrc} and consults it, if it exists. @refill
+
+@item maxdepth(@var{+Depth})
+@findex maxdepth/1
+The positive integer @var{Depth} specifies the maximum depth, i.e. the
+maximum number of nested interpreted calls, beyond which the interpreter
+will trap to the debugger.  The top level has zero depth.  This is
+useful for guarding against loops in an untested program, or for
+curtailing infinite execution branches.  Note that calls to compiled
+predicates are not included in the computation of the depth.  The
+interpreter will check for maximum depth only if the debugger is
+switched on. @refill
+
+@item depth(@var{?Depth})
+@findex depth/1
+Unifies @var{Depth} with the current depth, i.e. the number of currently
+active interpreted procedure calls.  Depth information is only available
+when the debugger is switched on. @refill
+
+@item garbage_collect
+@findex garbage_collect/0
+Perform a garbage collection of the global stack immediately. @refill
+
+@item gc
+@findex gc/0
+Enables garbage collection of the global stack (the default). @refill
+
+@item nogc
+@findex nogc/0
+Disables garbage collection of the global stack.
+
+@item statistics
+@findex statistics/0
+Display on the terminal statistics relating to memory usage, run time,
+garbage collection of the global stack and stack shifts. @refill
+
+@item statistics(@var{?Key},@var{?Value})
+@findex statistics/2
+This allows a program to gather various execution statistics.  For each of
+the possible keys @var{Key}, @var{Value} is unified with a list of values,
+as follows: @refill
+
+@table @code
+
+@item global_stack
+@code{[@var{size used},@var{free}]}@*
+This refers to the global stack, where compound terms are stored.
+
+@item local_stack
+@code{[@var{size used},@var{free}]}@* 
+This refers to the local stack, where recursive predicate environments
+are stored.
+
+@item trail
+@code{[@var{size used},@var{free}]}@*
+This refers to the trail stack, where conditional variable bindings are
+recorded.
+
+@item choice
+@code{[@var{size used},@var{free}]}@*
+This refers to the choicepoint stack, where partial states are stored
+for backtracking purposes.
+
+@item core
+@itemx memory
+@code{[@var{size used},0]}@*
+These refer to the amount of memory actually allocated by the UNIX
+process.
+
+@item heap
+@itemx program
+@code{[@var{size used},0]}@*
+These refer to the amount of memory allocated for compiled and
+interpreted clauses, symbol tables, and the like.
+
+@item runtime
+@code{[@var{since start of Prolog},@var{since previous statistics}]}
+
+@item garbage_collection
+@code{[@var{no. of GCs},@var{bytes freed},@var{time spent}]}
+
+@item stack_shifts
+@code{[@var{no. of local shifts},@var{no. of trail shifts},@var{time spent}]}
+@end table
+
+Times are in milliseconds, sizes of areas in bytes.
+
+@item prompt(@var{?Old},@var{?New})
+@findex prompt/2
+The sequence of characters (prompt) which indicates that the system is
+waiting for user input is represented as an atom, and unified with
+@var{Old}; the atom bound to New specifies the new prompt.  In
+particular, the goal @code{prompt(X, X)} unifies the current prompt with
+@var{X}, without changing it.  Note that this predicate only affects the
+prompt given when a user's program is trying to read from the terminal
+(e.g. by calling @code{read/1}).  Note also that the prompt is reset to
+the default @samp{|: } on return to top-level. @refill
+
+@item version
+@findex version/0
+Displays the introductory messages for all the component parts of the
+current system. @refill
+
+Prolog will display its own introductory message when initially run but not
+normally at any time after this.  If this message is required at some other
+time it can be obtained using this predicate which displays a list of
+introductory messages; initially this list comprises only one message
+(Prolog's), but you can add more messages using @code{version/1}. @refill
+
+@item version(@var{+Message})
+@findex version/1
+This takes a message, in the form of an atom, as its argument and appends
+it to the end of the message list which is output by @code{version/0}. @refill
+
+The idea of this message list is that, as systems are constructed on top of
+other systems, each can add its own identification to the message list.
+Thus @code{version/0} should always indicate which modules make up a particular
+package.  It is not possible to remove messages from the list. @refill
+
+@item help
+@findex help/0
+Displays basic information, or a user defined help message.
+It first calls @code{user_help/0}, and only if that call fails
+is a default help message printed on the current output stream. @refill
+
+@item user_help
+@findex user_help/0
+@emph{A user defined predicate.} This may be defined by the user to
+print a help message on the current output stream. @refill
+
+@item unix(@var{+Term})
+@itemx plsys(@var{+Term})
+@findex unix/1
+@findex plsys/1
+Allows certain interactions with the operating system.  Under UNIX the
+possible forms of @var{Term} are as follows: @refill
+
+@table @code
+
+@item access(@var{+Path},@var{+Mode})
+The path name @var{Path} and the integer @var{Mode} are passed to
+the UNIX C library function @code{access(2)}.  The call succeeds if access
+is granted.
+
+@item argv(@var{?Args})
+@var{Args} is unified with a list of atoms representing the program
+arguments supplied when the current SICStus process was started
+(@pxref{Installation Intro}).  For example, if SICStus were invoked with
+@refill
+
+@example
+% prolog hello world
+@end example
+
+@noindent
+then @var{Args} would be unified with @code{[hello,world]}.
+
+@item cd(@var{+Path})
+Change the current working directory to @var{Path}.
+
+@item cd
+Change the current working directory to the home directory. @refill
+
+@item chmod(@var{+Path},@var{?Old},@var{?New})
+The path name @var{Path} and the integer @var{New} are passed to the
+UNIX C library function @code{chmod(2)}.  @var{Old} is unified with the
+old file mode.  The call succeeds if access is granted.
+
+@item exit(@var{+Status})
+The SICStus process is exited, returning the integer value @var{Status}.
+
+@item mktemp(@var{+Template},@var{?Filename})
+@var{Filename} is unified with a unique filename constructed from the
+atom @var{Template}.  This is an interface to the UNIX C library
+function @code{mktemp(3)}.
+
+@item shell
+Start a new interactive UNIX shell.  The control is returned to Prolog
+upon termination of the shell. @refill
+
+@item shell(@var{+Command})
+Pass @var{Command} to a new UNIX shell for execution. @refill
+
+@item shell(@var{+Command},@var{?Status})
+@var{Command} is passed to a new UNIX shell for execution, and
+@var{Status} is unified with the value returned by the shell.
+
+@item system(@var{+Command})
+Pass @var{Command} to a new UNIX @code{sh} process for execution. @refill
+
+@item system(@var{+Command},@var{?Status})
+@var{Command} is passed to a new UNIX @code{sh} process for execution,
+and @var{Status} is unified with the value returned by the process.
+
+@item umask(@var{?Old},@var{?New})
+The integer @var{New} are passed to the UNIX C library function
+@code{umask(2)}.  @var{Old} is unified with the old file mode creation
+mask.
+
+@end table
+@end table
+
+@node Example Intro, Installation Intro, Prolog Intro, Top
+@comment  node-name,  next,  previous,  up
+@chapter Programming Examples
+
+Some simple examples of Prolog programming are given below.  They
+exemplify typical applications of Prolog.  We are trying to convey a
+flavour of Prolog programming style as well, by following the simple
+rules:
+
+@itemize @bullet
+
+@item
+Base case before recursive cases.
+
+@item
+Input arguments before output arguments.
+
+@item
+Use cuts sparingly, and @emph{only} at proper places (@pxref{Cut}).  A
+cut should be placed at the exact point that it is known that the
+current choice is the correct one: no sooner, no later.
+
+@item
+Use disjunctions sparingly, @emph{always} put parentheses around
+them, @emph{never} put parentheses around the individual disjuncts,
+@emph{never} put the @samp{;} at the end of a line.
+@end itemize
+
+The code herein was derived in part from shared code written by by R.A.
+O'Keefe.
+
+@section Simple List Processing
+
+The goal @code{concatenate(@var{L1},@var{L2},@var{L3})} is true if list
+@var{L3} consists of the elements of list @var{L1} concatenated with the
+elements of list @var{L2}.  The goal @code{member(@var{X},@var{L})} is true
+if @var{X} is one of the elements of list @var{L}.  The goal
+@code{reverse(@var{L1},@var{L2})} is true if list @var{L2} consists of the
+elements of list @var{L1} in reverse order. @refill
+
+@example
+@group
+concatenate([], L, L).
+concatenate([X|L1], L2, [X|L3]) :- concatenate(L1, L2, L3).
+
+member(X, [X|_]).
+member(X, [_|L]) :- member(X, L).
+
+reverse(L, L1) :- reverse_concatenate(L, [], L1).
+
+reverse_concatenate([], L, L).
+reverse_concatenate([X|L1], L2, L3) :-
+        reverse_concatenate(L1, [X|L2], L3).
+@end group
+@end example
+
+@node Small Database, Association Lists, Simple List, Example Intro
+@comment  node-name,  next,  previous,  up
+@section A Small Database
+
+The goal @code{descendant(@var{X},@var{Y})} is true if @var{Y} is a
+descendant of @var{X}. @refill
+
+@example
+@group
+descendant(X, Y) :- offspring(X, Y).
+descendant(X, Z) :- offspring(X, Y), descendant(Y, Z).
+
+offspring(abraham, ishmael).
+offspring(abraham, isaac).
+offspring(isaac, esau).
+offspring(isaac, jacob).
+@end group
+@end example
+
+ @*
+If for example the query
+
+@example
+| ?- descendant(abraham, X).
+@end example
+
+@noindent
+is executed, Prolog's backtracking results in different descendants of
+Abraham being returned as successive instances of the variable @var{X},
+i.e.
+
+@example
+@group
+X = ishmael
+X = isaac
+X = esau
+X = jacob
+@end group
+@end example
+
+@node Association Lists, Derivative, Small Database, Example Intro
+@comment  node-name,  next,  previous,  up
+@section Association list primitives
+
+These predicates implement ``association list'' primitives.  They use a
+binary tree representation.  Thus the time complexity for these
+predicates is @var{O(lg N)}, where @var{N} is the number of keys.  These
+predicates also illustrate the use of @code{compare/3} (@pxref{Term
+Compare}) for case analysis. @refill
+
+ @*
+The goal @code{get_assoc(@var{Key}, @var{Assoc}, @var{Value})} is true
+when @var{Key} is identical to one of the keys in @var{Assoc}, and
+@var{Value} unifies with the associated value. @refill
+
+@example
+@group
+get_assoc(Key, t(K,V,L,R), Val) :-
+        compare(Rel, Key, K),
+        get_assoc(Rel, Key, V, L, R, Val).
+
+get_assoc(=, _, Val, _, _, Val).
+get_assoc(<, Key, _, Tree, _, Val) :-
+        get_assoc(Key, Tree, Val).
+get_assoc(>, Key, _, _, Tree, Val) :-
+        get_assoc(Key, Tree, Val).
+@end group
+@end example
+
+ @*
+The goal @w{@code{put_assoc(@var{Key}, @var{OldAssoc}, @var{Val}, @var{NewAssoc})}} 
+is true when @var{OldAssoc} and @var{NewAssoc} define the same mapping
+for all keys other than @var{Key}, and @code{get_assoc(@var{Key},
+@var{NewAssoc}, @var{Val})} is true. @refill
+
+@example
+@group
+put_assoc(Key, t, Val, Tree) :- !, Tree = t(Key,Val,t,t).
+put_assoc(Key, t(K,V,L,R), Val, New) :-
+        compare(Rel, Key, K),
+        put_assoc(Rel, Key, K, V, L, R, Val, New).
+
+put_assoc(=, Key, _, _, L, R, Val, t(Key,Val,L,R)).
+put_assoc(<, Key, K, V, L, R, Val, t(K,V,Tree,R)) :-
+        put_assoc(Key, L, Val, Tree).
+put_assoc(>, Key, K, V, L, R, Val, t(K,V,L,Tree)) :-
+        put_assoc(Key, R, Val, Tree).
+@end group
+@end example
+
+@node Derivative, Set Primitives, Association Lists, Example Intro
+@comment  node-name,  next,  previous,  up
+@section Differentiation
+
+The goal @code{d(@var{E1}, @var{X}, @var{E2})} is true if expression @var{E2}
+is a possible form for the derivative of expression @var{E1} with respect
+to @var{X}. @refill
+
+@example
+@group
+:- mode d(+, +, -).
+:- op(300, xfy, **).
+
+d(X, X, D) :- atomic(X), !, D = 1.
+d(C, X, D) :- atomic(C), !, D = 0.
+d(U+V, X, DU+DV) :- d(U, X, DU), d(V, X, DV).
+d(U-V, X, DU-DV) :- d(U, X, DU), d(V, X, DV).
+d(U*V, X, DU*V+U*DV) :- d(U, X, DU), d(V, X, DV).
+d(U**N, X, N*U**N1*DU) :- integer(N), N1 is N-1, d(U, X, DU).
+d(-U, X, -DU) :- d(U, X, DU).
+@end group
+@end example
+
+@node Set Primitives, Use Of Meta, Derivative, Example Intro
+@comment  node-name,  next,  previous,  up
+@section Representing sets as ordered lists without duplicates
+
+The goal @code{list_to_ord_set(@var{List}, @var{Set})} is true when
+@var{Set} is the ordered representation of the set represented by the
+unordered representation @var{List}.  The only reason for giving it a
+name at all is that you may not have realised that @code{sort/2}
+(@pxref{Term Compare}) could be used this way. @refill
+ 
+@example
+@group
+list_to_ord_set(List, Set) :-
+        sort(List, Set).
+@end group
+@end example
+
+ @*
+The goal @code{ord_union(@var{Set1}, @var{Set2}, @var{Union})} is true
+when @var{Union} is the union of @var{Set1} and @var{Set2}.  Note that
+when something occurs in both sets, we want to retain only one copy. @refill
+
+@example
+@group
+ord_union(Set1, [], Set) :- !, Set = Set1.
+ord_union([], Set2, Set) :- !, Set = Set2.
+ord_union([Head1|Tail1], [Head2|Tail2], Union) :-
+        compare(Order, Head1, Head2),
+        ord_union(Order, Head1, Tail1, Head2, Tail2, Union).
+ 
+ord_union(=, Head,  Tail1, _,     Tail2, [Head|Union]) :-
+        ord_union(Tail1, Tail2, Union).
+ord_union(<, Head1, Tail1, Head2, Tail2, [Head1|Union]) :-
+        ord_union(Tail1, [Head2|Tail2], Union).
+ord_union(>, Head1, Tail1, Head2, Tail2, [Head2|Union]) :-
+        ord_union([Head1|Tail1], Tail2, Union).
+@end group
+@end example
+ 
+ @*
+The goal @code{ord_intersect(@var{Set1}, @var{Set2}, @var{Intersection})}
+is true when @var{Intersection} is the ordered representation of @var{Set1}
+and @var{Set2}.
+
+@example
+@group
+ord_intersect(_, [], Set) :- !, Set = [].
+ord_intersect([], _, Set) :- !, Set = [].
+ord_intersect([Head1|Tail1], [Head2|Tail2], Intersection) :-
+        compare(Order, Head1, Head2),
+        ord_intersect(Order, Head1, Tail1, Head2, Tail2, Intersection).
+ 
+ord_intersect(=, Head,  Tail1, _,     Tail2, [Head|Intersection]) :-
+        ord_intersect(Tail1, Tail2, Intersection).
+ord_intersect(<, _,     Tail1, Head2, Tail2, Intersection) :-
+        ord_intersect(Tail1, [Head2|Tail2], Intersection).
+ord_intersect(>, Head1, Tail1, _,     Tail2, Intersection) :-
+        ord_intersect([Head1|Tail1], Tail2, Intersection).
+@end group
+@end example
+
+@node Use Of Meta, Interpreter, Set Primitives, Example Intro
+@comment  node-name,  next,  previous,  up
+@section Use of Meta-Predicates
+
+This example illustrates the use of the meta-predicates @code{var/1},
+@code{arg/3}, and @code{functor/3} (@pxref{Meta Logic}).  The procedure
+call @code{variables(@var{Term}, @var{L}, [])} instantiates variable
+@var{L} to a list of all the variable occurrences in the term
+@var{Term}.  e.g.
+@refill
+
+@example
+?- variables(d(U*V, X, DU*V+U*DV), L, []).
+
+L = [U,V,X,DU,V,U,DV]
+@end example
+
+ @*
+@example
+@group
+variables(X, [X|L0], L) :- var(X), !, L = L0.
+variables(T, L0, L) :- 
+        functor(T, _, A), 
+        variables(0, A, T, L0, L).
+
+variables(A, A, _, L0, L) :- !, L = L0.
+variables(A0, A, T, L0, L) :- 
+%       A0<A,
+        A1 is A0+1,
+        arg(A1, T, X),
+        variables(X, L0, L1),
+        variables(A1, A, T, L1, L).
+@end group
+@end example
+
+@node Interpreter, Translate, Use Of Meta, Example Intro
+@comment  node-name,  next,  previous,  up
+@section Prolog in Prolog
+
+This example shows how simple it is to write a Prolog interpreter in
+Prolog, and illustrates the use of a variable goal.  In this
+mini-interpreter, goals and clauses are represented as ordinary Prolog
+data structures (i.e. terms).  Terms representing clauses are specified
+using the predicate @code{my_clause/1}, e.g.
+
+@example
+my_clause( (grandparent(X, Z) :- parent(X, Y), parent(Y, Z)) ).
+@end example
+
+A unit clause will be represented by a term such as
+
+@example
+my_clause( (parent(john, mary) :- true) ).
+@end example
+
+ @*
+The mini-interpreter consists of three clauses:  
+
+@example
+@group
+execute((P,Q)) :- !, execute(P), execute(Q).
+execute(P) :- predicate_property(P, built_in), !, P.
+execute(P) :- my_clause((P :- Q)), execute(Q).
+@end group
+@end example
+
+The second clause enables the mini-interpreter to cope with calls to
+ordinary Prolog predicates, e.g. built-in predicates.  The
+mini-interpreter needs to be extended to cope with the other control
+structures, i.e. @code{!}, @code{(P;Q)}, @code{(P->Q)}, @code{(P->Q;R)},
+@code{(\+ P)}, and @code{if(P,Q,R)}. @refill
+
+@node Translate,  , Interpreter, Example Intro
+@comment  node-name,  next,  previous,  up
+@section Translating English Sentences into Logic Formulae
+
+The following example of a definite clause grammar defines in a formal way
+the traditional mapping of simple English sentences into formulae of
+classical logic.  By way of illustration, if the sentence
+
+@quotation
+Every man that lives loves a woman.
+@end quotation
+
+@noindent
+is parsed as a sentence by the call
+
+@example
+| ?- phrase(sentence(@var{P}), [every,man,that,lives,loves,a,woman]).
+@end example
+
+@noindent
+then @var{P} will get instantiated to
+
+@example
+all(X):(man(X)&lives(X) => exists(Y):(woman(Y)&loves(X,Y)))
+@end example
+
+@noindent
+where @code{:}, @code{&} and @code{=>} are infix operators defined by 
+
+@example
+:- op(900, xfx, =>).
+:- op(800, xfy, &).
+:- op(300, xfx, :).
+@end example
+
+ @*
+The grammar follows:
+
+@example
+@group
+sentence(P) --> noun_phrase(X, P1, P), verb_phrase(X, P1).
+
+noun_phrase(X, P1, P) -->
+        determiner(X, P2, P1, P), noun(X, P3), rel_clause(X, P3, P2).
+noun_phrase(X, P, P) --> name(X).
+
+verb_phrase(X, P) --> trans_verb(X, Y, P1), noun_phrase(Y, P1, P).
+verb_phrase(X, P) --> intrans_verb(X, P).
+
+rel_clause(X, P1, P1&P2) --> [that], verb_phrase(X, P2).
+rel_clause(_, P, P) --> [].
+
+determiner(X, P1, P2, all(X):(P1=>P2) ) --> [every].
+determiner(X, P1, P2, exists(X):(P1&P2) ) --> [a].
+
+noun(X, man(X) ) --> [man].
+noun(X, woman(X) ) --> [woman].
+
+name(john) --> [john].
+
+trans_verb(X, Y, loves(X,Y) ) --> [loves].
+intrans_verb(X, lives(X) ) --> [lives].
+@end group
+@end example
+
+@node Installation Intro, Pred Summary, Example Intro, Top
+@comment  node-name,  next,  previous,  up
+@chapter Installation Dependencies
+
+To start SICStus issue the shell command:
+
+@example
+% prolog [-f] [-i] @var{arguments}
+@end example
+
+@noindent
+where the @var{arguments} can be retrieved from SICStus by
+@code{unix(argv(@var{?Args}))}, which will unify @var{Args} with
+@var{arguments} represented as a list of atoms.  None of the
+@var{arguments} must begin with a @samp{-} sign. @refill
+
+The flags have the following meaning:
+
+@table @code
+@item -f
+Fast start.  Don't read the @file{~/.sicstusrc} file on startup and on
+@code{reinitialise/1}.  If the flag is omitted, SICStus will consult
+this file on startup and on @code{reinitialise/1}, if it exists.
+
+@item -i
+Forced interactive. Prompt for user input, even if the standard input
+does not appear to be a terminal.
+@end table
+
+To start SICStus from a saved state @var{file}, issue the shell command:
+
+@example
+% @var{file} [-f] [-i] @var{arguments}
+@end example
+
+@noindent
+or the shell command:
+
+@example
+% prolog -r @var{file} [-f] [-i] @var{arguments}
+@end example
+
+Assuming the GNU Emacs mode for SICStus has been installed, inserting
+the following lines in your @file{~/.emacs} will make Emacs use this
+mode automatically when editing files with a @samp{.pl} extension: @refill
+
+@example
+(setq load-path (cons "/usr/local/lib/sicstus0.7" load-path))
+(autoload 'run-prolog "prolog"
+                  "Start a Prolog sub-process." t)
+(autoload 'prolog-mode "prolog"
+                  "Major mode for editing prolog programs" t)
+@end example
+
+@noindent
+where @file{/usr/local/lib/sicstus0.7} should be replaced by the name of
+the SICStus source code directory.
+
+The Emacs mode will use the value of the environment variable
+@code{EPROLOG} as a shell command to invoke SICStus.  This value
+defaults to @code{prolog}.  The Emacs mode provides the following
+commands:
+
+@table @kbd
+@item M-x run-prolog
+Run an inferior Prolog process, input and output via the buffer
+@code{*prolog*}.
+
+@item C-c K
+The entire buffer is compiled.
+
+@item C-c k
+The current region is compiled.
+
+@item C-c C-k
+The predicate around point is compiled.  Empty lines are treated
+as predicate boundaries.
+
+@item C-c C
+The entire buffer is consulted.
+
+@item C-c c
+The current region is consulted.
+
+@item C-c C-c
+The predicate around point is consulted.  Empty lines are treated
+as predicate boundaries.
+@end table
+
+The following environment variable can be set before starting SICStus.
+Some of these override the default sizes of certain areas.  The sizes
+are given in cells:
+
+@table @code
+@item LC_CTYPE
+This selects the appropriate character set standard: The supported
+values are @code{ja_JP.EUC} (for EUC) and @code{iso_8859_1} (for ISO
+8859/1).  The latter is the default.  In fact, any value other than
+@code{ja_JP.EUC} will cause ISO 8859/1 to be selected.
+
+@item TMPDIR
+If set, indicates the pathname where temporary files should be
+created. Defaults to @file{/usr/tmp}.
+
+@item GLOBALSTKSIZE
+Governs the initial size of the global stack.
+
+@item LOCALSTKSIZE
+Governs the initial size of the local stack.
+
+@item CHOICESTKSIZE
+Governs the initial size of the choicepoint stack.
+
+@item TRAILSTKSIZE
+Governs the initial size of the trail stack.
+@end table
+
+@node Pred Summary, Standard Operators, Installation Intro, Top
+@comment  node-name,  next,  previous,  up
+@chapter Summary of Built-In Predicates
+
+@table @code
+
+@item !
+Commit to any choices taken in the current predicate.
+
+@item (@var{+P},@var{+Q})
+@var{P} and @var{Q}.
+
+@item (@var{+P} -> @var{+Q} ; @var{+R})
+If @var{P} then @var{Q} else @var{R}, using first solution of @var{P} only.
+
+@item (@var{+P} -> @var{+Q})
+If @var{P} then @var{Q} else fail, using first solution of @var{P} only.
+
+@item []
+@itemx [@var{+File}|@var{+Files}]
+Update the program with interpreted clauses from @var{File} and @var{Files}.
+
+@item (@var{+P};@var{+Q})
+@var{P} or @var{Q}.
+
+@item @var{?X} = @var{?Y}
+The terms @var{X} and @var{Y} are unified.
+
+@item @var{?Term} =.@. @var{?List}
+The functor and arguments of the term @var{Term} comprise the list
+@var{List}.
+
+@item @var{+X} =:= @var{+Y}
+@var{X} is numerically equal to @var{Y}.
+
+@item @var{?Term1} == @var{?Term2}
+The terms @var{Term1} and @var{Term2} are strictly identical.
+
+@item @var{+X} =\= @var{+Y}
+@var{X} is not numerically equal to @var{Y}.
+
+@item @var{+X} =< @var{+Y}
+@var{X} is less than or equal to @var{Y}.
+
+@item @var{+X} > @var{+Y}
+@var{X} is greater than @var{Y}.
+
+@item @var{+X} >= @var{+Y}
+@var{X} is greater than or equal to @var{Y}.
+
+@item @var{?X} ^ @var{+P}
+Execute the procedure call @var{P}.
+
+@item \+ @var{+P}
+Goal @var{P} is not provable.
+
+@item @var{?Term1} \== @var{?Term2}
+The terms @var{Term1} and @var{Term2} are not strictly identical.
+
+@item @var{+X} < @var{+Y}
+@var{X} is less than @var{Y}.
+
+@item @var{?Term1} @@=< @var{?Term2}
+The term @var{Term1} precedes or is identical to the term @var{Term2} in
+the standard order.
+
+@item @var{?Term1} @@> @var{?Term2}
+The term @var{Term1} follows the term @var{Term2} in the standard order.
+
+@item @var{?Term1} @@>= @var{?Term2}
+The term @var{Term1} follows or is identical to the term @var{Term2} in
+the standard order.
+
+@item @var{?Term1} @@< @var{?Term2}
+The term @var{Term1} precedes the term @var{Term2} in the standard
+order.
+
+@item abolish(@var{+Preds})
+Make the predicate(s) specified by @var{Preds} undefined.
+
+@item abolish(@var{+Atom},@var{+Arity})
+Make the predicate specified by @code{@var{Atom}/@var{Arity}} undefined.
+
+@item abort
+Abort execution of the current directive.
+
+@item absolute_file_name(@var{+RelativeName},@var{?AbsoluteName})
+@var{AbsoluteName} is the full pathname of @var{RelativeName}.
+
+@item ancestors(@var{?Goals})
+The ancestor list of the current clause is @var{Goals}.
+
+@item arg(@var{+ArgNo},@var{+Term},@var{?Arg})
+Argument @var{ArgNo} of the term @var{Term} is @var{Arg}.
+
+@item assert(@var{+Clause})
+@itemx assert(@var{+Clause},@var{-Ref})
+Assert clause @var{Clause} with unique identifier @var{Ref}.
+
+@item asserta(@var{+Clause})
+@itemx asserta(@var{+Clause},@var{-Ref})
+Assert @var{Clause} as first clause with unique identifier @var{Ref}.
+
+@item assertz(@var{+Clause})
+@itemx assertz(@var{+Clause},@var{-Ref})
+Assert @var{Clause} as last clause with unique identifier @var{Ref}.
+
+@item atom(@var{?X})
+@var{X} is currently instantiated to an atom.
+
+@item atom_chars(@var{?Atom},@var{?CharList})
+The name of the atom @var{Atom} is the list of characters @var{CharList}.
+
+@item atomic(@var{?X})
+@var{X} is currently instantiated to an atom or a number.
+
+@item bagof(@var{?Template},@var{+Goal},@var{?Bag})
+@var{Bag} is the bag of instances of @var{Template} such that @var{Goal}
+is satisfied (not just provable).
+
+@item break
+Invoke the Prolog interpreter.
+
+@item 'C'(@var{?S1},@var{?Terminal},@var{?S2})
+@emph{Grammar rules.} @var{S1} is connected by the terminal
+@var{Terminal} to @var{S2}.
+
+@item call(@var{+Term})
+Execute the procedure call @var{Term}.
+
+@item call_residue(@var{+Term},@var{?Vars})
+@emph{SICStus specific.} Execute the procedure call @var{Term}.  Any
+remaining subgoals are blocked on the variables in @var{Vars}.
+
+@item character_count(@var{?Stream},@var{?Count})
+@var{Count} characters have been read from or written to the stream
+@var{Stream}.
+
+@item clause(@var{+Head},@var{?Body})
+@itemx clause(@var{?Head},@var{?Body},@var{?Ref})
+There is an interpreted clause whose head is @var{Head}, whose body is
+@var{Body}, and whose unique identifier is @var{Ref}.
+
+@item close(@var{+Stream})
+Close stream @var{Stream}.
+
+@item compare(@var{?Op},@var{?Term1},@var{?Term2})
+@var{Op} is the result of comparing the terms @var{Term1} and @var{Term2}.
+
+@item compile(@var{+File})
+Compile in-core the clauses in text file(s) @var{File}.
+
+@item consult(@var{+File})
+Update the program with interpreted clauses from file(s) @var{File}.
+
+@item copy_term(@var{?Term},@var{?CopyOfTerm})
+@var{CopyOfTerm} is an independent copy of @var{Term}.
+
+@item current_atom(@var{?Atom})
+One of the currently defined atoms is @var{Atom}.
+
+@item current_input(@var{?Stream})
+@var{Stream} is the current input stream.
+
+@item current_key(@var{?KeyName},@var{?KeyTerm})
+There is a recorded item in the internal database whose key is
+@var{KeyTerm}, the name of which is @var{KeyName}.
+
+@item current_op(@var{?Precedence},@var{?Type},@var{?Op})
+Atom @var{Op} is an operator type @var{Type} precedence
+@var{Precedence}.
+
+@item current_output(@var{?Stream})
+@var{Stream} is the current output stream.
+
+@item current_stream(@var{?FileName},@var{?Mode},@var{?Stream})
+There is a stream @var{Stream} associated with the file @var{FileName}
+and opened in mode @var{Mode}.
+
+@item debug
+Switch on debugging.
+
+@item debugging
+Display debugging status information.
+
+@item depth(@var{?Depth})
+The current invocation depth is @var{Depth}.
+
+@item dif(@var{?X},@var{?Y})
+@emph{SICStus specific.} The terms @var{X} and @var{Y} are different.
+
+@item display(@var{?Term})
+Display the term @var{Term} on the standard output stream.
+
+@item ensure_loaded(@var{File})
+Compile or load the file(s) @var{File} if need be.
+
+@item erase(@var{+Ref})
+Erase the clause or record whose unique identifier is @var{Ref}.
+
+@item expand_term(@var{+Term1},@var{?Term2})
+The term @var{Term1} is a shorthand which expands to the term
+@var{Term2}.
+
+@item fail
+@itemx false
+Backtrack immediately.
+
+@item fcompile(@var{+File})
+@emph{SICStus specific.} Compile file-to-file the clauses in text file(s)
+@var{File}.
+
+@item fileerrors
+Enable reporting of file errors.
+
+@item findall(@var{?Template},@var{+Goal},@var{?Bag})
+@emph{SICStus specific.} @var{Bag} is the bag of instances of
+@var{Template} such that @var{Goal} is provable (not satisfied).
+
+@item float(@var{?X})
+@var{X} is currently instantiated to a float.
+
+@item flush_output(@var{+Stream})
+Flush the buffers associated with @var{Stream}.
+
+@item foreign(@var{+CFunctionName}, @var{+Predicate})
+@itemx foreign(@var{+CFunctionName}, @var{+Language}, @var{+Predicate})
+@emph{User defined}, they tell Prolog how to define @var{Predicate} to
+invoke @var{CFunctionName}.
+
+@item foreign_file(@var{+ObjectFile},@var{+Functions})
+@emph{User defined}, tells Prolog that foreign functions @var{Functions}
+are in file @var{ObjectFile}.
+
+@item format(@var{+Format},@var{+Arguments})
+@itemx format(@var{+Stream},@var{+Format},@var{+Arguments})
+Write @var{Arguments} according to @var{Format} on the stream
+@var{Stream} or on the current output stream.
+
+@item freeze(@var{+Goal})
+@emph{SICStus specific.} Block @var{Goal} until @var{Goal} is ground.
+
+@item freeze(@var{?Var},@var{+Goal})
+@emph{SICStus specific.} Block @var{Goal} until @code{nonvar(@var{Var})}
+holds.
+
+@item frozen(@var{-Var},@var{?Goal})
+@emph{SICStus specific.} The goal @var{Goal} is blocked on the variable
+@var{Var}.
+
+@item functor(@var{?Term},@var{?Name},@var{?Arity})
+The principal functor of the term @var{Term} has name @var{Name} and arity
+@var{Arity}.
+
+@item garbage_collect
+Perform a garbage collection.
+
+@item gc
+Enable garbage collection.
+
+@item get(@var{?C})
+@itemx get(@var{+Stream},@var{?C})
+The next printing character from the stream @var{Stream} or from the
+current input stream is @var{C}.
+
+@item get0(@var{?C})
+@itemx get0(@var{+Stream},@var{?C})
+The next character from the stream @var{Stream} or from the current
+input stream is @var{C}.
+
+@item halt
+Halt Prolog, exit to the invoking shell.
+
+@item help
+Print a help message.
+
+@item if(@var{+P},@var{+Q},@var{+R})
+@emph{SICStus specific.} If @var{P} then @var{Q} else @var{R}, exploring
+all solutions of @var{P}.
+
+@item incore(@var{+Term})
+Execute the procedure call @var{Term}.
+
+@item instance(@var{+Ref},@var{?Term})
+@var{Term} is a most general instance of the record or clause uniquely
+identified by @var{Ref}.
+
+@item integer(@var{?X})
+@var{X} is currently instantiated to an integer.
+
+@item @var{Y} is @var{X}
+@var{Y} is the value of the arithmetic expression @var{X}.
+
+@item keysort(@var{+List1},@var{?List2})
+The list @var{List1} sorted by key yields @var{List2}.
+
+@item leash(@var{+Mode})
+Set leashing mode to @var{Mode}.
+
+@item length(@var{?List},@var{?Length})
+The length of list @var{List} is @var{Length}.
+
+@item library_directory(@var{?Directory})
+@emph{User defined}, @var{Directory} is a directory in the search path.
+
+@item line_count(@var{?Stream},@var{?Count})
+@var{Count} lines have been read from or written to the stream
+@var{Stream}.
+
+@item line_position(@var{?Stream},@var{?Count})
+@var{Count} characters have been read from or written to the current
+line of the stream @var{Stream}.
+
+@item listing
+@itemx listing(@var{+Preds})
+List the interpreted predicate(s) specified by @var{Preds} or all
+interpreted predicates.
+
+@item load(@var{+File})
+@emph{SICStus specific.} Load compiled object file(s) @var{File} into
+Prolog.
+
+@item load_foreign_files(@var{+ObjectFiles},@var{+Libraries})
+Load (link) files @var{ObjectFiles} into Prolog.
+
+@item maxdepth(@var{+Depth})
+Limit invocation depth to @var{Depth}.
+
+@item name(@var{?Const},@var{?CharList})
+The name of atom or number @var{Const} is string @var{CharList}.
+
+@item nl
+@itemx nl(@var{+Stream})
+Output a new line on stream @var{Stream} or on the current output stream.
+
+@item nodebug
+Switch off debugging.
+
+@item nofileerrors
+Disable reporting of file errors.
+
+@item nogc
+Disable garbage collection.
+
+@item nonvar(@var{?X})
+@var{X} is a non-variable.
+
+@item nospy @var{+Spec}
+Remove spy-points from the predicate(s) specified by @var{Spec}.
+
+@item nospyall
+Remove all spy-points.
+
+@item notrace
+Switch off debugging.
+
+@item number(@var{?X})
+@var{X} is currently instantiated to a number.
+
+@item number_chars(@var{?Number},@var{?CharList})
+The name of the number @var{Number} is the list of characters @var{CharList}.
+
+@item numbervars(@var{?Term},@var{+N},@var{?M})
+Number the variables in the term @var{Term} from @var{N} to @var{M}-1.
+
+@item op(@var{+Precedence},@var{+Type},@var{+Name})
+Make atom(s) @var{Name} an operator of type @var{Type} precedence
+@var{Precedence}.
+
+@item open(@var{+FileName},@var{+Mode},@var{-Stream})
+Open file @var{FileName} in mode @var{Mode} as stream @var{Stream}.
+
+@item open_null_stream(@var{-Stream})
+Open an output stream to the null device.
+
+@item otherwise
+Succeed.
+
+@item phrase(@var{+Phrase},@var{?List})
+@itemx phrase(@var{+Phrase},@var{?List},@var{?Remainder})
+@emph{Grammar rules.} The list @var{List} can be parsed as a phrase of type
+@var{Phrase}.  The rest of the list is @var{Remainder} or empty.
+
+@item plsys(@var{+Term})
+Invoke operating system services.
+
+@item portray(@var{+Term})
+@emph{User defined}, tells @code{print/1} what to do.
+
+@item portray_clause(@var{+Clause})
+@itemx portray_clause(@var{+Stream},@var{+Clause})
+Pretty print @var{Clause} on the stream @var{Stream} or 
+on the current output stream.
+
+@item predicate_property(@var{?Head},@var{?Prop})
+@var{Head} is the most general goal of a currently defined predicate that
+has the property @var{Prop}.
+
+@item prepare_foreign_files(@var{+ObjectFiles})
+@emph{SICStus specific.} Generate relevant interface code in
+@file{flinkage.c} for foreign declarations for the files in
+@var{ObjectFiles}.
+
+@item print(@var{?Term})
+@itemx print(@var{+Stream},@var{?Term})
+Portray or else write the term @var{Term} on the stream @var{Stream} or
+on the current output stream.
+
+@item profile_data(@var{+Files},@var{?Selection},@var{?Resolution},@var{-Data})
+@var{Data} is the profiling data collected from the instrumented
+predicates defined in the files @var{Files} with selection and
+resolution @var{Selection} and @var{Resolution} respectively.
+
+@item profile_reset(@var{+Files})
+The profiling counters for the instrumented predicates in @var{Files}
+are zeroed.
+
+@item prolog_flag(@var{+FlagName},@var{?Value})
+@var{Value} is the current value of @var{FlagName}.
+
+@item prolog_flag(@var{+FlagName},@var{?OldValue},@var{?NewValue})
+@var{OldValue} and @var{NewValue} are the old and new values of @var{FlagName}.
+
+@item prompt(@var{?Old},@var{?New})
+Change the prompt from @var{Old} to @var{New}.
+
+@item put(@var{+C})
+@itemx put(@var{+Stream},@var{+C})
+The next character sent to the stream @var{Stream} or to the current
+output stream is @var{C}.
+
+@item query_expansion(@var{+RawQuery},@var{?Query})
+@emph{SICStus specific, user defined}, transforms the interpreter
+top-level query @var{RawQuery} into @var{Query} to be executed.
+
+@item read(@var{?Term})
+@itemx read(@var{+Stream},@var{?Term})
+Read the term @var{Term} from the stream @var{Stream} or from the current
+input stream.
+
+@item reconsult(@var{+File})
+Update the program with interpreted clauses from file(s) @var{File}.
+
+@item recorda(@var{+Key},@var{?Term},@var{-Ref})
+Make the term @var{Term} the first record under key @var{Key} with unique
+identifier @var{Ref}.
+
+@item recorded(@var{?Key},@var{?Term},@var{?Ref})
+The term @var{Term} is currently recorded under key @var{Key} with unique
+identifier @var{Ref}.
+
+@item recordz(@var{+Key},@var{?Term},@var{-Ref})
+Make the term @var{Term} the last record under key @var{Key} with unique
+identifier @var{Ref}.
+
+@item reinitialise
+Initialise Prolog, reconsulting @file{~/.sicstusrc} if it exists.
+
+@item repeat
+Succeed repeatedly.
+
+@item restore(@var{+File})
+Restore the state saved in file @var{File}.
+
+@item retract(@var{+Clause})
+Erase repeatedly the next interpreted clause of form @var{Clause}.
+
+@item retractall(@var{+Head})
+Erase all clauses whose head matches @var{Head}.
+
+@item save(@var{+File})
+@itemx save(@var{+File},@var{?Return})
+Save the current state of Prolog in file @var{File}; @var{Return} is 0
+after a save and 1 after a restore.
+
+@item save_program(@var{+File})
+Save the current state of the Prolog data base in file @var{File}.
+
+@item see(@var{+File})
+Make file @var{File} the current input stream.
+
+@item seeing(@var{?File})
+The current input stream is named @var{File}.
+
+@item seen
+Close the current input stream.
+
+@item set_input(@var{+Stream})
+Set the current input stream to @var{Stream}.
+
+@item set_output(@var{+Stream})
+Set the current output stream to @var{Stream}.
+
+@item setarg(@var{+ArgNo},@var{+CompoundTerm},@var{?NewArg})
+@emph{SICStus specific.} Replace destructively argument @var{ArgNo} in
+@var{CompoundTerm} with @var{NewArg} and undo on backtracking.
+
+@item setof(@var{?Template},@var{+Goal},@var{?Set})
+@var{Set} is the set of instances of @var{Template} such that @var{Goal}
+is satisfied (not just provable).
+
+@item skip(@var{+C})
+@itemx skip(@var{+Stream},@var{+C})
+Skip characters from @var{Stream} or from the current input stream until
+after character @var{C}.
+
+@item sort(@var{+List1},@var{List2})
+The list @var{List1} sorted into order yields @var{List2}.
+
+@item source_file(@var{?File})
+@itemx source_file(@var{?Pred},@var{?File})
+The predicate @var{Pred} is defined in the file @var{File}.
+
+@item spy @var{+Spec}
+Set spy-points on the predicate(s) specified by @var{Spec}.
+
+@item statistics
+Output various execution statistics.
+
+@item statistics(@var{?Key},@var{?Value})
+The execution statistic key @var{Key} has value @var{Value}.
+
+@item stream_code(@var{?Stream},@var{?StreamCode})
+@var{StreamCode} is a foreign language (C) version of @var{Stream}.
+
+@item subgoal_of(@var{?Goal})
+An ancestor goal of the current clause is @var{Goal}.
+
+@item tab(@var{+N})
+@itemx tab(@var{+Stream},@var{+N})
+Send @var{N} spaces to the stream @var{Stream} or to the current output
+stream.
+
+@item tell(@var{+File})
+Make file @var{File} the current output stream.
+
+@item telling(@var{?File})
+The current output stream is named @var{File}.
+
+@item term_expansion(@var{+Term1},@var{?Term2})
+@emph{User defined}, tells @code{expand_term/2} what to do.
+
+@item told
+Close the current output stream.
+
+@item trace
+Switch on debugging and start tracing immediately.
+
+@item true
+Succeed.
+
+@item ttyflush
+Flush the standard output stream buffer.
+
+@item ttyget(@var{?C})
+The next printing character input from the standard input stream is @var{C}.
+
+@item ttyget0(@var{?C})
+The next character input from the standard input stream is @var{C}.
+
+@item ttynl
+Output a new line on the standard output stream.
+
+@item ttyput(@var{+C})
+The next character output to the standard output stream is @var{C}.
+
+@item ttyskip(@var{+C})
+Skip characters from the standard input stream until after character
+@var{C}.
+
+@item ttytab(@var{+N})
+Output @var{N} spaces to the standard output stream.
+
+@item undo(@var{+Term})
+@emph{SICStus specific.} The goal @code{call(@var{Term})} is executed on
+backtracking.
+
+@item unix(@var{+Term})
+Invoke operating system services.
+
+@item unknown(@var{?OldState},@var{?NewState})
+Change action on undefined predicates from @var{OldState} to @var{NewState}.
+
+@item user_help
+@emph{User defined}, tells @code{help/0} what to do.
+
+@item var(@var{X})
+@var{X} is currently uninstantiated.
+
+@item version
+Displays introductory and/or system identification messages.
+
+@item version(@var{+Message})
+Adds the atom @var{Message} to the list of introductory messages.
+
+@item write(@var{?Term})
+@itemx write(@var{+Stream},@var{?Term})
+Write the term @var{Term} on the stream @var{Stream} or on the current
+output stream.
+
+@item write_canonical(@var{?Term})
+@itemx write_canonical(@var{+Stream},@var{?Term})
+Write @var{Term} on the stream @var{Stream} or on the current output
+stream so that it may be read back.
+
+@item writeq(@var{?Term})
+@itemx writeq(@var{+Stream},@var{?Term})
+Write the term @var{Term} on the stream @var{Stream} or on the current
+output stream, quoting names where necessary.
+
+@end table
+
+@node Standard Operators, Predicate Index, Pred Summary, Top
+@comment  node-name,  next,  previous,  up
+@chapter Standard Operators
+
+@example
+:- op( 1200, xfx, [ :-, --> ]).
+:- op( 1200,  fx, [ :-, ?- ]).
+:- op( 1150,  fx, [ mode, public, dynamic, multifile, wait ]).
+:- op( 1100, xfy, [ ; ]).
+:- op( 1050, xfy, [ -> ]).
+:- op( 1000, xfy, [ ',' ]).      /* See note below */
+:- op(  900,  fy, [ \+, spy, nospy ]).
+:- op(  700, xfx, [ =, is, =.., ==, \==, @@<, @@>, @@=<, @@>=,
+                                =:=, =\=, <, >, =<, >= ]).
+:- op(  500, yfx, [ +, -, /\, \/ ]).
+:- op(  500,  fx, [ +, - ]).
+:- op(  400, yfx, [ *, /, //, <<, >> ]).
+:- op(  300, xfx, [ mod ]).
+:- op(  200, xfy, [ ^ ]).
+@end example
+
+Note that a comma written literally as a punctuation character can be used
+as though it were an infix operator of precedence 1000 and type @code{xfy},
+i.e. @refill
+
+@example
+X,Y    ','(X,Y)
+@end example
+
+@noindent
+represent the same compound term.
+
+@node Predicate Index, Concept Index, Standard Operators, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Predicate Index
+@printindex fn
+
+@node Concept Index,  , Predicate Index, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Concept Index
+@printindex cp
+
+@contents
+
+@bye

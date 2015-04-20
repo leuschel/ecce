@@ -1,0 +1,75 @@
+%%----------------------------------------------%%
+%% A Simple answer Agent.                        %%
+%%----------------------------------------------%%
+ 
+%% Agent declaration: the current source defines a class of agents.
+:- class(answer_tr).
+:- inherit_class(library(agents)).
+
+:- export([main/0]).
+
+:- use_module(library(concurrency)).
+ 
+:- use_module(library(platforms)).
+
+:- implements(library('protocols/inform_ask')).
+
+% State declaration: 
+:- data knowledge/2.
+
+knowledge(capital(españa),madrid).
+knowledge(capital(francia),paris).
+
+% Interface declaration: the following messages will
+% be acepted at run-time.
+%% :- message ask.
+%% :- export ask/3.
+
+%% Activities:
+% :- activity answering.
+answer_activity(answering).
+
+%% Tasks:
+%% :- task answer_ask.
+
+
+answer_tr(Name):-
+	agents(Name).
+
+do_task(Task):-
+	self(X), Y = (X:Task), call(Y),!,
+	( continue_task(Y) ->
+	  display('Redo' + Y),nl,
+	  do_task(Task)
+	;
+	  true).
+
+check(P):-
+	current_fact_nb(P).
+
+
+% Initial Task
+
+main :-
+	agent_name(Name),
+	show('Name'),nl,
+	register_service(Name,[answering]),
+	add_task(answer_ask,true).
+	
+
+%% Task Answer_ask
+answer_ask :-
+    recive(_Sender,Msg),
+    show(Msg),nl.
+   
+ask(X,Question,_Mess_Id):-
+	( current_fact_nb(knowledge(Question,Answer)) ->
+	   send(X,inform(Answer))
+	;
+	  % input(X,Question,User_Answer), 
+	   send(X,inform(dont_know))
+	).
+
+no_more_ask(_X,_,_Mes):-
+	true.
+

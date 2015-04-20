@@ -1,0 +1,57 @@
+All variables > 0, size 10
+Time for size 10: 98
+Time for size 10: 91
+Time for size 10: 93
+Time for size 10: 111
+Time for size 10: 94
+Time for size 10: 99
+All variables > 0, size 50
+Time for size 50: 695
+Time for size 50: 655
+Time for size 50: 654
+Time for size 50: 649
+Time for size 50: 687
+Time for size 50: 655
+All variables > 0, size 100
+Time for size 100: 2015
+Time for size 100: 1986
+Time for size 100: 1968
+Time for size 100: 1988
+Time for size 100: 1997
+Time for size 100: 1986
+Fibonacci constraints, size 10
+Time for size 10: 265
+Time for size 10: 260
+Time for size 10: 241
+Time for size 10: 260
+Time for size 10: 261
+Time for size 10: 278
+Fibonacci constraints, size 50
+Time for size 50: 9277
+Time for size 50: 9097
+Time for size 50: 9078
+Time for size 50: 9108
+Time for size 50: 9132
+Time for size 50: 9151
+Fibonacci constraints, size 100
+Time for size 100: 43248
+Time for size 100: 43641
+Time for size 100: 43224
+Time for size 100: 43367
+Time for size 100: 42854
+Time for size 100: 43070
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+All variables > 0, size 10
+(/ (+ 91 93 94 98) 4) = 94
+All variables > 0, size 50
+(/ (+ 654 655 687 695) 4) = 672
+All variables > 0, size 100
+(/ (+ 1986 1988 1997 2015) 4)  = 1996
+Fibonacci constraints, size 10
+(/ (+ 260 260 261 265) 4) = 261
+Fibonacci constraints, size 50
+(/ (+ 9097 9108 9132 9277) 4) = 9153
+Fibonacci constraints, size 100
+(/ (+ 43224 43248 43367 43641) 4) = 43370

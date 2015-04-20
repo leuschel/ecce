@@ -1,0 +1,202 @@
+in(4,[4,3])
+in(3,[4,3])
+[[0|9]]
+[[1|10]]
+local_store(3,[x(4,_952,_952),x(3,_911,_911)])
+sent(msg(5,3,ok?(a([x(4,_952,_952),x(3,_911,_911)]))))
+ackleft(1)
+sent(msg(6,3,ok?(a([x(4,_952,_952),x(3,_911,_911)]))))
+ackleft(2)
+do_agent(3)
+received(msg(3,2,ok?(a([x(3,_1070,_1070),x(1,_1024,_1024)]))))
+ack(ok?(a([x(3,_1070,_1070),x(1,_1024,_1024)])))
+newParent
+asserted(parent(3,2))
+ok?(a(2,[x(3,_1070,_1070),x(1,_1024,_1024)]))
+b
+checking_agent_view(3,2)
+[v(3,a(2,[x(3,_1218,_1218),x(1,_1172,_1172)]))]
+fetched
+consistent
+L exists
+local_assignment(a(3,[x(4,_1298,_1298),x(3,_1258,_1258)]))
+a
+consistent?
+consistent!
+adding_propagation([x(3,_1218,_1218),x(1,_1172,_1172)],3,_1328,all)
+a(3,[x(4,_1389,_1389),x(3,_1349,_1349)])
+tmp_a
+unify([x(4,_1389,_1389),x(3,_1349,_1349)],[x(3,_1218,_1218),x(1,_1172,_1172)])
+[[0|9]]
+[[1|10]]
+
+unified
+not_told
+k(0)
+ackleft_cv(2)
+do_agent(3)
+received(msg(3,1,marker(0)))
+not_source
+store(3,[3])
+highers([1,2])
+presumed_view([2])
+quiescent
+sending(msg(1,3,marker(0)))
+sent_message
+do_agent(3)
+received(msg(3,6,ack([x(5,_1805,_1805),x(4,_1759,_1759)])))
+ack(a(2))
+adding_propagation([x(5,_1805,_1805),x(4,_1759,_1759)],3,_1867,6)
+a(3,[x(4,_1924,_1924),x(3,_1884,_1884)])
+tmp_a
+unify([x(4,_1924,_1924),x(3,_1884,_1884)],[x(5,_1805,_1805),x(4,_1759,_1759)])
+[[0|9]]
+[[1|10]]
+
+unified
+not_told
+added_propagation([x(5,_1805,_1805),x(4,_1759,_1759)],3,[x(4,_1924,_1924),x(3,_1884,_1884)],6)
+newackleft(1)
+do_agent(3)
+received(msg(3,5,ack([x(5,_2115,_2115),x(3,_2069,_2069)])))
+ack(a(1))
+adding_propagation([x(5,_2115,_2115),x(3,_2069,_2069)],3,_2177,5)
+a(3,[x(4,_2234,_2234),x(3,_2194,_2194)])
+tmp_a
+unify([x(4,_2234,_2234),x(3,_2194,_2194)],[x(5,_2115,_2115),x(3,_2069,_2069)])
+[[0|9]]
+[[1|10]]
+
+unified
+not_told
+added_propagation([x(5,_2115,_2115),x(3,_2069,_2069)],3,[x(4,_2234,_2234),x(3,_2194,_2194)],5)
+newackleft(0)
+store(3,[3])
+highers([1,2])
+presumed_view([2])
+sending(msg(2,3,ack([x(4,_2234,_2234),x(3,_2194,_2194)])))
+sent_message
+do_agent(3)
+received(msg(3,1,marker(1)))
+not_source
+store(3,[3])
+highers([1,2])
+presumed_view([2])
+quiescent
+sending(msg(1,3,marker(1)))
+sent_message
+do_agent(3)
+received(msg(3,1,marker(2)))
+not_source
+store(3,[3])
+highers([1,2])
+presumed_view([2])
+quiescent
+sending(msg(1,3,marker(2)))
+sent_message
+do_agent(3)
+received(msg(3,1,begin_labeling))
+do_agent(3)
+received(msg(3,6,prop_ended))
+[waiting_for_labs(3,6)]
+No remaining prop_ended
+sending(msg(2,3,prop_ended))
+sent_message
+Beginning actual labeling
+lab init phase 1
+lab init phase 2
+lab init phase 3
+in(4,[4])
+newl([x(4,_3194,0)])
+sending(msg(6,3,ok?(a([x(4,_3194,0)]))))
+sent_message
+Actual labeling begun
+do_agent(3)
+received(msg(3,2,ok?(a([x(3,_3468,3)]))))
+ok?(a(2,[x(3,_3468,3)]))
+b
+checking_agent_view(3,2)
+[v(3,a(2,[x(3,_3590,3)]))]
+fetched
+consistent
+L exists
+local_assignment(a(3,[x(4,_3668,0)]))
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[0]
+do_agent(3)
+received(msg(3,1,marker(2)))
+not_source
+store(3,[3])
+highers([1,2])
+presumed_view([2])
+quiescent
+sending(msg(1,3,marker(2)))
+sent_message
+do_agent(3)
+received(msg(3,1,harvest))
+Collection results...
+sending(msg(1,3,collect([x(4,_4471,0)])))
+sent_message
+do_agent(3)
+received(msg(3,1,show_stats))
+
+***************************************************
+STATISTICS OF AGENT 3
+*****************OK (propagation)**********************
+3: ok? from 2
+ok? messages received during propagation: 1
+
+******************ACK (propagation)********************
+3: ack from 5
+3: ack from 6
+ack messages received during propagation: 2
+
+****************NO GOOD (propagation)******************
+no_good messages received during propagation (none, I hope): 0
+
+************NEGLECTED NO GOOD (propagation)************
+no_good messages neglected during propagation (none, I hope): 0
+
+************BEGIN LABELING (propagation)***************
+3: begin_labeling from 1
+begin_labeling messages received during propagation (one, I hope): 1
+
+***********PROPAGATION ENDED (propagation)*************
+3: prop_ended from 6
+End of propagation messages received: 1
+
+**********TERMINATION DETECTION (propagation)**********
+3: marker from 1
+3: marker from 1
+3: marker from 1
+Termination detection messages (markers) received during propagation: 3
+
+********************OK (labeling)**********************
+3: ok? from 2
+ok? messages received during labeling: 1
+
+*******************ACK (labeling)**********************
+ack messages received during labeling: 0
+
+******************NO GOOD (labeling)*******************
+no_good messages received during labeling: 0
+
+************NEGLECTED NO GOOD (labeling)************
+no_good messages neglected during labeling: 0
+
+**************BEGIN LABELING (labeling)****************
+begin_labeling messages received during labeling (none, I hope): 0
+
+*************PROPAGATION ENDED (labeling)**************
+End of propagation messages received during labeling (none, I hope): 0
+
+************TERMINATION DETECTION (labeling)***********
+3: marker from 1
+Termination detection messages (markers) received during labeling: 1
+
+do_agent(3)

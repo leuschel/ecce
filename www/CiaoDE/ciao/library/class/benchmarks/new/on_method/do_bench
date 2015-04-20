@@ -1,0 +1,40 @@
+#!/bin/tcsh
+if ($?CIAOLIB) then
+
+echo "BENCHMARK: new/destroy performance versus number of methods"
+echo "--------------------------------------------------------------"
+
+ cd $CIAOLIB/library/class/benchmarks/new/on_method
+
+echo "compiling..."
+
+ciaoc main_on_method
+
+echo "benchmarking, please, wait..."
+
+if ( -e ./bench ) then
+ 'rm' ./bench
+endif
+
+main_on_method 1 500 >bench
+echo "completed 1/7"
+main_on_method 5 500 >>bench
+echo "completed 2/7"
+main_on_method 10 500 >>bench
+echo "completed 3/7"
+main_on_method 50 500 >>bench
+echo "completed 4/7"
+main_on_method 100 500 >>bench
+echo "completed 5/7"
+main_on_method 200 500 >>bench
+echo "completed 6/7"
+main_on_method 500 500 >>bench
+echo "completed 7/7"
+
+echo
+echo "generating report..."
+echo
+
+gnuplot psplot
+
+endif

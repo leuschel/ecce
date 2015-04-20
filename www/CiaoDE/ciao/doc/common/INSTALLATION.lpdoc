@@ -1,0 +1,733 @@
+This describes the installation procedure for the Ciao Prolog system,
+including libraries and manuals, from a @em{source} distribution.
+This applies primarily to Unix-type systems (Linux, Mac OS X, Solaris,
+SunOS, etc.).  However, the sources can also be compiled if so desired
+on Windows systems -- see @ref{Installation and compilation under
+Windows} for details.
+
+If you find any problems during installation, please refer to
+@ref{Troubleshooting (nasty messages and nifty workarounds)}.
+@cindex{troubleshooting} See also @ref{Downloading new versions} and
+@ref{Reporting bugs}.
+
+@section{Un*x installation summary}
+@cindex{installation, Un*x, summary}
+@cindex{installation, Mac OS X, summary}
+
+@noindent @bf{Note:} it is recommended that you read the full
+installation instructions (specially if the installation will be
+shared by different architectures). However, in many cases it suffices
+to follow this summary:
+
+@begin{enumerate}
+
+@item Uncompress and unpackage (using @apl{gunzip} and @tt{tar -xpf})
+      the distribution. This will put everything in a new directory
+      whose name reflects the Ciao version.
+
+@item Type @tt{./configure}.  This will autodetect and configure the
+      installation script to your specific architecture.
+      If you need more control about what configure does, just use the
+      option @tt{--help} to see more arguments.
+
+      The option @tt{--menu} show a menu with configurable options.
+      You must follow the instructions that appears on it.
+
+@item Type @tt{gmake all}. This will build executables and compile
+      libraries.
+
+@item Type @tt{gmake install}. This will install everything in the
+      specified directories.
+
+      Note that @tt{gmake} refers to the @concept{GNU} implementation
+      of the @concept{make} Un*x command, which is available in many
+      systems (including all Linux systems and Mac OS X) simply as
+      @apl{make}. I.e., you can try simply typing @tt{make install} if
+      @tt{gmake install} does not work. If typing @tt{make} stops
+      right away with error messages it is probably an older version
+      and you need to install @tt{gmake}.
+
+@item The system will do the right modifications in your startup
+      scripts. This will make the documentation accessible, set the
+      correct mode when opening Ciao source files in @apl{emacs}, etc.
+      The modified files are tagged with the names \'DOTBASHRC\',
+      \'DOTCSHRC\' and \'DOTEMACS\', which are the startup files for
+      bash, csh and emacs respectively.
+
+The following modifications are done automatically in your startup
+      scripts, and you don't need to do it manually. This will make
+      the documentation accessible, set the correct mode when opening
+      Ciao source files in @apl{emacs}, etc. Note that @tt{<LIBROOT>}
+      must be replaced with the appropriate value: @cindex{environment
+      variable definitions}
+
+      @include{UserSetup.lpdoc}
+
+      If you are installing Ciao globally in a multi-user machine,
+      make sure that you instruct all users to do the same.  If you
+      are the system administrator, the previous steps can be done
+      once and for all, and globally for all users by including the
+      lines above in the central startup scripts (e.g., in Linux
+      @file{/etc/bashrc}, @file{/etc/csh.login},
+      @file{/etc/csh.cshrc}, @file{/etc/skel},
+      @file{/usr/share/emacs/.../lisp/site-init.pl}, etc.).
+
+@item Finally, if the (freely available) @apl{emacs}
+      editor/environment is not installed in your system, we
+      @em{highly recommend} that you also install it at this point
+      (see @ref{Un*x full installation instructions} for
+      instructions).  While it is easy to use Ciao with any editor of
+      your choice, the Ciao distribution includes a very powerful
+      @cindex{development environment} @em{application development
+      environment} which is based on @apl{emacs} and which enables,
+      e.g., source-level debugging, syntax coloring, context-sensitive
+      on-line help, etc.
+
+@item You may want now want to check your installation (see
+      @ref{Checking for correct installation on Un*x}) and read the
+      documentation, which is stored in @tt{DOCROOT} (copied from
+      @tt{CIAOSRC/doc/reference}) and can be easily accessed as explained
+      in that same section. There are special ``getting started''
+      sections at the beginning of the manual.
+
+@item If you have any problems you may want to check the rest of the
+      instructions. The system can be @em{uninstalled} by typing
+      @tt{gmake uninstall}.  @cindex{uninstalling}
+
+@end{enumerate}
+
+
+@section{Un*x full installation instructions}
+@cindex{installation, Un*x, full instructions}
+@cindex{installation, Mac OS X, full instructions}
+
+@begin{enumerate}
+
+@item @bf{Uncompress and unpackage:} (using @apl{gunzip} and @tt{tar
+      -xpf}) @cindex{tar} the distribution in a suitable
+      directory. This will create a new directory called
+      @tt{ciao-X.Y}, where @tt{X.Y} is the version number of the
+      distribution.  The @tt{-p} option in the @apl{tar} command
+      ensures that the relative dates of the files in the package are
+      preserved, which is needed for correct operation of the
+      Makefiles.
+
+@item @bf{Select installation options:} Run the ./configure script and
+      answer the questions that appears in the menu.  The meaning of
+      some important options in the menu is as follows:
+
+ @begin{itemize}
+
+%        @item @tt{CIAOSRC}: directory where the sources are
+%        stored. @cindex{source directory}
+
+       @item @tt{BINROOT}: directory where the Ciao executables will
+       go.  For example, if @tt{BINROOT=/usr/local/bin}, then the Ciao
+       @concept{compiler} (@apl{ciaoc}) will be stored at
+       @tt{/usr/local/bin/ciaoc}. Actually, it will be a link to
+       @tt{ciaoc-}@em{VersionNumber}. This applies also to other
+       executables below and is done so that several versions of Ciao
+       can coexist on the same machine.  Note that the @em{version
+       installed latest} will be the one started by default when
+       typing @tt{ciao}, @tt{ciaoc}, etc.  @cindex{binary directory}
+
+       @item @tt{LIBROOT}: directory where the @concept{run-time
+       libraries} will be installed.  @cindex{library directory} The
+       Ciao installation procedure will create a new subdirectory
+       @tt{ciao} below @tt{LIBROOT} and a subdirectory below this one
+       for each Ciao version installed.  For example, if
+       @tt{LIBROOT=/usr/local/lib} and you have Ciao version @tt{x.y},
+       then the libraries will be installed under
+       @tt{/usr/local/lib/ciao/ciao-x.y}. This allows you to install
+       @concept{site-specific programs} under @tt{/usr/local/lib/ciao}
+       and they will not be overwritten if a new version of Ciao is
+       installed. It also again allows having several Ciao versions
+       installed simultaneously.
+
+       @item @tt{DOCROOT}: directory where the @concept{manuals} will
+       be installed. It is often convenient if this directory is
+       accessible via @concept{WWW}
+       (@tt{DOCROOT=/home/httpd/html/ciao}, or something like that).
+
+@end{itemize}
+
+    For network-based installations, @cindex{installation, network
+    based} it is of @em{utmost importance} that the configured paths
+    be reachable in all the networked machines.  Different machines
+    with different architectures can share the same physical source
+    directory during installation, since compilations for different
+    architectures take place in dedicated subdirectories. Also,
+    different machines/architectures can share the same @tt{LIBROOT}
+    directory (@tt{LIBROOT} is configured in the menu). This saves
+    space since the architecture-independent libraries will be
+    shared. See @ref{Multiarchitecture support} below.
+
+@item @bf{Compile Ciao:} At the ciao top level
+      directory type @tt{gmake all}.
+
+      @em{Important:} use @concept{GNU make} (@apl{gmake}), not the
+      standard @concept{UNIX make}, as the latter does not support
+      some features used during the compilation.  It does not matter
+      if the name of the executable is @apl{make} or @apl{gmake}: only
+      make sure that it is GNU make.
+
+      This will:
+
+      @begin{itemize}
+
+      @item Build an @concept{engine} in @tt{$(CIAOSRC)/bin/$(CIAOARCH)},
+            where @tt{$(CIAOARCH)} depends on the architecture.  The
+            engine is the actual interpreter of the low level code
+            into which Ciao Prolog programs are compiled.
+
+      @item Build a new Ciao @concept{standalone compiler}
+            (@apl{ciaoc}), with the default paths set for your local
+            configuration (nonetheless, these can be overridden by
+            environment variables, as described below).
+
+      @item Precompile all the libraries under @tt{$(CIAOSRC)/lib} and
+            @tt{$(CIAOSRC)/library} using this compiler.
+
+      @item Compile a toplevel @concept{Prolog shell} and a shell for
+            @concept{Prolog scripts}, @cindex{scripts} under the
+            @tt{$(CIAOSRC)/shell} directory.
+
+      @item Compile some small, auxiliary applications (contained in
+            the @file{etc} directory, and documented in the part of
+            the manual on 'Miscellaneous Standalone Utilities').
+
+      @end{itemize}
+
+      This step can be repeated successively for several architectures
+      in the same source directory. Only the engine and some small
+      parts of the libraries (those written in @concept{C}) differ
+      from one architecture to the other.  Standard Ciao Prolog code
+      compiles into @concept{bytecode object files} (@tt{.po}) and/or
+      @concept{executables} which are portable among machines of
+      different architecture, provided there is an executable engine
+      accessible in every such machine. See more details below under
+      @ref{Multiarchitecture support}.
+
+
+@item @bf{Check compilation:} If the above steps have been
+      satisfactorily finished, the compiler has compiled itself and
+      all the distribution modules, and very probably everything is
+      fine.
+
+@item @bf{Install Ciao:} To install Ciao in the directories selected
+      in the configuration script during step 2 above, type @tt{gmake
+      justinstall}. This will:
+
+      @begin{itemize}
+
+      @item Install the executables of the Ciao @concept{program
+            development tools} (i.e., the general driver/top-level
+            @apl{ciao}, the standalone compiler @apl{ciaoc}, the
+            script interpreter @apl{ciao-shell}, miscellaneous
+            utilities, etc.) in @tt{BINROOT} (see below). In order to
+            use these tools, the @tt{PATH} @cindex{PATH}
+            @concept{environment variable} of users needs to contain
+            the path @tt{BINROOT}.
+
+      @item Install the Ciao libraries under @tt{LIBROOT/ciao} (these
+            will be automatically found).
+
+      @item Install under @tt{DOCROOT} the Ciao manuals in several
+            formats (such as GNU @tt{info}, @tt{html},
+            @tt{postscript}, etc.), depending on the distribution. In
+            order for these manuals to be found when typing @tt{M-x
+            info} within @apl{emacs}, or by the standalone @apl{info}
+            and @apl{man} commands, the @tt{MANPATH} @cindex{MANPATH}
+            and @tt{INFOPATH} @cindex{INFOPATH} @concept{environment
+            variables} of users both need to contain the path
+            @tt{DOCROOT}.
+
+      @item Install under @tt{LIBROOT/ciao} the Ciao GNU @apl{emacs}
+            interface (@file{ciao.el}, which provides an interactive
+            interface to the Ciao program development tools, as well
+            as some other auxiliary files) and a file
+            @file{ciao-mode-init} containing the @apl{emacs}
+            initialization commands which are needed in order to use
+            the Ciao @apl{emacs} interface.
+
+      @end{itemize}
+
+@item @bf{Set up user environments:} In order to automate the process
+      of setting the variables above, the installation process leaves
+      the files @tt{LIBROOT/ciao/DOTcshrc} (for @apl{csh}-like
+      shells), @tt{LIBROOT/ciao/DOTprofile} (for @apl{sh}-like
+      shells), and @tt{LIBROOT/ciao/ciao-mode-init} (for emacs) with
+      appropriate definitions which will take care of all needed
+      @concept{environment variable definitions} and @concept{emacs
+      mode setup}.  If you has indicated in the menu that the startup
+      files must be modified, then the install process will do it for
+      you, otherwise you can modify by hand these files making the
+      following modifications in your startup scripts, so that these
+      files are used (@tt{<LIBROOT>} must be replaced with the
+      appropriate value):
+
+      @include{UserSetup.lpdoc}
+
+      If you are installing Ciao globally in a multi-user machine,
+      make sure that you instruct all users to do the same.  If you
+      are the system administrator, the previous steps can be done
+      once and for all, and globally for all users by including the
+      lines above in the central startup scripts (e.g., in Linux
+      @file{/etc/bashrc}, @file{/etc/csh.login},
+      @file{/etc/csh.cshrc}, @file{/etc/skel},
+      @file{/usr/share/emacs/.../lisp/site-init.pl}, etc.).
+
+@item @bf{Download and install Emacs (highly recommended):} If the (freely
+      available) @apl{emacs} editor is not installed in your system,
+      its installation is @em{highly recommended} (if you are installing in
+      a multi-user machine, you may want to do it in a general area so
+      that it is available for other users, even if you do not use it
+      yourself). While it is easy to use Ciao with any editor of
+      your choice, the Ciao distribution includes a very powerful
+      @cindex{development environment} @em{application development
+      environment} which is based on @apl{emacs} and which enables,
+      e.g., source-level debugging, syntax coloring, context-sensitive
+      on-line help, etc.
+
+      @include{EmacsDownload.lpdoc}
+
+@item @bf{Check installation / read documentation:} You may now want
+      to check your installation (see @ref{Checking for correct
+      installation on Un*x}) and read the documentation, which is
+      stored in @tt{DOCROOT} (copied from @tt{CIAOSRC/doc/reference}) and
+      can be easily accessed as explained that same section. There are
+      special ``getting started'' sections at the beginning of the
+      manual.
+
+@end{enumerate}
+
+Other useful @tt{make} targets are listed at the beginning of
+@tt{$(CIAOSRC)/Makefile}.
+
+If you have any problems you may want to check @ref{Troubleshooting
+(nasty messages and nifty workarounds)}.
+
+The system can be @em{uninstalled} by typing @tt{gmake uninstall} in
+the top directory (the variables in @file{SETTINGS} should have the
+same value as when the install was performed, so that the same
+directories are cleaned).  @cindex{uninstalling}
+
+
+@section{Checking for correct installation on Un*x}
+@cindex{installation, checking the}
+
+If everything has gone well, several applications and tools should be
+available to a normal user.  Try the following while logged in as a
+@em{normal user} (important in order to check that permissions are set
+up correctly):
+
+@include{InstallTestUnix.lpdoc}
+
+Finally, if @apl{emacs} is installed, after starting it (typing
+@tt{emacs}) the following should work:
+
+@include{EmacsTesting.lpdoc}
+
+@section{Cleaning up the source directory}
+
+After installation, the source directory can be cleaned up in several
+ways:
+
+@begin{itemize}
+
+@item @tt{gmake uninstall} removes the installation but does
+      not touch the source directories.
+
+@item @tt{gmake totalclean} leaves the distribution is its
+      original form, throwing away any intermediate files (as well as
+      any unneeded files left behind by the Ciao developers), while
+      still allowing recompilation.
+
+@end{itemize}
+
+Other useful @tt{make} targets are listed at the beginning of
+@tt{$(CIAOSRC)/Makefile}.
+
+@section{Multiarchitecture support}
+
+@cindex{multiarchitecture support}
+
+As mentioned before, Ciao applications (including the compiler and the
+top level) can run on several machines with different architectures
+without any need for recompiling, provided there is one Ciao engine
+(compiled for the corresponding architecture) accessible in each
+machine. Also, the Ciao libraries (installed in @tt{LIBROOT}, which
+contain also the engines) and the actual binaries (installed in
+@tt{BINROOT}) can themselves be shared on several machines with
+different architectures, saving disk space.
+
+For example, assume that the compiler is installed
+as:
+
+@tt{/usr/local/share/bin/ciaoc}
+
+and the libraries are installed under
+
+@tt{/usr/local/share/lib}
+
+Assume also that the @tt{/usr/local/share} directory is mounted on,
+say, a number of @concept{Linux} and a number of @concept{Solaris}
+boxes.  In order for @tt{ciaoc} to run correctly on both types of
+machines, the following is needed:
+
+@begin{enumerate}
+
+@item Make sure you that have done @tt{gmake install} on one machine
+      of each architecture (once for Linux and once for Solaris in our
+      example).  This recompiles and installs a new engine and any
+      architecture-dependent parts of the libraries for each
+      architecture. The engines will have names such as
+      @tt{ciaoengine.LINUXi86}, @tt{ciaoengine.SolarisSparc}, and so
+      on.
+
+@item In multi-architecture environments it is even more important to
+      make sure that users make the modifications to their startup
+      scripts using @file{<LIBROOT>/ciao/DOTcshrc} etc.  The selection
+      of the engine (and architecture-dependent parts of libraries) is
+      done in these scripts by setting the environment variable
+      @tt{CIAOARCH}, using the @tt{ciao_get_arch} command, which is
+      installed automatically when installing Ciao. This will set
+      @tt{CIAOARCH} to, say, @tt{LINUXi86}, @tt{SolarisSparc},
+      respectively, and @tt{CIAOENGINE} will be set to
+      @tt{ciaoengine.}@em{CIAOARCH}.
+
+      However, note that this is not strictly necessary if running on
+      only one architecture: if @tt{CIAOARCH} is not set (i.e.,
+      undefined), the Ciao executables will look simply for
+      @tt{ciaoengine}, which is always a link to the latest engine
+      installed in the libraries. But including the initialization
+      files provided has the advantage of setting also paths for the
+      manuals, etc.
+
+@end{enumerate}
+
+@section{Installation and compilation under Windows}
+
+There are two possibilities in order to install Ciao Prolog on Windows
+machines:
+
+@begin{itemize}
+
+@item Installing from the Windows @em{precompiled} distribution. This
+      is the easiest since it requires no compilation and is highly
+      recommended. This is described in @ref{Installing Ciao from a
+      Win32 binary distribution}.
+
+@item Installing the standard Ciao Prolog (Un*x) system source
+      distribution and compiling it under Windows. This is somewhat
+      more complex and currently requires the (freely available)
+      Cygnus Win32 development libraries --described below.
+
+@end{itemize}
+
+@cindex{installation, Windows, from sources}
+@cindex{compiling, Win32} In order to compile Ciao Prolog for Win32
+environments you need to have the (public domain) @index{Cygnus Win32}
+and development libraries installed in your system. Compilation should
+be performed preferably under Windows NT-type systems.
+
+@begin{itemize}
+
+@item Thus, the first step, if Cygnus Win32 is not installed in your
+      system, is to download it (from, e.g.,
+      @uref{http://www.cygnus.com/misc/gnu-win32}) and install it. The
+      compilation process also requires that the executables
+      @tt{rm.exe}, @tt{sh.exe}, and @tt{uname.exe} from the Cygnus
+      distribution be copied under @tt{/bin} prior to starting the
+      process (if these executables are not available under @tt{/bin}
+      the compilation process will produce a number of errors and
+      eventually stop prematurely).
+
+@item Assuming all of the above is installed, type @tt{make allwin32}.
+      This will compile both the engine and the Prolog libraries. In
+      this process, system libraries that are normally linked
+      dynamically under Un*x (i.e., those for which @tt{.so}
+      dynamically loadable files are generated) are linked statically
+      into the engine (this is done instead of generating @tt{.dll}s
+      because of a limitation in the current version of the Cygnus
+      Win32 environment). No actual installation is made at this
+      point, i.e., this process leaves things in a similar state as if
+      you had just downloaded and uncompressed the precompiled
+      distribution.  Thus, in order to complete the installation you
+      should now:
+
+@item Follow now the instructions in @ref{Installing Ciao from a Win32
+      binary distribution}.
+
+@end{itemize}
+
+A further note regarding the executables generated by the Ciao
+compiler and top-level: the same considerations given in
+@ref{Installing Ciao from a Win32 binary distribution} apply regarding
+@tt{.bat} files, etc. However, in a system in which Cygnus Win32 is
+installed these executables can also be used in a very simple way. In
+fact, the executables can be run as in Un*x by simply typing their
+name at the @apl{bash} shell command line without any associated
+@tt{.bat} files. This only requires that the @apl{bash} shell which
+comes with Cygnus Win32 be installed and accessible: simply, make sure
+that @file{/bin/sh.exe} exists.
+
+@section{Porting to currently unsupported operating systems}
+
+If you would like to port Ciao to a currently unsupported platform,
+there are several issues to take into account. The main one is to get
+the @em{engine} to compile in that platform, i.e., the C code under
+the @tt{engine} directory.  The procedure currently followed by Ciao
+to decide the various flags needed to compile is as follows:
+
+@begin{itemize}
+
+@item The shell script @tt{$(CIAOSRC)/etc/ciao_get_arch} is executed; it
+returns a string describing the operating system and the processor
+architecture (e.g., LINUXi86, SolarisSparc, SolarisAlpha, etc.).  You
+should make sure it returns a correct (and meaningful) string for your
+setup.  This string is used trhoughout the compilation to create
+several architecture-dependant flags.
+
+@item In the directory @tt{$(CIAOSRC)/makefile-sysdep} there are files
+called mkf-<OS><ARCH> for every combination of operating system and
+architecture in which Ciao is know to (and how to) compile.  They set
+several flags regarding, for example, whether to use or not threads,
+which threads library to use, the optimization flags to use, the
+compiler, linker, and it also sets separately the architecture name
+(ARCHNAME variable) and the operating system (OSNAME).  You should
+create a new mkf file for your machine, starting from the one which is
+closest to you.
+
+@item Most times the porting problems happen in the use of locks and
+threads.  You can either disable them, or have a look at the files
+@tt{$(CIAOSRC)/engine/locks.h} and @tt{$(CIAOSRC)/engine/threads.h}.  If you
+know how to implement native (assembler) locks for your architecture,
+enable HAVE_NATIVE_SLOCKS for your architecture and add the
+definitions.  Otherwise, if you have library-based locks, enable them.
+The mechanism in @tt{threads.h} is similar.
+
+@end{itemize}
+
+
+Once a working engine is achieved, it should be possible to continue
+with the standard installation procedure, which will try to use a
+completely static version of the standalone compiler (@tt{ciaoc.sta}
+in the @tt{ciaoc} directory) to compile the interactive top-level
+(@apl{ciaosh}) and a new version of the standalone compiler
+(@apl{ciaoc}). These in turn should be able to compile the Prolog
+libraries. You may also need to look at some libraries (such as, for
+example, @lib{sockets}) which contain C code.  If you do succeed in
+porting to a platform that is currently unsupported please send the
+@file{mkf-CIAOARCH} and any patches to
+@email{ciao@@clip.dia.fi.upm.es}, and we will include them (with due
+credit, of course) in the next distribution.
+
+
+@section{Troubleshooting (nasty messages and nifty workarounds)}
+@cindex{troubleshooting}
+
+The following a list of common installation problems reported by
+users:
+
+@begin{itemize}
+
+
+@item @bf{Problem:} Compilation errors appear when trying a new
+      installation/compilation after the previous one was aborted
+      (e.g., because of errors).
+
+      @bf{Possible reason and solution:} It is a good idea to clean up
+      any leftovers from the previous compilation using @tt{make
+      engclean} before restarting the installation or compilation
+      process.
+
+@item @bf{Problem:}
+
+      During engine compilation, messages such as the following appear:
+      @tt{tasks.c:102:PTHREAD_CANCEL_ASYNCHRONOUS undeclared (first
+      use of this function)}.
+
+      @bf{Possible reason and solution:}
+
+      Your (Linux?) system does not have (yet) the @concept{Posix
+      threads} library installed.  You can upgrade to one which does
+      have it, or download the library from
+
+      @uref{http://pauillac.inria.fr/~xleroy/linuxthreads/index.html}
+
+      and install it, or disable the use of threads in Linux: for
+      this, edit the @file{SETTINGS} file and specify
+      @tt{USE_THREADS=no}, which will avoid linking against thread
+      libraries (it will disable the use of thread-related primitives
+      as well).  Clean the engine with @tt{make engclean} and restart
+      compilation.
+
+      If you have any alternative threads library available, you can
+      tinker with @tt{engine/threads.h} and the files under
+      @tt{makefile-sysdep}  in order to get the task
+      managing macros right for your system.  Be sure to link the
+      right library.  If you succeed, we
+      (@email{ciao@@clip.dia.fi.upm.es}) will be happy of knowing
+      about what you have done.
+
+
+@item @bf{Problem:}
+
+      @tt{-lpthread: library not found} (or similar)
+
+      @bf{Possible reason and solution:}
+
+      Your (Linux?) system seems to have Posix threads installed, but
+      there is no threads library in the system.  In newer releases
+      (e.g., @concept{RedHat 5.0}), the Posix threads system calls
+      have been included in @tt{glibc.so}, so specifying
+      @tt{-lpthread} in @tt{makefile-sysdep/mkf-LINUX} is not needed;
+      remove it.  @tt{make engclean} and restart installation.
+
+      Alternatively, you may have made a custom installation of Posix
+      threads in a non-standard location: be sure to include the flag
+      @tt{-L/this/is/where/the/posix/libraries/are} @bf{before}
+      @tt{-lpthread}, and to update @tt{/etc/ld.so.conf} (see @tt{man
+      ldconfig}).
+
+
+@item @bf{Problem:}
+
+      @tt{Segmentation Violation} (when starting the first executable)
+
+      @bf{Possible reason and solution:}
+
+      This has been observed with certain older versions of @apl{gcc}
+      which generated erroneous code under full optimization. The best
+      solution is to upgrade to a newer version of
+      @apl{gcc}. Alternatively, lowering the level of optimization (by
+      editing the @file{SETTINGS} file in the main directory of the
+      distribution) normally solves the problem, at the cost of
+      reduced execution speed.
+
+
+@item @bf{Problem:}
+      @tt{ciaoc: /home/clip/lib/ciao/ciao-X.Y/engine/ciaoengine: not found}
+
+      @bf{Possible reason and solution:}
+
+      @begin{itemize}
+
+      @item The system was not fully installed and the variable
+      @tt{CIAOENGINE} was not set.
+
+      @item The system was installed, the variable @tt{CIAOENGINE} is
+      set, but it is does not point to a valid ciaoengine.
+
+      @end{itemize}
+
+      See the file @tt{LIBROOT/ciao/DOTcshrc} for user settings for
+      environment variables.
+
+@item @bf{Problem:}
+
+      @tt{ERROR: File library(compiler) not found - aborting...}
+      (or any other library is not found)
+
+      @bf{Possible reason and solution:}
+
+      @begin{itemize}
+
+      @item The system was not installed and the variable @tt{CIAOLIB}
+      was not set.
+
+      @item The system is installed and the variable @tt{CIAOLIB} is wrong.
+
+      @end{itemize}
+
+      See the file @tt{LIBROOT/ciao/DOTcshrc} for user settings for
+      environment variables.
+
+@item @bf{Problem:}
+
+      @tt{ERROR: File <some_directory>/<some_file>.itf not found - aborting...}
+
+      @bf{Possible reason and solution:}
+
+      Can appear when compiling @tt{.pl} files.  The file to compile
+      (<some_file>.pl) is not in the directory <some_directory>.  You
+      gave a wrong file name or you are in the wrong directory.
+
+
+@item @bf{Problem:}
+
+      @tt{*ERROR*: /(write_option,1) is not a regular type} (and
+      similar ones)
+
+      @bf{Possible reason and solution:}
+
+      This is not a problem, but rather the type checker catching some
+      minor inconsistencies which may appear while compiling the
+      libraries.  Bug us to remove it, but ignore it for now.
+
+@item @bf{Problem:}
+
+      @tt{WARNING: Predicate <some_predicate>/<N> undefined in module
+      <some_module>}
+
+      @bf{Possible reason and solution:}
+
+      It can appear when the compiler is compiling Ciao library
+      modules.  If so, ignore it (we will fix it).  If it appears when
+      compiling user programs or modules, you may want to check your
+      program for those undefined predicates.
+
+@item @bf{Problem:}
+
+      @tt{gmake[1]: execve: /home/clip/mcarro/ciao-0.7p2/etc/collect_modules:
+      No such file or directory}
+
+      @bf{Possible reason and solution:}
+
+      Check if collect_modules is in $(CIAOSRC)/etc and is executable.  If
+      it is not here, your distribution is incorrect: please let us know.
+
+@comment{Otherwise, you probably do not have @apl{bash} (GNU's Bourne
+      Again Shell) installed in your system, or it is not installed
+      under /bin/bash .  If it is installed somewhere else (say, in
+      /usr/local/bin/bash), you can make a link to /bin/bash or edit
+      the scripts in $(CIAOSRC)/etc to use /usr/local/bin/bash .
+      Otherwise, you will need to install it: Some scripts used during
+      the Ciao installation @bf{really need} bash.  Please install
+      it.}
+
+@item @bf{Problem:}
+
+      @tt{make: Fatal error in reader: SHARED, line 12: Unexpected
+      end of line seen}
+
+      @bf{Possible reason and solution:}
+
+      You are using standard Un*x make, not GNU's make implementation
+      (gmake).
+
+
+@item @bf{Problem:}
+
+      @tt{WARNING}s or @tt{ERROR}s while compiling the Ciao libraries
+      during installation.
+
+      @bf{Possible reason and solution:}
+
+      It is possible that you will see some such errors while
+      compiling the Ciao libraries during installation. This is
+      specially the case if you are installing a Beta or Alpha release
+      of Ciao. These releases (which have ``odd'' version numbers such
+      as 1.5 or 2.1) are typically snapshots of the development
+      directories, on which many developers are working
+      simultaneously, which may include libraries which have typically
+      not been tested yet as much as the ``official'' distributions
+      (those with ``even'' version numbers such as 1.6 or 2.8). Thus,
+      minor warnings may not have been eliminated yet or even errors
+      can sneak in. These warnings and errors should not affect the
+      overall operation of the system (e.g., if you do not use the
+      affected library).
+
+@end{itemize}
+

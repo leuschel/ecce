@@ -1,0 +1,88 @@
+#VRML V2.0 utf8
+
+
+
+Viewpoint { position 0 22 20 orientation 1 0 0 -0.7854 }
+
+
+
+Group {
+
+    children [
+
+        Transform {
+
+            scale 1 1 6
+
+            rotation 0 1 0 0
+
+            translation -4 0 -3
+
+            children Inline { url "wall.wrl" }
+
+        }
+
+        Transform {
+
+            scale 1 1 1
+
+            rotation 0 1 0 -1.5708
+
+            translation 4 0 -3
+
+            children Inline { url "door25.wrl" }
+
+        }
+
+        Transform {
+
+            scale 1 1 1
+
+            rotation 0 1 0 3.14159
+
+            translation 4 0 3
+
+            children Inline { url "door11.wrl" }
+
+        }
+
+        Transform {
+
+            scale 1 1 1
+
+            rotation 0 1 0 3.14159
+
+            translation 4 0 0
+
+            children Inline { url "door11.wrl" }
+
+        }
+
+        Transform {
+
+            scale 1 1 1
+
+            rotation 0 1 0 1.5708
+
+            translation -4 0 3
+
+            children Inline { url "door25.wrl" }
+
+        }
+
+        Transform {
+
+            scale 8 1 6
+
+            rotation 0 1 0 0
+
+            translation -4 0 -3
+
+            children Inline { url "floor.wrl" }
+
+        }
+
+    ]
+
+}
+

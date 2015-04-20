@@ -1,0 +1,26 @@
+#VRML V2.0 utf8
+
+
+
+# A simple head-nodding animation, created by hand
+
+
+
+DEF TS TimeSensor { loop TRUE }
+
+
+
+DEF INTER OrientationInterpolator {
+
+    key [ 0 0.25 0.75 1.0 ]
+
+    keyValue [ 1 0 0 0, 1 0 0 0.7805, 1 0 0 0.7804, 1 0 0 0 ]
+
+}
+
+
+
+ROUTE TS.fraction_changed TO INTER.set_fraction
+
+ROUTE INTER.value_changed TO v8.set_rotation
+

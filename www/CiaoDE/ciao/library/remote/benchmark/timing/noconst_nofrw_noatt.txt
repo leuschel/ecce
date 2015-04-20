@@ -1,0 +1,49 @@
+Integers
+Time for size 100: 13
+Time for size 100: 12
+Time for size 100: 9
+Time for size 100: 9
+Time for size 100: 9
+Time for size 100: 9
+Time for size 500: 42
+Time for size 500: 90
+Time for size 500: 49
+Time for size 500: 56
+Time for size 500: 41
+Time for size 500: 60
+Time for size 1000: 85
+Time for size 1000: 99
+Time for size 1000: 84
+Time for size 1000: 86
+Time for size 1000: 84
+Time for size 1000: 100
+Variables
+Time for size 100: 36
+Time for size 100: 32
+Time for size 100: 37
+Time for size 100: 30
+Time for size 100: 31
+Time for size 100: 44
+Time for size 500: 488
+Time for size 500: 465
+Time for size 500: 469
+Time for size 500: 492
+Time for size 500: 486
+Time for size 500: 480
+Time for size 1000: 1737
+Time for size 1000: 1436
+Time for size 1000: 1402
+Time for size 1000: 1436
+Time for size 1000: 1424
+Time for size 1000: 1433
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Integers
+(/ (+ 13 9 9 9) 4) = 10
+(/ (+ 42 49 56 90) 4) = 59
+(/ (+ 84 85 86 99) 4) = 88
+Variables
+(/ (+ 31 32 36 37) 4) = 34
+(/ (+ 469 486 488 492) 4) = 483
+(/ (+ 1424 1436 1436 1737) 4) = 1508

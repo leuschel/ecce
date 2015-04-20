@@ -1,0 +1,18 @@
+# -*- mode: Makefile; -*-
+# ----------------------------------------------------------------------------
+include ../../SETTINGS
+include ../../doc/SETTINGS.COMMON
+# ----------------------------------------------------------------------------
+PAPERTYPE:=afourpaper
+#PAPERTYPE:=afourthesis
+#FILEPATHS := $(SRC)/.. $(SRC)/emacs $(SRC)/emacs/doc $(FILEPATHS)
+FILEPATHS := $(SRC)/.. $(SRC)/emacs-mode $(SRC)/emacs-mode/doc $(FILEPATHS)
+MAIN       = CiaoMode.pl
+MAINOPTS   = # -norefs
+INDICES    = concept usage
+
+doit:
+	touch ../CiaoMode.pl
+	cd ..; $(MAKE) doc
+	$(MAKE) dvi ps
+# ----------------------------------------------------------------------------

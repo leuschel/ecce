@@ -1,0 +1,100 @@
+:- module(attributes, [
+        get_attribute/2, attach_attribute/2, update_attribute/2,
+        detach_attribute/1],
+        [assertions]).
+
+:- comment(title,"Attributed variables").
+
+:- comment(author,"Daniel Cabeza").
+:- comment(author,"Manuel Carro").
+:- comment(author,"Manuel Hermenegildo").
+:- comment(author,"Christian Holzbaur").
+
+:- comment(usage, "These predicates are builtin in CIAO, so nothing special
+   has to be done to use them.").
+
+:- comment(module,"Within the version of SICStus Prolog @cite{[Carlsson & Widen 90]}
+described in this manual, the unification mechanism has been changed in
+such a way that the user (you) may introduce interpreted terms and
+specify their unification through Prolog predicates.
+@cindex Constraint Logic Programming (CLP)
+@cindex CLP
+Extensible unification in turn, aims at the implementation of instances
+of the general CLP scheme @cite{[Jaffar & Michaylov 87]}.
+
+The basic mechanism that was utilized to provide extensible unification
+in the SICStus Prolog implementation are so-called @dfn{attributed
+variables}.
+@cindex Attributed Variables
+@quotation
+@cindex Meta-structures
+If the reader is familiar with @dfn{meta-structures} @cite{[Neumerkel
+90]}, that likewise aim at the provision of extensible unification, s/he
+is referred to @ref{Meta-structures}, where we briefly compare the two
+approaches.
+@end quotation
+
+Attributed variables are variables with an associated attribute, which
+is a term.  Attributes are attached to variables, and attributes are
+referred to, through built-in predicates. As far as the rest of a given
+Prolog implementation is concerned, attributed variables behave like
+variables --- they can be considered as a subtype of type variable. The
+indexing mechanism treats variables and attributed variables the same
+way.  Built-in predicates observe attributed variables as if they were
+ordinary variables. Special treatment for attributed variables applies
+in the following situations:
+@itemize @bullet
+
+@item 
+During unification. This is the most important difference! When an attributed
+variable is to be unified with another attributed variable or some
+other non-variable term, user-defined predicates specify how this unification
+has to be performed.
+
+@item 
+When printed via @code{print/1}, a user-supplied predicate gets a chance
+to print the attributed variable in some customized fashion.
+
+@item 
+During memory management, i.e, during garbage collection, @dfn{early
+reset} and @dfn{variable shunting} are performed on attributed (and
+other) variables.
+@end itemize
+
+SICStus2.1 did not provide attributed variables directly, but within the
+kernel this data type was used to implement @code{freeze/2} and
+@code{dif/2} and other coroutining facilities. Although the data type
+@dfn{attributed variable} (variables with tag @code{CVA} for kernel
+hackers) could be utilized directly, the @dfn{wake mechanism} had to be
+changed for the new purpose. The wake mechanism is concerned with the
+treatment of attributed variables during unifications. The mechanism
+built into the original SICStus2.1 release is sufficient for the
+implementation of the mentioned coroutining mechanisms. For our CLP
+applications however, it had to be changed somewhat. If you are mainly
+interested in CLP programming, you don't want to know what exactly the
+changes are (you can always look at the code). An important consequence
+of the modifications is that the original coroutining mechanisms do not
+work in our SICStus clone. This is only half as bad as it sounds because
+explicit Prolog versions of comparable mechanisms, implemented via the
+new CLP scheme, will be provided.  The @strong{explicit} encoding of,
+say @code{freeze/2}, is not to be understood as a mere substitute for
+the original C code. The true motivation for explicit encodings is that
+it enables the user to combine, say @code{freeze/2}, with other
+instances of the general CLP scheme like CLP(R).
+
+
+
+ (cite)").
+
+% Compiled inline -- these are hooks for the interpreter.
+
+get_attribute(X, Y) :- get_attribute(X, Y).
+
+attach_attribute(X, Y) :- attach_attribute(X, Y).
+
+update_attribute(X, Y) :- update_attribute(X, Y).
+
+detach_attribute(X) :- detach_attribute(X).
+
+:- comment(version_maintenance,dir('../../version')).
+

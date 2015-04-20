@@ -1,0 +1,12 @@
+'transaction_logging:dbmsj'(1102030966,3,commit) .
+'transaction_logging:dbmsj'(1102030966,3,asserta_fact(balance(peter,13200.0))) .
+'transaction_logging:dbmsj'(1102030966,3,retract_fact(balance(peter,12000))) .
+'transaction_logging:dbmsj'(1102030961,3,asserta_fact(balance(john,14300.0))) .
+'transaction_logging:dbmsj'(1102030961,3,retract_fact(balance(john,13000))) .
+'transaction_logging:dbmsj'(1102030956,3,start_transaction) .
+'transaction_logging:dbmsj'(1102030955,2,commit) .
+'transaction_logging:dbmsj'(1102030955,2,asserta_fact(balance(john,13000))) .
+'transaction_logging:dbmsj'(1102030955,2,retract_fact(balance(john,8000))) .
+'transaction_logging:dbmsj'(1102030955,0,abort) .
+'transaction_logging:dbmsj'(1102030952,2,start_transaction) .
+'transaction_logging:dbmsj'(1102030950,0,start_transaction) .

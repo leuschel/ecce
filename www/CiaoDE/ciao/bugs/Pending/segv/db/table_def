@@ -1,0 +1,98 @@
+table_def(db_def,'DB Definitions','Associated information for each DB','3','3') .
+table_def(db_tables,'DB Tables','Lists the tables of each DB','2','8') .
+table_def(table_def,'Tables Definitions','Associated information for each table','5','3') .
+table_def(table_order,'Tables Ordered','Tables to be shown ordered, and by which field','3','8') .
+table_def(table_fields,'Tables Fields','Fields of each table','5','8') .
+table_def(field_def,'Fields Definitions','Associated information for fields','4','3') .
+table_def(type_def,'Type Definitions','Definitions of types of fields','2','8') .
+table_def(type_arg,'Type Arguments','Parameters for types','4','8') .
+table_def(increment_if_similar,'Increment if similar','En el caso de que los rangos obtenidos no difieran más de un 15% (siempre en relación al de DCF), la ponderación asignada a Comparables y Transacciones aumentará un 10% en detrimento de la de DCF.','2','1') .
+table_def(model_weight,'Weight of each model','Ponderación inicial a los resultados de los modelos calculados por la Aplicación (DCF, Comparables y Transacciones)','3','1') .
+table_def(maximum_difference,'Maximum difference','No se tiene en cuenta la valoración de Comparables o Transacciones si la media de su rango se desvía más de un tanto por ciento con respecto a DCF.','1','1') .
+table_def(comps_currency,'Currencies for data','','3','8') .
+table_def(comps_sector,'Sectors','Sectores de las compañías','6','5') .
+table_def(comps_actualization,'Actualization info','Detalles de la Información','4','3') .
+table_def(comps_info,'Descriptions','Información sobre las compañías','9','3') .
+table_def(comps_balance_sheet,'Datos Balance','','12','8') .
+table_def(comps_shares,'Shares','','8','8') .
+table_def(comps_employees,'Employees data','','4','8') .
+table_def(comps_geomarket,'Geographic data','','4','8') .
+table_def(comps_last_price,'Shares Last Price','','3','8') .
+table_def(comps_other_data,'Other Company Data','','4','8') .
+table_def(comps_vd,'Value Drivers','','5','8') .
+table_def(comps_data,'Financial data','El WACC y el mes de cierre fiscal','4','8') .
+table_def(comps_profit_loss,'Profit/Loss','Information related to profit/loss for each year','26','8') .
+table_def(comps_rev_bd,'Revenue breakdown','','4','10') .
+table_def(last_or_mean_shares,'Last or Mean Data for Shares','El analista puede decidir si desea utilizar para el cálculo de la capitalización bursátil el último precio de la acción disponible o la media de los tres últimos meses y lo mismo sucede con el número de acciones donde el analista decide si utilizar el último dato disponible o la media de los doce últimos meses.','2','1') .
+table_def(multiple_limit,'Multiple limit','Límite de cada ratio, si da más no se tiene en cuenta','2','8') .
+table_def(fixed_discount,'Fixed discount','Se pone un valor si se quiere que el descuento a los múltiplos sea fijo.','1','1') .
+table_def(size_input,'Size marks','Se aplica un descuento al ratio obtenido para cada año para cada compañía comparable en función de: (1) el tamaño (medido por las ventas)','2','8') .
+table_def(liquidity_input,'Liquidity marks','Se aplica un descuento al ratio obtenido para cada año para cada compañía comparable en función de: (2) la liquidez','2','8') .
+table_def(size_weight,'Weight of size vs liquidity','Peso de la nota que sale de Size Marks con respecto a la Liquidity Marks','1','1') .
+table_def(discount_input,'Discounts from Marks','Descuento al ratio obtenido para cada año en función de la nota obtenida','2','6') .
+table_def(final_range_input,'Parameters for final valuation range','Como último paso, el modelo calcula un rango alrededor del dato final de valor del Cliente. Este rango se basa en la desviación estándar (reducida por un valor a elegir por el analista) de los distintos valores de la empresa obtenidos a partir de los diferentes ratios y es como máximo del 15% (variable).','2','1') .
+table_def(age_weight,'Weight of age vs # ratios','','1','1') .
+table_def(marks_age_input,'Weight of each year','El modelo otorga mayor importancia dentro del total de ratios utilizados en la valoración a aquellos de determinados años. De esta manera, el año cero o el año uno (a elegir por el analista) pueden tener un peso mayor en la valoración que el años -1 (histórico) o el 3 (muy lejano). La aplicación permite que la importancia asignada a cada año varíe en función de la edad de la empresa.','6','7') .
+table_def(marks_NOratios_input,'No. of ratios year marks','El modelo pondera los años en función del número de ratios que hay disponibles para cada tipo de ratio. Es decir que si en un año hay datos de ratios para más compañías, ese año recibe una ponderación más alta que el resto.  En ambos casos el modelo asigna una nota (a elegir por el analista) en función de la "importancia" del año y del número de datos para cada ratio (a más datos, más significativa la muestra y mejor nota).','3','6') .
+table_def(intrinsic_value_ratio,'Intrinsic value of ratios','Nota en función de la representatividad o "bondad" del ratio para explicar el valor de la compañía (a criterio del analista)','2','7') .
+table_def(marks_count_ratios,'No. of years ratio marks','Nota en función del número de años del que hay ratios disponibles','2','6') .
+table_def(limit_comp_marg,'Limit of margin comparisons','Límite de Comparabilidad de Márgenes, variable a introducir por el analista, determina el porcentaje mínimo de coincidencia de los márgenes para que una empresa se considerada comparable.','1','1') .
+table_def(comparisons_weight,'Weight of each comparison method','El peso de cada comparación en el valor final de la comparación','3','1') .
+table_def(minimum_ratios,'Minimum values for multiples','El resultado de aplicar esta ponderación es un resultado del valor de la empresa por cada múltiplo del que hay valores suficientes (mínimo de 5 valores)','1','1') .
+table_def(comps_weight_warning,'Warning for too influential company','Si una compañía infuye más que este porcentaje en el valor total dar un aviso.','1','1') .
+table_def(net_profit_when,'Net Profit regarding dividends','Especifica si el Net Profit que se usa es antes o después de dividendos.','1','1') .
+table_def(trans_info,'Descriptions','Información sobre las transacciones','12','3') .
+table_def(trans_sector,'Sectors','Sectores de las compañías','5','5') .
+table_def(trans_months,'Months #','Número de meses','2','8') .
+table_def(trans_currency,'Currencies for data','','2','6') .
+table_def(trans_price,'Price','','6','6') .
+table_def(trans_balance_sheet,'Debt','','2','8') .
+table_def(trans_profit_loss,'Profit/Loss','Information related to profit/loss for each year','23','5') .
+table_def(trans_rev_bd,'Revenue breakdown','','3','10') .
+table_def(tr_multiple_limit,'Multiple limit','Límite de cada ratio, si da más no se tiene en cuenta','2','8') .
+table_def(tr_final_range_input,'Parameters for final valuation range','Como último paso, el modelo calcula un rango alrededor del dato final de valor del Cliente. Este rango se basa en la desviación estándar (reducida por un valor a elegir por el analista) de los distintos valores de la empresa obtenidos a partir de los diferentes ratios y es como máximo del 15% (variable).','2','1') .
+table_def(tr_age_weight,'Weight of age vs # ratios','','1','1') .
+table_def(tr_marks_age_input,'Weight of each year','El modelo otorga mayor importancia dentro del total de ratios utilizados en la valoración a aquellos de determinados años. De esta manera, el año cero o el año uno (a elegir por el analista) pueden tener un peso mayor en la valoración que el años -1 (histórico) o el 3 (muy lejano). La aplicación permite que la importancia asignada a cada año varíe en función de la edad de la empresa.','6','7') .
+table_def(tr_marks_NOratios_input,'No. of ratios year marks','El modelo pondera los años en función del número de ratios que hay disponibles para cada tipo de ratio. Es decir que si en un año hay datos de ratios para más compañías, ese año recibe una ponderación más alta que el resto.  En ambos casos el modelo asigna una nota (a elegir por el analista) en función de la "importancia" del año y del número de datos para cada ratio (a más datos, más significativa la muestra y mejor nota).','3','6') .
+table_def(tr_intrinsic_value_ratio,'Intrinsic value of ratios','Nota en función de la representatividad o "bondad" del ratio para explicar el valor de la compañía (a criterio del analista)','2','7') .
+table_def(tr_marks_count_ratios,'No. of years ratio marks','Nota en función del número de años del que hay ratios disponibles','2','6') .
+table_def(tr_limit_comp_marg,'Limit of margin comparisons','Límite de Comparabilidad de Márgenes, variable a introducir por el analista, determina el porcentaje mínimo de coincidencia de los márgenes para que una empresa se considerada comparable.','1','1') .
+table_def(tr_comparisons_weight,'Weight of each comparison method','El peso de cada comparación en el valor final de la comparación','3','1') .
+table_def(tr_minimum_ratios,'Minimum values for multiples','El resultado de aplicar esta ponderación es un resultado del valor de la empresa por cada múltiplo del que hay valores suficientes (mínimo de 5 valores)','1','1') .
+table_def(tr_comps_weight_warning,'Warning for too influential company','Si una compañía infuye más que este porcentaje en el valor total dar un aviso.','1','1') .
+table_def(tr_net_profit_when,'Net Profit regarding dividends','Especifica si el Net Profit que se usa es antes o después de dividendos.','1','1') .
+table_def(euro_changes,'Euro changes','1 Euro = X currency','3','6') .
+table_def(max_variable_change,'Maximum Variable Change','Máximo para el porcentaje de cambio a cada variable (en valor absoluto)','2','8') .
+table_def(form_question,'Question Codes','Listado de las preguntas para cada sector','5','8') .
+table_def(change_variable_question,'Variable Change for Question','Si la pregunta influye en el valor de alguna de las variables utilizadas como inputs en el DCF (ingresos, costes...) y en que proporción.','9','8') .
+table_def(change_variable_answer,'Variable Change for Answer','Si la respuesta influye en el valor de alguna de las variables utilizadas como inputs en el DCF (ingresos, costes...) y en que proporción.','10','8') .
+table_def(answer_weight,'Answers Weights','El peso de la respuesta relativo respecto del resto de respuestas de esa misma pregunta','7','8') .
+table_def(answer_range_grade,'Answers Grades','Rangos de posibles respuestas con sus "notas" respectivas','8','8') .
+table_def(optimum_bonus,'Bonus Criteria','Input manual del analista que indica el porcentaje mínimo de coincidencia requerido para asignarle a la pregunta el Bonus correspondiente, así como el porcentaje en el que se incrementaría la nota resultante de la pregunta en caso de corresponder la aplicación del Bonus.','7','8') .
+table_def(optimum_range,'Optimum Ranges','Indica los rangos de valores considerados óptimos para cada respuesta.','9','8') .
+table_def(expected_sector_growth,'Expected Growth for Sectors','','5','8') .
+table_def(weight_from_hist_proj,'Weight of Client Data from Available Years','El modelo identifica en primer lugar el numero de años, tanto históricos como proyectados, que el cliente ha facilitado en el formulario y en función de estos le asigna una "probabilidad de éxito", la ponderación, a que suceda el escenario descrito por el cliente.','4','12') .
+table_def(client_data_weight,'Weight of Client Data for Consensus','','2','8') .
+table_def(minimum_capex_rate,'Minimum capex Rate','El modelo prevé siempre un nivel de "capex" mínimo en función del sector del Cliente. Este porcentaje mínimo es un input del modelo y por tanto una variable que puede cambiar el analista.','2','8') .
+table_def(interest_rate,'Interest Rate','Incremento del tipo de interés para estimar las proyecciones de gastos financieros en caso de que no se puedan calcular de otro modo.','2','5') .
+table_def(incremento_tipo_interes,'Increase/Decrease in Interest Rate','Aumento o disminución interanual del tipo de interés proyectado para cada año futuro.','2','4') .
+table_def(sector_wacc,'WACC for Sector','WACC medio sectorial que es modificado para cada Cliente de forma que refleje mejor su nivel de riesgo específico.','3','8') .
+table_def(wacc_age_change,'Changes in WACC for Age','Modificación del WACC (aumentos o reducciones porcentuales del WACC sectorial) según el tiempo de vida del Cliente.','4','8') .
+table_def(wacc_cagr_change,'Changes in WACC for CAGR','Modificación del WACC (aumentos o reducciones porcentuales del WACC sectorial) según el CAGR de la facturación del cliente.','4','8') .
+table_def(wacc_size_change,'Changes in WACC for Size','Modificación del WACC (aumentos o reducciones porcentuales del WACC sectorial) según el tamaño de la empresa (medido en función de su cifra de ingresos del año 0).','4','8') .
+table_def(weight_wacc_changes,'Weights for WACC Changes','Cada uno de los aspectos que modifican el WACC tendrá un peso diferente asignado por el analista.','3','1') .
+table_def(tc_inicial,'TC Inicial','Para calcular la tasa de crecimiento a perpetuidad (TC) el modelo se alimenta de una tabla procedente de la Base de Datos DCF compuesta por inputs de los analistas de e-Valora y específica para cada zona geográfica.','2','8') .
+table_def(tc_age_change,'Changes in TC for Age','En la Base de Datos DCF se define una tabla en la que se establecen aumentos o reducciones porcentuales del PIB (sic., supongo que es la TC) en función del número de ejercicios que la empresa lleve operando.','2','8') .
+table_def(tc_growth_change,'Changes in TC for Growth','En la Base de Datos DCF se define una tabla en la que se establecen aumentos o reducciones porcentuales del crecimiento a perpetuidad en función de unos rangos de crecimiento de la facturación del cliente para ese año.','2','8') .
+table_def(tc_age_weight,'Age Weight for TC','Peso del cambio a la TC en función de la edad de la empresa.  El peso del cambio en función del crecimiento de la facturación es el complementario.','1','1') .
+table_def(tasa_de_crecimiento,'Tasa de Crecimiento (G)','Para ello toma como referencia el flujo de caja explícito estimado para el último año y lo hace crecer en función de una tasa de crecimiento (G) estimada por el analista. Esta tasa es una variable independiente del modelo y no tiene por que coincidir con la tasa de crecimiento a perpetuidad (TC); aunque generalmente así sea, es una opción del analista.','1','1') .
+table_def(inicio_descuento,'Inicio Descuento','Para el cálculo del factor de descuento se asume que los años están siempre a la mitad. Para poder realizar esto último Base de Datos DCF existe un campo de "Inicio Descuento" (ID) donde por defecto se aplica el valor 0,5; en el caso de que se deseara establecer el final de año como momento del valor actual el analista introducirá un 0 en dicho campo.','1','1') .
+table_def(vars_tabla_sensibilidad,'Tabla de Sensibilidad - Parámetros','','4','1') .
+table_def(modif_escenario,'Modificaciones de los escenarios','Para cada concepto que se cambia, los aumentos porcentuales en cada escenario.','3','8') .
+table_def(probabilidad_escenarios,'Probabilidad de cada escenario','Cada uno de estos escenarios tendrá asignada una probabilidad de éxito, que podrá ser modificada por el analista.','4','2') .
+table_def(country_tax_rate,'Tax Rates by Country','','2','8') .
+table_def(inflation_by_country,'Inflation by Country','','3','8') .
+table_def(app_intrinsic_value_ratio,'Intrinsic value of ratios','Nota en función de la representatividad o "bondad" del ratio para explicar el valor de la compañía (a criterio del analista).  En la aproximación de valor sólo se usan los múltiplos Sales, EBITDA, EBIT y PER.','2','4') .
+table_def(final_range_input_ev,'Parameters for range of EV','Como último paso, el modelo calcula un rango alrededor del dato final de valor de la empresa del Cliente. Este rango se basa en la desviación estándar (reducida por un valor a elegir por el analista) de los distintos valores de la empresa obtenidos a partir de los diferentes ratios y es como máximo del 15% (variable).','2','1') .
+table_def(final_range_input_fp,'Parameters for range of FP','Como último paso, el modelo calcula un rango alrededor del dato final de valor de fondos propios del Cliente. Este rango se basa en la desviación estándar (reducida por un valor a elegir por el analista) de los distintos valores de la empresa obtenidos a partir de los diferentes ratios y es como máximo del 15% (variable).','2','1') .
+table_def(comps_data_year,'Companies data Year','Año de donde se toman los datos de las compañías.','1','1') .

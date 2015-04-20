@@ -1,0 +1,87 @@
+
+This directory contains compatibility files which, allow:
+
+- Using the CIAO libraries in Prolog systems (mainly, SICStus). 
+
+- Compiling some CIAO applications (e.g., the preprocessor) under
+  such systems.
+
+- Making it easier to develop user CIAO programs that will compile
+  both under CIAO and under other Porlog systems.
+
+The compatibility files are organized in directories, one for each
+Prolog system supported.
+
+Bugs: 
+*** The compatibility files are currently very incomplete ***
+*** This information needs to be completed ***
+Some ideas can be taken from:
+
+# Como hacer la libreria de compatibilidad? Se admiten ideas! Os cuento
+# la idea que mas o menos estoy siguiendo yo con lpdoc y que creo que
+# puede servir como base (lo que tengo hecho hasta el momento esta en
+# ~clip/Systems/ciao-0.3/compatibility/sicstus3/*.pl).
+# 
+# A SICStus se le ponen los mismos paths de las librerias de CIAO, antes
+# de los de sus propias librerias, con lo que en pricipio usa los
+# ficheros de CIAO. Con esto, si SICStus y CIAO fueran identicos todo
+# iria bien. Como no son identicos, hay que arreglar otros problemas:
+# 
+#   Tema de compatibilidad		Remedio
+# -----------------------------------	------------------------------
+# * SICStus tiene al arrancar mas		En la libreria de
+#   builtins que CIAO. En CIAO por	compatibilidad 
+#   ejemplo hay que hacer			compatibility/sicstus3/*.pl
+# 					hay un fichero
+# 					format.pl vacio (o quiza con algun
+#   :- use_module(library(format))	predicado de compatibilidad - ver
+# 					abajo) de manera que la 
+#   para usar el format.			:- use_module(library(format))
+# 					que hay que poner en los
+# 					programas para que corran en CIAO se
+# 					ignora en SICStus
+# -----------------------------------	------------------------------
+# * Hay builtins de CIAO que no existen	Solucion parecida: se definen esos 
+#   en SICStus (p.ej., asserta_fact	builtins en el fichero apropiado en 
+#   ya esta en builtins de CIAO)		compatibility/sicstus3/
+# 					(builtins.pl para asserta_fact)
+# -----------------------------------	------------------------------
+# * Hay librerias CIAO que SICStus	Si la libreria de CIAO corre
+#   no tiene				en SICStus, no problem:
+# 					SICStus la coje por estar en
+# 					el library_directory. Si la de
+# 					CIAO no corre en SICStus
+# 					(p.ej, compiler/c_itf)
+# 					pues hay que  hacer una de
+# 					compatibilidad en  
+# 					compatibility/sicstus3/
+# 					Lo bueno es que puede no hacer falta
+# 					reprogramar la libreria
+# 					entera, ya que el fichero de
+# 					compatibility/sicstus3/
+# 					puede a su vez cargar y usar
+# 					cosas de la libreria de CIAO
+# 					(el fichero que esta en el lib de CIAO)
+# 
+# Ademas, hay algunas diferencias mas semanticas. Muchas veces es
+# posible evitar esto programando las librerias con cuidado: por ejemplo
+# usando ISO prolog lo mas posible.  Para los casos que quedan la idea
+# es hacer un fichero de compatibilidad basica (hay una version
+# primitiva en compatibility/sicstus3/user.pl) que se carga siempre en
+# SICStus antes de correr programas CIAO. Este tiene tipicamente
+# term_expansions y cosas de ese tipo.  Por ejemplo, la module de CIAO
+# tiene un tercer campo donde se pueden poner ficheros de sintaxis, lo
+# que permite poner, por ejemplo:
+# 
+# :- module(joballocation,[allocate_jobs/2],[clpr]).
+# 
+# Esto se arregla con un term expansion que traduce esto a 
+# 
+# :- module(joballocation,[allocate_jobs/2]).
+# :- ensure_loaded(library(clpr)).
+# 
+# Claro que esto no es >exactamente< lo mismo, pero el objetivo de la
+# libreria de compatibilidad no es que TODO programa CIAO corra en
+# SICStus (aunque esto seria fenomenal si lo logramos): basta con que
+# las librerias que escribimos nostros lo hagan.
+

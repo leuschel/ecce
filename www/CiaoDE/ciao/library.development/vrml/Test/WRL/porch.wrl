@@ -1,0 +1,60 @@
+#VRML V2.0 utf8
+
+
+
+Group {
+
+    children [
+
+        Transform {
+
+            scale 1 1 1
+
+            rotation 0 1 0 0
+
+            translation -6.5 0 -2
+
+            children Inline { url "door21.wrl" }
+
+        }
+
+        Transform {
+
+            scale 1 1 1
+
+            rotation 0 1 0 -1.5708
+
+            translation 1.5 0 -2
+
+            children Inline { url "door52.wrl" }
+
+        }
+
+        Transform {
+
+            scale 1 1 5
+
+            rotation 0 1 0 -1.5708
+
+            translation 6.5 0 -2
+
+            children Inline { url "wall.wrl" }
+
+        }
+
+        Transform {
+
+            scale 13 1 6
+
+            rotation 0 1 0 0
+
+            translation -6.5 0 -2
+
+            children Inline { url "floor.wrl" }
+
+        }
+
+    ]
+
+}
+

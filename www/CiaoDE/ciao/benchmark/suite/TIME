@@ -1,0 +1,257 @@
+
+[boris@balboa suite]$ time ciaoc suite
+
+real	0m1.610s
+user	0m1.150s
+sys	0m0.110s
+[boris@balboa suite]$ time ./suite
+***************************************************************************
+Executing suite of benchmarks
+***************************************************************************
+Memory operations.  Should give info about mem. and gc
+memory used (total)        652800 bytes
+   program space (including reserved for atoms): 323632 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack        65532 bytes:       112 in use,     65420 free
+   local stack         16380 bytes:        40 in use,     16340 free
+   trail stack         16342 bytes:         0 in use,     16342 free
+   control stack       16418 bytes:        76 in use,     16342 free
+
+     0.000 sec. for 0 global, 0 local, and 0 control space overflows
+     0.000 sec. for 0 garbage collections which collected 0 bytes
+     0.000 sec. runtime,      0.266 sec. walltime
+
+Used 59 milliseconds
+memory used (total)       2634960 bytes
+   program space (including reserved for atoms): 323632 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack      1048512 bytes:    234224 in use,    814288 free
+   local stack        524160 bytes:    480040 in use,     44120 free
+   trail stack        145400 bytes:     86780 in use,     58620 free
+   control stack      378760 bytes:    320140 in use,     58620 free
+
+     0.050 sec. for 4 global, 5 local, and 4 control space overflows
+     0.100 sec. for 1 garbage collections which collected 326336 bytes
+     0.000 sec. runtime,      0.583 sec. walltime
+
+***************************************************************************
+All solutions to the 11 queens problem
+Used 17950 milliseconds
+***************************************************************************
+Working out the inverse fibonacci...
+Answer to fibonacci is 1000 (Should be 1000).
+Used [1130] milliseconds
+***************************************************************************
+Playing around with big integers...
+Naively calculating 
+Divide-and-conquer calculating 
+
+Used [8400] milliseconds
+memory used (total)       4239140 bytes
+   program space (including reserved for atoms): 323712 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack      1048512 bytes:    258792 in use,    789720 free
+   local stack       2096640 bytes:   1114696 in use,    981944 free
+   trail stack        121916 bytes:     40020 in use,     81896 free
+   control stack      402244 bytes:    320348 in use,     81896 free
+
+     0.070 sec. for 4 global, 7 local, and 4 control space overflows
+    42.860 sec. for 852 garbage collections which collected 351576132 bytes
+     0.028 sec. runtime,     72.891 sec. walltime
+
+
+real	1m12.908s
+user	1m10.630s
+sys	0m0.230s
+[boris@balboa suite]$ time ./suite
+***************************************************************************
+Executing suite of benchmarks
+***************************************************************************
+Memory operations.  Should give info about mem. and gc
+memory used (total)        652800 bytes
+   program space (including reserved for atoms): 323632 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack        65532 bytes:       112 in use,     65420 free
+   local stack         16380 bytes:        40 in use,     16340 free
+   trail stack         16342 bytes:         0 in use,     16342 free
+   control stack       16418 bytes:        76 in use,     16342 free
+
+     0.000 sec. for 0 global, 0 local, and 0 control space overflows
+     0.000 sec. for 0 garbage collections which collected 0 bytes
+     0.000 sec. runtime,      0.471 sec. walltime
+
+Used 50 milliseconds
+memory used (total)       2634960 bytes
+   program space (including reserved for atoms): 323632 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack      1048512 bytes:    234224 in use,    814288 free
+   local stack        524160 bytes:    480040 in use,     44120 free
+   trail stack        145400 bytes:     86780 in use,     58620 free
+   control stack      378760 bytes:    320140 in use,     58620 free
+
+     0.050 sec. for 4 global, 5 local, and 4 control space overflows
+     0.100 sec. for 1 garbage collections which collected 326336 bytes
+     0.000 sec. runtime,      0.767 sec. walltime
+
+***************************************************************************
+All solutions to the 11 queens problem
+Used 17940 milliseconds
+***************************************************************************
+Working out the inverse fibonacci...
+Answer to fibonacci is 1000 (Should be 1000).
+Used [1129] milliseconds
+***************************************************************************
+Playing around with big integers...
+Naively calculating 
+{ERROR: No handle found for thrown error control_c}
+
+real	0m35.112s
+user	0m33.170s
+sys	0m0.110s
+[boris@balboa suite]$ time ciaoc suite
+
+real	0m1.491s
+user	0m1.080s
+sys	0m0.070s
+[boris@balboa suite]$ time ./suite
+***************************************************************************
+Executing suite of benchmarks
+***************************************************************************
+Memory operations.  Should give info about mem. and gc
+memory used (total)        652800 bytes
+   program space (including reserved for atoms): 323632 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack        65532 bytes:       112 in use,     65420 free
+   local stack         16380 bytes:        40 in use,     16340 free
+   trail stack         16342 bytes:         0 in use,     16342 free
+   control stack       16418 bytes:        76 in use,     16342 free
+
+     0.000 sec. for 0 global, 0 local, and 0 control space overflows
+     0.000 sec. for 0 garbage collections which collected 0 bytes
+     0.000 sec. runtime,      0.181 sec. walltime
+
+Used 69 milliseconds
+memory used (total)       2634960 bytes
+   program space (including reserved for atoms): 323632 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack      1048512 bytes:    234224 in use,    814288 free
+   local stack        524160 bytes:    480040 in use,     44120 free
+   trail stack        145400 bytes:     86780 in use,     58620 free
+   control stack      378760 bytes:    320140 in use,     58620 free
+
+     0.060 sec. for 4 global, 5 local, and 4 control space overflows
+     0.090 sec. for 1 garbage collections which collected 326336 bytes
+     0.000 sec. runtime,      0.487 sec. walltime
+
+***************************************************************************
+All solutions to the 11 queens problem
+Used 17950 milliseconds
+***************************************************************************
+Working out the inverse fibonacci...
+Answer to fibonacci is 1800 (Should be 1800).
+Used [4040] milliseconds
+***************************************************************************
+Playing around with big integers...
+Naively calculating 
+Divide-and-conquer calculating 
+
+Used [8159] milliseconds
+memory used (total)       4239140 bytes
+   program space (including reserved for atoms): 323712 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack      1048512 bytes:    572676 in use,    475836 free
+   local stack       2096640 bytes:   1140296 in use,    956344 free
+   trail stack        121970 bytes:     40128 in use,     81842 free
+   control stack      402190 bytes:    320348 in use,     81842 free
+
+     0.080 sec. for 4 global, 7 local, and 4 control space overflows
+    42.890 sec. for 852 garbage collections which collected 351472792 bytes
+     0.030 sec. runtime,     74.196 sec. walltime
+
+
+real	1m14.221s
+user	1m13.340s
+sys	0m0.150s
+[boris@balboa suite]$ rm *.po *.itf
+[boris@balboa suite]$ time ciaoc suite
+
+real	0m1.557s
+user	0m1.320s
+sys	0m0.200s
+[boris@balboa suite]$ rm *.po *.itf
+[boris@balboa suite]$ time ciaoc suite
+
+real	0m1.551s
+user	0m1.280s
+sys	0m0.240s
+[boris@balboa suite]$ time ./suite
+***************************************************************************
+Executing suite of benchmarks
+***************************************************************************
+Memory operations.  Should give info about mem. and gc
+memory used (total)        652800 bytes
+   program space (including reserved for atoms): 323632 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack        65532 bytes:       112 in use,     65420 free
+   local stack         16380 bytes:        40 in use,     16340 free
+   trail stack         16342 bytes:         0 in use,     16342 free
+   control stack       16418 bytes:        76 in use,     16342 free
+
+     0.000 sec. for 0 global, 0 local, and 0 control space overflows
+     0.000 sec. for 0 garbage collections which collected 0 bytes
+     0.000 sec. runtime,      0.155 sec. walltime
+
+Used 59 milliseconds
+memory used (total)       2634960 bytes
+   program space (including reserved for atoms): 323632 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack      1048512 bytes:    234224 in use,    814288 free
+   local stack        524160 bytes:    480040 in use,     44120 free
+   trail stack        145400 bytes:     86780 in use,     58620 free
+   control stack      378760 bytes:    320140 in use,     58620 free
+
+     0.030 sec. for 4 global, 5 local, and 4 control space overflows
+     0.090 sec. for 1 garbage collections which collected 326336 bytes
+     0.000 sec. runtime,      0.483 sec. walltime
+
+***************************************************************************
+All solutions to the 11 queens problem
+Used 17959 milliseconds
+***************************************************************************
+Working out the inverse fibonacci...
+Answer to fibonacci is 1800 (Should be 1800).
+Used [4039] milliseconds
+***************************************************************************
+Playing around with big integers...
+Naively calculating 
+Divide-and-conquer calculating 
+
+Used [8310] milliseconds
+memory used (total)       4239140 bytes
+   program space (including reserved for atoms): 323712 bytes
+   number of atoms and functor/predicate names: 1155
+   number of predicate definitions: 659
+   global stack      1048512 bytes:    572676 in use,    475836 free
+   local stack       2096640 bytes:   1140296 in use,    956344 free
+   trail stack        121970 bytes:     40128 in use,     81842 free
+   control stack      402190 bytes:    320348 in use,     81842 free
+
+     0.040 sec. for 4 global, 7 local, and 4 control space overflows
+    43.100 sec. for 852 garbage collections which collected 351472792 bytes
+     0.031 sec. runtime,     74.479 sec. walltime
+
+
+real	1m14.496s
+user	1m13.660s
+sys	0m0.150s
+[boris@balboa suite]$ 

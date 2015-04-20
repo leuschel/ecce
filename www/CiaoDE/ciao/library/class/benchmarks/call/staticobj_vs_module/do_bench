@@ -1,0 +1,19 @@
+#!/bin/tcsh
+if ($?CIAOLIB) then
+
+ echo "O'CIAO predicate calling benchmark"
+ echo "----------------------------------"
+ echo
+
+ cd ${CIAOLIB}/library/class/benchmarks/call/staticobj_vs_module
+ echo "Compiling..."
+
+ rm -f *.itf *.po
+ ciaoc staticobj_vs_module
+
+ echo "Benchmarking..."
+ ./staticobj_vs_module
+
+ echo
+
+endif

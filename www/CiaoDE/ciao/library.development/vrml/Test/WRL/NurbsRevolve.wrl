@@ -1,0 +1,40 @@
+#VRML V2.0 utf8
+
+
+PROTO NurbsRevolve [ field SFBool   debug                 FALSE
+                     field SFFloat  minAngle              0
+                     field SFFloat  maxAngle              6.2831853072
+                     field SFInt32  segments             20
+                     field SFInt32  profileSegments      20
+                     field MFFloat  profileKnotSequence   0
+                     field MFFloat  profileControlPoints  0
+                     field SFBool   ccw                   TRUE
+                     field SFFloat  creaseAngle           0.5
+                     field SFBool   solid                 FALSE ] {
+
+    DEF IFS IndexedFaceSet {
+      coord
+          Coordinate { }
+      coordIndex []
+      ccw         IS ccw
+      convex      TRUE
+      creaseAngle IS creaseAngle
+      solid       IS solid
+    }
+    DEF surface Script {
+      field    SFBool   debug                IS debug
+      field    SFFloat  minAngle             IS minAngle
+      field    SFFloat  maxAngle             IS maxAngle
+      field    SFInt32  segments             IS segments
+      field    SFInt32  profileSegments      IS profileSegments
+      field    MFFloat  profileKnotSequence  IS profileKnotSequence
+      field    MFFloat  profileControlPoints IS profileControlPoints
+      eventOut SFNode   coord_changed
+      eventOut MFInt32  coordIndex_changed
+
+      url "NurbsRevolve.class"
+    }
+
+    ROUTE surface.coord_changed       TO  IFS.set_coord
+    ROUTE surface.coordIndex_changed  TO  IFS.set_coordIndex
+}

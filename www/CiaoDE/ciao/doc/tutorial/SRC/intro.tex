@@ -1,0 +1,59 @@
+
+This manual, ``the Ciao tutorial'', is a tutorial overview of the Ciao
+Prolog language. It won't tell you how to program in (Ciao) Prolog,
+but what to write in a program in order to use some of the language
+features. Thus, it is not a programming manual. It is a quick
+introduction to the most relevant language features. It is
+complementary to and complemented with ``the Ciao reference manual'':
+{\em The Ciao Prolog System Reference Manual}~\cite{ciao-reference-manual-tr}.
+
+
+The Ciao tutorial assumes familiarity with Prolog.
+However, this document includes a brief explanation of the Prolog
+language (see Section~\ref{sec:pure}). If you are a beginner to
+Prolog, you would probably want to start with that introduction before
+going through the rest of the sections. 
+
+The current status of this document is that of a ``preliminary
+version''. Currently, the relevant features of Ciao that are explained 
+are the module system, libraries, packages, and code
+expansions. Future releases will include: concurrent and parallel 
+execution, object and distributed programming, constraint programming,
+fuzzy prolog, and other (logic) programming styles supported by Ciao.
+
+%% If you want to start reading
+%% from the very beginning, here is a very short introduction in order to
+%% set up the basic concepts.
+%% 
+%% A (Ciao) Prolog program is a set of procedure (or predicate)
+%% definitions. Predicates/pro-cedures are identified by a {\bf predicate
+%%   spec}, which is of the form \verb+p/n+, where \verb+p+ is the
+%% predicate name, and \verb+n+ its {\bf arity}: the number of its
+%% arguments. 
+%% 
+%% Procedure headers and procedure calls are written as {\bf atoms}: the
+%% name of the predicate followed by the arguments enclosed in
+%% parentheses and separated by commas. A predicate is defined by one or
+%% several clauses, as in:
+%% \begin{quote}
+%% \begin{verbatim}
+%% append([],X,X).
+%% append([X|Xs],Ys,[X|Zs]):- append(Xs,Ys,Zs).
+%% \end{verbatim}
+%% \end{quote}
+%% %
+%% where the first clause is a {\bf fact}, which consists only of the
+%% procedure header, and the second one is a {\bf rule}, which consists
+%% of the procedure header (left to \verb+:-+) and a body, which is a
+%% sequence of procedure calls, called {\bf goals}, separated by commas.
+%% 
+%% Execution of a procedure call (or goal) proceeds by first selecting
+%% one of the clauses defining the procedure, and then executing each of
+%% the goals in the body of the clause. Parameter passing is performed
+%% via unification. Clause selection is decided by resolution and
+%% backtracking. (See Section~\ref{sec:pure}.) 
+%% 
+%% Procedure arguments are terms: constants, variables, or data
+%% structures (see Section~\ref{sec:pure}). In what follows, procedure
+%% arguments are constants if starting with lowercase and variables if
+%% starting with uppercase. 

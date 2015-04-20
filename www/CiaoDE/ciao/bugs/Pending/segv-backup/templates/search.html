@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>Web Database Interface</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="wdbi.css">
+<script language="JavaScript">
+<!-- 
+function open_info(Params) {
+  URL = "show_info.cgi"+Params;
+  window.open(URL, "info", "width=500,height=175,scrollbars=yes");
+}
+
+function show_help(URL) {
+  window.open(URL, "help", "width=600,height=500,scrollbars=yes");
+}
+
+function set_cookie_val(Field) {
+  InputObj = document.search[Field];
+  if (InputObj.type == "select-one") {
+    Fvalue = InputObj.options[InputObj.selectedIndex].value;
+  } else {
+    Fvalue = InputObj.value;
+  }
+  document.cookie = Field + "=" + (Fvalue == "*" ? "" : escape(Fvalue));
+}
+// -->
+</script>
+</head>
+<body bgcolor="#FFFFFF" link="#333399" vlink="#9966CC" alink="#FF6666">
+<table border="0" cellspacing="0" cellpadding="6">
+  <tr>
+    <td><img src="image/logo_blanco.gif" width="88" height="35" alt="e-Valora"></td>
+    <td align="left"><font class="titulo"><b>Web Database Interface</b></font></td>
+  </tr>
+</table>
+<br>
+<v>dbtbhead</v>
+<form action="wdbi.cgi" name="search" method="post">
+<input type=hidden name="_db" value=_db>
+<input type=hidden name="_table" value=_table>
+<table border="1" cellspacing="0" cellpadding="4" class="tbcol">
+  <tr> 
+    <td class="tbtitle" colspan=_nfields align=center><b>Search</b></td>
+  </tr>
+  <tr><v>headers</v></tr>
+  <tr><v>inputs</v></tr>
+  <tr><v>fixing</v></tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="4">
+  <tr> 
+    <td>Number of rows to display:</td>
+    <td><input type="text" name="_rows" size="3" value=_nrows></td>
+  </tr>
+</table>
+<input type="submit" name="_search" value="Go">
+</form>
+<a href="javascript:show_help('search_syntax.html')">[help]</a>
+<br>
+<br>
+<br>
+</body>
+</html>

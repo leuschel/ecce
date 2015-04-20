@@ -1,0 +1,163 @@
+
+everywhere:
+
+    WAMENV / self: get rid of them!!!!!
+
+
+alloc.c:
+
+char *mem_start;	     /* beginning of our virtual memory -- Shared */
+
+    Should MM be revised?
+
+
+
+SP_INTEGER mem_prog_count = 0;                         /* Shared & locked */
+
+    Program space is shared, but it is affected by workers asserting
+facts.  This can be done by any worker at any time, so program space
+update should be done in an atomic fashion.  Maybe locking directly
+this counter is not needed: its change might be embedded into an
+exclusive region.
+
+
+
+static TAGGED *tiny_blocks = NULL;                     /* Shared & locked */
+
+    Used by the internal memory manager.  Small blocks of memory are
+gathered from a larger pool.  Since different agents might alloc
+memory from this pool, accesses to it should be done atomically.
+
+
+
+initial.c:
+
+struct sw_on_key_node **atmtab; /* Shared --- but need lock when accessing /
+                                   reallocing it! */
+    
+    atmtab is accessed when loading programs (which probably will be a
+blocking operation as a whole); but it is accessed also if new atoms
+are created while executing a program.
+
+static char                  /* Shared -- for adding new atoms; need lock */
+  *prolog_chars=NULL, 
+  *prolog_chars_end=NULL;
+
+
+/* Shared? Not easy: they have to do with the lifetime of dyn. predicates  */
+CLOCK def_clock=0, use_clock=0;
+
+    The policy needs to be changed, since dynamically added predicates
+(or some of them) should be visible at all levels, thus non abiding by
+the logical view of dynamic updates.
+
+
+struct stream_node *root_stream_ptr;               /* Shared and _locked_ */
+
+    Accessed when opening new files.  Altough accesses to files
+themselves are scheduled by the OS, the internal information must be
+stored in correctly.  Thus, adding of a new file must be an atomic
+operation.
+
+
+
+initial.h:
+
+extern char *atom_buffer;           /* Non-shared --- used by each worker */
+
+    Need to see exactly why.
+
+
+/* I believe that atom_buffer_length can change dynamically; should be
+   private to each worker, then.  Will that pose problems problems with the
+   hashing functions? */
+
+extern int atom_buffer_length;   
+
+
+interrupt.c:
+
+    SIGNAL HANDLERS:
+    Signals are comunicated with a strange juggling of heap pointers.
+For this, access to the WAM registers private to the task is needed.
+But interrupt handlers are called with no arguments.  A possibile
+solution is recording, in each register bank, who is the ID of the
+task responsible of the bank, and then looking through the bank
+registers until we locate ours.
+
+
+
+qget.c:
+
+/* Shared? Might be; then, only one thread may read in ql's at a time.
+   Since it is not a very common situation, we might as well lock ql
+   reading.  In any case, access to program area should be locked, and so we
+   do not loose anything. */
+
+char workstring[MAXATOM]; 
+
+
+qread.c:
+
+TAGGED *qlarray=NULL;                   /* Shared, but with locked access */
+int qloffset=0, qllimit=0;                       /* Shared, locked access */
+struct qlinfo *qlstack=NULL;                     /* Shared, locked access */
+
+
+struct emul_info *latest_bytecode;               /* Shared, locked access */
+int latest_bytecode_size;                        /* Shared, locked access */
+
+
+registers.c:
+
+int reg_bank_size = XREGBANKSIZE; /* Shared? Strange use in compile_term_aux */
+
+    Private, I guess.  "self" is realloced and changes size (the
+number of X registers) when compiling terms.  However, this should
+affect only the WRB local to the task.  Thus, we can reassign this new
+pointer to the task register bank containing out bank, and return the
+new pointer, which will be assigned in wam.c:
+
+    case BUILTIN_COMPILE_TERM:
+      PredTrace("B",Func);
+      StoreH;
+      if (!compile_term(Arg))
+	goto fail;
+      w = self;		                             /* may have changed? */
+      goto proceed_r;
+      
+
+
+
+struct worker *self;                                      /* To disappear */
+
+
+term_support.c:
+
+/* I believe the following must be shared and locked, because they are
+   related to code compilation */
+
+static INSN
+  *current_insn, *last_insn;
+
+static int
+  x_variables, cells, insns, maxtemps;
+
+static TAGGED
+  *trail_origo;
+
+
+timing.c:
+
+/* Shared but locked? */
+
+static long last_walltime_secs = 0;                            /* Shared? */
+static long last_walltime_usecs = 0;                           /* Shared? */
+
+
+wam.c:
+
+/* These are for error handling (DCG) */
+/* Shared --- not very likely that several errors are given at the same time */
+int ErrArgNo;
+TAGGED Culprit;

@@ -1,0 +1,54 @@
+# -*- mode: Makefile; -*-
+# ----------------------------------------------------------------------------
+# These are SETTINGS for building the distribution
+#-----------------------------------------------------------------------------
+# 
+DISTTYPE=
+# DISTTYPE=Beta/
+# DISTTYPE=Alpha/
+# 
+# 
+# 
+# This is where the distribution will be installed:
+DISTDIR 	= /home/clip/public_html/Software/$(DISTTYPE)pillow/dist
+DISTDIRURL	= ~clip/Software/$(DISTTYPE)pillow/dist
+#
+# Other intallation sites (generally for tests):
+# DISTDIR=/tmp/pillow
+# 
+# DISTDIRURL= file:/$(DISTDIR)
+#-----------------------------------------------------------------------------
+# This is the location of the download script
+DOWNLOAD   	     = http://www.clip.dia.fi.upm.es/download_cgi/download.cgi
+# Mailing list recommended (leave empty for no list)
+MAILLIST   	     = ciao-users
+#-----------------------------------------------------------------------------
+# location of the lpdoc library used during installation 
+# (basically, it is a mess to make the LPDOCLIB variable accessible 
+#  in the Makefile, so we define it here to make sure we use the right one)
+# 
+LPDOCLIB = /home/clip/lib/lpdoc
+#-----------------------------------------------------------------------------
+# If uncommented, require user login for the installation site
+# (already taken care of in Beta site dir)
+# 
+# DISTDIRUSER=clipsoft
+#-----------------------------------------------------------------------------
+# These are the documentation formats to be installed in distribution dir
+# htmlindex must be one, so that the rest of the formats can be accessed
+DISTDOCFORMATS="ps html htmlindex"
+# pdf was giving problems because of the figures...
+#-----------------------------------------------------------------------------
+# Documentation formats to be included in the tar files (from SHARED above)
+# 
+TARDOCFORMATS:=$(TARDOCFORMATS)
+#-----------------------------------------------------------------------------
+# Permissions for distribution execs/dirs and data files
+#
+EXECMODE = 775
+DATAMODE = 664
+#-----------------------------------------------------------------------------
+# END
+# ----------------------------------------------------------------------------
+
+

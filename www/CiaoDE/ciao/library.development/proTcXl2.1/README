@@ -1,0 +1,113 @@
+%
+% sccsid("@(#)README	1.12          96/01/02").
+% sccscr("@(#)  Copyright 1995 ECRC GmbH ").
+%
+
+This is ProTcXl (pronounced pro-ticksle), the Prolog interface to Tcl/Tk,
+and Xlib, version 2.0. It is a rather lightweight interface, it allows to
+evaluate Tcl expressions in Prolog handle Tk events in Prolog, call Prolog
+from Tcl and also to invoke Xlib functions from Prolog.
+
+This version corresponds to Tcl7.4/Tk4.0. The distribution
+of these Tcl/Tk versions may be found in ftp.ecrc.de:/pub/eclipse/progs
+or e.g. in ftp.smli.com:/pub/tcl.
+
+To find out more about Tcl/Tk, read the README files in the Tcl/Tk
+distribution.
+
+The interface has been tested with ECLiPSe 3.5 on a Sparc 10.
+I no longer check it with SICStus since it became quite a lot
+ECLiPSe-dependent and SICStus has its own interface now.
+
+The software is delivered as is, without any explicit or implied warranty.
+Questions regarding Tcl/Tk itself can be sent to the Usenet group
+comp.lang.tcl, questions regarding Prolog to comp.lang.prolog,
+ECLiPSe questions to eclipse_users@ecrc.de.
+
+Bugs and suggestions please to micha@ecrc.de.
+
+Installation
+------------
+
+1) Install Tcl and Tk. This is usually done in /usr/local, but it can
+   be any directory you like. It can be in the eclipse directory tree
+   but it makes more sense to install it on its own, because it is
+   a general independent package.
+2) When you obtain ECLiPSe 3.5.2 or later, ProTcXl source should already be
+   in the distribution, in the protcl directory. If it is not there,
+   or if you want to update with a newer ProTcXl release, unpack
+   the protcl2.*.tar file in the $ECLIPSEDIR/protcl directory
+   (create it if it is not there).
+   As a matter of fact, any subdirectory of the eclipse distribution,
+   e.g. lib_graphic would do as well. The only necessary condition
+   is that when you cd to the protcl2.* directory, lib_graphic
+   is in ../..
+3) Set the ARCH environment variable to the string you obtain from
+   get_flag(hostarch, ARCH) in ECLiPSe.
+4) cd to the protcl2.* directory and run ./configure.
+   Configure recognizes the following options:
+
+	inst=DIR
+		DIR is the directory or list of directories where Tcl
+		and Tk are installed, e.g. /usr/local. This directory
+		should contain subdirectories lib and include with
+		the installed Tcl/Tk files. If Tcl/Tk is installed
+		differently, without a common root for all the files,
+		simply supply all the necessary directories.
+	eclipse
+		Make an eclipse configuration, default.
+	sicstus
+		Make a sicstus configuration.
+	quintus
+		Make a quintus configuration.
+
+   So e.g. to configure ProTcl for sicstus use
+	./configure sicstus
+   Configure tries to locate Tcl/Tk and X11 in usual places. If it
+   does not find it, you can specify the 'inst' parameter or
+   modify the Makefile after configuration.
+
+   If your Tcl/Tk or X11 installation is in a non-standard path, you might
+   have to change some paths in the Makefile.
+5) To install ProTcXl as an ECLiPSe library, type 'make install'.
+   This will compile the ProTcXl files and move them to the lib_graphic
+   directory of eclipse, so that the interface can be loaded with
+	:- lib(tk).
+   or
+	:- use_module(library(tk)).
+
+   If you just want to make a local version of ProTcXl, e.g. to try
+   out a new release or new Tcl/Tk, type 'make local'.
+   This will leave the ProTcXl files in the current directory
+   and you can load the interface into Prolog here by calling
+	:- use_module(tk).
+6) If it is not possible to load the interface dynamically
+   (currently on Linux, AIX4.1, HP and m88k), or if it is too slow
+   (all systems that don't use shared libraries), you can link it
+   statically into the ECLiPSe binary. In this case, first install
+   ProTcXl with 'make install', change the INST_PARAMS file in
+   $ECLIPSEDIR/boot/$ARCH to have
+       WANT_STATIC_TCL=yes
+   and (re-)install ECLiPSe.
+
+FILES
+-----
+
+ProTcXl is using the following files:
+
+ProTcXl source:		ECLIPSEDIR/protcl/protcl2.*/{protcl,tk,xlib,tkAppInit}.c
+ECliPSe include file:	ECLIPSEDIR/include/external.h
+Tcl include files:	TCL_INCLUDE/tcl.h
+Tcl library:		TCL_LIBRARY/libtcl7.4.a
+Tk include files:	TK_INCLUDE/tk.h
+Tk library:		TK_LIBRARY/libtk4.0.a
+X library		libX11.a (with -L in XLIBSW)
+
+The ProTcXl documentation is in http://www.ecrc.de/eclipse/html/protcl.html
+and in ftp://ftp.ecrc.de/pub/eclipse/doc, but it has not been updated to 2.0 yet.
+The new docs will contain a short introduction to using Tcl/Tk as well
+as a manual for Tcl/Tk and Xlib interface to ECLiPSe. Until it is ready,
+please use ProTcXl exactly as ProTcl 1.4.
+Send bug and problem reports to micha@ecrc.de.
+To improve the docs, I would be gratefull for any problems with using ProTcXl
+and its documentation.

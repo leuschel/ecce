@@ -1,0 +1,1 @@
+[trace_bare,interpreter,tokenize,read,write,operators,dcg_expansion,translation,toplev,modules,mload,fload,qload,setof,format,foreign,attvars,dict,listutil,nogauge,plwam,wamql,emulator_data,boot,intrinsics2,intrinsics1_attr,errors,setting,lists,dummy]

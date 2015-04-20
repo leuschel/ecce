@@ -1,0 +1,12 @@
+This directory includes:
+
+vtcl2prolog.pl is the translator code
+
+prolog.tcl is the Tcl library that have to be included in the Vtcl
+	   applications.
+
+tcltk.pl
+tcltk_low_level.pl
+
+	Are the modified libraries from the originals in the Ciao library
+	directory /library/tcltk.

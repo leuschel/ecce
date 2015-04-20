@@ -1,0 +1,5857 @@
+\input texinfo.tex  @c -*-texinfo-*-
+@c $Header: /usr/local/src/sicstus-1.8/doc/internals.tex,v 1.1 89/05/22 17:28:06 matsc Exp $
+@comment %**start of header (This is for running Texinfo on a region.)
+@setfilename /usr/share/src/local/gnu/emacs/info/sicstus_internals
+@settitle Industrial SICStus Internals
+@setchapternewpage odd
+@comment %**end of header (This is for running Texinfo on a region.)
+@c @smallbook
+
+@ifinfo
+This file documents the internals of Industrial SICStus Prolog.
+
+Copyright @copyright{} 1989, Swedish Institute of Computer Science
+@end ifinfo
+
+@titlepage
+@sp 6
+@center Swedish Institute of Computer Science
+@sp 5
+@center @titlefont{Industrial SICStus Prolog Internals Manual}
+@sp 2
+@center January 1989
+@sp 13
+@center Copyright @copyright{} 1989  Swedish Institute of Computer Science
+@end titlepage
+@page
+
+@node     Top, Intro,, (DIR)
+@comment  node-name,  next,  previous,  up
+@menu
+
+* Intro::	An introduction to this manual.
+* Notation::	Notational conventions.
+
+Indexes, nodes containing large menus
+* Predicate Index:: An item for each predicate.
+* Data Type Index:: An item for each data type, struct and variable.
+* Concept Index::   An item for each concept.
+
+Implementation Overview
+* Implementation Intro::	Chapter abstract.
+* Motivation::	Motivation.
+* Language::	The Language.
+
+Storage Model
+* Storage Intro::	Chapter abstract.
+* Terms::	Terms and their Representation.
+* Areas::	Data Areas.
+* Registers::	Abstract Machine Registers.
+
+The Emulator
+* Emulator Intro::	Chapter abstract.
+* Interfaces::	Interfaces.
+* Insn Set::	Instruction Set.
+* Unification:: General Unification.
+
+Emulator Macros
+* Macros Intro::	Chapter abstract.
+
+Builtin C Predicates
+* Builtin Intro::	Chapter abstract.
+* Predicates::	List of Predicates.
+
+Qload Instruction Set
+* Qload Intro::		Chapter abstract.
+
+Overview of Compilation
+* Compilation Intro::	Chapter abstract.
+* Convert::	 Convert source code to record structures.
+* Spawn::	Spawn internal predicates.
+* Perm::	Allocate permanent variables.
+* Clause::	Emit clause instructions.
+* Extract::	Extract indexing information.
+* Analyze::	Analyze lifetimes of temporary variables.
+* Temp::	Allocate temporary variables.
+* Peep::	Peep hole optimization and final editing.
+* Index::	Emit indexing instructions.
+
+Bytecode Representation
+* Bytecode Intro::	Chapter abstract.
+* Insn Group 1::	Instruction Group 1
+* Insn Group 2::	Instruction Group 2
+
+Subnodes of Areas:
+* Types::	Basic Type Definitions.
+* Static::	The Static Area.
+* Heap::	The Heap.
+* Env::		The Environment Stack.
+* Choice::	The Choicepoint Stack.
+* Trail::	The Trail Stack.
+
+Subnodes of Insn Set:
+* Put::		Put Instructions.
+* Get::		Get Instructions.
+* Unify::	Unify Instructions.
+* Procedural::	Procedural Instructions.
+* Indexing::	Indexing Instructions.
+* Utility::	Utility Instructions.
+
+Subnodes of Clause:
+* CG General::	Code Generation for General Goals
+* CG Flat::	Term Flattening
+* CG Head::	Code Generation for Head Arguments
+* CG Body::	Code Generation for Body Goal Arguments
+* CG Nest::	Code Generation for Compound Terms
+* CG Inline::	Code Generation for Inline Goals
+
+Subnodes of Temp:
+* Temp Assign::	Correct and Optimal Assignments
+* Temp Impl::	Implementation
+
+@end menu
+
+@node     Intro, Notation, Concept Index, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Introduction
+This manual documents internal details of Industrial SICStus Prolog
+release 1.2, developed at the Logic Programming Laboratory of SICS.  The
+implementation was done on SUN-3 work stations.  It has proved portable
+to a wide range of byte-addressed 32-bit computers running Berkeley
+Unix.
+
+@strong{WARNING:} This report should not be construed as an accurate
+documentation of the system.  Many aspects of the implementation such as
+stack overflow handling, garbage collection, unification of cyclic
+terms, and the programming environment are undocumented.  For the
+documented parts, the names used in this report may differ from the
+names used in the actual code.
+
+
+@node     Notation, Implementation Intro, Intro, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Notational Conventions
+@cindex notation
+The semantics of the various instructions will be given in a style
+similar to the C programming language.  The descriptions of the
+instructions will closely follow the actual emulator code.  However, a
+number of optimizations have been omitted from this exposition in order
+to (we hope) make it clearer.
+
+We shall use the following notation for address arithmetic:
+
+@itemize @bullet
+@item
+The expression @code{Younger(@var{X},@var{Y})} denotes address
+comparison with respect to the growth direction of the memory area of
+its arguments.  It is typically used for comparing ages of variables and
+is interpreted as ``@var{X} is younger than @var{Y}''.  For the
+environment stack, this expression is sometimes a misnomer, since
+address order @emph{within an environment} does not necessarily follow
+temporal order. @refill
+
+@item
+The expression @code{Offset(@var{B},@var{O})} denotes the address formed
+by adding or subtracting the offset @var{O} to the base address @var{B},
+depending on the growth direction of the relevant memory area. @refill
+
+@item
+The expression @code{@var{X}++} denotes postincrement with respect to the
+growth direction of the relevant memory area.  @refill
+
+@item
+The expression @code{--@var{X}} denotes predecrement with respect to the
+growth direction of the relevant memory area.  @refill
+
+@item
+The expression @code{*@var{X}} denotes a contents-of operation.  @refill
+
+@item
+The expression @code{&@var{X}} denotes an address-of operation.  @refill
+
+@end itemize
+
+We shall use several temporary C variabes:
+
+@example
+  TAGGED *A;
+  TAGGED *B;
+  TAGGED *E;
+  struct try_node *t;
+  TAGGED t0, t1;
+  int i;
+  struct definition *Def;
+@end example
+
+@node     Implementation Intro, Motivation, Notation, Top
+@comment  node-name,  next,  previous,  up
+@chapter Implementation Overview
+
+The implementation is based on Warren's abstract machine (WAM) (@cite{An
+Abstract Prolog Instruction Set}, Tech.  Note 309, SRI International,
+Menlo Park, CA, 1983) with significant extensions.  The implementation
+languages are C and Prolog plus a small set of support routines in
+assembler for native code predicates.  Except for the native code part,
+the ambition is to make the implementation portable to BSD UNIX
+machines.  The compilation modes are file-to-core and file-to-file.
+Three levels of execution are incorporated:
+
+@cindex execution level
+@cindex level of execution
+@dfn{Interpreted} predicates, supporting program debugging and dynamic
+database updates, are available by the well-known technique of
+meta-interpretation.  Interpreted clauses are represented as if there
+were a compiled predicate @code{clause/2}, to speed up database
+retrievals.
+
+@dfn{Emulated} predicates, simplifying bootstrapping and stressing
+memory efficiency and fast compilation, are available by compiling
+Prolog source code to a bytecoded abstract instruction set.  The
+bytecode is interpreted (emulated) by a C program.  A subset of the
+emulator would be needed anyway to perform database searches for the
+meta-interpreter.
+
+@dfn{Native Code} predicates, stressing fast execution, are available
+by compiling the bytecode representation to native code.
+
+Thus, the implementation can be regarded as consisting of four parts of
+comparable sizes: an emulator (in C), a runtime system (in C and
+assembler), a programming environment (in Prolog), and a compiler (in
+Prolog).
+
+@node     Motivation, Language, Implementation Intro, Top
+@comment  node-name,  next,  previous,  up
+@section Motivation
+The main goals of the effort have been:
+
+@itemize @bullet
+@item
+to gain expertise in Prolog technology compiling techniques,
+
+@item
+to create a testbed for experiments with variants of the abstract
+machine, for example for parallel Prolog implementations,
+
+@item
+to create a tool for the acquisition of data to be used as input for a
+subsequent hardware implementation,
+
+@item
+to fulfill a basic software need both inside SICS and outside, since no
+state-of-the-art, inexpensive implementation of Prolog including source
+code was available.
+@end itemize
+
+We have aimed at an implementation with the following properties:
+
+@itemize @bullet
+@item
+Portability.  By writing all essential parts in C and Prolog and
+avoiding machine-specific features, reasonable portability has been
+achieved.
+
+@item
+Compatibility.  The Quintus dialect, recognized as the de facto
+industrial standard, is supported as a subset.  Some properties from
+e.g.  mu-Prolog (@cite{Negation and Control in PROLOG} by L. Naish.,
+Ph.D.  Thesis, Department of Computer Science, University of Melbourne,
+1985), such as primitives for data-driven execution, have been
+taken over.  @refill
+
+@item
+Several execution levels.  We provide three levels of execution:
+@dfn{interpreted}, supporting program debugging and dynamic database
+updates, @dfn{emulated}, simplifying bootstrapping and stressing memory
+efficiency and fast compilation, and @dfn{native code}, stressing fast
+execution.  In addition, foreign language subroutines can be dynamically
+linked and called from Prolog.  @refill
+
+@item
+Efficiency.  This is not an essential property, but increases the
+general usefulness of the tool.  Efficiency is primarily achieved by an
+optimizing compiler, emulation techniques, and by compiling to native
+code.
+@end itemize
+
+@node     Language, Storage Intro, Motivation, Top
+@comment  node-name,  next,  previous,  up
+@section The Language
+
+Industrial SICStus Prolog follows the mainstream Prolog tradition in
+terms of syntax and built-in predicates, and is largely compatible with
+DECsystem-10 Prolog and Quintus Prolog (@cite{Quintus Prolog Reference
+Manual version 10}, Quintus Computer Systems, Inc, Mountain View, 1987).
+It also contains primitives for data-driven and object-oriented
+programming.  @refill
+
+Although modules are a part of Quintus Prolog 2.0, Industrial SICStus
+Prolog does not have modules except a means of hiding the internal
+predicates of the runtime system and programming environment from the
+user.
+
+The full language is defined in @cite{Industrial SICStus Prolog User's
+Manual} by M. Carlsson and J. Widen, Industrial SICStus Prolog Project
+Report, 1988.
+@refill
+
+@node     Storage Intro, Terms, Language, Top
+@comment  node-name,  next,  previous,  up
+@chapter Storage Model
+
+@cindex storage model
+@cindex model, storage
+The abstract machine described herein is a modified Warren abstract
+machine.  Our model addresses certain issues not treated in the original
+WAM, e.g. shallow backtracking, arithmetic, cut, delays, and garbage
+collection.  It inherits all major properties of Warren's model, such as
+structure copying, separate choicepoints and environments, and tagged
+pointers.
+
+The storage model is similar to the original WAM, except that the
+local stack has been split into a @dfn{choicepoint stack} and an
+@dfn{environment stack}.  Unbound variables are represented as
+self-references.  @refill
+@cindex local stack
+
+@node     Terms, Areas, Storage Intro, Top
+@comment  node-name,  next,  previous,  up
+@section Terms and their Representation
+
+@cindex term
+@cindex representation
+The main types of terms are @dfn{variables}, @dfn{constants}, and
+@dfn{compound terms}.  @refill
+@cindex variable
+@cindex constant
+@cindex compound term
+
+The variables in a given Prolog clause are statically classified as
+@dfn{permanent} or @dfn{temporary}.  A variable is permanent if it
+occurs after a procedure call, otherwise it is temporary.  Clauses that
+contain permanent variables will store their bound values in an
+environment at run time.  In WAM notation, temporary registers are
+denoted by X@var{n}, and permanent registers by Y@var{n}.  For example,
+in: @refill
+@cindex variable, permanent
+@cindex variable, temporary
+@cindex permanent variable
+@cindex temporary variable
+
+@example
+p([X|Xs],Z) :- q(Xs,Rs), r(U,U), s(Rs,[X],Z).
+@end example
+
+@noindent
+@code{X}, @code{Rs}, and @code{Z} are permanent, and @code{U} and
+@code{Xs} are temporary. @refill
+
+A variable can be @dfn{unbound}, @dfn{conditionally bound} or
+@dfn{unconditionally bound} to another term.  A process known as
+@dfn{dereferencing} follows a chain of bound variables until an unbound
+variable or a non-variable is encountered.  An unbound variable can be
+@dfn{constrained} on some @dfn{goal} or @dfn{unconstrained}.  Binding a
+constrained variable causes the constraint (the goal) to be invoked.  A
+binding is conditional if there can be another execution path which may
+bind the variable to something else.  Conditional bindings can be undone
+and are recorded on the @dfn{trail stack} (@pxref{Trail}). @refill
+@cindex dereferencing
+@cindex bound variable
+@cindex conditionally bound variable
+@cindex unconditionally bound variable
+@cindex unbound variable
+@cindex constrained variable
+@cindex unconstrained variable
+@cindex variable, bound
+@cindex variable, conditionally bound
+@cindex variable, unconditionally bound
+@cindex variable, unbound
+@cindex variable, constrained
+@cindex variable, unconstrained
+
+Constrained variables are constructed on the @dfn{heap} or @dfn{global
+stack} (@pxref{Heap}); unconstrained variables are constructed on the
+heap (for temporary variables) or on the @dfn{environment stack}
+(@pxref{Env}) (for permanent variables). @refill
+
+A constant is an @dfn{atom} or a @dfn{number}.  A compound term is
+composed of a @dfn{functor} and some @dfn{arguments} (arbitrary terms).
+A @dfn{list} is a special case of compound term with the functor
+@code{./2}.  @refill
+@cindex atom
+@cindex number
+@cindex functor
+@cindex list
+
+Terms are represented as tagged pointers to objects.  A tagged pointer
+has the parts:
+
+@example
+111 1 11111111111111111111111111 11
+===== ========================== ==
+tag   value                      GC
+@end example
+
+@noindent
+where the @dfn{tag} distinguishes the type of term, the @dfn{value}
+usually points to an object, and the @dfn{GC} bits are reserved for
+garbage collection.  Three bits usually suffice for the tag; however,
+for numbers a fourth bit, @dfn{subtag} is used.  @refill
+@cindex tag bits
+@cindex value bits
+@cindex GC bits
+@cindex subtag
+
+@example
+
+Type of term               Tag Subtag    Value
+============               === ======    =====
+
+Heap Variable (HVA)          0      0    term pointer
+Constrained Variable (CVA)   1      0    term pointer
+Stack Variable (SVA)         2      0    term pointer
+reserved                     3      0    reserved
+Small Integer (NUM)          4      0    integer value
+Other Number (NUM)           4      1    table index
+Atom (ATM)                   5      0    table index
+List (LST)                   6      0    object pointer
+Compound Term (STR)          7      0    object pointer
+
+@end example
+
+There are three kinds of numbers: small integers (< 26 bits),
+32-bit integers, and 64-bit floating point numbers.
+
+@node     Areas, Types, Terms, Top
+@comment  node-name,  next,  previous,  up
+@section Data Areas
+
+@cindex data area
+@cindex area, data
+The data areas are divided into the @dfn{static area}, for information
+which is saved from one query to another, and @dfn{dynamic areas}, for
+information which is not needed upon backtracking.  The dynamic areas
+are operated as stacks; the static area as a memory pool in which
+abjects of arbitrary size can be allocated.  The address order of the
+various areas is not critical, and neither is the growth direction of
+the stacks.  @refill
+@cindex static area
+@cindex dynamic area
+@cindex area, static
+@cindex area, dynamic
+
+In contrast to Warren's model, we have split the local stack into an
+@dfn{environment stack} and a @dfn{choicepoint stack}.  There is also a
+@dfn{heap}, sometimes called a @dfn{global stack}, and a @dfn{trail
+stack}.  There is no explicit PDL, just the implicit C PDL.  @refill
+@cindex environment stack
+@cindex choicepoint stack
+@cindex global stack
+@cindex local stack
+@cindex trail stack
+@cindex heap
+@cindex stack, environment
+@cindex stack, choicepoint
+@cindex stack, global
+@cindex stack, local
+@cindex stack, trail
+
+A brief description of each memory area follows, listing for each area
+the kinds of objects that it may contain.
+
+@node     Types, Static, Areas, Top
+@comment  node-name,  next,  previous,  up
+@subsection Basic Type Definitions
+We define shorthands for some C declarations as follows:
+@example
+  typedef unsigned short int INSN;  /* bytecode instructions */
+  typedef unsigned long int TAGGED; /* terms */
+  typedef unsigned long FIX;        /* hashcodes */
+  typedef int BOOL;                 /* false or true */
+  typedef long INTEGER;
+  typedef double FLOAT;
+@end example
+
+@tindex INSN
+@tindex TAGGED
+@tindex FIX
+@tindex BOOL
+@tindex INTEGER
+@tindex FLOAT
+
+@node     Static, Heap, Types, Top
+@comment  node-name,  next,  previous,  up
+@subsection The Static Area
+
+@cindex static area
+@cindex area, static
+This area is operated by the dynamic memory allocation routines
+provided by the C library (@code{malloc()}, @code{realloc()}, and
+@code{free()}).  It contains a variety of objects described below.  @refill
+
+@table @dfn
+@item compiled clauses
+@cindex compiled clause
+@cindex clause, compiled
+Clauses of compiled predicates are stored as a linked list of records.
+The forward link of the last clause contains the total number of
+clauses:
+
+@example
+  struct emul_info @{
+    struct emul_info *next; /* next clause OR no. of clauses */
+    int objsize;          /* total # chars */
+    INSN emulcode[ANY];   /* compiled code */
+    @};
+@end example
+
+@tindex emul_info
+
+@item instances
+@cindex instance
+Terms recorded under a key or clauses of an interpreted predicate are
+stored as a doubly linked list of records.  The forward link is
+terminated by @code{NULL}; the backward link wraps around.  Each
+instance points back to the beginning of the list.  The @code{rank}
+field defines a total order on a list.  Two timestamps are associated
+with each instance to support proper semantics for dynamic code updates: @refill
+
+@example
+  typedef unsigned short int CLOCK;
+
+  struct instance @{
+    struct instance *forward;  /* next instance in list */
+    struct instance *backward; /* previous instance in list */
+    struct instance **root;    /* pointer at first in list */
+    TAGGED rank;               /* increases with list position */
+    CLOCK birth;               /* creation time */
+    CLOCK death;               /* erasure time */
+    int objsize;               /* total # chars */
+    INSN emulcode[ANY];        /* bytecode */
+    @};
+@end example
+
+@tindex CLOCK
+@tindex instance
+
+The semantics for an invocation of a dynamic predicate is that it is
+unaffected by asserts and retracts until that invocation has finitely
+failed.  The analogous applies for @code{recorded/3} and related
+predicates.  The implementation is based on a scheme described in
+@cite{Efficient Implementation of a Defensible Semantics for Dynamic
+PROLOG Code} by T. Lindholm and R.A. O'Keefe in Proc. Fourth
+International Conference on Logic Programming, pp. 21--39.  The actual
+implementation differs in many ways from the original scheme.  Details
+are given in comments in the file @file{objareas.c}.  @refill
+
+@item streams
+@cindex stream
+Open streams are stored as a doubly linked list of records.
+
+@example
+  struct stream_node @{
+    TAGGED label;         /* unique stream identifier */
+    struct stream_node *backward;
+    struct stream_node *forward;
+    TAGGED streamname;    /* pathname */
+    TAGGED streammode;    /* access mode */
+    FILE *streamfile;     /* C FILE record */
+    @};
+
+  extern BOOL promptp;                          /* must prompt? */
+  extern struct stream_node *stream_user_input; /* stdin */
+  extern struct stream_node *stream_user_output;/* stdout */
+  extern struct stream_node *stream_user_error; /* stderr */
+  extern struct stream_node *input_stream_ptr;  /* current input */
+  extern struct stream_node *output_stream_ptr; /* current output */
+  extern struct stream_node *root_stream_ptr;   /* root of all streams */
+@end example
+
+@tindex stream_node
+@tindex promptp
+@tindex stream_user_input
+@tindex stream_user_output
+@tindex stream_user_error
+@tindex input_stream_ptr
+@tindex output_stream_ptr
+@tindex root_stream_ptr
+
+@item numbers
+@cindex number
+The value part of a tagged pointer representing a small integer (< 26
+bits) contains the sign-inverted integer value.
+
+The value part of a tagged pointer representing a floating point number
+or a large integer (>= 26 bits) contains an index into a global array of
+numbers.  Odd indexes are used for integers and even indexes for floats.
+The global variable @code{numtab} points at an @dfn{array header}
+followed by the actual array of numbers.  The array is operated as a
+hash table and grows when it fills up: @refill
+@cindex array header
+@cindex header, array
+
+@example
+  struct tabheader @{
+    FIX mask;      /* hash key bitmask */
+    FIX firstmask; /* hash key bitmask for original table */
+    FIX count;     /* number of filled elements */
+    @};
+
+  extern struct tabheader *numtab;
+@end example
+
+@tindex tabheader
+@tindex numtab
+
+@item atoms
+@cindex atom
+Atoms are stored as records which are elements in a global array.  The
+global variable @code{atmtab} points at an array header followed as
+above by the actual atom pointers: @refill
+
+@example
+  struct atom @{        
+    FIX hashcode;
+    unsigned int has_squote:1;  /* contains single quote? */
+    unsigned int has_dquote:1;  /* contains double quote? */
+    unsigned int has_special:1; /* needs quotes around it? */
+    char name[ANY];             /* printname */
+    @};
+
+  extern struct tabheader *atmtab;
+@end example
+
+@tindex atom
+@tindex atmtab
+
+@item alternatives
+@cindex alternative
+For a given goal and an emulated predicates, alternatives that might
+match the goal are stored as a linked list of records:
+
+@example
+  struct try_node @{
+    struct try_node *next;/* next alternative or NULL */
+    INSN *emul_p;         /* write mode or not first alternative */
+    INSN *emul_p2;        /* read mode, first alternative */
+    short node_offset;    /* offset from choicepoint to next */
+    short number;         /* clause # for this alternative */
+    @};
+@end example
+
+@tindex try_node
+
+@item indexing tables
+@cindex indexing table
+@cindex table, indexing
+Indexing table are used in indexing on first argument in calls and in
+looking up predicates.  They are operated as hash tables with quadratic
+overflow handling.  Hash table access is performed by using some of the
+low order bits of the key as array index, and then searching for a hit
+or for a zero key indicating that the key is absent from the table.
+
+@example
+  struct sw_on_key @{
+    unsigned long mask; /* bitmask */
+    union @{
+      char aschar[ANY];
+      struct @{
+        TAGGED key;
+        struct try_node *try;
+        @} asnode[ANY];
+    @} tab;
+  @};
+
+  extern struct sw_on_key *prolog_predicates;    /* hidden predicates */
+  extern struct sw_on_key *prolog_keys;          /* hidden database */
+  extern struct sw_on_key *user_predicates;      /* public predicates */
+  extern struct sw_on_key *user_keys;            /* public database */
+  extern struct sw_on_key **predicates_location; /* current predicates */
+@end example
+
+@tindex sw_on_key
+@tindex prolog_predicates
+@tindex prolog_keys
+@tindex user_predicates
+@tindex user_keys
+@tindex predicates_location
+
+@item emulated predicates
+@cindex emulated predicate
+@cindex predicate, emulated
+An emulated predicate is represented as a record containing a list of
+clauses, a list of internal predicates (for disjunctions etc.), together
+with indexing information if the predicate is indexed or just a list of
+alternatives if it is not indexed.
+
+@example
+  struct incore_info @{
+    short effarity;               /* effective arity */
+    unsigned short filter;        /* admissible types of X0 */
+    struct emul_info *clauses;    /* list of clauses */
+    struct emul_info **clauses_tail; /* tail of list of clauses */
+    struct definition *subdefs;    /* list of internal predicates */
+    union @{
+      INSN *code;                 /* native code entrypoint */
+      struct try_node *tn;        /* list of alternatives */
+      struct @{
+        struct try_node *varcase; /* if arg 1 is a variable */
+        struct try_node *lstcase; /* if arg 1 is a list */
+        struct sw_on_key *numcase; /* if arg 1 is a number */
+        struct sw_on_key *atmcase; /* if arg 1 is an atom */
+        struct sw_on_key *strcase; /* if arg 1 is a structure */
+        @} *swt;
+      @} indexer;
+    @};
+@end example
+
+@tindex incore_info
+
+@item predicates
+@cindex predicates
+Predicates are stored as records.  The keys of the internal database are
+currently rooted in predicate records as well.
+
+There are several basic kinds of predicates: native, undefined,
+emulated, interpreted, and builtin.  In addition, @dfn{spypoints},
+@dfn{waitpoints}, and @dfn{breakpoints} can be placed on predicates.
+The @code{properties} field encodes all of this, while the
+@code{enter_insn} field encodes the first action that the emulator
+should take when the predicate is called.  @refill
+@cindex spypoint
+@cindex breakpoint
+@cindex waitpoint
+
+Predicate definitions will eventually be collected together in
+@dfn{modules}.  Currently, only an embryonic module system is
+implemented, hiding non-public parts of the programming environment
+from the user.  @refill
+@cindex module
+
+@example
+  struct definition @{
+    short enter_instr;            /* see comment above */
+    short arity;                  /* arity of predicate */
+#ifdef NC68K
+    INSN jsr;                     /* stub if enter_instr not native */
+    INSN *exit;                   /* stub continued */
+    INSN *entry;                  /* entry point from native code */
+#endif
+    union @{
+      TAGGED printname;           /* if pname&3 == 0 */
+      struct definition *sibling; /* if pname&3 == 1 */
+      struct definition *parent;  /* if pname&3 == 3 */
+      @} pname;
+    struct @{                      /* see comment above */
+      unsigned int breakpoint:1;
+      unsigned int waitpoint:1;
+      unsigned int spypoint:1;
+      unsigned int pred_type:8;
+      @} properties;
+    union @{
+      struct instance **intinfo;   /* for interpreted predicates */
+      struct incore_info *incoreinfo; /* for compiled predicates */
+      BOOL (*cinfo)();                /* for builtin predicates */
+      @} code;
+    @};
+@end example
+
+@tindex definition
+
+@item statistics
+@cindex statistics
+Various information about the runtime and memory consumption of the
+running program are collected together in a structure.  This structure
+is preserved by the @code{restore/1} operation, which otherwise restores
+an entire memory image:  @refill
+
+@example
+  struct statistics @{
+    FLOAT ss_time;              /* time spent stack_shifting */
+    INTEGER ss_global;          /* # global shifts */
+    INTEGER ss_local;           /* # local shifts  */
+    INTEGER ss_control;         /* # control/trail shifts */
+    FLOAT gc_time;              /* Total GC time (sec) */
+    INTEGER gc_count;           /* # garbage collections */
+    INTEGER gc_acc;             /* Total reclaimed heap space */
+    FLOAT starttime;
+    FLOAT lasttime;
+  @};
+
+  extern struct statistics stats;
+@end example
+@end table
+
+@tindex statistics
+@tindex stats
+
+@node     Heap, Env, Static, Top
+@comment  node-name,  next,  previous,  up
+@subsection The Heap
+
+@cindex heap
+@cindex global stack
+@cindex stack, global
+This area is sometimes called the global stack. It consists of list
+objects, structure objects, and unconstrained and constrained variables.
+Each object consists of a sequence of words representing terms.  It
+grows towards increasing addresses.  @refill
+
+The following global variables define current heap bounds:
+
+@example
+  extern TAGGED *heap_start;     /* physical low bound */
+  extern TAGGED *heap_end;       /* physical high bound */
+  extern TAGGED *heap_warn;      /* initial heap overflow limit */
+  extern TAGGED *heap_warn_soft; /* current heap overflow limit */
+  extern TAGGED *int_heap_warn;  /* heap_warn juggled by @ctrl{C} */
+@end example
+
+@tindex heap_start
+@tindex heap_end
+@tindex heap_warn
+@tindex heap_warn_soft
+@tindex int_heap_warn
+
+@table @dfn
+@item list objects
+@cindex list object
+@cindex object, list
+They consist of the two arguments of the list.
+
+@item structure objects
+@cindex structure object
+@cindex object, structure
+They consist of the functor followed by the arguments of the structure.
+The functor is represented as an atom with a value field containing both
+arity and atom table index.
+
+@item unconstrained variables
+@cindex unconstrained variable
+@cindex variable, unconstrained
+@cindex valuecell
+They consist of just one word: the @dfn{valuecell}, where the binding is
+stored.  An unbound variables is represented as if bound to itself.
+@refill
+
+A heap variable may be bound to any term @emph{except} to a stack
+variable.  A process known as @dfn{globalizing} creates a new heap
+variable and binds a stack variable to it, ensuring that the
+stack variable henceforth dereferences to the heap. @refill
+@cindex globalizing
+@cindex illegal binding
+@cindex binding, illegal
+
+@item constrained variables
+@cindex constrained variable
+@cindex variable, constrained
+They consist of a valuecell followed by two words @var{W1} and @var{W2}:
+
+@itemize @bullet
+@item
+For a simple constraint, @var{W1} contains the goal and @var{W2}
+contains an integer tagged pointer to the @code{struct definition}
+record for the predicate to call.
+
+@item
+A constraint which is a conjunction of several goals may be formed by
+unifying two constrained variables or by constraining a variable more
+than once.  In this case, @var{W1} and @var{W2} are lists and the two
+words represent the conjunction of the two constraints represented by
+the heads and tails of the two lists. @refill
+
+@end itemize
+
+A constrained variable may be bound to any term @emph{except} to an
+unconstrained variable.
+@cindex illegal binding
+@cindex binding, illegal
+
+@end table
+
+This area grows during forward execution and contracts on backtracking.
+It is garbage collected when full.
+
+@node     Env, Choice, Heap, Top
+@comment  node-name,  next,  previous,  up
+@cindex environment stack
+@cindex stack, environment
+@subsection The Environment Stack
+
+This area contains @dfn{environments}.  An environment represents a list
+of goals still to be executed.  It consists of a number of variables
+which the compiler has classified as permanent occurring in the body of
+a clause plus a pointer into the body of a continuation clause and its
+environment.  This area grows at recursive calls and contracts on
+determinate calls and on backtracking.  It grows towards increasing
+addresses.  @refill
+@cindex environment
+
+
+The following global variables define current environment stack bounds:
+
+@example
+  extern TAGGED *stack_start;     /* physical low bound */
+  extern TAGGED *stack_end;       /* physical high bound */
+  extern TAGGED *stack_warn;      /* stack overflow limit */
+@end example
+
+@tindex stack_start
+@tindex stack_end
+@tindex stack_warn
+
+An environment is represented by a record
+
+@example
+  struct frame @{
+    struct frame *frame;          /* environment pointer */
+    INSN *next_insn;              /* program pointer */
+    TAGGED term[ANY];             /* permanent variables */
+  @};
+@end example
+
+@tindex frame
+
+The permanent variables are often abbreviated as @code{Y0}, @code{Y1},
+...  A permanent variable Yi may be bound to any term, @emph{except} to
+another variable on the environment stack if the other variable is
+located at a higher address. @refill
+@cindex illegal binding
+@cindex binding, illegal
+
+At procedure calls, the current environment's active size is found at an
+offset from the continuation pointer.  This information is needed by
+certain instructions and is denoted @code{FrameSize(@var{L})}.  @refill
+
+@node     Choice, Trail, Env, Top
+@comment  node-name,  next,  previous,  up
+@subsection The Choicepoint Stack
+
+@cindex choicepoint stack
+@cindex stack, choicepoint
+This area contains @dfn{choicepoints}.  A choicepoint is established
+when entering a procedure @var{Q} with arity @var{n} which has more than
+one clause that could match the goal.  When no alternatives remain, the
+choicepoint is discarded.  It grows towards decreasing addresses i.e.
+towards the trail stack which shares the same physical area.  @refill
+@cindex choicepoint
+
+The following global variables define current choicepoint stack bounds:
+
+@example
+  extern TAGGED *choice_start;     /* physical low bound */
+  extern TAGGED *choice_end;       /* physical high bound */
+  extern TAGGED *tagged_choice_start; /* low bound as integer */
+@end example
+
+@tindex choice_start
+@tindex choice_end
+@tindex tagged_choice_start
+
+A choicepoint consists of a snapshot of the crucial abstract machine
+registers:
+
+@example
+  struct node @{
+    TAGGED *trail_top;            /* top of trail stack */
+    TAGGED *global_top;           /* top of global stack */
+    struct try_node *next_alt;    /* alternative */
+    struct frame *frame;          /* environment pointer */
+    INSN *next_insn;              /* continuation */
+    struct frame *local_top;      /* environment stack pointer */
+    TAGGED term[ANY];             /* saved argument registers */
+  @};
+@end example
+
+@tindex node
+
+@node     Trail, Registers, Choice, Top
+@comment  node-name,  next,  previous,  up
+@subsection The Trail Stack
+
+@cindex trail stack
+@cindex stack, trail
+The main use of this area is to record conditional variable bindings.  A
+variable is conditionally bound iff the variable is older than the
+youngest choicepoint.  Upon backtracking, entries are simply popped off
+the trail stack and the bound variables are reset to unbound. @refill
+
+If during backtracking a non-variable is encountered on the trail
+stack, it is treated as a goal to be executed upon backtracking.  This
+can be used to ensure that a side-effect that had effect over a
+finitely failed subcomputation is undone.
+
+A third use of this area is that constrained variables are recorded here
+when they are created and bound.  Thus if it is known that some
+constrained variables were recently bound, references to them will be
+close to the top of the trail stack.  At the end of the computation it
+is possible to check that all constraints have been satisfied by
+scanning the trail.
+
+The trail stack grows towards increasing addresses i.e.  towards the
+choicepoint stack which shares the same physical area.  The following
+global variables define current trail stack bounds:
+
+@example
+  extern TAGGED *trail_start;     /* physical low bound */
+  extern TAGGED *trail_end;       /* physical high bound */
+@end example
+
+@tindex trail_start
+@tindex trail_end
+
+@node     Registers, Emulator Intro, Trail, Top
+@comment  node-name,  next,  previous,  up
+@section Abstract Machine Registers
+
+@cindex abstract machine register
+@cindex machine register, abstract
+The current computational state is held in the memory areas and in the
+abstract machine registers, pointing into the areas.  The registers are
+collected into a record:
+
+@example
+  struct worker @{
+    struct node *node;        /* choice pointer */
+    struct node *next_node;   /* -""- at predicate entry */
+    struct node *segment_node;/* gc's segment choice point */
+    INSN *insn;               /* program counter */
+    TAGGED *structure;        /* structure pointer */
+    TAGGED global_uncond;     /* first uncond. global variable */
+    TAGGED local_uncond;      /* first uncond. local variable */
+    int value_trail;          /* size of value_trail */
+
+    /* incidentally, the rest is similar to a struct node */
+    TAGGED *trail_top;        /* trail pointer */
+    TAGGED *global_top;       /* global stack pointer */
+    struct try_node *next_alt;/* alternative */
+    struct frame *frame;      /* current environment */
+    INSN *next_insn;          /* continuation */
+    struct frame *local_top;  /* environment stack pointer */
+    TAGGED term[ANY];         /* temporary variables */
+  @};
+
+  extern struct worker *self;
+@end example
+
+@tindex worker
+@tindex self
+
+In the description of the instructions and builtin predicates, the above
+structure will be referred to by the local C variable @code{w} as it is
+usually passed as an argument.  The argument registers and variables
+which the compiler has classified as temporary are often abbreviated as
+@code{X0}, @code{X1}, ...  @refill
+
+@emph{N.B.} The @code{local_top}, @code{local_var}, and
+@code{segment_node} fields are not necessarily kept up to date by the
+emulator.  When they occur in the description of the instructions and
+builtin predicates, they are implicitly updated.  @refill
+
+@node     Emulator Intro, Interfaces, Registers, Top
+@comment  node-name,  next,  previous,  up
+@chapter The Emulator
+
+@cindex emulator
+This chapter discusses the SICStus emulator.  It plays a central role in
+the implementation as it implements an abstract Prolog engine.  It is
+invoked to run the Prolog interpreter when the system starts up.
+
+We document herein the interfaces between the various execution levels,
+the abstract machine instruction set, and the general unification
+algorithm.
+
+@node     Interfaces, Insn Set, Emulator Intro, Top
+@comment  node-name,  next,  previous,  up
+@section Interfaces
+
+@cindex interface
+An issue of prime importance to the overall design is the coexistence of
+builtin, interpreted, emulated, and native code predicates, and the
+necessary interfacing between them.
+
+Since the emulator is written in C, builtin predicates (also written in
+C) are similar to emulated predicates as far as parameter passing and
+access to abstract machine registers is concerned.
+
+The interpreted category causes few complications, since
+meta-interpretation is used, i.e. the interpreter is a Prolog program.
+When an interpreted predicate is called, control is simply transferred to
+the meta-interpreter.
+
+Native code predicates, on the other hand, need special support to
+interface well with the rest of the system.  The interface is
+implemented as a call/return protocol: control is transferred to native
+code by a function call and from native code by a function return.  In
+both directions a message may be passed in:
+
+@example
+  enum native_value @{
+    EXECUTE_EMUL,
+    PROCEED_EMUL,
+    FAIL_EMUL
+    @};
+  enum native_value native_rc;
+@end example
+
+@tindex native_value
+@tindex native_rc
+
+There are six possible cases for transfer to or from native code.  The
+emulator code for the various cases is as follows:
+
+@enumerate
+@item
+The emulator @emph{calls} native code.  This is detected since every
+predicate has a tag defining its type (the @code{enter_instr} field). @refill
+
+@example
+  w->insn = Def->code.incoreinfo->indexer.code;
+  native_rc = execute_native(Arg);
+  goto switch_on_native_value;
+@end example
+
+@item
+The emulator @emph{backtracks} into native code.  This is detected by
+introducing a WAM instruction @code{retry_native} and by using the
+@code{emul_p2} field of alternative records (@code{struct try_node})
+as backtracking information for native code.  The @code{emul_p2} field
+for the @emph{first} alternative in a chain is used in the emulator for
+different purposes.  @refill
+
+For native predicates, the @code{emul_p} field points at a
+@code{retry_native} instruction immediately followed by the native code
+while the @code{emul_p2} field points at a specialized backtracking
+routine.  For emulated predicates, the @code{emul_p2} field (except for
+the first alternative) points at a routine @code{__fail_emul} which
+transfers control to the emulator's backtracking routine.
+@xref{Utility}.  @refill
+
+@item
+The emulator @emph{proceeds} into a native continuation, thus completing
+a native call to an emulated predicate.  This action is defined as its
+own WAM instruction, @code{leave}.  Before reverting to native code, an
+environment is deallocated.  @xref{Utility}.  @refill
+
+@item
+Native code @emph{calls} emulated, signalled by returning
+@code{EXECUTE_EMUL}.  Stack overflow conditions, @ctrl{C}, woken delayed
+goals, and spypoints detected by native code also use this mechanism,
+thus leaving it up to the emulator to deal with the condition.  @refill
+
+@item
+Native code @emph{backtracks} into emulated code, signalled by returning
+@code{FAIL_EMUL}.  @refill
+
+@item
+Native code @emph{proceeds} into an emulated continuation, signalled by
+returning @code{PROCEED_EMUL}.  @refill
+@end enumerate
+
+Thus the emulator has three ways of invoking native code, and native
+code has three ways of returning.  Upon return to the emulator, the
+message passed back from native code is inspected:
+
+@example
+ switch_on_native_value:
+  switch (native_rc)
+  @{
+  case EXECUTE_EMUL:
+    E = w->local_top;        /* allocate */
+    E->frame = w->frame;
+    E->next_insn = w->next_insn;
+    w->frame = E;            /* allocate2 */
+    w->next_insn = &@{leave@}; /* with FrameSize=0 */
+    Execute(w->insn);
+  case FAIL_EMUL:
+    Fail;
+  case PROCEED_EMUL:
+    Proceed;
+  @}
+@end example
+
+The native code interface also consists of several routines in assembler
+code, including routines corresponding to the parts of the emulater
+displayed above, except that they are responsible for moving WAM
+registers to or from native locations.
+
+@node     Insn Set, Put, Interfaces, Top
+@comment  node-name,  next,  previous,  up
+@section Instruction Set
+
+@cindex instruction set
+The descriptions of the instructions will need several support macros
+which are defined in Chapter Emulator Macros.  They attempt to hide
+implementation details which may obscure the logic of the various
+instructions.  They also hide the underlying memory model from the
+emulator code.
+
+@node     Put, Get, Insn Set, Top
+@comment  node-name,  next,  previous,  up
+@subsection Put Instructions
+
+@cindex put instruction
+@cindex instruction, put
+These instructions correspond to body arguments.  They prepare arguments
+for the next procedure call.
+
+@table @code
+@item put_x_void(@var{i})
+This represents an @var{i}th goal argument that is a singleton variable. @refill
+
+@example
+  LoadHVA(w->term[@var{i}]);
+@end example
+
+@item put_y_void(@var{n})
+This represents a permanent variable Y@var{n} that has not yet been
+initialized at the first @code{call} in a clause.  @refill
+
+@example
+  LoadSVA(t1,E->term[@var{n}],E->local_var+@var{m});
+@end example
+
+@item put_x_variable(@var{n},@var{i})
+This represents an @var{i}th goal argument that is an uninitialized
+temporary variable X@var{n} which does not occur after the next
+procedure call.  @refill
+
+@example
+  LoadHVA(w->term[@var{n}]);
+  w->term[@var{i}] = w->term[@var{n}];
+@end example
+
+@item put_y_variable(@var{n},@var{i})
+This represents an @var{i}th goal argument that is an uninitialized
+permanent variable Y@var{n} which occurs in the first procedure call and
+later.  @refill
+
+@example
+  LoadSVA(w->term[@var{i}],E->term[@var{n}],E->local_var+@var{m});
+@end example
+
+@item put_x_value(@var{n},@var{i})
+This represents an @var{i}th goal argument that is an initialized
+temporary variable X@var{n} which cannot point (even before
+dereferencing) to a portion of the stack which is about to be
+deallocated.  @refill
+
+@example
+  w->term[@var{i}] = w->term[@var{n}];
+@end example
+
+@item put_y_value(@var{n},@var{i})
+This represents an @var{i}th goal argument that is an initialized
+permanent variable Y@var{n} which cannot point (even before
+dereferencing) to a portion of the stack which is about to be
+deallocated.  @refill
+
+@example
+  w->term[@var{i}] = E->term[@var{n}];
+@end example
+
+@item put_x_unsafe_value(@var{n},@var{i})
+This represents an @var{i}th goal argument that is an initialized
+temporary variable X@var{n} which might point to a portion of the stack
+which is about to be deallocated, i.e. it might need globalizing. @refill
+
+@example
+  RefStackUnsafe(w->term[@var{i}],&w->term[@var{n}]);
+  w->term[@var{n}] = w->term[@var{i}];
+@end example
+
+@emph{N.B.} X@var{n} must be left dereferenced since the compiler trusts
+the instruction to globalize both its argument.  This assumption is not
+made for permanent variables.  Hence the slightly different semantics
+for @code{put_y_unsafe_value}. @refill
+
+@item put_y_unsafe_value(@var{n},@var{i})
+This represents an @var{i}th goal argument that is an initialized
+permanent variable Y@var{n} which might point to a portion of the stack
+which is about to be deallocated, i.e. it might need globalizing.  @refill
+
+@example
+  RefStackUnsafe(w->term[@var{i}],&E->term[@var{n}]);
+@end example
+
+@item put_constant(@var{C},@var{i})
+This represents an @var{i}th goal argument that is the constant @var{C}.  @refill
+
+@example
+  w->term[@var{i}] = @var{C};
+@end example
+
+@item put_nil(@var{i})
+This represents an @var{i}th goal argument that is the empty list.  @refill
+
+@example
+  w->term[@var{i}] = atom_nil;
+@end example
+
+@item put_structure(@var{F},@var{i})
+This represents an @var{i}th goal argument that is a structure whose
+functor is @var{F}.  The instruction is followed by a sequence of
+@code{unify} instructions.  @refill
+
+@example
+  w->term[@var{i}] = Tag(STR,w->global_top);
+  *w->global_top++ = @var{F}; 
+  w->structure = NULL;
+@end example
+
+@item put_list(@var{i})
+This represents an @var{i}th goal argument that is a list.  The
+instruction is followed by a sequence of @code{unify} instructions.  @refill
+
+@example
+  w->term[@var{i}] = Tag(LST,w->global_top);
+  w->structure = NULL;
+@end example
+@end table
+
+@node     Get, Unify, Put, Top
+@comment  node-name,  next,  previous,  up
+@subsection Get Instructions
+
+@cindex get instruction
+@cindex instruction, get
+These instructions correspond to head arguments.  They match head
+arguments against actual arguments.
+
+@table @code
+@item get_x_variable(@var{n},@var{i})
+This represents an @var{i}th head argument that is an uninitialized
+temporary variable X@var{n}.  @refill
+
+@example
+  w->term[@var{n}] = w->term[@var{i}];
+@end example
+
+@item get_y_variable(@var{n},@var{i})
+This represents an @var{i}th head argument that is an uninitialized
+permanent variable Y@var{n}.  @refill
+
+@example
+  E->term[@var{n}] = w->term[@var{i}];
+@end example
+
+@item get_y_first_value(@var{n},@var{i})
+This represents an @var{i}th head argument that is an uninitialized
+permanent variable Y@var{n} occurring after the first procedure call.  @refill
+
+@example
+  BindVAR(Tag(SVA,&E->term[@var{n}]),w->term[@var{i}]);
+@end example
+
+@item get_x_value(@var{n},@var{i})
+This represents an @var{i}th head argument that is an initialized
+temporary variable X@var{n}.  @refill
+
+@example
+  Unify(w->term[@var{n}],w->term[@var{i}]);
+@end example
+
+@item get_y_value(@var{n},@var{i})
+This represents an @var{i}th head argument that is an initialized
+permanent variable Y@var{n}.  @refill
+
+@example
+  Unify(E->term[@var{n}],w->term[@var{i}]);
+@end example
+
+@item get_constant(@var{C},@var{i})
+This represents an @var{i}th head argument that is the constant @var{C}.  @refill
+
+@example
+  Unify(@var{C},w->term[@var{i}]);
+@end example
+
+@item get_nil(@var{i})
+This represents an @var{i}th head argument that is the empty list.  @refill
+
+@example
+  Unify(atom_nil,w->term[@var{i}]);
+@end example
+
+@item get_structure(@var{F},@var{i})
+This represents an @var{i}th head argument that is a structure with the
+functor @var{F}.  The instruction is followed by a sequence of
+@code{unify} instructions.  @refill
+
+@example
+  t1=w->term[@var{i}];
+  DerefTerm(t1,@{
+                 BindVAR(t1,Tag(STR,w->global_top));
+                 *w->global_top++ = @var{F};
+                 w->structure = NULL;
+               @},
+               @{
+                 if(TagOf(t1)!=STR || *TagToPointer(t1)!=@var{F}) 
+                   Fail;
+                 w->structure = Offset(TagToPointer(t1),1);
+               @});
+@end example
+
+@item get_list(@var{i})
+This represents an @var{i}th head argument that is a list.  The
+instruction is followed by a sequence of @code{unify} instructions.  @refill
+
+@example
+  t1=w->term[@var{i}];
+  DerefTerm(t1,@{
+                 BindVAR(t1,Tag(LST,w->global_top));
+                 w->structure = NULL;
+               @},
+               @{
+                 if(TagOf(t1)!=LST) 
+                   Fail;
+                 w->structure = TagToPointer(t1);
+               @});
+@end example
+
+@item get_constraint(@var{i})
+This represents an @var{i}th head argument that is a constrained
+variable.  This is only supported in dynamic code.  The instruction is
+followed by a sequence of @code{unify} instructions which unify the
+actual constraints.  @refill
+
+@example
+  Unify(w->term[@var{i}],Tag(CVA,w->global_top++));
+  w->structure = NULL;
+@end example
+@end table
+
+@node     Unify, Procedural, Get, Top
+@comment  node-name,  next,  previous,  up
+@subsection Unify Instructions
+
+@cindex unify instruction
+@cindex instruction, unify
+These instructions correspond to arguments of compound terms.  Each one
+has two modes of operation, read and write.  In read mode, the structure
+pointer (@code{w->structure}) points to the next structure argument that
+the instruction should match.  In write mode, the structure pointer is
+@code{NULL} and the next structure argument is written to the top of the
+heap.  @refill
+
+@table @code
+@item unify_void
+This represents a structure argument that is a singleton variable.
+
+@example
+  if (w->structure)
+    w->structure++;
+  else 
+    ConstrHVA;
+@end example
+
+@item unify_x_variable(@var{n})
+This represents a structure argument that is an uninitialized
+temporary variable X@var{n}.  @refill
+
+@example
+  if (w->structure)
+    RefHeapNext(w->term[@var{n}],w->structure);
+  else
+    LoadHVA(w->term[@var{n}]);
+@end example
+
+@item unify_y_variable(@var{n})
+This represents a structure argument that is an uninitialized
+permanent variable Y@var{n}, occurring before the first procedure call.  @refill
+
+@example
+  if (w->structure)
+    RefHeapNext(E->term[@var{n}],w->structure);
+  else
+    LoadHVA(E->term[@var{n}]);
+@end example
+
+@item unify_y_first_value(@var{n})
+This represents a structure argument that is an uninitialized permanent
+variable Y@var{n}, occurring after the first procedure call.  @refill
+
+@example
+  if (w->structure)
+  @{
+    RefHeapNext(t1,w->structure);
+    BindVAR(Tag(SVA,&E->term[@var{n}]),t1); 
+  @}
+  else
+  @{
+    LoadHVA(t1);
+    BindVAR(Tag(SVA,&E->term[@var{n}]),t1);
+  @}
+@end example
+
+@item unify_x_value(@var{n})
+This represents a structure argument that is an initialized termporary
+variable X@var{n} which cannot (even before dereferencing) be pointing
+to the stack.  @refill
+
+@example
+  if (w->structure)
+  @{
+    RefHeapNext(t1,w->structure);
+    Unify(w->term[@var{n}],t1);
+  @}
+  else
+    *w->global_top++ = w->term[@var{n}];
+@end example
+
+@item unify_y_value(@var{n})
+This represents a structure argument that is an initialized permanent
+variable Y@var{n} which cannot (even before dereferencing) be pointing to the
+stack.  @refill
+
+@example
+  if (w->structure)
+  @{
+    RefHeapNext(t1,w->structure);
+    Unify(E->term[@var{n}],t1);
+  @}
+  else
+    *w->global_top++ = E->term[@var{n}];
+@end example
+
+@item unify_x_local_value(@var{n})
+This represents a structure argument that is an initialized temporary
+variable X@var{n} which could be pointing to the stack, i.e. it could
+need globalizing.  @refill
+
+@example
+  if (w->structure)
+  @{
+    RefHeapNext(t1,w->structure);
+    Unify(w->term[@var{n}],t1);
+  @}
+  else
+    WriteLocalValue(w->term[@var{n}]);
+@end example
+
+@item unify_y_local_value(@var{n})
+This represents a structure argument that is an initialized permanent
+variable Y@var{n} which could be pointing to the stack, i.e. it could need
+globalizing.  @refill
+
+@example
+  if (w->structure)
+  @{
+    RefHeapNext(t1,w->structure);
+    Unify(E->term[@var{n}],t1);
+  @}
+  else
+    WriteLocalValue(E->term[@var{n}]);
+@end example
+
+@item unify_constant(@var{C})
+This represents a structure argument that is the constant @var{C}.  @refill
+
+@example
+  if (w->structure)
+  @{
+    RefHeapNext(t1,w->structure);
+    Unify(@var{C},t1);
+  @}
+  else
+    *w->global_top++ = @var{C};
+@end example
+
+@item unify_nil
+This represents a structure argument that is the empty list.
+
+@example
+  if (w->structure)
+  @{
+    RefHeapNext(t1,w->structure);
+    Unify(atom_nil,t1);
+  @}
+  else
+    *w->global_top++ = atom_nil;
+@end example
+
+@item unify_structure(@var{F})
+This represents a last structure argument that is a structure with the
+functor @var{F}.  @refill
+
+@example
+  if (w->structure)
+  @{
+    RefHeapNext(t1,w->structure);
+    DerefTerm(t1,@{
+                   BindVAR(t1,Tag(STR,w->global_top));
+                   *w->global_top++ = @var{F};
+                   w->structure = NULL;
+                 @},
+                 @{
+                   if(TagOf(t1)!=STR || *TagToPointer(t1)!=@var{F})
+                     Fail;
+                   w->structure = Offset(TagToPointer(t1),1);
+                 @});
+  @}
+  else
+  @{
+    *w->global_top++ = Tag(STR,Offset(w->global_top,1));
+    *w->global_top++ = @var{F};
+  @}
+@end example
+
+@item unify_list
+This represents a last structure argument that is a list.
+
+@example
+  if (w->structure)
+  @{
+    RefHeapNext(t1,w->structure);
+    DerefTerm(t1,@{
+                   BindVAR(t1,Tag(STR,w->global_top));
+                   *w->global_top++ = F; 
+                   w->structure = NULL;
+                 @},
+                 @{
+                    if(TagOf(t1)!=LST) 
+                      Fail;
+                    w->structure = TagToPointer(t1);
+                 @});
+  @}
+  else
+  @{
+    *w->global_top++ = Tag(LST,Offset(w->global_top,1));
+  @}
+@end example
+@end table
+
+@node     Procedural, Indexing, Unify, Top
+@comment  node-name,  next,  previous,  up
+@subsection Procedural Instructions
+
+@cindex procedural instruction
+@cindex instruction, procedural
+These instructions correspond to the head and goals of a clause.  They
+deal with recursive procedure calls and the data structures necessary
+for them.
+
+@table @code
+@item allocate
+This appears at the beginning of a clause which contains a procedure
+call followed by other instructions.  It must be matched by a
+@code{deallocate} instruction.  Space for a new environment is allocated
+on the stack.  @refill
+
+@example
+  E = w->local_top;
+@end example
+
+@item allocate2
+This appears before the first procedure call of a clause, if the call is
+followed by other instructions.  The new environment is completed. @refill
+
+@example
+  E->frame = w->frame;
+  E->next_insn = w->next_insn;
+  w->frame = E;
+@end example
+
+@item deallocate
+This appears after computing the arguments of the last goal in a clause
+that has an @code{allocate} instruction.  The current environment is
+deallocated, updating the current environment and continuation WAM
+registers.  @refill
+
+@example
+  w->frame = E->frame;
+  w->next_insn = E->next_insn;
+@end example
+
+@item call(@var{Def},@var{k})
+This corresponds to a procedure call that does not terminate a clause.  The
+argument @var{k} is the number of variables that are active in the
+environment.  @var{Def} is the address of a definition object.  @refill
+
+@example
+  w->next_insn = w->insn;
+  Execute(@var{Def});
+@end example
+
+@item execute(@var{Def})
+This corresponds to a procedure call that terminates a clause.  @var{Def} is
+the address of a definition object.  @refill
+
+@example
+  Execute(@var{Def});
+@end example
+
+@item proceed
+This terminates a clause not terminated by a procedure call.
+
+@example
+  Proceed;
+@end example
+
+@item fail
+This backtracks to the latest choicepoint.
+
+@example
+  Fail;
+@end example
+@end table
+
+@node     Indexing, Utility, Procedural, Top
+@comment  node-name,  next,  previous,  up
+@subsection Indexing Instructions
+
+@cindex indexing instruction
+@cindex instruction, indexing
+These instructions interact with the clause indexing mechanism which in
+the emulator in built into the procedure call mechanism.  They also deal with
+choice point handling.
+
+@table @code
+@item get_constant_x0(@var{C})
+This represents a first head argument that is the constant @var{C}.  X0
+is already dereferenced and is either uninstantiated or instantiated to
+@var{C}.  @refill
+
+@example
+  if (IsVar(w->term[0]))
+    BindVAR(w->term[0],@var{C})
+@end example
+
+@item get_nil_x0
+This represents a first head argument that is the empty list.  X0 is
+already dereferenced and is either uninstantiated or instantiated to the
+empty list.
+
+@example
+  if (IsVar(w->term[0]))
+    BindVAR(w->term[0],atom_nil)
+@end example
+
+@item get_structure_x0(@var{F})
+This represents a first head argument that is a structure whose functor
+is @var{F}.  X0 is already dereferenced and is either uninstantiated or
+instantiated to a structure whose functor is @var{F}.  The instruction
+is followed by a sequence of @code{unify} instructions.  @refill
+
+@example
+  if (IsVar(w->term[0]))
+  @{
+    BindVAR(w->term[0],Tag(STR,w->structure));
+    *w->global_top++ = @var{F};
+    w->structure = NULL;
+  @}
+  else
+    w->structure = Offset(TagToPointer(w->term[0]),1);
+@end example
+
+@item get_list_x0
+This represents a first head argument that is a list.  X0 is already
+dereferenced and is either uninstantiated or instantiated to a list.
+The instruction is followed by a sequence of @code{unify} instructions.  @refill
+
+@example
+  if (IsVar(w->term[0]))
+  @{
+    BindVAR(w->term[0],Tag(LST,w->global_top));
+    w->structure = NULL;
+  @}
+  else
+    w->structure = TagToPointer(w->term[0]);
+@end example
+
+@item branch(@var{Offset})
+This occurs at a point in a clause after a @code{neck(_)} instruction
+and indicates a branch from the nondeterministic head code stream
+to a shared body code stream.  @refill
+
+@example
+  w->insn += @var{Offset};
+@end example
+
+@item neck(@var{N})
+This represents a point in a clause between the head and the first
+procedure call, where it is appropriate to decide whether a choice point
+needs to be allocated or updated.  The clause belongs to a predicate
+of @var{N} arguments. @refill
+
+@example
+  if (w->next_alt)
+  @{
+    B = w->node;
+    if (B->next_alt!=NULL)
+      @{ /* retry */
+        B->next_alt = w->next_alt;
+      @}
+    else
+      @{ /* try */
+        B->next_alt = w->next_alt;
+        B->frame = w->frame;
+        B->next_insn = w->next_insn;
+        B->local_top = w->local_top;
+
+        for(i=OffsetToArity(B->next_alt->node_offset); i>0;)
+          --i, B->term[i] = w->term[i];
+      @}
+    w->next_alt = NULL;
+  @}
+@end example
+
+@item dynamic_neck_proceed
+This instruction terminates the bytecode of a database instance.  X3 is
+unified with a pointer to the instance, and the @code{neck(_)} and
+@code{proceed} actions are taken.  @refill
+@end table
+
+@node     Utility, Unification, Indexing, Top
+@comment  node-name,  next,  previous,  up
+@subsection Utility Instructions
+
+@cindex utility instruction
+@cindex instruction, utility
+These instructions deal with cut, builtins, arithmetic, native and 
+foreign code.
+
+@table @code
+@item choice_x(@var{n})
+This represents the presence of a cut operator in a negation,
+disjunction or implication which is the first procedure call of this clause.
+The cut will reset the current choicepoint from the temporary variable
+X@var{n}.  @refill
+
+@example
+  w->term[@var{n}] = PointerToTerm(w->next_node);
+@end example
+
+@item choice_y(@var{n})
+This represents the presence of a cut operator after the first procedure call
+of this clause.  The cut will reset the current choicepoint from the
+permanent variable Y@var{n}.  @refill
+
+@example
+  E->term[@var{n}] = PointerToTerm(w->next_node);
+@end example
+
+@item cut
+This represents a cut operator before the first procedure call not occurring
+in a negation, disjunction, or implication.
+
+@example
+  w->node = w->next_node;
+  SetShadowregs;
+  TidyTrail;
+@end example
+
+@item cut_x(@var{n})
+This represents a cut operator before the first procedure call occurring in a
+negation, disjunction, or implication.  The cut will reset the current
+choicepoint from the temporary variable X@var{n}.  @refill
+
+@example
+  w->node = TermToPointer(w->term[@var{n}]);
+  SetShadowregs;
+  TidyTrail;
+@end example
+
+@item cut_y(@var{n})
+This represents a cut operator after the first procedure call.  The cut will
+reset the current choicepoint from the permanent variable Y@var{n}.  @refill
+
+@example
+  w->node = TermToPointer(E->term[@var{n}]);
+  SetShadowregs;
+  TidyTrail;
+@end example
+
+@item function_1(@var{Name},@var{k},@var{i})
+This corresponds to an application of a builtin function X@var{k} =
+@var{Name}(X@var{i}).  All other argument registers are preserved.  @refill
+
+@example
+  w->term[@var{k}] = @var{Name}(w->term[@var{i}]);
+@end example
+
+@item function_2(@var{Name},@var{k},@var{i},@var{j})
+This corresponds to an application of a builtin function X@var{k} =
+@var{Name}(X@var{i},X@var{j}).  All other argument registers are
+preserved.  @refill
+
+@example
+  w->term[@var{k}] = @var{Name}(w->term[@var{i}],w->term[@var{j}]);
+@end example
+
+@item builtin_1(@var{Name},@var{i})
+This corresponds to an application of a builtin procedure
+@var{Name}(X@var{i}).  The builtin procedure preserves all argument
+registers and must not create choicepoints.  @refill
+
+@example
+  if (! @var{Name}(w->term[@var{i}]))
+    Fail;
+@end example
+
+@item builtin_2(@var{Name},@var{i},@var{j})
+This corresponds to an application of a builtin procedure
+@var{Name}(X@var{i},@var{j}).  The builtin procedure preserves all
+argument registers and must not create choicepoints.  @refill
+
+@example
+  if (! @var{Name}(w->term[@var{i}],w->term[@var{j}]))
+    Fail;
+@end example
+
+@item builtin_3(@var{Name},@var{i},@var{j},@var{k})
+This corresponds to an application of a builtin procedure
+@var{Name}(X@var{i},@var{j},@var{k}).  The builtin procedure preserves
+all argument registers and must not create choicepoints.  @refill
+
+@example
+  if (! @var{Name}(w->term[@var{i}],w->term[@var{j}],w->term[@var{k}]))
+    Fail;
+@end example
+
+@item retry_instance
+X2 is a pointer to a database instance.  If there are more alternatives
+a @dfn{retry} operation is done, setting both X2 and
+@code{w->node->term[2]} to point at the next alternative, otherwise a
+@dfn{trust} operation is done, popping the choicepoint and adjusting the
+shadow registers.  Finally the current instance is emulated.  @refill
+@cindex retry
+@cindex trust
+
+@item continue
+This instruction is the continuation of a condition handler which was
+invoked to take care of a condition that was raised.  The interrupted
+procedure call is restarted.
+
+@example
+  Def = TermToPointer(E->term[0])
+  for(i=0; i<Def->arity; i++) w->term[i] = E->term[i+1];
+  Dellocate;
+  Execute(Def);
+@end example
+
+@item leave
+This represents a transition into a native code continuation.
+
+@example
+  w->frame = E->frame;
+  w->next_insn = E->next_insn;
+  native_rc = proceed_native(w);
+  goto switch_on_native_value;
+@end example
+
+@item exit_toplevel
+The emulator is exited with a return value depending on the reason for
+exiting.  The return value comes from the most recently executed
+@code{$exit/1} goal, @pxref{Predicates}. @refill
+
+@item retry_c(@var{Address})
+A backtracking routine for a built-in predicate is called.
+
+@example
+  if (w->next_alt) /* disable shallow backtracking */
+    B->next_alt = w->next_alt, w->next_alt = NULL;
+  if (@var{Address}(w))
+    Proceed;
+  else
+    Fail;
+@end example
+
+@item retry_native(@var{Code})
+This represents a transition into a native code alternative.  The
+instruction is immediately follwed by native code instructions.
+
+@example
+  if (w->next_alt) /* disable shallow backtracking */
+    B->next_alt = w->next_alt, w->next_alt = NULL;
+  native_rc = retry_native(Arg);
+  goto switch_on_native_value;
+@end example
+
+@item ci_call(@var{i},@var{j})
+This calls a foreign language function with arity @var{i} and
+symbol table index @var{j}.  @refill
+
+@item ci_inarg(@var{i},@var{j})
+This sets up input argument number @var{i} for a foreign language call
+according to format specifier @var{j}.  @refill
+
+@item ci_outarg(@var{i},@var{j})
+This sets up output argument number @var{i} before a foreign language
+call according to format specifier @var{j}.  @refill
+
+@item ci_retval(@var{i},@var{j})
+This treats output argument number @var{i} after a foreign language call
+according to format specifier @var{j}.  @refill
+
+@item heapmargin_call(@var{i},@var{j})
+This represents the fact that a clause may require that at least
+@var{i}*1024 cells remain in the heap.  The clause belongs to a
+predicate with arity @var{j}.  If less than @var{i}*1024 cells remain in
+the heap, a heap overflow routine is invoked.  @refill
+
+@item heapmargin_exit(@var{i})
+This represents the fact that a continuation may require that at least
+@var{i}*1024 cells remain in the heap.  If less than @var{i}*1024 cells
+remain in the heap, a heap overflow routine is invoked.  @refill
+@end table
+
+@node     Unification, Macros Intro, Utility, Top
+@comment  node-name,  next,  previous,  up
+@section General Unification
+
+@cindex unification
+The general unification algorithm can be expressed as a decision table.
+Here, @code{SVA} denotes a variable on the environment stack, @code{HVA}
+denotes a variable on the heap, and @code{CVA} denotes a constrained
+variable on the heap.  @code{CONST} and @code{COMPLEX} denote constant
+and compound term, respectively.  @refill
+
+The terms to be unified are first dereferenced and compared.  If the two
+tagged pointers are found equal, unification succeeds, otherwise the
+table is consulted.
+
+@example
+
+        SVA        HVA        CVA      CONST    COMPLEX
+        ===        ===        ===      =====    =======
+
+SVA       4          1          1          1          1
+HVA       1          5          2          2          2
+CVA       1          2          6          3          3
+CONST     1          2          3          8          8
+COMPLEX   1          2          3          8          7
+
+@end example
+
+The numbers in the table describe the action taken:
+
+@enumerate
+@item
+A stack variable is bound the other term.
+
+@example
+  BindVAR(x,y);
+@end example
+
+@item
+A heap variable is bound the other term.
+
+@example
+  BindVAR(x,y);
+@end example
+
+@item
+A constrained variable is bound the other term.
+
+@example
+  BindVAR(x,y);
+@end example
+
+@item
+Both terms are stack variables. The younger one is bound to the
+other one.
+
+@example
+  if (YoungerVar(x,y))
+    BindVAR(x,y);
+  else
+    BindVAR(y,x);
+@end example
+
+@item
+Both terms are heap variables.  The younger one is bound to the other
+one.
+
+@example
+  if (YoungerVar(x,y))
+    BindVAR(x,y);
+  else
+    BindVAR(y,x);
+@end example
+
+@item
+Both terms are constrained variables.  The younger one is bound to the
+other one.
+
+@example
+  if (YoungerVar(x,y))
+    BindVAR(x,y);
+  else
+    BindVAR(y,x);
+@end example
+
+@item
+If the two compound terms have the same functor, the algorithm
+recurses on their arguments, otherwise it fails.
+
+@example
+  if (TagOf(x)==TagOf(y)==LST)
+    for (i=0, i<2, i++)
+    @{
+      RefHeap(t0,Offset(TagToPointer(x),i));
+      RefHeap(t1,Offset(TagToPointer(y),i));
+      Unify(t0,t1);
+    @}
+  else if (TagOf(x)==TagOf(y)==STR &&
+           *TagToPointer(x) == *TagToPointer(y))
+    for (i=1, i<=Arity(x), i++)
+    @{
+      RefHeap(t0,Offset(TagToPointer(x),i));
+      RefHeap(t1,Offset(TagToPointer(y),i));
+      Unify(t0,t1);
+    @}
+  else
+    Fail;
+@end example
+
+@item
+Unification fails.
+
+@example
+  Fail;
+@end example
+@end enumerate
+
+@node     Macros Intro, Builtin Intro, Unification, Top
+@comment  node-name,  next,  previous,  up
+@chapter Emulator Macros
+
+@cindex macro
+@cindex emulator macro
+@cindex macro, emulator
+The emulator and runtime system code makes extensive use of various
+macros.  The purpose of these is partly to isolate design decisions
+into macro definitions that implement the decisions, partly to make
+the bulk of the code independent of details of the storage model.
+
+@table @code
+@item Arity(@var{X})
+This returns the arity of the functor @var{X}.  @refill
+
+@item BindVAR(@var{U},@var{V})
+The variable @var{U} is bound to the term @var{V}.  @refill
+
+@example
+  if (@var{U} is a constrained variable)
+    (raise condition to wake suspended goal);
+  if (CondVAR(@var{U}))
+    TrailRefValue(@var{U},@var{V});
+  *TagToPointer(@var{U}) = @var{V};
+@end example
+
+@item CondVAR(@var{X})
+This is true if @var{X} is a conditional variable.  @refill
+
+@example
+  if (@var{X} is a stack variable)
+    return Younger(w->local_uncond,@var{X})
+  else
+    return Younger(w->global_uncond,@var{X})
+@end example
+
+@item DerefTerm(@var{Term},@var{VarCode},@var{NonvarCode})
+This dereferences the term @var{Term} and executes either
+@var{VarCode} or @var{NonVarCode}, depending on whether the
+result is an unbound variable.  @refill
+
+@example
+
+  TAGGED Aux;
+
+  if (IsVar(@var{Term}))
+    do
+      RefVAR(Aux,@var{Term});
+    while (@var{Term}!=Aux && IsVar(@var{Term}=Aux));
+
+  if (IsVar(@var{Term}))
+    @var{VarCode};
+  else
+    @var{NonvarCode};
+
+@end example
+
+@item DerefLocal(@var{Term},@var{LocalCode},@var{GlobalCode})
+This dereferences the term @var{Term} and executes either
+@var{LocalCode} or @var{GlobalCode}, depending on whether the
+result is a stack variable.  @refill
+
+@example
+
+  TAGGED Aux;
+
+  if (TagOf(@var{Term})==SVA)
+    do
+      RefVAR(Aux,@var{Term});
+    while (@var{Term}!=Aux && TagOf(@var{Term}=Aux)==SVA);
+
+  if (TagOf(@var{Term})==SVA)
+    @var{LocalCode};
+  else
+    @var{GlobalCode};
+
+@end example
+
+@item EmulToGoal(@var{Def})
+where @var{Def} is a definition record.  This builds a goal on the heap
+from @var{Def} and argument registers.  The goal is stored in X0.  @refill
+
+@example
+  if (@var{Def}->arity==0)
+    w->term[0] = @var{Def}->printname;
+  else
+  @{
+    t1 = Tag(STR,w->global_top);
+    *w->global_top++ = SetArity(@var{Def}->printname,@var{Def}->arity);
+    for (i=0; i<@var{Def}->arity; i++)
+      WriteLocalValue(w->term[i]);
+    w->term[0] = t1;
+  @}
+@end example
+
+@item Execute(@var{Def})
+where @var{Def} is a definition record.  Execution proceeds to the
+first clause which might match the goal.  If there might be more
+alternatives, enough state is saved to enable the creation of a
+choicepoint later.  If a condition was raised, the current goal is
+postponed, storing the arguments in an environment, and a
+condition handler is invoked.  @refill
+
+@example
+  if (a condition has been raised)
+  @{
+    E = w->local_top;
+    E->term[0] = PointerToTerm(@var{Def});
+    for(i=0; i<@var{Def}->arity; i++) E->term[i+1] = w->term[i];
+    E->next_insn = w->next_insn;
+    E->frame = w->frame;
+    w->frame = E;
+    w->next_insn = &@{continue@}; /* FrameSize=i+1 */
+    @var{Def} = condition_handler;
+  @}
+  i = @var{Def}->enter_instr;
+switch_on_pred:
+  switch (i)
+  @{
+  case WAITPOINT:
+    t1 = w->term[0];
+    DerefTerm(t1,@{
+                   EmulToGoal(@var{Def});
+                   LoadCVA(t0);
+                   *w->global_top++ = w->term[0];
+                   BindVAR(t1,t0);
+                   Proceed;
+                 @},
+                 @{
+                   i = @var{Def}->properties.pred_type;
+                   goto switch_on_pred;
+                 @});                      
+  case SPYPOINT:
+    EmulToGoal(@var{Def});
+    Execute(debug_goal/1);
+  case ENTER_UNDEFINED:
+    EmulToGoal(@var{Def});
+    Execute(undefined_goal/1);
+  case ENTER_INTERPRETED:
+    EmulToGoal(@var{Def});
+    Execute(interpret_goal/1);
+  case ENTER_BUILTIN:
+    /* perform random C code */
+  case ENTER_NATIVE:
+    w->insn = @var{Def};
+    native_rc = execute_native(w);
+    goto switch_on_native_value;
+  case ENTER_EMULATED:
+    if (not indexed predicate)
+      t = @var{Def}->indexer.tn;
+      w->insn = t->emul_p;
+    else
+      @{
+        t0 = w->term[0];
+        DerefTerm(t0,
+                  @{
+                    t = @var{Def}->indexer.swt->varcase;
+                    w->insn = t->emul_p;
+                  @},
+                  @{
+                    switch (TagOf(t0))
+                    @{
+                    case NUM:
+                      t = Gethash(@var{Def}->indexer.swt->numcase,t0);
+                      break;
+                    case ATM:
+                      t = Gethash(@var{Def}->indexer.swt->atmcase,t0);
+                      break;
+                    case LST:
+                      t = @var{Def}->indexer.swt->lstcase;
+                      break;
+                    case STR:
+                      w->structure = TagToPointer(t0);
+                      t = Gethash(@var{Def}->indexer.swt->strcase,*w->structure++);
+                      break;
+                    @};
+                    w->insn = t->emul_p2;
+                  @});
+      @}
+    w->next_node = w->node;
+    if ((w->next_alt=t->next)!=NULL)
+      @{                     /* prepare a partial choicepoint */
+        w->node = CharOffset(w->node,t->node_offset);
+        w->node->next_alt = NULL;
+        w->node->trail_top = w->trail_top;
+        SaveGtop(w->node);
+        NewShadowregs;
+      @}
+  @}
+@end example
+
+@item Fail
+@cindex backtracking
+Execution backtracks to the next alternative.
+
+@example
+  (turn off any pending conditions);
+  B = w->node;
+  while (Younger(w->trail_top,B->trail_top))
+  @{
+    UntrailRef(t0);
+    if (!IsVar(t0))
+      Undo(t0);
+    else
+      Unbind(t0);
+  @}
+
+  RestoreGtop(B);
+
+  if (w->next_alt==NULL)
+    @{                           /* deep backtracking */
+      w->next_alt = B->next_alt;
+      w->frame = B->frame;
+      w->next_insn = B->next_insn;
+      w->local_top = B->local_top;
+      w->next_node = CharOffset(B,-w->next_alt->node_offset);
+      i = OffsetToArity(w->next_alt->node_offset);
+      while (i>0)
+        --i, w->term[i] = B->term[i];
+    @}
+
+  w->insn = w->next_alt->emul_p;
+  w->next_alt = w->next_alt->next;
+  if (w->next_alt==NULL) /* last alt. */
+    @{
+      w->node = w->next_node;
+      SetShadowregs;
+    @}
+@end example
+
+@item Gethash(@var{HTab},@var{Key})
+A lookup operation is performed on the hash table record @var{HTab}
+and the key @var{Key}.  The result is always an alternative pointer,
+possibly to an alternative that just fails, never @code{NULL}.  @refill
+
+@item IsVar(@var{X})
+This is true iff @var{X} is a variable (bound or unbound).  @refill
+
+@item LoadCVA(@var{To})
+This creates a constrained variable on the heap and stores it
+in @var{To}.  Only the valuecell is stored on the heap.  @refill
+
+@example
+  @var{To} = Tag(CVA,w->global_top);
+  *w->global_top++ = @var{To};
+@end example
+
+@item LoadHVA(@var{To})
+This creates an unconstrained variable on the heap and stores
+it in @var{To}.  @refill
+
+@example
+  @var{To} = Tag(HVA,w->global_top);
+  *w->global_top++ = @var{To};
+@end example
+
+@item LoadSVA(@var{To},@var{Slot},@var{Marker})
+This initializes @var{Slot}, a slot in an environment record, as a permanent
+variable Y@var{n} with unbound marker @var{Marker}.  The variable is stored in
+@var{To}.  @refill
+
+@example
+  @var{To} = Tag(SVA,@var{Slot});
+  *@var{Slot} = @var{To};
+@end example
+
+@item NewShadowregs
+This computes new values for the two shadow registers, in conjunction
+with creating a choicepoint.
+
+@example
+  w->global_uncond = Tag(HVA,w->global_top);
+  w->local_uncond = Tag(SVA,w->local_top);
+@end example
+
+@item PointerToTerm(@var{P})
+This converts a pointer @var{P} to a Prolog integer.  @refill
+
+@item Proceed
+Execution continues at the continuation program address.
+
+@example
+  w->insn = w->next_insn;
+  E = w->frame;
+@end example
+
+@item RefHeapNext(@var{To},@var{X})
+This returns in @var{To} the contents of the heap location @var{X}, or
+an unbound heap variable if the location is the valuecell of an unbound
+variable.  @var{X} is incremented.  @refill
+
+@example
+  @var{To} = *@var{X}++;
+@end example
+
+@item RefStack(@var{To},@var{X})
+This returns in @var{To} the contents of the environment stack location
+@var{X}, or an unbound stack variable if the location is the valuecell
+of an unbound variable.  @refill
+
+@example
+  @var{To} = *@var{X};
+@end example
+
+@item RefStackUnsafe(@var{To},@var{X})
+where @var{To} and @var{X} are pointers to terms, stores the
+contents of @var{X} into the contents of @var{To}, unless @var{X}
+dereferences into the current environment, in which case it is bound to a
+new global variable.  @refill
+
+@example
+  DerefLocal(@var{X},
+               @{if (UnsafeVar(@var{X}))
+                   @{
+                     t1 = @var{X};
+                     LoadHVA(@var{X});
+                     BindVAR(t1,@var{X});
+                   @}
+               @},
+               @{@});
+  @var{To} = @var{X};
+@end example
+
+@item RefVAR(@var{To},@var{X})
+This returns in @var{To} the binding of the variable @var{X}, or
+@var{X} itself if unbound.  @refill
+
+@example
+  @var{To} = *TagToPointer(@var{X});
+@end example
+
+@item RestoreGtop(@var{N})
+This restores top of global stack information from the choicepoint
+record @var{N}.  @refill
+
+@example
+  w->global_top = @var{N}->global_top;
+@end example
+
+@item SaveGtop(@var{N})
+This saves top of global stack information in the choicepoint record
+@var{N}.  @refill
+
+@example
+  @var{N}->trail_top = w->trail_top;
+  @var{N}->global_top = w->global_top;
+@end example
+
+@item SetArity(@var{X},@var{I})
+This constructs a functor with the name @var{X} and the arity
+@var{I}.  @refill
+
+@item SetShadowregs
+This computes new values for the two shadow registers, in conjunction
+with deleting one or more choicepoints.
+
+@example
+  w->global_uncond = Tag(HVA,w->node->global_top);
+  w->local_uncond = Tag(SVA,w->node->local_top);
+@end example
+
+@item Tag(@var{C},@var{P})
+This combines the tag value @var{C} and the pointer @var{P} into a
+Prolog term.  @refill
+
+@item TagOf(@var{T})
+This extracts the tag field from a Prolog term @var{T}.  @refill
+
+@item TagToPointer(@var{T})
+This converts a Prolog term @var{T} to a pointer by masking out the tag
+field.  @refill
+
+@item TermToPointer(@var{T})
+This converts a Prolog integer @var{T} to a pointer.  @refill
+
+@item TidyTrail
+The trail is optionally tidied after a cut operation.  It is actually
+more efficient to allow the trail to overflow and tidy it if and when it
+does so.
+
+@example
+  /* no-op */
+@end example
+
+@item TrailRefValue(@var{Ref},@var{Value})
+This pushes a conditionally bound reference @var{Ref} onto the trail
+stack.  The reference is being bound to @var{Value}.  @refill
+
+@example
+  *w->trail_top++ = @var{Ref};
+@end example
+
+@item Unbind(@var{Ref})
+This resets a conditionally bound variable @var{Ref} to unbound.  @refill
+
+@example
+  *TagToPointer(@var{Ref}) = @var{Ref};
+@end example
+
+@item Undo(@var{X})
+@cindex backtracking
+@cindex undoing
+During backtracking a goal was encountered on the trail stack.  It is
+executed with a continuation to resume backtracking.
+
+@example
+  w->term[0] = @var{X};
+  w->frame = B->frame;
+  w->next_insn = B->next_insn;
+  E = B->local_top;
+  E->frame = w->frame;
+  E->next_insn = w->next_insn;
+  w->frame = E;
+  w->next_insn = &@{fail@}; /* with FrameSize=0 */
+  execute(call/1);
+@end example
+
+@item Unify(@var{X},@var{Y})
+The general unification algorithm is applied to @var{X} and @var{Y}.
+If it fails, backtracking is triggered.  @refill
+
+@item UnsafeVar(@var{X})
+This is true iff the stack variable @var{X} is in the current
+environment.  @refill
+
+@example
+  return Younger(@var{X},E);
+@end example
+
+@item UntrailRef(@var{Ref})
+This pops a conditionally bound reference from the trail stack.
+
+@example
+  @var{Ref} = *(--w->trail_top);
+@end example
+
+@item WriteLocalValue(@var{X})
+Stores @var{X} on the heap, binding it to a new global
+variable if necessary.  @refill
+
+@example
+  DerefLocal(@var{X},
+               @{LoadHVA(t1);
+                 BindVAR(@var{X},t1);
+               @},
+               @{
+                 *w->global_top++ = @var{X};
+               @});
+@end example
+
+@item YoungerVar(@var{X},@var{Y})
+True if the variable @var{X} is younger than the variable @var{Y}.  @refill
+
+@example
+  Younger(@var{X},@var{Y})
+@end example
+@end table
+
+@node     Builtin Intro, Predicates, Macros Intro, Top
+@comment  node-name,  next,  previous,  up
+@chapter Builtin C Predicates
+
+@cindex builtin predicate
+@cindex predicate, builtin
+This chapter lists builtin predicates written in C.  These predicates
+and their support functions, together with native code support
+functions, comprise the runtime system.  The predicates listed herein
+provide services for the predicates which make up the programming
+environment (written in Prolog).  The Prolog predicates are not
+documented in this manual.
+
+Predicates whose names begin with a dollar sign (@kbd{$}) are internal
+and are hidden from the user.
+
+Arguments of predicates are suggested by a @dfn{mode declaration}, to
+indicate proper usage of the predicate.  A mode declaration has the form
+@var{name(arg, ..., arg)} where each @var{arg} can be of one of the
+forms: @var{+ArgName}---this argument should be instantiated in goals
+for the predicate. @var{-ArgName}---this argument should @emph{not} be
+instantiated in goals for the predicate.  @var{?ArgName}---this argument
+may or may not be instantiated in goals for the predicate. If used
+differently, the predicate may issue an error message.  @refill
+@cindex mode declaration
+@cindex declaration, mode
+
+Certain predicates cause a change of system state, taking the old state
+(typically uninstantiated) and new state (typically instantiated) as
+arguments, see e.g. @code{prompt}.  For instance, a goal
+@code{prompt(U,U)} is legal, causing no change of state, just unifying
+@code{U} with the current state.  @refill
+
+@node     Predicates, Qload Intro, Builtin Intro, Top
+@comment  node-name,  next,  previous,  up
+@section List of Predicates
+
+@table @code
+@findex ==
+@findex \==
+@findex @@<
+@findex @@>=
+@findex @@>
+@findex @@=<
+@findex =:=
+@findex =\=
+@findex <
+@findex >=
+@findex >
+@findex =<
+@findex =.@.
+@item @var{?X} == @var{?Y}
+@itemx @var{?X} \== @var{?Y}
+@itemx @var{?X} @@< @var{?Y}
+@itemx @var{?X} @@>= @var{?Y}
+@itemx @var{?X} @@> @var{?Y}
+@itemx @var{?X} @@=< @var{?Y}
+@itemx @var{+X} =:= @var{+Y}
+@itemx @var{+X} =\= @var{+Y}
+@itemx @var{+X} < @var{+Y}
+@itemx @var{+X} >= @var{+Y}
+@itemx @var{+X} > @var{+Y}
+@itemx @var{+X} =< @var{+Y}
+@itemx @var{?X} =.@. @var{?Y}
+See the User's Manual.
+
+@findex $abolish/1
+@item $abolish(@var{+Head})
+@var{Head} is the most general goal for an existing predicate.
+The predicate is made undefined if it's a user defined predicate;
+all clauses are deleted if it's a dynamic builtin predicate;
+an error is signalled if it's a static builtin predicate.  @refill
+
+@findex $allocate_subdef/2
+@item $allocate_subdef(@var{+Spec},@var{-Number})
+For a compiled predicate with the predicate specifier @var{Spec},
+@var{Number} is unified with the next available subdefinition number to
+form the subdefinition @code{(@var{Spec}-@var{Number})/@var{Arity}}.  @refill
+
+@findex $apply/2
+@item $apply(@var{+Head},@var{+Ref})
+Like @code{call(@var{Head})} where @var{Ref} is the integer tagged
+@code{struct definition} record for the predicate being called.  @refill
+
+@findex arg/3
+@findex atom/1
+@findex atom_chars/2
+@item arg(@var{+ArgNo},@var{+Term},@var{?Arg})
+@itemx atom(@var{?X})
+@itemx atom_chars(@var{?Atom},@var{?CharList})
+See the User's Manual.
+
+@findex $atom_mode/2
+@item $atom_mode(@var{+Atom},@var{-Context})
+Depending on @var{Atom}'s printname, @code{Context} unified with:
+@table @asis
+@item 0
+if @var{Atom} is a sequence of alphanumeric characters (including
+@kbd{_}), starting with a lower case letter
+@item 4
+if @var{Atom} is one of @code{! ; [] @{@}}
+@item 2
+if @var{Atom} is a sequence from the following set of characters:@*
+@kbd{+-*/\^<>=`~:.?@@#$&} except the atom @code{'.'}
+@item 1
+if @var{Atom} is anything else, in which case it needs quoting.
+@end table
+
+@findex atomic/1
+@item atomic(@var{?X})
+See the User's Manual.
+
+@findex $bootversion/0
+@item $bootversion
+Prints the current version number and copyright notice on the standard
+output stream.
+
+@findex $breaklevel/2
+@item $breaklevel(@var{?Old},@var{?New})
+Changes the current command interpreter recursion level from
+@var{Old} to @var{New}.  Both are integers.  @refill
+
+@findex call/1
+@item call(@var{+Goal})
+See the User's Manual.
+
+@findex $choice_usage/1
+@item $choice_usage(@var{-Usage})
+@var{Usage} is unified with a list of two integers giving size of the
+free and used parts of the choicepoint stack in bytes.  @refill
+
+@findex $close/1
+@item $close(@var{+Stream})
+As @code{close/1} in the User's Manual, except @var{Stream} is either a
+system stream(@code{user_input}, @code{user_output}, @code{user_error})
+or a stream specifier (@code{$stream(@var{X},@var{Y})}).  In the latter
+case, the corresponding @code{struct stream_node} is deallocated and
+choicepoints for @code{current_stream/3} are checked so that none refers
+to @var{Stream}.  @refill
+
+@findex compare/3
+@item compare(@var{?Op},@var{?Term1},@var{?Term})
+See the User's Manual.
+
+@findex $compile_term/2
+@item $compile_term(@var{+List},@var{-Instance})
+@var{Instance} is unified with an integer tagged new @code{struct
+instance} whose instruction sequence corresponds to matching a head with
+two arguments: the head and tail of @var{List}.  If @var{List} contains
+constrained variables, their constraints are encoded as well.  Cyclic
+structures are not supported.  @refill
+
+@findex $constraint_list/2
+@item $constraint_list(@var{+Ref},@var{-List})
+@var{List} is unified with the list of all unbound CVAs that are more
+recent than the CVA @var{Ref}.  @refill
+
+@findex $context_switch/0
+@item $context_switch
+The current predicate table and internal database initially point to the
+hidden ones.  This predicate makes them point to the visible predicate
+table and internal database.  All predicates marked as visible are
+entered into the visible predicate table, and their definitions are
+@dfn{locked} to protect them from being redefined.
+
+@findex copy_term/2
+@item copy_term(@var{?Term},@var{?CopyOfTerm})
+See the User's Manual.  If @var{Term} contains constrained variables,
+their constraints are copied as well.  Cyclic structures are not
+supported.  @refill
+
+@findex current_atom/1
+@item current_atom(@var{+Atom})
+See the User's Manual.
+
+@findex $current_clauses/2
+@item $current_clauses(@var{+Head},@var{-Root})
+@var{Head} is the most general goal of a dynamic predicate;
+@var{Root} is unified with the integer tagged @code{struct instance *}
+pointing at its list of clauses.  @refill
+
+@findex $current_instance/4
+@item $current_instance(@var{?Head},@var{?Body},@var{+Root},@var{-Ref})
+Through backtracking, @var{Head} and @var{Body} match a dynamic clause
+or database instance in the list whose root is the integer tagged
+@code{struct instance *} pointer.  The integer tagged @code{struct
+instance} is unified with @var{-Ref}.  @refill
+
+@findex $current_prolog_data/2
+@item $current_prolog_data(@var{?Key},@var{-Root})
+@itemx $current_user_data(@var{?Key},@var{-Root})
+Through backtracking, @var{Key} is unified with a key in the hidden or
+visible internal database, respectively; @var{Root} is unified with the
+integer tagged @code{struct instance *} pointing at its list of
+instances.  This process is optimized if called with @var{Key}
+instantiated.  @refill
+
+@findex current_predicate/2
+@item current_predicate(@var{?Name},@var{?Head})
+@itemx current_stream(@var{?FileName},@var{?Mode},@var{?Stream})
+See the User's Manual.
+
+@findex $debugger_mode/0
+@item $debugger_mode
+This updates certain C variables to reflect the current debugger
+setting.
+
+@findex $debugger_state/2
+@item $debugger_state(@var{?Old},@var{?New})
+Changes the current debugger state from @var{Old} to @var{New}.  Both
+are represented as structures@*
+@code{s(@var{GlobalMode},@var{LocalMode},@var{SkipLevel},@var{Depth},@var{Ancestors})}.@*
+The garbage collector knows about the current debugger state and marks
+all memory it refers to.  @refill
+
+@findex $debugon/0
+@item $debugon
+This invokes a low level debugger, if one is available.
+
+@findex dif/2
+@item dif(@var{?X},@var{?Y})
+See the User's Manual.
+
+@findex $display/1
+@item $display(@var{?Term})
+@itemx $display(@var{+Stream},@var{?Term})
+The principal functor of the term @var{Term} is displayed on
+@var{Stream}, which defaults to the current output stream, @emph{without
+quoting}.  @refill
+
+@example
+if (@var{Term} is a variable)
+  display an underscore followed by the heap offset of @var{Term},
+else
+  display the print name of principal functor of @var{Term}.
+@end example
+
+@findex $empty_gcdef_bin/0
+@item $empty_gcdef_bin
+Physically erases predicate definition and compiled clauses, as these do
+not get physically erased right away.  Only called from the interpreter
+toplevel.
+
+@findex $emulated_clause/5
+@item $emulated_clause(@var{+Spec},@var{+TagBits},@var{+Key},@var{+EffArity},@var{+Ref})
+The clause object @var{Ref} which is an integer tagged @code{struct
+emul_info} record is added to the emulated predicate indicated by
+@var{Spec}.  The integer @var{TagBits} is used as a bit mask to denote
+for what tag values of the principal functor of X0 a call might match
+this clause: 1 for variables, 2 for numbers, 4 for atoms, 8 for lists,
+16 for structures, and 32 indicating a cut immediately after the clause
+head.  @var{Key} contains the key if this clause has a key to index on,
+otherwise it contains a variable, and @var{EffArity} is the effective
+arity of this clause.  @refill
+
+@findex $emulated_predicate/2
+@item $emulated_predicate(@var{+Spec},@var{+Props})
+The predicate denoted by @var{Spec} is abolished and set up as an
+emulated predicate.  The integer @var{Props} encode certain properties
+that the predicate should get: @code{public}, @code{parallel},
+@code{wait}, @var{multifile}.  @refill
+
+@findex $envstack_usage/1
+@item $envstack_usage(@var{-List})
+@var{List} is unified with a list of two integers giving size of the
+free and used parts of the environment stack in bytes.  @refill
+
+@findex $eq/2
+@item $eq(@var{?X},@var{?Y})
+True is @var{X} and @var{Y} are the same tagged pointer.  @refill
+
+@findex $erase/1
+@item $erase(@var{+Instance})
+@var{Instance} is an integer tagged @var{struct instance} record.  It is
+marked as erased and is, under certain conditions, physically erased. @refill
+
+@findex $erase_clause/1
+@item $erase_clause(@var{+Clause})
+@var{Clause} is an integer tagged @var{struct emul_info} record.  It is
+physically erased.  This is used when the user is prompted and refuses
+to redefine a predicate.  @refill
+
+@findex $escape_flag/2
+@item $escape_flag(@var{?Old},@var{?New})
+Changes the current character escape flag from @var{Old} to @var{New}.
+This has @emph{no} effect.  @refill
+
+@findex $exit/1
+@item $exit(@var{+Code})
+This causes premature exit from the emulator, implementing @code{halt/0}
+(@var{Code} = 0), @code{reinitialise/0} (@var{Code} = 1), @code{abort/0}
+(@var{Code} = 2).  It is implemented as a forced cut and fail to a
+choicepoint whose only alternative is an @code{exit_toplevel}
+instruction (@pxref{Utility}). @refill
+
+@findex $fastcode/1
+@item $fastcode(@var{-Mach})
+If native code support is available, @var{Mach} is unifified with an
+atom denoting the machine type, otherwise the predicate fails.  The
+currently defined machine types are @code{sun3} and @code{sun4}. @refill
+
+@findex $ferror_flag/2
+@item $ferror_flag(@var{?Old},@var{?New})
+Changes the current file error flag from @var{Old} to @var{New}.  Both
+are @code{on} or @code{off}.  @refill
+
+This flag governs the cation taken when a file opening operation fails:
+If it is @code{on}, the computation is aborted, otherwise the operation
+merely fails.  @refill
+
+@findex $find_file/6
+@item $find_file(@var{+LibDir},@var{+Path},@var{+Suffix},@var{-Found},@var{-AbsolutePath},@var{-AbsoluteDir})
+This predicate attempts to locate an existing file with an optional
+suffix.  @var{LibDir} is a library in which to search for path;
+@var{Path} is a path, may be absolute or relative to @var{LibDir};
+@var{Suffix} is an optional suffix to @var{Path}; @var{Found} is unified
+with @code{true} or @code{fail} if a file was found or not.
+@var{AbsolutePath} is unified with the absolute pathname and
+@var{AbsoluteDir} with its directory name.  @refill
+
+@findex $first_instance/2
+@item $first_instance(@var{+Root},@var{-Ref})
+@var{Root} is the integer tagged @code{struct instance *} pointing at a
+list of instances.  @var{Ref} is unified with the integer tagged
+@code{struct instance} for the first instance, if one exists.  @refill
+
+@findex float/1
+@item float(@var{+X})
+@itemx flush_output(@var{+Stream})
+See the User's Manual.
+
+@findex $format_print_float/4
+@findex $format_print_integer/4
+@item $format_print_float(@var{+Character},@var{+Precision},@var{+Value},@var{+Stream})
+@itemx $format_print_integer(@var{+Character},@var{+Precision},@var{+Value},@var{+Stream})
+This predicate serves the @kbd{~e}, @kbd{~E}, @kbd{~f}, @kbd{~g},
+@kbd{~G} @kbd{~d}, @kbd{~D}, @kbd{~r}, and @kbd{~R} format specs.  @refill
+
+@findex $forget_cva/1
+@item $forget_cva(@var{-Var})
+The newly created CVA @var{Var} is deleted from the trail.
+
+@findex $frozen/2
+@item $frozen(@var{-Var},@var{-Constraints})
+@var{Constraints} is unified with the data structure representing goals
+whose execution is suspended on the uninstantiated variable @var{Var}.
+If nothing is suspended on @var{Var}, @var{Constraints} is unified with
+@code{[]}.  If a single goal is suspended on @var{Var},
+@var{Constraints} is unified with a list whose head is the goal and
+whose tail is an integer tagged @code{struct definition} record for the
+predicate to call.  If multiple goals are suspended on @var{Var},
+@var{Constraints} is unified with a list whose head and tail are
+suspension data structures representing single or multiple goals. @refill
+
+@findex functor/3
+@item functor(@var{?Term},@var{?Name},@var{?Arity})
+@itemx garbage_collect
+See the User's Manual.
+
+@findex $gc_margin/2
+@item $gc_margin(@var{?Old},@var{?New})
+Changes the current garbage collection margin (in bytes) from @var{Old}
+to @var{New}.  Both are integers.  @refill
+
+Garbage collection is not attempted if the heap is smaller than the
+margin.  The heap is expanded if a garbage collection fails to reclaim
+that number of bytes.
+
+@findex $gc_mode/2
+@item $gc_mode(@var{?Old},@var{?New})
+Changes the current garbage collection mode from @var{Old} to @var{New}.
+Both are @code{on} or @code{off} or @code{all}.  @refill
+
+@findex $gc_trace/2
+@item $gc_trace(@var{?Old},@var{?New})
+Changes the current garbage collection trace level from @var{Old} to
+@var{New}.  Both are @code{on} or @code{off} or @code{terse} of
+@code{verbose}.  @refill
+
+@findex $gc_usage/1
+@item $gc_usage(@var{-List})
+@var{List} is unified with a list of three integers: number of garbage
+collections, total number of reclaimed bytes, time spent garbage
+collecting in milliseconds.  @refill
+
+@findex $geler/2
+@item $geler(@var{-Var},@var{+Goal})
+The goal @var{Goal} is suspended on the variable @var{Var}.  @refill
+
+@findex get/1
+@findex get/2
+@findex get0/1
+@findex get0/2
+@item get(@var{?C})
+@itemx get(@var{+Stream},@var{?C})
+@itemx get0(@var{?C})
+@itemx get0(@var{+Stream},@var{?C})
+See the User's Manual.
+
+@findex $getch/2
+@item $getch(@var{-C},@var{-Type})
+The next non-whitespace character from the current input stream is
+@var{C} and its type @var{Type} is 10 for lowercase letters, 20 for
+uppercase letters, 30 for digits, 40 for characters in the set
+@kbd{+-*/\^<>=`~:.?@@#$&}, and 50 for other characters.  @refill
+
+@findex $getch0/2
+@item $getch0(@var{-C},@var{-Type})
+The next character from the current input stream is @var{C} and its type
+@var{Type} is 0 for whitespace or 10--50 as above.  @refill
+
+@findex $input/2
+@item $input(@var{?Old},@var{?New})
+Changes the current input stream from @var{Old} to @var{New}.  Both are
+streams.  @refill
+
+@findex $inserta/2
+@findex $insertz/2
+@item $inserta(@var{+Root},@var{+Instance})
+@itemx $insertz(@var{+Root},@var{+Instance})
+@var{Root} is the integer tagged @code{struct instance *} pointing at a
+list of instances.  @var{Instance} is an integer tagged @code{struct
+instance} record which is inserted first or last in the list.  @refill
+
+@findex $instance/3
+@item $instance(@var{?Head},@var{?Body},@var{+Instance})
+@var{Instance} is an integer tagged @code{struct instance} record.
+@var{Head} and @var{Body} are matched against the instance.  @refill
+
+This is implemented by tail-recursively calling the bytecode program of
+the instance.
+
+@findex integer/1
+@item integer(@var{+X})
+See the User's Manual.
+
+@findex $interpreted_predicate/2
+@item $interpreted_predicate(@var{+Spec},@var{+Props})
+The predicate denoted by @var{Spec} is abolished and set up as an
+interpreted predicate.  The integer @var{Props} encode certain
+properties that the predicate should get: @code{public},
+@code{parallel}, @code{wait}, @var{multifile}.  @refill
+
+@findex $leash_mode/2
+@item $leash_mode(@var{?Old},@var{?New})
+Changes the current debugger leashing level from @var{Old} to @var{New}.
+Both are integers.  @refill
+
+$load_foreign_files(@var{+FileList},@var{+LibraryList},@var{+FunctionList},@var{-AddressBase})
+@var{FileList} is a list of object files; @var{LibraryList} is a list of
+library specifications; @var{FunctionList} is a list of C function
+names; @var{AddressBase} is an integer offset to first address in table.  @refill
+
+Link the specified files and libraries incrementally and update an
+internal symbol table with the list of C function names.
+
+@findex $make_bytecode_object/3
+@item $make_bytecode_object(@var{+Size},@var{+Symbolic},@var{-Clause})
+A compiled clause (@code{struct emul_info}) record, @var{Size} bytes
+long, is constructed according to the symbolic data structure
+@var{Symbolic}.  The integer tagged record is unified with @var{Clause}.  @refill
+
+@var{Symbolic} is a list of bytecode specs.  Each spec contributes to
+the clause record and is one of:  @refill
+
+@table @code
+where @var{N} is an integer, a 16-bit integer  @refill
+
+@item functor(@var{A}/@var{N})
+a term representing a functor named @var{A} with arity @var{N}  @refill
+
+@item tagged(@var{T})
+the atomic term @var{T}  @refill
+
+@item emul_entry(@var{Spec})
+a pointer to the @code{enter_instr} field of the @code{struct
+definition} object of the predicate specified as @var{Spec}  @refill
+
+@item native_entry(@var{Spec})
+a pointer to the @code{entry} field of the @code{struct definition}
+object of the predicate specified as @var{Spec}  @refill
+
+@item builtin(@var{I})
+an absolute pointer to the function definition of built-in predicate or
+function number @var{I}  @refill
+
+@item builtin_rel(@var{I})
+a relative pointer to the function definition of built-in predicate or
+function number @var{I}  @refill
+
+@item builtin_offset(@var{I},@var{O})
+a absolute pointer to the function definition of built-in predicate or
+function number @var{I} offset by @var{O}, where @var{O} is an integer  @refill
+
+@item long(@var{N})
+where @var{N} is an integer, a 32-bit integer  @refill
+
+@item local(@var{O})
+a pointer to the end of the current clause record offset by @var{O},
+where @var{O} is an integer  @refill
+
+@item absolute(@var{I},@var{O})
+an absolute pointer to the @var{I}th clause of the current predicate
+offset by @var{O}, where @var{I} and @var{O} are integers  @refill
+
+@item relative(@var{I},@var{O})
+a relative pointer to the @var{I}th clause of the current predicate
+offset by @var{O}, where @var{I} and @var{O} are integers  @refill
+
+@item rehash(@var{Size})
+This performs a side-effect rather than contributing to the current
+clause record.  At this point a hash table of size @var{Size} has just
+been stored.  This spec causes the hash table to be rehashed, an action
+that must be done at load time.  @refill
+@end table
+
+@findex $maxdepth/2
+@item $maxdepth(@var{?Old},@var{?New})
+Changes the current maximum interpreter depth from @var{Old} to
+@var{New}.  Both are integers.  @refill
+
+@findex $metachoice/1
+@item $metachoice(@var{-Choice})
+@var{Choice} is unified with the offset of the current choicepoint from
+the beginning of the choicepoint stack.  @refill
+
+@findex $metacut/1
+@item $metacut(@var{+Choice})
+A cut operation is performed, fetching the argument from @var{Choice}.  @refill
+
+@findex name/2
+@findex nl/0
+@findex nl/1
+@item name(@var{?Const},@var{?CharList})
+@itemx nl
+@itemx nl(@var{+Stream})
+See the User's Manual.
+
+@findex $native_clause/3
+@item $native_clause(@var{+Spec},@var{+Ref},@var{-Int})
+The clause object @var{Ref} which is an integer tagged @code{struct
+emul_info} record is added to the native code predicate indicated by
+@var{Spec}.  @var{Int} is unified with the number of clauses that
+precede this clause object.  @refill
+
+@findex $native_context/1
+@item $native_context(@var{+Spec})
+The predicate denoted by @var{Spec} is recorded as the native code
+predicate currently being defined. @refill
+
+@findex $nodebug_call/1
+@item $nodebug_call(@var{+Goal})
+This behaves like @code{call(@var{Goal})} but ignores spypoints.  @refill
+
+@findex nonvar/1
+@findex number/1
+@findex number_chars/2
+@item nonvar(@var{+X})
+@itemx number(@var{+X})
+@itemx number_chars(@var{?Const},@var{?CharList})
+See the User's Manual.
+
+@findex $open/3
+@item $open(@var{+FileName},@var{+Mode},@var{-Stream})
+As @code{open(@var{FileName},@var{Mode},@var{Stream})} in the User's
+Manual, except the first argument is an absolute file name and it fails
+instead of aborting if the file cannot be opened.  @refill
+
+@findex $open_boot_file/2
+@item $open_boot_file(@var{+Name},@var{-Stream})
+@var{Stream} is unified with an input stream pointing at a @kbd{.ql}
+file in the @kbd{bin} subdirectory of the SICStus source directory.  @refill
+
+@findex $output/2
+@item $output(@var{?Old},@var{?New})
+Changes the current output stream from @var{Old} to @var{New}.  @refill
+
+@findex $predicate_property/3
+@item $predicate_property(@var{+Head},@var{-BaseProp},@var{-Props})
+@var{Head} is the most general goal of a currently defined predicate
+that has the property @var{BaseProp} (one of @code{interpreted},
+@code{compiled}, or @code{builtin}).  The integer @code{Props} encodes
+other properties (@code{dynamic}, @code{parallel}, @code{wait},
+@var{multifile}).  @refill
+
+@findex $printdepth/2
+@item $printdepth(@var{?Old},@var{?New})
+Changes the current maximum debugger print depth from @var{Old} to
+@var{New}.  Both are integers.  @refill
+
+@findex $program_usage/1
+@item $program_usage(@var{-List})
+@var{List} is unified with a list of two integers: total size of memory
+allocated for static data structures (in bytes), 0.  @refill
+
+@findex $prolog_data/2
+@item $prolog_data(@var{+Key},@var{-Root})
+@var{Key} is a database key.  @var{Root} is unified with the integer
+tagged @code{struct instance *} pointing at the list of instances for
+that key in the hidden internal database.  If the key does not exist, an
+empty list is created.  @refill
+
+@findex prompt/2
+@item prompt(@var{?Old},@var{?New})
+See the User's Manual.
+
+@findex $ptr_ref/2
+@item $ptr_ref(@var{?Pointer},@var{?Ref})
+This is a relation between two ways of representing @code{struct
+instance} records: @var{Pointer} is an integer and @var{Ref} is a
+@code{'$ref'(@var{X},@var{Y})} term.  @refill
+
+@findex put/1
+@findex put/2
+@item put(@var{+C})
+@itemx put(@var{+Stream},@var{+C})
+See the User's Manual.
+
+@findex $qread/2
+@item $qread(@var{+Stream},@var{-Term})
+@var{Stream} points to a Qload file.  @var{Term} is the next term read
+from that file.  The format of such files is described in another
+section, @pxref{Qload Intro}.  On end of file, -1 is unified with
+@var{Term} instead.  @refill
+
+@findex repeat/0
+@item repeat
+See the User's Manual.
+
+@findex $redefine_flag/2
+@item $redefine_flag(@var{?Old},@var{?New})
+Changes the current file redefinition warning flag from @var{Old} to
+@var{New}.  Both are @code{on} or @code{off}.  @refill
+
+@findex $restore/1
+@item $restore(@var{+Filename})
+@var{Filename} is the name of a file containing a dumped state.  @refill
+
+We assume that the only open files are @code{stdin}, @code{stdout} and
+@code{stderr}.  The top of allocated memory is set to the value at the
+time of the dump.  The data segments and allocated memory are read in
+from the dump file and overwrite our current memory, however preserving
+statistics information.  A few global values are patched.  @refill
+
+@findex $retry_cut/1
+@item $retry_cut(@var{+Choice})
+Analogous to a cut operation, but uses a debugger port number as the
+argument @var{Choice}.  Scans the choicepoint stack until a choicepoint
+belonging to a port with number =< @var{Choice} is found.  @refill
+
+@findex $runtime/2
+@item $runtime(@var{-List})
+@var{List} is unified with a list of two integers giving time in
+milliseconds. The first number gives time from the system startup and
+the second since the latest call to this predicate.  @refill
+
+@findex $save/1
+@item $save(@var{+Filename})
+This predicate saves the execution state as an executable file
+@var{Filename}.  A save followed by a restore will behave essentially a
+is the program had been stopped with @ctrl{Z} and then restarted with
+the csh @code{fg} command.  @refill
+
+@findex $savecode/1
+@item $savecode(@var{-Code})
+@var{Code} is 0 after save, 1 after restore.  @refill
+
+@findex $setarg/4
+@item $setarg(@var{+I},@var{+Term},@var{?Arg},@var{+Mode})
+The @var{I}th argument of @var{Term} is destructively replaced by
+@var{Arg}.  @var{Mode} is one of:  @refill
+
+@table @code
+@item on
+It is arranged so that upon backtracking @var{Term} is restored to its
+original state by pushing a goal
+@code{$setarg(@var{I},@var{Term},@var{OldArg},off)} onto the trail,
+where @var{OldArg} is the original @var{I}th argument of @var{Term},
+not necessarily dereferenced.  Then @var{Arg} is dereferenced and
+stored as the @var{I}th argument.  @refill
+
+@item off
+This undoes a previous @code{$setarg(@var{I},@var{Term},@var{Arg},on)}.
+@var{Arg} is not dereferenced before storing it as the @var{I}th
+argument.  @refill
+
+@item true
+The same as @code{$setarg(@var{I},@var{Term},@var{Arg},on)}, except no
+undo goal is pushed onto the trail.  @refill
+@end table
+
+@findex skip/1
+@findex skip/2
+@item skip(@var{+C})
+@item skip(@var{+Stream},@var{+C})
+See the User's Manual.
+
+@findex $spypoint/3
+@item $spypoint(@var{+Head},@var{?Old},@var{?New})
+@var{Head} is the most general goal of a currently defined dynamic or
+user defined predicate whose spypoint status is changed from @var{Old}
+to @var{New}.  Both are @code{on} or @code{off}.  @refill
+
+@findex $stack_shift_usage/1
+@item $stack_shift_usage(@var{-List})
+@var{List} is unified with a list of three integers: number of global
+stack shifts, number of local stack shifts, time spent stack shifting in
+milliseconds.  @refill
+
+@findex statistics/0
+@findex stream_code/2
+@item statistics
+@itemx stream_code(@var{?Stream},@var{?StreamCode})
+See the User's Manual.
+
+@findex SYSCALL/1
+@item SYSCALL(@var{+Goal})
+This behaves like @code{call(@var{Goal})} but uses the hidden predicate
+table.  @refill
+
+@findex tab/1
+@findex tab/2
+@item tab(@var{+N})
+@item tab(@var{+Stream},@var{+N})
+See the User's Manual.
+
+@findex $termheap_usage/1
+@item $termheap_usage(@var{-List})
+@var{List} is unified with a list of two integers giving size of the
+free and used parts of the heap in bytes.  @refill
+
+@findex $total_usage/1
+@item $total_usage(@var{-List})
+@var{List} is unified with a list of two integers: total size of
+virtual memory allocated (in bytes), 0.  @refill
+
+@findex $trail_usage/1
+@item $trail_usage(@var{-List})
+@var{List} is unified with a list of two integers giving size of the
+free and used parts of the trail stack in bytes.  @refill
+
+@findex true/0
+@item true
+See the User's Manual.
+
+@findex $undo/1
+@item $undo(@var{+Head})
+@cindex undoing
+@var{Head} is the most general goal of a hidden predicate.  Ensure that
+is is called upon backtracking by pushing it onto the trail.  @refill
+
+@findex $unix_access/2
+@item $unix_access(@var{+Path},@var{+Mode})
+The path name @var{Path} and the integer @var{Mode} are passed to
+the UNIX C library function @code{access(2)}.  The call succeeds if access
+is granted.  @refill
+
+@findex $unix_argv/1
+@item $unix_argv(@var{-List})
+@var{List} is unified with a list of the program arguments supplied when
+the current SICStus process was started.  @refill
+
+@findex $unix_cd/2
+@item $unix_cd(@var{?Old},@var{?New})
+Changes the current working directory from @var{Old} to @var{New}.  Both
+are atoms.  @refill
+
+@findex $unix_chmod/3
+@item $unix_chmod(@var{+Path},@var{?Old},@var{?New})
+The path name @var{Path} and the integer @var{New} are passed to the
+UNIX C library function @code{chmod(2)}.  @var{Old} is unified with the
+old file mode.  The call succeeds if access is granted.  @refill
+
+@findex $unix_exit/1
+@item $unix_exit(@var{+Code})
+The Prolog process is terminated with exit code @var{Code}.  @refill
+
+@findex $unix_mktemp/2
+@item $unix_mktemp(@var{+Template},@var{+Filename})
+@var{Filename} is unified with a unique filename constructed from the
+atom @var{Template}.  This is an interface to the UNIX C library
+function @code{mktemp(3)}.  @refill
+
+@findex $unix_shell/0
+@item $unix_shell
+Start a new interactive UNIX shell.  The control is returned to Prolog
+upon termination of the shell.  @refill
+
+@findex $unix_shell/2
+@item $unix_shell(@var{+Command},@var{-Status})
+@var{Command} is passed to a new UNIX shell for execution, and
+@var{Status} is unified with the value returned by the shell.  @refill
+
+@findex $unix_system/2
+@item $unix_system(@var{+Command},@var{-Status})
+@var{Command} is passed to a new UNIX @code{sh} process for execution,
+and @var{Status} is unified with the value returned by the shell.  @refill
+
+@findex $unix_chmod/3
+@item $unix_chmod(@var{+Path},@var{?Old},@var{?New})
+The pathname @var{Path} and the integer @var{New} are passed to the UNIX
+C library function @code{umask(2)}.  @var{Old} is unified with the old
+file mode creation mask.  @refill
+
+@findex $unknown/2
+@item $unknown(@var{?Old},@var{?New})
+Changes the current command interpreter recursion level from @var{Old}
+to @var{New}.  Both are one of @code{trace} or @code{fail}.  @refill
+
+@findex $user_data/2
+@item $user_data(@var{+Key},@var{-Root})
+@var{Key} is a database key.  @var{Root} is unified with the integer
+tagged @code{struct instance *} pointing at the list of instances for
+that key in the user internal database.  If the key does not exist, an
+empty list is created.  @refill
+
+@findex var/1
+@item var(@var{Var})
+See the User's Manual.
+
+@findex $write/1
+@findex $write/2
+@item $write(@var{?Term})
+@itemx $write(@var{+Stream},@var{?Term})
+The principal functor of the term @var{Term} is written on @var{Stream},
+which defaults to the current output stream, @emph{with quoting}.  @refill
+
+@example
+if (@var{Term} is a variable)
+  write an underscore followed by the heap offset of @var{Term},
+else
+  write the print name of principal functor of @var{Term}.
+@end example
+@end table
+
+@node     Qload Intro, Compilation Intro, Predicates, Top
+@comment  node-name,  next,  previous,  up
+@chapter Qload Instruction Set
+
+@cindex qload
+In order to speed the transfer of terms between core and files, a
+special storage format, ``Qload'', has been devised.  The Qload format
+is a special purpose instruction set for a loader, defined in this
+section.  The loader reads a term at a time.
+
+The loader operates on its own register bank.  We denote these registers
+as L1, L2, etc.  The purpose of instruction sequences is to construct
+terms on the heap, in particular, but not limited to, goals to be
+executed.  Special support is provided for bytecode objects, since the
+compiler outputs object code in Qload format.
+
+Parts of the bytecode objects have to be relocated by the loader, such
+as references to constants and predicates and relative and absolute
+references in native code.  Special instruction for such relocation are
+provided.  A relocating instruction operates on a @dfn{chain} of
+bytecode operands, assigning the same value to each element of the
+chain.  A chain starts at a given offset from the bytecode object.  The
+contents of that address is either another offset or 0, denoting the end
+of the chain.  @refill
+@cindex relocation chain
+@cindex chain, relocation
+
+The built-in predicate @code{$qread(Stream,X)} (@pxref{Predicates})
+invokes the loader, which begins processing instructions from
+@var{Stream}.  A special instruction signals that a complete term has
+been read, it is unified with @var{X}, and @code{$qread} terminates.
+Upon end of file, @var{X} is unified with -1.  @refill
+
+@table @code
+@item load_atom(@var{Li},@var{String})
+A pointer to the atom whose print name is @var{String} is placed in
+@var{Li}.  @refill
+
+@item load_functor(@var{Li},@var{Lk},@var{Arity})
+A pointer to the interned functor is placed in @var{Li}.  @var{Lk}
+holds the print name, and @var{Arity} is the arity.  @refill
+
+@item load_number_s(@var{Li},@var{Num})
+The term representing the short (16 bits) integer @var{Num} is placed
+in @var{Li}.  @refill
+
+@item load_number_l(@var{Li},@var{Num})
+The term representing the integer @var{Num} is placed in @var{Li}.  @refill
+
+@item load_number_f(@var{Li},@var{Num})
+The term representing the floating point number @var{Num} is placed in
+@var{Li}.  @refill
+
+@item load_variable(@var{Li})
+A variable is constructed on the heap and stored in @var{Li}.  @refill
+
+@item load_nil(@var{Li})
+The empty list is placed in @var{Li}.  @refill
+
+@item load_list(@var{Li})
+A pointer to a list which is about to be constructed on the heap
+is placed in @var{Li}.  @refill
+
+@item load_tuple(@var{Li})
+A pointer to a structure which is about to be constructed on the global
+stack is placed in @var{Li}.  @refill
+
+@item load_argument(@var{Li})
+The next component of a compound term being constructed on the global
+stack is fetched from @var{Li}.  @refill
+
+@item load_dbnode(@var{Li},@var{Len},@var{Program})
+A clause record, @var{Len} characters long, is created and stored in
+@var{Li}.  @var{Program} is the bytecode sequence, encoded as a stream
+of items, each terminated by a @code{NUL} character:  @refill
+
+@table @asis
+@item @var{Integer}
+encodes a 16-bit quantity
+
+@item @kbd{+}@var{Integer}
+encodes a 32-bit quantity
+
+@item @kbd{C}@var{Index}
+encodes a reference to a code address
+
+@item @kbd{D}@var{Integer}
+encodes a reference to a code address incremented by an offset
+
+@item @kbd{E}@var{Integer}
+encodes a relative reference to a code address
+@end table
+
+@item return(@var{Li})
+The typed object in @var{Li} is returned by Qload.
+
+@item reloc_pointer(@var{Li},@var{Offset})
+The typed pointer in @var{Li} is inserted at the chain starting at
+@var{Offset} relative to the most recently loaded bytecode sequence.  @refill
+
+@item reloc_emul_entry(@var{Li},@var{Offset})
+The address of the @code{enter_instr} field of the @code{struct
+definition} record of the predicate specified by @var{Li} inserted at
+the chain starting at @var{Offset} relative to the most recently loaded
+bytecode sequence.  @refill
+
+@item reloc_native_entry(@var{Li},@var{Offset})
+The address of the @code{entry} field of the @code{struct
+definition} record of the predicate specified by @var{Li} inserted at
+the chain starting at @var{Offset} relative to the most recently loaded
+bytecode sequence.  @refill
+
+@item reloc_offset(@var{Target},@var{Offset})
+The address @var{Target} which is relative to the current bytecode
+object is made absolute and is inserted at the chain starting at
+@var{Offset} relative to the most recently loaded bytecode sequence.  @refill
+
+@item reloc_absolute(@var{I},@var{O},@var{Offset})
+The absolute address of the @var{I}th clause of the current predicate,
+offset by @var{O}, is inserted at the chain starting at @var{Offset}
+relative to the most recently loaded bytecode sequence.  @refill
+
+@item reloc_relative(@var{I},@var{O},@var{Offset})
+The relative address of the @var{I}th clause of the current predicate,
+offset by @var{O}, is inserted at the chain starting at @var{Offset}
+relative to the most recently loaded bytecode sequence.  @refill
+
+@item reloc_rehash(@var{Size},@var{Offset})
+This performs a side-effect rather than contributing to the current
+clause record.  The hash table located at @var{Offset} relative to the
+most recently loaded bytecode sequence has size @var{Size} and is
+rehashed.  @refill
+
+@end table
+
+@node     Compilation Intro, Convert, Qload Intro, Top
+@comment  node-name,  next,  previous,  up
+@chapter Overview of Compilation
+
+This chapter describes the compiler front-end, which compiles Prolog
+clauses into sequences of WAM instructions.  For emulated predicates,
+these instruction sequences are further transformed into bytecode
+sequences (@pxref{Bytecode Intro}).  For native code predicates, the WAM
+instructions are translated into native machine instructions.  However,
+these translation steps are not described herein.  Thus the WAM
+representation serves as the intermediate language for the various
+compilation modes. @refill
+
+@cindex chunk
+@cindex inline goal
+@cindex goal, inline
+We first introduce some new termonology.  Each clause is first divided
+into a number of @dfn{chunks}.  A chunk is a sequence of goals such that
+all goals but the last one must be @dfn{inline goals} that compile to
+inline instructions as opposed to a general procedure call.  The head
+counts as part of the first goal.  The following goals are inline goals:
+@example
+!               atom(_)         _ == _          _ =:= _
+_ = _           atomic(_)       _ \== _         _ =\= _
+_ =.@. _        integer(_)      _ @@< _         _ < _
+_ is _          nonvar(_)       _ @@>= _        _ >= _
+arg(_, _, _)    number(_)       _ @@> _         _ > _
+'C'(_, _, _)    var(_)          _ @@=< _        _ =< _
+compare(_, _, _)
+functor(_, _, _)
+@end example
+
+Thus, the clause:
+@example
+p(N, T, Vars, S0, S) :-
+        arg(N, T, A),
+        p(A, Vars, S0, S1),
+        M is N-1,
+        p(M, T, Vars, S1, S).
+@end example
+
+is divided into two chunks, as indicated by braces:
+@example
+@{p(N, T, Vars, S0, S) :-
+         arg(N, T, A),
+         p(A, Vars, S0, S1)@},
+        @{M is N-1,
+         p(M, T, Vars, S1, S)@}.
+@end example
+
+@cindex halting clause
+@cindex clause, halting
+@cindex iterative clause
+@cindex clause, iterative
+@cindex recursive clause
+@cindex clause, recursive
+We classify each clause as either @dfn{recursive}, if it has more than
+one chunk, @dfn{iterative}, if it has one chunk that ends with a
+general procedure call, or @dfn{halting}, if it doesn't contain any
+general procedure calls. @refill
+
+Five modes of compilation are currently available:
+
+@table @code
+@item compactcode
+The Prolog source code is compiled to abstract machine code, stored
+in-core in bytecode format.  This is the most common mode of operation.
+
+@item fastcode
+The Prolog source code is first compiled to abstract machine code
+which is then converted to machine instructions, currently only
+for the MC68020.
+
+@item ql
+The Prolog source code is compiled to a file of abstract machine code,
+stored in bytecode format in a Qload file.
+
+@item nql
+The Prolog source code is compiled to a file of abstract machine code,
+which is then converted to machine instructions, stored in a Qload file.
+
+@item wam
+The Prolog source code is compiled to a file of abstract machine code,
+stored in symbolic (``assembler listing'') form.
+@end table
+
+The processing cycle is to read in a clause, compile it, emit object
+code, and iterate.  The source-to-WAM translation can be divided into
+the following phases:
+
+@itemize @bullet
+@item
+Convert source code to record structures
+
+@item
+Spawn internal predicates
+
+@item
+Allocate permanent variables
+
+@item
+Emit clause instructions
+
+@item
+Extract indexing information
+
+@item
+Analyze lifetimes of temporary variables
+
+@item
+Allocate temporary variables
+
+@item
+Do peep hole optimization and final editing
+
+@end itemize
+
+For the @code{wam}, @code{fastcode}, and @code{nql} options, there is a
+final pass when all input has been processed which emits indexing
+instructions for all predicates encountered.  For the @code{fastcode}
+and @code{nql} options, there is an additional WAM to native code
+translation phase.
+
+Each phase is discussed in more detail below.
+
+@node     Convert, Spawn, Compilation Intro, Top
+@comment  node-name,  next,  previous,  up
+@section Convert source code to record structures
+
+In order to make the source code more tractable to the compiler, in
+particular variables occurrences, the source code is converted to an
+@dfn{abstract syntax tree}:
+@cindex abstract syntax tree
+@cindex syntax tree, abstract
+
+@table @code
+@item var(@var{X},@var{Y})
+@cindex variable descriptor
+@cindex descriptor, variable
+This representation denotes a source variable @var{U}.  @var{X} is used
+as a @dfn{variable descriptor}, and is instantiated by the compiler to
+one of the values:
+@table @code
+@item g
+(for global), if the first occurrence of @var{U} compiles to a
+@code{unify_x_variable}, @code{unify_y_variable}, or
+@code{put_x_variable} instruction @refill
+
+@item r
+(for remote), if the first occurrence of @var{U} compiles to a
+@code{get_x_variable}, @code{get_y_variable} instruction, @refill
+
+@item @var{I}
+where @var{I} is an integer, if the first occurrence of @var{U} compiles
+to a @code{put_y_variable} or a @code{put_y_void} instruction. @refill
+
+@end table
+
+@var{Y} is eventually instantiated to the @var{U}'s object code name,
+i.e. @code{x(@var{N})} or @code{y(@var{N})}, where @var{N} is an
+integer.
+
+@item constant(@var{C})
+This representation denotes an atomic source term except the empty list.
+
+@item nil
+This representation denotes the empty list.
+
+@item list(@var{X},@var{Y})
+This representation denotes the source list @code{[@var{X0}|@var{Y0}]}.
+@var{X} and @var{Y} are abstract syntax trees denoting the arguments
+@var{X0} and @var{Y0}.  @refill
+
+@item structure(@var{S},@var{L})
+This representation denotes a source structure.  @var{S} is the functor
+and @var{L} is a list of abstract syntax trees denoting the arguments of
+the structure.  @refill
+@end table
+
+This phase specially recognizes cuts, and transforms them to goals
+@code{'CUT IDIOM'(@var{B})}, where it is arranged so that @var{B} is the
+current choicepoint at procedure entry.  A dummy goal @code{'CHOICE
+IDIOM'(@var{B})} is inserted at the beginning of each clause containing
+a cut.  @refill
+
+@node     Spawn, Perm, Convert, Top
+@comment  node-name,  next,  previous,  up
+@section Spawn internal predicates
+
+@cindex internal predicate
+@cindex predicate, internal
+This phase recognizes certain situations where pieces of code
+are broken off as internal predicates and are replaced by calls to
+these.  The situations are:
+
+@table @dfn
+@item disjunction
+A disjunction of @var{N} disjuncts is broken off as a predicate with @var{N}
+clauses.  However, a clause which contains materially nothing but a
+disjunction is replaced by @var{N} clauses.  @refill
+
+Example.  The predicate:
+@example
+p([A|B],C) :- f(C,D), (g1(A,D); g2(B,D)).
+p(A,B) :- h1(A); h2(B).
+@end example
+
+@noindent
+is transformed to:
+@example
+p([A|B],C) :- f(C,D), p'(A,B,D).
+p(A,_) :- h1(A).
+p(_,B) :- h2(B).
+
+p'(A,_,D) :- g1(A,D).
+p'(_,B,D) :- g2(B,D).
+@end example
+
+@item negation
+Negation as failure is always broken off as an internal predicate.
+
+Example.  The predicate:
+@example
+p([A|B],C) :- f(C,D), \+ g(A,[B|D]).
+@end example
+
+@noindent
+is transformed to:
+@example
+p([A|B],C) :- f(C,D), p'(A,B,D).
+
+p'(A,B,C) :- g(A,[B|C]), !, fail.
+p'(_,_,_).
+@end example
+
+@item if-then-else
+If-then-else is always broken off as an internal predicate.
+
+Example.  The predicate:
+@example
+p([A|B],C) :- f(C,D), (t(A) -> q(B); q(D)).
+@end example
+
+@noindent
+is transformed to:
+@example
+p([A|B],C) :- f(C,D), p'(A,B,D).
+
+p'(A,B,_) :- t(A), !, q(B).
+p'(_,_,C) :- q(C).
+@end example
+
+@item type tests and cuts
+Under certain conditions, type tests of the first head argument and cuts
+immediately after the head are transformed into indexing information and
+do not appear in the clause code.  This is discussed in detail in
+@pxref{Extract}. @refill
+@end table
+
+Each spawned internal predicate is treated by the compiler just as a
+user predicate.  This strategy of compiling disjunctions has the
+advantage that there are no branches in the code for a clause, which
+greatly simplifies lifetime analysis.  Updating variable descriptors
+becomes straightforward also.
+
+This is in contrast to the approach taken e.g. in Van Roy's compiler
+(@cite{A Prolog Compiler for the PLM} by P. Van Roy, M.Sc. Thesis,
+Department of Computer Science, UC Berkeley, 1984) where disjunctions
+are coded in-line.  Van Roy avoids sometimes having to allocate extra
+environments, but the compile time analyses become complicated by the
+code being non-linear, and the implementation of cut runs into some
+extra trouble.  @refill
+
+In general, transformations such as the above are perhaps better
+handled by a precompiler.  A precompiler could do more extensive
+transformations such as partial evaluation in a more comprehensive
+manner.
+
+Of course, the above variants of negation and if-then-else are not
+sound.  Sound versions using delay primitives should be provided as
+well.
+
+@node     Perm, Clause, Spawn, Top
+@comment  node-name,  next,  previous,  up
+@section Allocate permanent variables
+
+This phase classifies variables as temporary or permanent, and assigns
+slot numbers (object code names) to the permanent variables.
+
+Any variable that occurs in more than one chunk is permanent.  Permanent
+variables are arranged such that they can be discarded as soon as
+possible.  This is achieved by treating each goal separately, from right
+to left.  Each goal is traversed depth first, from left to right, and
+each time a permanent variable is encountered that has not yet been
+allocated, it is assigned a number.  The numbers are assigned in
+increasing order.  In the above example, the permanent variables are
+assigned the numbers:
+@example
+T = Y0
+Vars = Y1
+S1 = Y2
+S = Y3
+N = Y4
+@end example
+
+One optimizations has been considered but not implemented: Permanent
+variables that have disjoint lifespans could be allocated to the same
+environment slots @emph{if the code is determinate}.  Cut (!) could act
+as a fence between lifespans in such cases.
+
+@node     Clause, CG General, Perm, Top
+@comment  node-name,  next,  previous,  up
+@section Emit clause instructions
+
+Each clause is translated to a sequence of instructions in a fairly
+naive way.  No @code{allocate}, @code{allocate2}, @code{put_y_void}, or
+@code{deallocate} instructions are emitted here; instead, these
+instructions are filled in by the peep hole optimizer.  @refill
+
+This phase leaves temporary variables are left unallocated (represented
+as unbound variables).  Eventually, a register number gets assigned to
+each temporary variable (@pxref{Temp}).  Singleton variables are not
+distinguished from temporary ones.  The general strategy is to generate
+worst-case code, in terms of the number of instructions, hoping that the
+temporary variable allocator is able to turn many instructions into
+no-ops and excise them. @refill
+
+The temporaries introduced by the code generation phase have an
+important property: @emph{each temporary denotes a unique value}.  This
+property is called the @dfn{single assignment} property and will be used
+in the register allocation phase.  It follows from two facts:
+@cindex single assignment property
+@cindex property, single assignment
+
+@itemize @bullet
+@item
+Temporaries are not reused, i.e. each time a temporary is introduced, it
+is distinct from all previously used temporaries.  In implementation
+terms, it is a unique logical variable.
+
+@item
+Once a temporary variable has acquired a value, no instruction replaces
+that value by another value.  For instance, the
+@code{function_2(@var{F},@var{T3},@var{T1},@var{T2})} instruction does
+not modify the function arguments. @refill
+@end itemize
+
+@node     CG General, CG Flat, Clause, Top
+@comment  node-name,  next,  previous,  up
+@subsection Code Generation for General Goals
+
+The general picture of clause compilation is best described by an
+example.  Consider a clause with three chunks:
+
+@example
+@var{Head} :-
+        @var{InlineGoal1},
+        p(@var{PArguments}),
+        @var{InlineGoal2},
+        q(@var{QArguments}),
+        @var{InlineGoal3},
+        r(@var{RArguments}).
+@end example
+
+@noindent
+which compiles to code according to the pattern:
+
+@example
+heapmargin_call(@var{H1},@var{A})
+@var{get sequence for Head}
+@var{code for InlineGoal1}
+neck(@var{A})
+@var{put sequence for PArguments}
+call(p/@var{N1},@var{K1})
+heapmargin_exit(@var{H2})
+@var{code for InlineGoal2}
+@var{put sequence for QArguments}
+call(q/@var{N2},@var{K2})
+heapmargin_exit(@var{H3})
+@var{code for InlineGoal3}
+@var{put sequence for RArguments}
+execute(r/@var{N3})
+@end example
+
+@noindent
+where @var{A} is the arity of the clause; @var{H1}, @var{H2}, and
+@var{H3} are the maximum amounts of heap space consumed by the chunks 1,
+2, and 3, respectively; @var{N1}, @var{N2}, and @var{N3} are the arities
+of @code{p}, @code{q}, and @code{r}, respectively; and @var{K1} and
+@var{K2} are the active environment sizes at the respective calls.  Thus
+all chunks are terminated by a @code{call} instruction except the last
+one, which is terminated by an @code{execute} instruction.  All chunks
+begin with a @code{heapmargin_exit} instruction except the first one,
+which begins with a @code{heapmargin_call} instruction.  Unit clauses
+are treated as having a single body goal @code{true}.  The peep hole
+optimizer transforms @code{execute(true/0)} into @code{proceed}, deletes
+@code{heapmargin_*} instructions if the arguments are below certain
+thresholds. @refill
+
+Note that the put sequence for the first general goal of the clause is
+preceded by a @code{neck(@var{A})} instruction.  This instruction is
+placed at the latest possible point in the clause where it can be
+guaranteed that the input arguments are still valid.  No instructions
+other than code for creating the arguments of general goals modify
+explicit argument registers.  All other instructions modify temporaries
+only, and the register allocator ensures that registers that do not
+clash with the input arguments are assigned to these temporaries. @refill
+
+As the @code{neck} instruction does not have any side effect on argument
+registers, it can actually be placed anywhere between the beginning of
+the clause and the first put sequence.  There is a tradeoff between
+optimal register allocation and postponing as long as possible the work
+that @code{neck} must do.  Register allocation is least constrained if
+the @code{neck} is placed early.  The chance of avoiding the work done
+by @code{neck} is greatest if the @code{neck} is placed late.  A
+reasonable compromise is therefore to place the @code{neck} before the
+put sequence but immediately after the last instruction that might fail.
+Also, the semantics of the various @dfn{cut} instructions require that
+the @code{neck} is placed before any cuts.  A later phase will move the
+@code{neck} to its appropriate position (@pxref{Extract}). @refill
+
+The main work of this phase consists in emitting code for creating the
+arguments of a body goals and for matching goal arguments against head
+arguments.  There is considerable freedom in choosing which order head
+and goal arguments should be compiled in.  Compiling head and goal
+arguments in textual order often yields suboptimal code.  The objective
+is of course to generate optimal code.  As it is hardly realistic to
+achieve this objective, we have resorted to heuristics which give
+considerable improvements over compiling in textual order.  We use the
+intuition that the set of available registers should be kept as large as
+possible as a heuristic to determine a suitable order.  For example,
+
+@example
+p([X|Y],Y) :- q(Z,[X|Z]).
+@end example
+
+@noindent
+compiles to:
+
+@example
+(1)      heapmargin_call(4,2)   % p(A,B) :-
+(2)      get_x_variable(Y,1)    %  B=Y,
+(3)      get_list(0)            %  A=[
+(4)      unify_x_variable(X)    %     X|
+(5)      unify_x_local_value(Y) %       Y],
+(6)      put_list(1)            %  B=[
+(7)      unify_x_value(X)       %      X|
+(8)      unify_x_variable(Z)    %        Z],
+(9)      put_x_value(Z,0)       %  A=Z,
+(10)     execute(q/2)           %  q(A,B).
+@end example
+
+@noindent
+where in a later pass @var{X}, @var{Y}, and @var{Z} are assigned
+register numbers 2, 1, and 0, respectively, and so instructions (1), (2)
+and (9) can be deleted. @refill
+
+Another way of describing the desired effect of the heuristic order of
+the code for head and goal unification is to minimize overlapping
+lifetimes of temporary variables and argument registers.
+@xref{Analyze}.  @refill
+
+During code generation, knowledge about contents of the temporaries and
+argument registers is maintained and used as a cache.  The cache is
+valid throughout a chunk.  There are several reasons for maintaining the
+cache:
+
+@itemize @bullet
+@item
+It is often cheaper to access argument registers than permanent
+variables or constants, particularly in a native code implementation,
+and so strength reduction can be applied to certain operations.
+
+@item
+The register cache can sometimes be used to determine that a goal
+argument register already contains the desired term, in which case
+no code is emitted.
+
+@item
+For permanent variables occurring as head arguments, accesses in the
+first chunk to such variables (@code{get_y_value}, @code{unify_y_value},
+@code{put_y_value}) can often be replaced by accesses to the respective
+argument register (@code{get_x_value}, @code{unify_x_value},
+@code{put_x_value}).  This makes it possible to postpone the
+@code{get_y_variable} instruction that initializes the permanent
+variable, and sometimes the @code{allocate} instruction, until a point
+in the code where it is known that the head unification has succeeded.
+
+@item
+One of the code transformations of a later phase (@pxref{Extract})
+requires that for all @code{get_*_variable(@var{A},@var{B})}
+instructions occurring before the @code{neck} instruction, @var{A} is
+not used before the @code{neck}.  The cache mechanism takes pains to
+guarantee that all accesses to @var{A} are replaced by accesses to
+@var{B}. @refill
+@end itemize
+
+The following subsections will treat code generation for head arguments,
+body arguments, structure arguments and inline goals.  In the
+descriptions, the notation @code{cache[@var{i}]} will be used to denote
+the cached value for argument register @var{i}. @refill
+
+@node     CG Flat, CG Head, CG General, Top
+@comment  node-name,  next,  previous,  up
+@subsection Term Flattening
+
+In the original WAM, there were no @code{unify_list} or
+@code{unify_structure} instructions.  This meant that a clause
+
+@example
+p(f(X,g(Y),h(Z))) :- p(f(Y,g(Z),h(X))).
+@end example
+
+@noindent
+had to be compiled as
+
+@example
+p(f(X,X1,X2)) :-
+        X1 = g(Y),
+        X2 = h(Z),
+        Y1 = g(Z),
+        Y2 = h(X),
+        p(f(Y,Y1,Y2)).
+@end example
+
+In our abstract machine we introduced these instructions, which are used
+if the @emph{last} subterm of a compound term is itself a compound term.
+Thus the above clause could be compiled as: @refill
+
+@example
+p(f(X,X1,h(Z))) :-
+        X1 = g(Y),
+        Y1 = g(Z),
+        p(f(Y,Y1,h(X))).
+@end example
+
+However, use of @code{unify_list} and @code{unify_structure} is
+restricted to compound terms in which @emph{only} the last subterm is a
+compound term.  Otherwise it is easy to construct non-contrived cases
+that need an unbounded number of temporary variables.  For example, with
+an unrestricted use of these instructions, the clause: @refill
+
+@example
+p([a1-1,a2-2,a3-3,...,a@var{N}-@var{N}]).
+@end example
+
+@noindent
+would be compiled as
+
+@example
+p([T1,T2,T3,...,T@var{N}]) :-
+        T1 = a1-1,
+        T2 = a2-2,
+        T3 = a3-3, ...,
+        T@var{N} = a@var{N}-@var{N}.
+@end example
+
+@noindent
+which requires @var{N} temporary variables.  With a restricted use,
+it would be compiled as: @refill
+
+@example
+p([H1|T1]) :-
+        H1 = a1-1,
+        T1 = [H2|T2],
+        H2 = a2-2,
+        T2 = [H3|T3],
+        H3 = a3-3, ...,
+        T@var{N-1} = [H@var{N}],
+        H@var{N} = a@var{N}-@var{N}.
+@end example
+
+@noindent
+which although it requires @var{2N} temporaries only requires 2 actual
+registers, as all H@var{i} can be assigned register X0 and all T@var{i}
+can be assigned register X1. @refill
+
+@node     CG Head, CG Body, CG Flat, Top
+@comment  node-name,  next,  previous,  up
+@subsection Code Generation for Head Arguments
+
+The head arguments are compiled using the simple heuristic that
+arguments which are variables are compiled @emph{before} other head
+arguments.  This unification order increases the set of available
+registers when complex terms are considered, and also makes it possible
+to condense sequences like:
+
+@example
+        unify_x_variable(@var{m})
+        ...
+        get_x_value(@var{m},@var{n})
+@end example
+
+@noindent
+into
+
+@example
+        get_x_variable(@var{m},@var{n})
+        ...
+        unify_x_local_value(@var{m})
+@end example
+
+@noindent
+where in the latter sequence the @code{get_x_variable} instruction
+becomes a no-op and is deleted, if @var{m} and @var{n} can be assigned
+the same register number.  @refill
+
+For each argument position @var{i} in the heuristic order, that argument
+is first flattened, as described above.  The code generation then
+follows a case analysis on the abstract syntactic structure of that
+argument: @refill
+
+@table @code
+@item var(@var{D},@var{N})
+@example
+if (exists @var{j} : cache[@var{j}]==var(@var{D'},@var{N}))
+  emit get_x_value(@var{j},@var{i}),
+  let  cache[@var{i}] = var(@var{D'},@var{N})
+else if (first occurrence of @var{N})
+  let  @var{D} = r,
+  emit get_*_variable(@var{N},@var{i}),
+  let  cache[@var{i}] = var(r,@var{N})
+else
+  emit get_*_value(@var{N},@var{i}),
+  let  cache[@var{i}] = var(@var{D},@var{N})
+@end example
+
+@item constant(@var{K})
+@example
+  emit get_constant(@var{K}, @var{i}),
+  let  cache[@var{i}] = constant(@var{K})
+@end example
+
+@item nil
+@example
+  emit get_nil(@var{i}),
+  let  cache[@var{i}] = nil
+@end example
+
+@item list(@var{X},@var{Y})
+@example
+  emit get_list(@var{i}),
+  emit code for @var{X} and @var{Y}
+@end example
+
+@item structure(@var{F},@var{L})
+@example
+  emit get_structure(@var{F}/@var{A},@var{i}),
+  emit code for all elements of @var{L}
+@end example
+@noindent
+where @var{A} is the length of @var{L}.
+@end table
+
+@node     CG Body, CG Nest, CG Head, Top
+@comment  node-name,  next,  previous,  up
+@subsection Code Generation for Body Goal Arguments
+
+The goal arguments are compiled using the simple heuristic that
+arguments which are variables are compiled @emph{after} other goal
+arguments.  As for head arguments, this unification order increases the
+set of available registers when complex terms are considered, and also
+makes it possible to condense sequences like:
+
+@example
+        put_x_variable(@var{m},@var{n})
+        ...
+        unify_x_value(@var{m})
+@end example
+
+@noindent
+into
+
+@example
+        unify_x_variable(@var{m})
+        ...
+        put_x_value(@var{m},@var{n})
+@end example
+
+@noindent
+where in the latter sequence the @code{put_x_value} often can become a
+no-op, like in the head compilation case.  @refill
+
+For each argument position @var{i} in the heuristic order, that argument
+is first flattened, as described above.  The code generation then
+follows a case analysis on the abstract syntactic structure of that
+argument, where @var{k} is the number of environment that have next use
+after the current goal: @refill
+
+@table @code
+@item var(@var{D},@var{N})
+@example
+if (exists @var{j} : cache[@var{j}]==var(@var{D'},@var{N}) &&
+    (@var{D'} == g || @var{D'} == r || @var{D'} < @var{k}))
+  emit put_x_value(@var{j},@var{i}),
+  let  cache[@var{i}] = var(@var{D'},@var{N})
+else if (exists @var{j} : cache[@var{j}]==var(@var{D'},@var{N}))
+  emit put_x_unsafe_value(@var{j},@var{i}),
+  let  cache[@var{i}] = var(r,@var{N})
+else if (first occurrence of @var{N} && @var{N}==x(@var{j}))
+  let  @var{D} = g,
+  emit put_x_variable(@var{j},@var{i}),
+  let  cache[@var{i}] = var(g,@var{N})
+else if (first occurrence of @var{N} && @var{N}==y(@var{j}))
+  let  @var{D} = r,
+  emit put_y_variable(@var{j},@var{i}),
+  let  cache[@var{i}] = var(r,@var{N})
+else if (@var{D} == g || @var{D} == r || @var{D} < @var{k})
+  emit put_*_value(@var{N},@var{i}),
+  let  cache[@var{i}] = var(@var{D},@var{N})
+else
+  emit put_*_unsafe_value(@var{N},@var{i}),
+  let  cache[@var{i}] = var(r,@var{N})
+@end example
+
+@item constant(@var{K})
+@example
+if (exists @var{j} : cache[@var{j}]==constant(@var{K}))
+  emit put_x_value(@var{j},@var{i}),
+  let  cache[@var{i}] = constant(@var{K})
+else
+  emit put_constant(@var{K},@var{i}),
+  let  cache[@var{i}] = constant(@var{K})
+@end example
+
+@item nil
+@example
+if (exists @var{j} : cache[@var{j}]==nil)
+  emit put_x_value(@var{j},@var{i}),
+  let  cache[@var{i}] = nil
+else
+  emit put_nil(@var{i}),
+  let  cache[@var{i}] = nil
+@end example
+
+@item list(@var{X},@var{Y})
+@example
+  emit put_list(@var{i}),
+  let  cache[@var{i}] = void,
+  emit code for @var{X} and @var{Y}
+@end example
+
+@item structure(@var{F},@var{L})
+@example
+  emit put_structure(@var{F}/@var{A},@var{i}),
+  let  cache[@var{i}] = void,
+  emit code for all elements of @var{L}
+@end example
+@noindent
+where @var{A} is the length of @var{L}.
+@end table
+
+@node     CG Nest, CG Inline, CG Body, Top
+@comment  node-name,  next,  previous,  up
+@subsection Code Generation for Compound Terms
+
+For each structure argument, the code generation follows a case analysis
+on the abstract syntactic structure of that argument:
+
+@table @code
+@item var(@var{D},@var{N})
+@example
+if (exists @var{j} : cache[@var{j}]==var(g,@var{N}))
+  emit unify_x_value(@var{j})
+else if (exists @var{j} : cache[@var{j}]==var(@var{D'},@var{N}))
+  emit unify_x_local_value(@var{j})
+else if (first occurrence of @var{N})
+  let  @var{D} = g,
+  emit unify_*_variable(@var{N})
+else if (@var{D} == g)
+  emit unify_*_value(@var{N})
+else
+  emit unify_*_local_value(@var{N})
+@end example
+
+@item constant(@var{K})
+@example
+  emit unify_constant(@var{K})
+@end example
+
+@item nil
+@example
+  emit unify_nil,
+@end example
+
+@item list(@var{X},@var{Y})
+@example
+  emit unify_list,
+  emit code for @var{X} and @var{Y}
+@end example
+
+@item structure(@var{F},@var{L})
+@example
+  emit unify_structure(@var{F}/@var{A}),
+  emit code for all elements of @var{L}
+@end example
+@noindent
+where @var{A} is the length of @var{L}.
+@end table
+
+@node     CG Inline, Extract, CG Nest, Top
+@comment  node-name,  next,  previous,  up
+@subsection Code Generation for Inline Goals
+
+For many inline goals, the code generated is rather like the code for an
+ordinary procedure call: the arguments are set up, except they argument
+registers are not constrained to particular numbers, and a utility
+instruction for the actual goal is emitted.  Some inline goals, however,
+have their own nonstandard compilation methods:
+
+@table @code
+@item !
+As discussed earlier (@pxref{Convert}), cuts are recognized as an
+earlier stage and appear in the abstract syntax trees as @code{'CUT
+IDIOM'(@var{B})}, where @var{B} is @code{x(@var{i})} or
+@code{y(@var{i})}.  The code emitted is @code{cut_x(@var{i})} or
+@code{cut_y(@var{i})}, respectively.  If the cut occurs in the first
+chunk of a clause, the peep hole optimizer will later reduce the
+strength of this instruction to a @code{cut} instruction (@pxref{Peep}). @refill
+
+For each clause containing a cut, a dummy goal @code{'CHOICE
+IDIOM'(@var{B})} also appears as the first goal in the abstract syntax
+tree.  The code emitted is @code{get_x_variable(@var{i},-1)} or
+@code{get_y_variable(@var{i},-1)}, respectively.  If all cuts occur in
+the first chunk of a clause, the instruction becomes redundant and the
+peep hole optimizer will excise it. Otherwise, the peep hole optimizer
+will convert the instruction to a @code{choice_x} or a @code{choice_y}
+instruction. @refill
+
+@item @var{X} = @var{Y}
+The code generation can be expressed as a decision table, based on the
+abstract syntax of the two arguments.  Let @code{VARIABLE} denote the
+first occurrence of a variable, @code{VALUE} a non-first variable
+occurrence, @code{CONSTANT} an atomic term, and @code{COMPOUND} a
+compound term. Then the table can be expressed as:
+
+@example
+                VARIABLE    VALUE   CONSTANT    COMPOUND
+
+VARIABLE               1        2          3           3
+
+VALUE                  2        4          4           4
+
+CONSTANT               3        4          5           6
+
+COMPOUND               3        4          6           5
+
+@end example
+
+@noindent
+where the actions are described below.  For clarity, details about the
+argument register cache are not included in this account:
+
+@enumerate
+@item
+The emitted code is @code{put_*_variable(@var{X},@var{i})} followed by a
+@code{get_*_variable(@var{Y},@var{i})}, possibly changing the relative
+order between @var{X} and @var{Y}.  The compiler takes pains to not
+create an illegal binding. @refill
+
+@item
+The emitted code is @code{put_*_value(@var{VALUE},@var{i})} followed by
+a @code{get_*_variable(@var{VARIABLE},@var{i})}.  The compiler takes
+pains to not create an illegal binding. @refill
+
+@item
+The emitted code is a @code{put_*_variable(@var{VARIABLE},@var{i})}
+followed by code as for compiling head argument @var{i}. @refill
+
+@item
+The emitted code is a @code{put_*_value(@var{VALUE},@var{i})} followed by
+code as for compiling head argument @var{i}. @refill
+
+@item
+If the principal functors of the two terms do not match, a @code{fail}
+instruction is emitted, otherwise the compiler treats the terms
+recursively. @refill
+
+@item
+A @code{fail} instruction is emitted.
+@end enumerate
+
+@item 'C'(@var{A}, @var{B}, @var{C})
+Compiled as @code{@var{A} = [@var{B}|@var{C}]}.
+
+@item @var{Value} is @var{Expr}
+Compiled as code for evaluating the arithmetic expression @var{Expr}
+into a temporary @var{Temp} followed for code for a goal
+@code{@var{Value} = @var{Temp}}.  If @var{Expr} is a variable, code is
+emitted for evaluating the arithmetic expression @code{+@var{Expr}} into
+@var{Temp} instead. @refill
+
+@cindex arithmetic expression
+@cindex expression, arithmetic
+Compilation of an expression @var{Expr} into a temporary @var{Temp}
+proceeds as follows, discriminating on the abstract syntax of
+@var{Temp}:
+
+@table @code
+@item structure(@var{F},[@var{X}])
+where @var{F} is a unary arithmetic operator:  @var{X} is recursively
+compiled into a temporary @var{T} and a
+@code{function_1(@var{F},@var{Temp},@var{T}} instruction is emitted. @refill
+
+@item structure(@var{F},[@var{X},@var{Y}])
+where @var{F} is a binary arithmetic operator: @var{X} and @var{Y} are
+recursively compiled into temporaries @var{T} and @var{U} and a
+@code{function_2(@var{F},@var{Temp},@var{T},@var{U}} instruction is
+emitted. @refill
+
+@item constant(@var{K})
+where @var{K} is a number: compiled to a
+@code{put_constant(@var{K},@var{Temp})} @refill
+
+@item var(@var{D},@var{N})
+compiled to a @code{put_*_value(@var{N},@var{Temp})}. @refill
+
+@end table
+
+@item arg(@var{A}, @var{B}, @var{C})
+@itemx compare(@var{C}, @var{A}, @var{B})
+Compiled as code for putting two body goal arguments @var{A} and @var{B}
+into temporaries @var{T1} and @var{T2}, followed by a
+@code{function_2(@var{F},@var{T3},@var{T1},@var{T2})} instruction, where
+@var{F} is the predicate name, followed by code for a goal @code{@var{C}
+= @var{T3}}. @refill
+
+@item atom(@var{A})
+@itemx atomic(@var{A})
+@itemx integer(@var{A})
+@itemx nonvar(@var{A})
+@itemx number(@var{A})
+@itemx var(@var{A})
+Compiled as code for putting a body goal argument @var{A} into a
+temporary @var{T1}, followed by a @code{builtin_1(@var{F},@var{T1})}
+instruction, where @var{F} is the predicate name. @refill
+
+@item @var{A} == @var{B}
+@itemx @var{A} \== @var{B}
+@itemx @var{A} @@< @var{B}
+@itemx @var{A} @@>= @var{B}
+@itemx @var{A} @@> @var{B}
+@itemx @var{A} @@=< @var{B}
+@itemx @var{A} =.@. @var{B}
+Compiled as code for putting two body goal argument @var{A} and @var{B}
+into temporaries @var{T1} and @var{T2}, followed by a
+@code{builtin_2(@var{F},@var{T1},@var{T2})} instruction, where @var{F}
+is the predicate name. @refill
+
+@item @var{A} =:= @var{B}
+@itemx @var{A} =\= @var{B}
+@itemx @var{A} < @var{B}
+@itemx @var{A} >= @var{B}
+@itemx @var{A} > @var{B}
+@itemx @var{A} =< @var{B}
+Compiled as code for evaluating two arithmetic expressions @var{A} and
+@var{B} into temporaries @var{T1} and @var{T2}, followed by a
+@code{builtin_2(@var{F},@var{T1},@var{T2})} instruction, where @var{F}
+is the predicate name. @refill
+
+@item functor(@var{A},@var{B},@var{C})
+Compiled as code for putting three body goal argument @var{A}, @var{B},
+and @var{C} into temporaries @var{T1}, @var{T2}, and @var{T3}, followed
+by a @code{builtin_3(functor,@var{T1},@var{T2},@var{T3})} instruction. @refill
+
+@end table
+
+@node     Extract, Analyze, CG Inline, Top
+@comment  node-name,  next,  previous,  up
+@section Extract indexing information
+
+The task of this phase is to extract information about which values the
+first head argument can take in order to match the clause, and also to
+perform certain transformations on the generated code.
+
+The indexing information is extracted in part from the abstract syntax
+tree and in part from the generated code.  The extracted information
+is represented as a term @code{type_key(@var{M},@var{K},@var{C})}
+with arguments denoting: @refill
+
+@table @var
+@item M
+A type mask, encoding which type the first argument may have if this
+clause is a candidate for a match.  The type mask is represented as an
+integer whose bits encode the types @dfn{variable}, @dfn{number},
+@var{atom}, @dfn{list}, and @dfn{structure}. @refill
+
+@item K
+A key specifier, encoding which principal functor an instantiated first
+argument may have if this clause is a candidate for a match.  The key
+specifier is represented as:
+
+@table @code
+@item nohash
+denoting no constraint on the principal functor,
+
+@item hash(@var{K})
+where @var{K} is a constant or a functor specifier (@var{F}/@var{A}),
+denotes the constraint that the principal functor must be @var{K}. @refill
+@end table
+
+@item C
+If this is @code{cut}, an implicit cut should take effect if this
+clause is entered with a first argument which fulfills the above
+constraints.  Otherwise this is @code{nocut}. @refill
+@end table
+
+The above information is used solely for indexing purposes, and is not
+present in the final clause code.  The @var{M} and @var{C} items are
+partly extracted from the abstract syntax tree, as part of the process
+of breaking off disjunctions and the like (@pxref{Spawn}).  If the first
+head argument is written as a variable @var{X}, The following situations
+are recognized in the abstract syntax tree: @refill
+
+@itemize @bullet
+@item
+Simple type tests on @var{X} that occur immediately after the head by
+the predicates @code{var/1}, @code{nonvar/1}, @code{atom/1},
+@code{atomic/1}, or @code{number/1}, or combinations composed by
+@code{\+ @var{T1}}, @code{(@var{T1},@var{T2})}, or
+@code{(@var{T1};@var{T2})}, where @var{T1} and @var{T2} are simple or
+composed type tests, are recognized. @refill
+
+If all head arguments are unique variables, such type tests disappear
+from the clause code and become encoded in the type mask.  If not all
+head arguments are unique variables, the head unification could bind
+@var{X} due to sharing between variables, and so the type mask mechanism
+has to allow unbound variables followed by an explicit test.  Thus, type
+tests are encoded in the type mask as well as in the clause code, but
+the @dfn{variable} type is always present in the type mask. @refill
+
+@item
+If all head arguments are unique variables, a cut immediately after the
+head, possibly preceded by type tests on @var{X}, means that an implicit
+cut should take effect if this clause is entered with a first argument
+which satisfies the type mask.  No explicit cut appears in the clause
+code. @refill
+@end itemize
+
+The @var{K} item (the key specifier) is extracted from the generated WAM
+code (@pxref{Clause}), which may contribute to the type mask too.  If
+the first WAM instruction @var{I0} is a @dfn{special get instruction},
+possibly preceded by @code{get_*_variable} instructions, @var{I0} is
+replaced by an @dfn{indexed get instruction} according to the table: @refill
+
+@example
+Special get instruction Indexed get instruction Key specifier
+======================= ======================= =============
+
+get_constant(K,0)       get_constant_x0(K)      hash(K)
+get_nil(0)              get_nil_x0              hash([])
+get_structure(F,0)      get_structure_x0(F)     hash(F)
+get_list(0)             get_list_x0             hash('.'/2)
+@end example
+
+Executing an indexed get instructions is considerably cheaper than
+executing an ordinary get instruction.  Indexed get instructions know
+that X0 has already been dereferenced and contain the correct value.
+The above get instruction transformation is only done if no implicit cut
+is in effect (the @var{C} item is @code{nocut}). @refill
+
+Although not relevant to extracting indexing information, other
+transformations on the first chunk are also done in this phase:
+
+@itemize @bullet
+@item
+All @code{get_*_variable(@var{A},@var{B})} instructions that occur
+before the @code{neck} are moved to after the @code{neck}.  We can prove
+that this transformation preserves semantics by considering all the
+instructions involved: @refill
+
+@itemize ---
+@item
+The semantics of the moved @code{get_*_variable} instructions is
+unchanged, because all the @var{B}s are still valid after the
+@code{neck}.  This follows from the single assignment property of
+temporaries and from the fact that input arguments are valid at least up
+to the @code{neck}.  @xref{Clause}. @refill
+
+@item
+The semantics of the @code{neck} is unchanged, because input arguments
+are valid at least up to the @code{neck}, and none of the @var{A}s
+denotes an input argument. @refill
+
+@item
+The semantics of all the other instructions up to the @code{neck} is
+unchanged, because none of the @var{A}s are used before the @code{neck}.
+This is guaranteed by cache mechanism for temporaries and argument
+registers. @refill
+@end itemize
+
+@item
+If any @dfn{cuts} precede the @code{neck}, the @code{neck} is placed
+immediately prior to the first @dfn{cut}.  Otherwise, the @code{neck} is
+moved back over any sequence of instructions that cannot fail. @refill
+@end itemize
+
+As shown earlier (@pxref{Clause}), the @code{neck} may be placed
+anywhere betweenthe beginning of the chunk and the put sequence for the
+first general goal. @refill
+
+@node     Analyze, Temp, Extract, Top
+@comment  node-name,  next,  previous,  up
+@section Analyze lifetimes of temporary variables
+
+For each instruction in a translated clause, we compute the set of
+temporary variables and argument registers that are live before that
+instruction is executed.  These sets are called @dfn{live variable sets}
+and are needed for assigning argument registers to temporary variables
+and for certain optimizations such as transforming
+@code{unify_x_variable(_)} into @code{unify_void}. @refill
+@cindex live variable set
+@cindex set, live variable
+
+The technique used is fairly standard (see e.g.
+@cite{Compilers---Principles, Techniques, and Tools} by A.V. Aho, R.
+Sethi, and J.D. Ullman, Addison-Wesley, 1985) and consists in walking
+the code in reverse order, adding or deleting such temporaries and
+registers from the current set that are used or defined by each
+instruction, respectively.
+
+Expressed more formally, let @var{lv(i)} denote the live variable set of
+instruction @var{i}, @var{def(i)} the set of temporaries and registers
+defined by instruction @var{i}, and @var{use(i)} the set of temporaries
+and registers used by instruction @var{i}.  For a block of @var{N}
+instructions terminated by a procedure call we define: @refill
+
+@display
+@var{lv(N+1)} = [],
+@var{lv(i)} = @var{lv(i+1)} - @var{def(i)} + @var{use(i)}, for @var{i}=<@var{N}
+@end display
+
+The @var{def} and @var{use} functions can be summarized by the table:
+
+@example
+Instruction             Def     Use             Comment
+===========             ===     ===             ========
+
+neck(N)                 []      [0,1,...,N-1]
+cut_x(A)                []      [A]
+function_1(_,V,X)       [V]     [X]
+function_2(_,V,X,Y)     [V]     [X,Y]
+builtin_1(_,X)          []      [X]
+builtin_2(_,X,Y)        []      [X,Y]
+builtin_3(_,X,Y,Z)      []      [X,Y,Z]
+get_x_variable(V,A)     [V]     [A]             /* 1. */
+get_y_variable(_,A)     []      [A]
+get_x_value(V,A)        []      [A,V]
+get_y_value(_,A)        []      [A]
+get_constant(_,A)       []      [A]
+get_nil(A)              []      [A]
+get_structure(_,A)      []      [A]
+get_list(A)             []      [A]
+put_x_variable(V,A)     [V,A]   []              /* 2. */
+put_y_variable(_,A)     [A]     []
+put_x_value(V,A)        [A]     [V]             /* 1. */
+put_y_value(_,A)        [A]     []
+put_x_unsafe_value(V,A) [A]     [V]
+put_y_unsafe_value(_,A) [A]     []
+put_constant(_,A)       [A]     []
+put_nil(A)              [A]     []
+put_structure(_,A)      [A]     []
+put_list(A)             [A]     []
+unify_x_variable(V)     [V]     []              /* 3. */
+unify_x_value(V)        []      [V]
+unify_x_local_value(V)  []      [V]
+
+Default                 []      []
+
+@end example
+
+Comments:
+
+@enumerate
+@item
+A move operation is redundant if the target register has no next use.
+Thus if @var{i} is @code{put_x_value(@var{V},@var{A})} or
+@code{get_x_variable(@var{A},@var{V})}, @var{lv} is defined as: @refill
+
+@display
+@var{lv(i)} = @var{lv(i+1)} - [@var{A}] + [@var{V}], if @var{lv(i+1)} contains @var{A},
+@var{lv(i)} = @var{lv(i+1)} otherwise.
+@end display
+
+@item
+If neither @var{V} nor @var{A} has next use after a
+@code{put_x_variable(@var{V},@var{A})} instruction, the peep hole
+optimizer will delete it.  If @var{V} and @var{A} are assigned the same
+argument register, or if only one of them has next use after the
+instruction, the peep hole optimizer will transform it into
+@code{put_x_void(@var{V})}. @refill
+
+@item
+If @var{V} has no next use after a @code{unify_x_variable(@var{V})}
+instruction, the peep hole optimizer will transform it into
+@code{unify_void}. @refill
+@end enumerate
+
+Procedure calls are to treated as @dfn{defining} all temporaries and
+arguments and @dfn{using} argument registers up to the arity of the
+called procedure.  One could make the assumption that built-in
+predicates preserve all temporaries.  For simplicity, we have not taken
+this approach.
+
+We shall be considering the clause:
+
+@example
+p(N, T, Vars, S0, S) :-
+         arg(N, T, A),
+         p(A, Vars, S0, S1).
+         M is N-1,
+         p(M, T, Vars, S1, S).
+@end example
+
+@noindent
+which compiles to the following annotated list of instructions.
+@code{heap_margin} instructions are omitted for simplicity.
+
+@example
+Live Variables          Instruction
+==============          ===========
+
+[0,1,2,3,4]             function_2(arg,T1,0,1)
+[0,1,2,3,4,T1]          put_x_value(T1,A)       /* move */
+[0,1,2,3,4,A]           neck(5)
+[0,1,2,3,4,A]           get_y_variable(4,0)
+[1,2,3,4,A]             get_y_variable(0,1)
+[2,3,4,A]               get_y_variable(1,2)
+[2,3,4,A]               get_x_variable(S0,3)    /* move */
+[2,3,4,A]               get_y_variable(3,4)
+[2,3,A]                 put_x_value(A,0)
+[0,2,3]                 put_x_value(2,1)
+[0,1,3]                 put_x_value(3,2)
+[0,1,2]                 put_y_variable(2,3)
+[0,1,2,3]               call(p/4,5)
+[]                      put_y_value(4,N)
+[N]                     function_1(-1,M,N)
+[M]                     put_x_value(M,0)        /* move */
+[0]                     put_y_value(0,1)
+[0,1]                   put_y_value(1,2)
+[0,1,2]                 put_y_unsafe_value(2,3)
+[0,1,2,3]               put_y_value(3,4)
+[0,1,2,3,4]             execute(p/5)
+[]
+@end example
+
+Evidently, an optimal register allocation for this example would be:
+
+@example
+A = T1 = 5, M = N = 0, S0 = 3
+@end example
+
+This register allocation would enable us to excise the three moves.
+Just how register allocation is done is the subject of the following
+section.
+
+@node     Temp, Temp Assign, Analyze, Top
+@comment  node-name,  next,  previous,  up
+@section Allocate temporary variables
+
+In this section we introduce the notation @code{move(@var{i},@var{j})}
+as the canonical representation of the synonymous @code{get_x_variable
+@var{j},@var{i}} and @code{put_x_value @var{i},@var{j}}).
+
+In the previous phase, live variable sets were computed for each
+instruction.  The elements of these sets are temporary variables
+(represented as logical variables) and argument registers (represented
+as integers).  The task of this phase is to find a @dfn{correct} and
+@dfn{optimal} assignment of register numbers to temporary variables.
+
+@node     Temp Assign, Temp Impl, Temp, Top
+@comment  node-name,  next,  previous,  up
+@subsection Correct and Optimal Assignments
+
+The compiler does not attempt to achieve an optimal assignment, but we
+can formulate two quality measures:
+
+@itemize @bullet
+@item
+It is desirable to transform as many @code{move(@var{i},@var{j})}
+instructions as possible into no-ops, by assigning the same register
+number to @var{i} and @var{j}, as no-ops are deleted by the peep hole
+optimiser. @refill
+
+@item
+It is desirable to maximize the use of such argument registers that
+reside in machine registers.  As this is highly implementation
+dependent, we simply assume that it is cheaper to access registers with
+low numbers than registers with high numbers.
+@end itemize
+
+@display
+An assignment is correct if it preserves the cardinality of all live
+variable sets, i.e. if it doesn't cause two elements of the same set to
+become merged.  Two elements becoming merged means that an argument
+register is holding two distinct values at once.  This is called a
+@dfn{conflict}.
+@cindex conflict
+@end display
+
+The above correctness condition can be relaxed if we take @dfn{aliasing}
+into account.  Two temporaries or registers are aliases if they do hold
+the same value.  Aliases are introduced by @code{move} instructions.
+
+The single assignment property of temporaries says that they denote
+unique values.  As opposed to temporaries, argument registers are reused
+since they denote head and goal arguments.  Under some conditions,
+however, argument registers also denote unique values:
+
+@itemize @bullet
+@item
+In the first chunk of a clause, argument registers which are not used
+both in the head and in the procedure call denote unique values.
+
+@item
+In subsequent chunks, argument registers are only used for procedure
+calls and so denote unique values.
+@end itemize
+
+For each chunk we define a relation @var{Alias} such that @var{(i,j)} is
+in @var{Alias} iff the chunk contains a @code{move(@var{i},@var{j})}
+instruction and @var{i} and @var{j} are either temporary variables or
+argument registers denoting unique values.  We also define @var{Alias*}
+as the transitive closure of @var{Alias}. @refill
+
+We can now formulate a relaxed correctness condition to express the
+fact that aliased elements may be merged:
+
+@display
+An assignment @var{A} for a chunk is correct if for each pair
+@var{(i,j)} of elements of any live variable set, @var{A(i) =\= A(j)},
+or @var{(i,j)} is in @var{Alias*}, or @var{(j,i)} is in @var{Alias*}.
+@end display
+
+Note that there may be other correct assignments involving aliasing of
+reused argument registers, but we will not attempt to relax the
+correctness condition further.
+
+@node     Temp Impl, Peep, Temp Assign, Top
+@comment  node-name,  next,  previous,  up
+@subsection Implementation
+
+The actual implementation intertwines constructing the live variable
+sets and assigning temporary variable numbers, and proceeds in two
+steps:
+
+@itemize @bullet
+@item
+Each @code{move(@var{i},@var{j})} instruction is considered, and @var{i}
+and @var{j} are equated if this doesn't cause a conflict. @refill
+
+Two different tests are used for this: one for the first chunk of a
+clause, and the other for the subsequent chunks.  Since in the
+subsequent chunks @emph{all} argument registers denote unique values,
+@var{i} and @var{j} can @emph{always} be equated if one of them is a
+temporary variable.  In the first chunk, @var{i} and @var{j} are equated
+under one of the following conditions: @refill
+
+@itemize ---
+@item
+@var{i} and @var{j} are temporary variables.
+
+@item
+@var{i} is a temporary variable and @var{j} is an argument register
+which is not being reused (used both in the head and in the procedure
+call).
+
+@item
+@var{i} is a temporary variable and @var{j} is an argument register
+which is being reused, and no live variable set contains both @var{i}
+and @var{j}.  Just how this test is performed is discussed in detail
+below.
+
+@item
+one of the above conditions applies to @var{j} and @var{i}.
+@end itemize
+
+@item
+The live variable sets are constructed, as described in the previous
+section.  Whenever an uninstantiated set element is encountered, it is
+assigned the lowest variable number that is not in the set.
+@end itemize
+
+
+To check whether any live variable set contains both a temporary
+variable @var{i} and an argument register @var{j}, we do not actually
+construct the live variable sets.  Instead, we define a finite automaton
+with the states:
+
+@table @code
+@item Q
+Initial state: denotes a set which does not contain @var{i} or @var{j}.
+
+@item QI
+Denotes a set which contains @var{i} but not @var{j}.
+
+@item QJ
+Denotes a set which contains @var{j} but not @var{i}.
+
+@item QIJ
+Final state: denotes a set which contains @var{i} and @var{j}.  If
+reached, @var{i} and @var{j} must not be merged.
+@end table
+
+The chunk is traversed in reverse order and each instruction acts as a
+series of state transducers in unison with the @var{vl} function.  Thus,
+state transitions occur if the instruction defines or uses @var{i} or
+@var{j}.  Defines are treated before uses.  The transition functions are
+defined by the table:
+
+@example
+Instruction     Q       QI      QJ
+===========     =       ==      ==
+
+def(I)          Q       Q       QJ
+def(J)          Q       QI      Q
+def(_)          Q       QI      QJ
+use(I)          QI      QI      QIJ
+use(J)          QJ      QIJ     QJ
+use(_)          Q       QI      QJ
+@end example
+
+Moves are treated specially, because if @var{x} and @var{y} have no next
+use after a @code{move(@var{x},@var{y})} instruction, then they have no
+next use before the instruction either since it becomes a no-op.  See
+also comment 1 after the definition of the @var{lv} function:
+
+@example
+Instruction     Q       QI      QJ
+===========     =       ==      ==
+
+move(I,I)       Q       QI      QJ
+move(I,J)       Q       QI      QI
+move(I,_)       QI      QI      QIJ
+move(J,I)       Q       QJ      QJ
+move(J,J)       Q       QI      QJ
+move(J,_)       QJ      QIJ     QJ
+move(_,I)       Q       Q       QJ
+move(_,J)       Q       QI      Q
+move(_,_)       Q       QI      QJ
+@end example
+
+For iterative and recursive clauses, the register allocator produces two
+versions of the first chunk:  one version containing the @code{neck}
+instruction and another version without the @code{neck}.  As the
+@code{neck} constrains the register allocation, the ``non-neck version''
+can sometimes be significantly better than the other version.  It is
+arranged so that the ``neck version'' is the clause entry point when
+there the clause is called nondeterministically and the other version
+when called deterministically.  Usually, a common suffix of the two code
+streams can be found, and the code is arrange so that the ``neck
+version'' branches into the ``non-neck version'' at the beginning of
+that suffix. @refill
+
+For halting clauses, only one version is produced.  Since halting
+clauses do not contain any general procedure calls, all argument
+registers denote unique values (input arguments), and so all
+@code{move(@var{x},@var{y})} instructions can be collapsed.  Although
+the @code{neck} instruction still constrains the register allocator, the
+constraints cannot prevent any @code{move}s from being collapsed. @refill
+
+When compiling to native code, only the ``non-neck version'' is produced
+as the native code generator does not optimize shallow backtracking.
+
+@node     Peep, Index, Temp Impl, Top
+@comment  node-name,  next,  previous,  up
+@section Peep hole optimization and final editing
+
+This phase traverses the entire code for all internal predicates and
+performs the following replacements and deletions:
+
+@table @code
+
+@item get_x_variable(@var{X},@var{X})
+@itemx put_x_value(@var{X},@var{X})
+@itemx put_x_variable(void,void)
+are deleted
+
+@item put_x_variable(@var{X},@var{X})
+is replaced by @code{put_x_void(@var{X})}
+
+@item unify_x_variable(void)
+is replaced by @code{unify_void}
+
+@item execute(true/0)
+is replaced by @code{proceed}
+
+@item execute(fail/0)
+is replaced by @code{fail}
+
+@item call(@var{P},@var{n})
+is replaced by @code{call(@var{P},@var{n}[,@var{k}])}.
+
+@item cut_x(-1)
+is replaced by @code{cut}
+
+@item get_x_variable(@var{X},-1)
+is replaced by @code{choice_x(@var{X})}
+
+@item get_y_variable(@var{X},-1)
+is replaced by @code{choice_y(@var{X})}
+
+@item get_y_variable(@var{X},@var{A})
+After the first @code{call}, this is replaced by
+@code{get_y_first_value(@var{X},@var{A})} @refill
+
+@item put_y_variable(@var{X},@var{A})
+After the first @code{call}, this is replaced by
+@code{put_y_value(@var{X},@var{A})}.  Before the first @code{call}, this
+is replaced by @code{put_y_variable(@var{X},@var{A}[,@var{k}])}. @refill
+
+@item unify_y_variable(@var{X})
+After the first @code{call}, this is replaced by
+@code{unify_y_first_value(@var{X})}. @refill
+
+@item heapmargin_call(@var{I},@var{A})
+@itemx heapmargin_exit(@var{I})
+are deleted if @var{I} is below a certain threshold
+
+@end table
+
+The following extra editing is also performed:
+
+@itemize @bullet
+@item
+@code{allocate} and @code{deallocate} instructions are inserted where
+appropriate.  @code{allocate} instructions are inserted as late as
+possible, i.e. just before the first procedure call or permanent
+variable reference in a clause, to increase the chance of avoiding the
+work done by @code{allocate}. @refill
+
+@item
+A sequence of @code{put_y_void(@var{i}[,@var{k}])} instruction followed
+by an @code{allocate2} is inserted before the first @code{call}
+instruction to ensure that the environment is fully initialized.
+Considerations for garbage collection dictate this. @refill
+
+@end itemize
+
+@node     Index, Bytecode Intro, Peep, Top
+@comment  node-name,  next,  previous,  up
+@section Emit indexing instructions
+
+Indexing instructions provide pathways from a predicate's entrypoint to
+individual clauses using indexing on the first argument where possible.
+Indexing is integrated into the emulator's procedure call mechanism, and
+so no indexing instructions need to be emitted for emulated predicates.
+Indexing instructions are emitted when compiling to symbolic WAM code or
+to native code (compilation modes @code{wam}, @code{fastcode}, and
+@code{nql}).
+
+The indexing code is emitted as a function of the previously extracted
+indexing information.  The following indexing instructions are used:
+
+@table @code
+@item try(@var{Label},@var{k})
+This represents the first of a list of alternative clauses for some goal
+of arity @var{k}.  @code{Label} is the nondeterministic entrypoint of
+the clause. @refill
+
+@item trust(@var{Label},@var{k})
+This represents a subsequent nonlast alternative clause for some goal of
+arity @var{k}.  @code{Label} is the nondeterministic entrypoint of the
+clause. @refill
+
+@item try(@var{Label},@var{k})
+This represents the last of a list of alternative clauses for some goal
+of arity @var{k}.  @code{Label} is the deterministic entrypoint of the
+clause. @refill
+
+@item execute(@var{Label})
+This represents the single alternative clause for some goal.
+@code{Label} is the deterministic entrypoint of the clause. @refill
+
+@item fail
+This denotes that no matching alternative exists for some goal.
+
+@item choice
+This denotes that the predicate will use the value of the current
+choicepoint register.  It is an advice to the native code generator.
+
+@item switch_on_term(@var{Va},@var{Nu},@var{At},@var{Li},@var{St})
+A 5-branch switch is performed depending on the tag of X0 after
+dereferencing:
+@table @var
+@item Va
+Branch label if X0 is a variable.
+@item Nu
+Branch label if X0 is a number.
+@item At
+Branch label if X0 is an atom.
+@item Li
+Branch label if X0 is a list.
+@item St
+Branch label if X0 is a structure.
+@end table
+
+@item switch_on_constant(@var{Table},@var{Default})
+This instruction dispatches on X0 to the appropriate label, where
+@var{Table} is an association list of keys and labels.  If the key is
+not found, it branches to @var{Default}.  X0 has already been
+dereferenced to an atom.  @refill
+
+@item switch_on_structure(@var{Table},@var{Default})
+This instruction dispatches on the functor of X0 to the appropriate
+label, where @var{Table} is an association list of keys and labels.  If
+the key is not found, it branches to @var{Default}.  X0 is already
+dereferenced to a structure.  @refill
+@end table
+
+For predicates without arguments and for predicates where the first
+argument of every clause is a variable without type restrictions, the
+indexing code is just a try sequence (see below), optionally preceded by
+@code{choice} instruction.  For other predicates, the indexing code has
+the general format:
+
+@example
+    [choice]
+     switch_on_term(Va,Nu,At,Ls,St)
+Va:  <try sequence>
+
+Nu:  switch_on_constant([[S0,Nu0],[S1,Nu1],...,[Sn,Nun]],NuD)
+Nui: <try sequence>
+
+At:  switch_on_constant([[S0,At0],[S1,At1],...,[Sn,Atn]],AtD)
+Ati: <try sequence>
+
+Ls:  <try sequence>
+
+St:  switch_on_structure([[S0,St0],[S1,St1],...,[Sn,Stn]],StD)
+Sti: <try sequence>
+@end example
+
+@noindent
+where a @dfn{try sequence} has one of the three formats:
+
+@example
+No alternatives         1 alternative           >1 alternatives
+===============         =============           ===============
+
+fail                    execute(Label)          try(Label1)
+                                                retry(Label2)
+                                                ...
+                                                trust(Labeln)
+@end example
+
+@noindent
+where each @var{Label} refers to a clause.  If a @code{switch_on_*}
+instruction refers to a try sequence with a single alternative, the
+@code{switch_on_*} instruction refers directly to the clause label
+instead of indirecting via an @code{execute} instruction. @refill
+
+
+Thus the general strategy is:
+
+@enumerate
+@item
+Dispatch on the datatype of X0.
+
+@item
+For variables and lists, we now have a clause sequence.  For constants
+and structures, dispatch on the principal functor of X0 to get the
+appropriate clause sequence.
+
+@item
+If no alternatives, just fail.  If a single alternative, execute it.  If
+more than one alternative, establish a choice point and execute the
+first alternative.
+@end enumerate
+
+
+@node     Bytecode Intro, Insn Group 1, Index, Top
+@comment  node-name,  next,  previous,  up
+@chapter Bytecode Representation
+
+@cindex bytecode
+The emulator's internal bytecode representation does not exactly match
+the WAM instruction set listed in Chapter Emulator.  To save space and
+reduce the cost of instruction decoding, certain opcodes represent
+pairs or sequences of WAM instructions.
+
+The emulator's instruction set is listed below, together with their
+corresponding WAM instructions.  Many of these instructions exist in an
+``odd address'' version and an ``even address'' version to ensure proper
+alignment (modulo 32 bits), required by many computer architectures.
+Only the ``even address'' versions are listed here, together with their
+arguments.  The ``odd address'' versions have names that end with a
+@samp{Q}.  For ``odd address'' instructions, a padding 16-bit zero is
+placed between the opcode and the argument list.  @refill
+
+The instructions are divided into two groups.  @refill
+
+@node     Insn Group 1, Insn Group 2, Bytecode Intro, Top
+@comment  node-name,  next,  previous,  up
+@section Instruction Group 1
+
+@example
+INITCALL(Pred,FrameSize)
+        allocate
+        put_y_void(Yi) /* for all 0 =< i < FrameSize */
+        allocate2
+        call(Pred,FrameSize)
+
+FIRSTCALL(Pred,FrameSize)
+        allocate2
+        call(Pred,FrameSize)
+
+FIRSTCALL_1(Yi,Pred,FrameSize)
+        put_y_void(Yi)
+        allocate2
+        call(Pred,FrameSize)
+
+FIRSTCALL_2(Yi,Yj,Pred,FrameSize)
+        put_y_void(Yi)
+        put_y_void(Yj)
+        allocate2
+        call(Pred,FrameSize)
+
+FIRSTCALL_3(Yi,Yj,Yk,Pred,FrameSize)
+        put_y_void(Yi)
+        put_y_void(Yj)
+        put_y_void(Yk)
+        allocate2
+        call(Pred,FrameSize)
+
+FIRSTCALL_4(Yi,Yj,Yk,Yl,Pred,FrameSize)
+        put_y_void(Yi)
+        put_y_void(Yj)
+        put_y_void(Yk)
+        put_y_void(Yl)
+        allocate2
+        call(Pred,FrameSize)
+
+FIRSTCALL_5(Yi,Yj,Yk,Yl,Ym,Pred,FrameSize)
+        put_y_void(Yi)
+        put_y_void(Yj)
+        put_y_void(Yk)
+        put_y_void(Yl)
+        put_y_void(Ym)
+        allocate2
+        call(Pred,FrameSize)
+
+FIRSTCALL_6(Yi,Yj,Yk,Yl,Ym,Yn,Pred,FrameSize)
+        put_y_void(Yi)
+        put_y_void(Yj)
+        put_y_void(Yk)
+        put_y_void(Yl)
+        put_y_void(Ym)
+        put_y_void(Yn)
+        allocate2
+        call(Pred,FrameSize)
+
+FIRSTCALL_7(Yi,Yj,Yk,Yl,Ym,Yn,Yo,Pred,FrameSize)
+        put_y_void(Yi)
+        put_y_void(Yj)
+        put_y_void(Yk)
+        put_y_void(Yl)
+        put_y_void(Ym)
+        put_y_void(Yn)
+        put_y_void(Yo)
+        allocate2
+        call(Pred,FrameSize)
+
+FIRSTCALL_8(Yi,Yj,Yk,Yl,Ym,Yn,Yo,Yp,Pred,FrameSize)
+        put_y_void(Yi)
+        put_y_void(Yj)
+        put_y_void(Yk)
+        put_y_void(Yl)
+        put_y_void(Ym)
+        put_y_void(Yn)
+        put_y_void(Yo)
+        put_y_void(Yp)
+        allocate2
+        call(Pred,FrameSize)
+
+FIRSTCALL_N(Int,Yi,...,Yin,Pred,FrameSize)
+        put_y_void(Yi)
+        ...
+        put_y_void(Yin)
+        allocate2
+        call(Pred,FrameSize)
+
+CALL(Pred,FrameSize)
+        call(Pred,FrameSize)
+
+CALL_1(Yi,Pred,FrameSize)
+        put_y_[unsafe]_value(Yi,0)
+        call(Pred,FrameSize)
+
+CALL_2(Yi,Yj,Pred,FrameSize)
+        put_y_[unsafe]_value(Yi,1)
+        put_y_[unsafe]_value(Yj,0)
+        call(Pred,FrameSize)
+
+CALL_3(Yi,Yj,Yk,Pred,FrameSize)
+        put_y_[unsafe]_value(Yi,2)
+        put_y_[unsafe]_value(Yj,1)
+        put_y_[unsafe]_value(Yk,0)
+        call(Pred,FrameSize)
+
+CALL_4(Yi,Yj,Yk,Yl,Pred,FrameSize)
+        put_y_[unsafe]_value(Yi,3)
+        put_y_[unsafe]_value(Yj,2)
+        put_y_[unsafe]_value(Yk,1)
+        put_y_[unsafe]_value(Yl,0)
+        call(Pred,FrameSize)
+
+CALL_5(Yi,Yj,Yk,Yl,Ym,Pred,FrameSize)
+        put_y_[unsafe]_value(Yi,4)
+        put_y_[unsafe]_value(Yj,3)
+        put_y_[unsafe]_value(Yk,2)
+        put_y_[unsafe]_value(Yl,1)
+        put_y_[unsafe]_value(Ym,0)
+        call(Pred,FrameSize)
+
+CALL_6(Yi,Yj,Yk,Yl,Ym,Yn,Pred,FrameSize)
+        put_y_[unsafe]_value(Yi,5)
+        put_y_[unsafe]_value(Yj,4)
+        put_y_[unsafe]_value(Yk,3)
+        put_y_[unsafe]_value(Yl,2)
+        put_y_[unsafe]_value(Ym,1)
+        put_y_[unsafe]_value(Yn,0)
+        call(Pred,FrameSize)
+
+CALL_7(Yi,Yj,Yk,Yl,Ym,Yn,Yo,Pred,FrameSize)
+        put_y_[unsafe]_value(Yi,6)
+        put_y_[unsafe]_value(Yj,5)
+        put_y_[unsafe]_value(Yk,4)
+        put_y_[unsafe]_value(Yl,3)
+        put_y_[unsafe]_value(Ym,2)
+        put_y_[unsafe]_value(Yn,1)
+        put_y_[unsafe]_value(Yo,0)
+        call(Pred,FrameSize)
+
+CALL_8(Yi,Yj,Yk,Yl,Ym,Yn,Yo,Yp,Pred,FrameSize)
+        put_y_[unsafe]_value(Yi,7)
+        put_y_[unsafe]_value(Yj,6)
+        put_y_[unsafe]_value(Yk,5)
+        put_y_[unsafe]_value(Yl,4)
+        put_y_[unsafe]_value(Ym,3)
+        put_y_[unsafe]_value(Yn,2)
+        put_y_[unsafe]_value(Yo,1)
+        put_y_[unsafe]_value(Yp,0)
+        call(Pred,FrameSize)
+
+CALL_N(Int,Yi,...,Yin,Pred,FrameSize)
+        put_y_[unsafe]_value(Yi,n)
+        ...
+        put_y_[unsafe]_value(Yin,0)
+        call(Pred,FrameSize)
+
+LASTCALL(Pred)
+        deallocate
+        execute(Pred)
+
+LASTCALL_1(Yi,Pred)
+        put_y_[unsafe]_value(Yi,0)
+        deallocate
+        execute(Pred)
+
+LASTCALL_2(Yi,Yj,Pred)
+        put_y_[unsafe]_value(Yi,1)
+        put_y_[unsafe]_value(Yj,0)
+        deallocate
+        execute(Pred)
+
+LASTCALL_3(Yi,Yj,Yk,Pred)
+        put_y_[unsafe]_value(Yi,2)
+        put_y_[unsafe]_value(Yj,1)
+        put_y_[unsafe]_value(Yk,0)
+        deallocate
+        execute(Pred)
+
+LASTCALL_4(Yi,Yj,Yk,Yl,Pred)
+        put_y_[unsafe]_value(Yi,3)
+        put_y_[unsafe]_value(Yj,2)
+        put_y_[unsafe]_value(Yk,1)
+        put_y_[unsafe]_value(Yl,0)
+        deallocate
+        execute(Pred)
+
+LASTCALL_5(Yi,Yj,Yk,Yl,Ym,Pred)
+        put_y_[unsafe]_value(Yi,4)
+        put_y_[unsafe]_value(Yj,3)
+        put_y_[unsafe]_value(Yk,2)
+        put_y_[unsafe]_value(Yl,1)
+        put_y_[unsafe]_value(Ym,0)
+        deallocate
+        execute(Pred)
+
+LASTCALL_6(Yi,Yj,Yk,Yl,Ym,Yn,Pred)
+        put_y_[unsafe]_value(Yi,5)
+        put_y_[unsafe]_value(Yj,4)
+        put_y_[unsafe]_value(Yk,3)
+        put_y_[unsafe]_value(Yl,2)
+        put_y_[unsafe]_value(Ym,1)
+        put_y_[unsafe]_value(Yn,0)
+        deallocate
+        execute(Pred)
+
+LASTCALL_7(Yi,Yj,Yk,Yl,Ym,Yn,Yo,Pred)
+        put_y_[unsafe]_value(Yi,6)
+        put_y_[unsafe]_value(Yj,5)
+        put_y_[unsafe]_value(Yk,4)
+        put_y_[unsafe]_value(Yl,3)
+        put_y_[unsafe]_value(Ym,2)
+        put_y_[unsafe]_value(Yn,1)
+        put_y_[unsafe]_value(Yo,0)
+        deallocate
+        execute(Pred)
+
+LASTCALL_8(Yi,Yj,Yk,Yl,Ym,Yn,Yo,Yp,Pred)
+        put_y_[unsafe]_value(Yi,7)
+        put_y_[unsafe]_value(Yj,6)
+        put_y_[unsafe]_value(Yk,5)
+        put_y_[unsafe]_value(Yl,4)
+        put_y_[unsafe]_value(Ym,3)
+        put_y_[unsafe]_value(Yn,2)
+        put_y_[unsafe]_value(Yo,1)
+        put_y_[unsafe]_value(Yp,0)
+        deallocate
+        execute(Pred)
+
+LASTCALL_N(Int,Yi,...,Yin,Pred)
+        put_y_[unsafe]_value(Yi,n)
+        ...
+        put_y_[unsafe]_value(Yin,0)
+        deallocate
+        execute(Pred)
+
+EXECUTE(Pred)
+        execute(Pred)
+
+PROCEED
+        proceed
+
+NECK
+        neck
+
+NECK_PROCEED
+        neck
+        proceed
+
+FAIL
+        fail
+
+BRANCH(Int)
+        branch(Int)
+
+PUT_X_VOID(Xi)
+        put_x_void(Xi)
+        
+PUT_X_VARIABLE(Xj,Xk)
+        put_x_variable(Xk,Xj)
+
+PUT_X_VALUE(Xj,Xk)
+        put_x_value(Xk,Xj)
+
+PUT_X_UNSAFE_VALUE(Xj,Xk)
+        put_x_unsafe_value(Xk,Xj)
+
+PUT_Y_FIRST_VARIABLE(Xi,Yi[,m])
+        allocate
+        put_y_variable(Yi,Xi[,m])
+        
+PUT_Y_VARIABLE(Yi,Xi[,m])
+        put_y_variable(Xi,Yi[,m])
+
+PUT_Y_VALUE(Yi,Xi)
+        put_y_value(Xi,Yi)
+
+PUT_Y_UNSAFE_VALUE(Yi,Xi)
+        put_y_unsafe_value(Xi,Yi)
+
+PUT_CONSTANT(Xi,Const)
+        put_constant(Const,Xi)
+
+PUT_STRUCTURE(Xi,Functor)
+        put_structure(Functor,Xi)
+
+PUT_NIL(Xi)
+        put_nil(Xi)
+
+PUT_LIST(Xi)
+        put_list(Xi)
+
+PUT_YFVAR_YVAR(Xj,Yj,Xk,Yk)
+        allocate
+        put_y_variable(Yj,Xj)
+        put_y_variable(Yk,Xk)
+
+PUT_YVAR_YVAR(Xj,Yj,Xk,Yk)
+        put_y_variable(Yj,Xj)
+        put_y_variable(Yk,Xk)
+
+PUT_XVAL_XVAL(Xj,Xk,Xl,Xm)
+        put_x_value(Xk,Xj)
+        put_x_value(Xm,Xl)
+
+PUT_YVAL_YVAL(Xj,Yk,Xl,Ym)
+        put_y_value(Yk,Xj)
+        put_y_value(Ym,Xl)
+
+PUT_YVAL_YUVAL(Xj,Yk,Xl,Ym)
+        put_y_value(Yk,Xj)
+        put_y_unsafe_value(Ym,Xl)
+
+PUT_YUVAL_YVAL(Xj,Yk,Xl,Ym)
+        put_y_unsafe_value(Yk,Xj)
+        put_y_value(Ym,Xl)
+
+PUT_YUVAL_YUVAL(Xj,Yk,Xl,Ym)
+        put_y_unsafe_value(Yk,Xj)
+        put_y_unsafe_value(Ym,Xl)
+
+GET_X_VARIABLE(Xj,Xk)
+        get_x_variable(Xk,Xj)
+
+GET_X_VALUE(Xj,Xk)
+        get_x_value(Xk,Xj)
+
+GET_Y_FIRST_VARIABLE(Xj,Yk)
+        allocate
+        get_y_variable(Yk,Xj)
+
+GET_Y_VARIABLE(Xj,Yk)
+        get_y_variable(Yk,Xj)
+
+GET_Y_FIRST_VALUE(Xj,Yk)
+        get_y_first_value(Yk,Xj)
+
+GET_Y_VALUE(Xj,Yk)
+        get_y_value(Yk,Xj)
+
+GET_CONSTANT(Xi,Const)
+        get_constant(Const,Xi)
+
+GET_STRUCTURE(Xi,Functor)
+        get_structure(Functor,Xi)
+
+GET_NIL(Xi)
+        get_nil(Xi)
+
+GET_LIST(Xi)
+        get_list(Xi)
+
+GET_CONSTRAINT(Xi)
+        get_constraint(Xi)
+
+GET_CONSTANT_X0(Const)
+        get_constant_x0(Const)
+
+GET_STRUCTURE_X0(Functor)
+        get_structure_x0(Functor)
+
+GET_NIL_X0
+        get_nil_x0
+
+GET_LIST_X0
+        get_list_x0
+
+GET_XVAR_XVAR(Xj,Xk,Xl,Xm)
+        get_x_variable(Xk,Xj)
+        get_x_variable(Xm,Xl)
+
+GET_YFVAR_YVAR(Xj,Yk,Xl,Ym)
+        allocate
+        get_y_variable(Yk,Xj)
+        get_y_variable(Ym,Xl)
+
+GET_YVAR_YVAR(Xj,Yk,Xl,Ym)
+        get_y_variable(Yk,Xj)
+        get_y_variable(Ym,Xl)
+
+GET_CONSTANT_NECK_PROCEED(Xi,Const)
+        get_constant(Const,Xi)
+        neck
+        proceed
+
+GET_NIL_NECK_PROCEED(Xi)
+        get_nil(Xi)
+        neck
+        proceed
+
+UNIFY_VOID(Int)
+        unify_void /* repeated Int times */
+
+UNIFY_VOID_1
+        unify_void
+
+UNIFY_VOID_2
+        unify_void
+        unify_void
+
+UNIFY_VOID_3
+        unify_void
+        unify_void
+        unify_void
+
+UNIFY_VOID_4
+        unify_void
+        unify_void
+        unify_void
+        unify_void
+
+UNIFY_X_VARIABLE(Xi)
+        unify_x_variable(Xi)
+
+UNIFY_X_VALUE(Xi)
+        unify_x_value(Xi)
+
+UNIFY_X_LOCAL_VALUE(Xi)
+        unify_x_local_value(Xi)
+
+UNIFY_Y_FIRST_VARIABLE(Yi)
+        allocate
+        unify_y_variable(Yi)
+
+UNIFY_Y_VARIABLE(Yi)
+        unify_y_variable(Yi)
+
+UNIFY_Y_VALUE(Yi)
+        unify_y_value(Yi)
+
+UNIFY_Y_FIRST_VALUE(Yi)
+        unify_y_first_value(Yi)
+
+UNIFY_Y_LOCAL_VALUE(Yi)
+        unify_y_local_value(Yi)
+
+UNIFY_CONSTANT(Const)
+        unify_constant(Const)
+
+UNIFY_STRUCTURE(Functor)
+        unify_structure(Functor)
+
+UNIFY_NIL
+        unify_nil
+
+UNIFY_LIST
+        unify_list
+
+UNIFY_CONSTANT_NECK_PROCEED(Const)
+        unify_constant(Const)
+        neck
+        proceed
+
+UNIFY_NIL_NECK_PROCEED
+        unify_nil
+        neck
+        proceed
+
+CUTB_X(Xi)
+        cut_x(Xi)
+
+CUTB
+        cut
+
+CUTB_X_NECK(Xi)
+        neck
+        cut_x(Xi)
+
+CUTB_NECK
+        neck
+        cut
+
+CUTB_X_NECK_PROCEED(Xi)
+        neck
+        cut_x(Xi)
+        proceed
+
+CUTB_NECK_PROCEED
+        neck
+        cut
+        proceed
+
+CUTE_X(Xi)
+        cut_x(Xi)
+
+CUTE
+        cut
+
+CUTE_X_NECK(Xi)
+        neck
+        cut_x(Xi)
+
+CUTE_NECK
+        neck
+        cut
+
+CUT_Y(Yi)
+        cut_y(Yi)
+
+CHOICE_X(Xi)
+        choice_x(Xi)
+
+CHOICE_YF(Yi)
+        allocate
+        choice_y(Yi)
+
+CHOICE_Y(Yi)
+        choice_y(Yi)
+
+FUNCTION_1(Xi,Xi,Address)
+        function_1(Address,Xi,Xi)
+
+FUNCTION_2(Xi,Xi,Xi,Address)
+        function_2(Address,Xi,Xi,Xi)
+
+BUILTIN_1(Xi,Address)
+        builtin_1(Address,Xi)
+
+BUILTIN_2(Xi,Xi,Address)
+        builtin_2(Address,Xi,Xi)
+
+BUILTIN_3(Xi,Xi,Xi,Address)
+        builtin_3(Address,Xi,Xi,Xi)
+
+KONTINUE
+        continue
+
+LEAVE
+        leave
+
+EXIT_TOPLEVEL(Int)
+        exit_toplevel(Int)
+
+DYNAMIC_NECK_PROCEED
+        dynamic_neck_proceed
+
+RETRY_C(Address)
+        retry_c(Address)
+
+RETRY_NATIVE(Code)
+        retry_native(Code)
+
+CI_CALL(I,J)
+        ci_call(I,J)
+
+CI_INARG(I,J)
+        ci_inarg(I,J)
+
+CI_OUTARG(I,J)
+        ci_outarg(I,J)
+
+CI_RETVAL(I,J)
+        ci_retval(I,J)
+
+HEAPMARGIN_CALL(I,J)
+        heapmargin_call(i,j)
+
+HEAPMARGIN_EXIT(I)
+        heapmargin_exit(i)
+@end example
+
+@node     Insn Group 2, Predicate Index, Insn Group 1, Top
+@comment  node-name,  next,  previous,  up
+@section Instruction Group 2
+
+The instructions in this group represent collapsed digrams.  Their names
+have the format @code{U2_@var{U}_@var{V}(@var{Arg1},@var{Arg2})}, where
+the name components (@var{U(Arg1)} and @var{V(Arg2)}) stand for the
+constituent instructions as follows.  Not all combinations are
+meaningful:  @refill
+
+@example
+VOID(Int)
+        unify_void /* repeated Int times */
+
+XVAR(Xi)
+        unify_x_variable(Xi)
+
+XVAL(Xi)
+        unify_x_value(Xi)
+
+XLVAL(Xi)
+        unify_x_local_value(Xi)
+
+YFVAR(Yi)
+        allocate
+        unify_y_variable(Yi)
+
+YVAR(Yi)
+        unify_y_variable(Yi)
+
+YFVAL(Yi)
+        unify_y_first_value(Yi)
+
+YVAL(Yi)
+        unify_y_value(Yi)
+
+YLVAL(Yi)
+        unify_y_local_value(Yi)
+@end example
+
+
+@node     Predicate Index, Data Type Index, Insn Group 2, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Predicate Index
+@printindex fn
+
+@node     Data Type Index, Concept Index, Predicate Index, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Data Type, Struct and Variable Index
+@printindex tp
+
+@node     Concept Index, Intro, Data Type Index, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Concept Index
+@printindex cp
+
+@contents
+
+@bye

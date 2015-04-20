@@ -1,0 +1,185 @@
+dnl
+dnl SccsId[]="@(#)configure.in	1.8 9/14/95"
+dnl
+
+AC_INIT(tk.c)
+
+dnl Default parameter values: eclipse/sun4
+CC=cc
+CFLAGS=-O
+SHARED_CC="cc"
+SHARED_FLAG="-G"
+PROLOG=ECLIPSE
+TOP_FILE=etk.pl
+PROLOG_INCLUDE=""
+MAKE_ARCH=""
+MOVE_TO_ARCH=""
+OBJECTS="tk.o protcl.o xlib.o"
+TK_O=$OBJECTS
+TK_SO=""
+
+# Process our command line arguments. We recognize the following:
+#
+#	inst=DIR
+#		DIR is the directory where Tcl and Tk are installed
+#	eclipse
+#		Make an eclipse configuration, default.
+#	sicstus
+#		Make a sicstus configuration.
+#	quintus
+#		Make a quintus configuration.
+#
+
+[for arg
+do
+    case $arg in
+	inst=* | instdir=*)
+	    inst_dir=`echo $arg | sed 's/[a-z_]*=//'` ;;
+	src=* | srcdir=*)
+	    src_dir=`echo $arg | sed 's/[a-z_]*=//'` ;;
+	e | eclipse)
+	    ;;
+	q | quintus)
+	    PROLOG=QUINTUS
+	    TOP_FILE=qtk.pl
+	    ARCH=. ;;
+	s | sicstus)
+	    PROLOG=SICSTUS
+	    PROLOG_INCLUDE=/home/lp/local/sicstus2.1
+	    TOP_FILE=stk.pl
+	    echo "	Please set the Prolog include path in the Makefile"
+	    ARCH=. ;;
+	*) ;;
+    esac
+done
+]
+
+# Make sure that no old files are left
+/bin/rm -f tk.o tkAppInit.o tk.pl libinit.a dirs.pl
+
+AC_FIND_X
+if test -z "$x_includes"; then
+    X_INCLUDE="# no special path needed"
+else
+    X_INCLUDE=" -I$x_includes"
+fi
+if test -z "$x_libraries"; then
+    XLIBSW="-lX11"
+else
+    XLIBSW="-L$x_libraries -lX11"
+fi
+
+if test "$PROLOG" = "ECLIPSE"; then
+    if test -z "$ARCH"; then
+	eval 'ARCH=`eclipse -e "get_flag(hostarch, X), writeln(X)"`' >/dev/null 2>&1
+	if test -z "$ARCH"; then
+	    echo "	Please set the ARCH environment variable"
+	    exit
+	fi
+    fi
+    eval 'ECLIPSEDIR=`eclipse -e "get_flag(installation_directory, X), writeln(X)"`' >/dev/null 2>&1
+    PROLOG_INCLUDE="$ECLIPSEDIR/include"
+    if test ! -f "$PROLOG_INCLUDE/external.h"; then
+	echo "***   Please set the PROLOG_INCLUDE path in the Makefile"
+    fi
+    MAKE_ARCH="-mkdir -p ../\$(ARCH); chmod 755 ../\$(ARCH)"
+    MOVE_TO_ARCH="/bin/mv \$(TK_O) dirs.pl libinit.a ../\$(ARCH)"
+    case "$ARCH" in
+    supersparc_sunos4)
+	CC=gcc
+	SHARED_CC=gcc
+	SHARED_FLAG="-shared"
+	CFLAGS="$CFLAGS -msupersparc"
+	;;
+    sparc_sunos5)
+	# gcc does not work on Solaris!
+	LIBS="$LIBS -lsocket -lnsl -ldl"
+	;;
+    sparc_svr4)
+	# gcc does not work on Solaris!
+	LIBS="$LIBS -lsocket -lnsl -ldl"
+	;;
+    i386_sunos5|m88k_svr4)
+	CC=gcc
+	SHARED_CC=gcc
+	SHARED_FLAG="-shared"
+	LIBS="$LIBS -lsocket -lnsl -ldl"
+	;;
+    sgi_irix52)
+	CC=cc
+	SHARED_CC=cc
+	SHARED_FLAG="-shared"
+	CFLAGS="$CFLAGS -signed"
+	AC_HAVE_LIBRARY(mld)
+	;;
+    hp700_ux90)
+	CC=gcc
+	SHARED_CC=gcc
+	SHARED_FLAG="-shared"
+	LIBS="-L/lib/pa1.1 $LIBS"
+	;;
+    i386_linux_elf)
+	LIBS="$LIBS -ldl"
+	SHARED_CC=gcc
+	SHARED_FLAG="-shared"
+	;;
+    rs_aix32)
+	CC=gcc
+	CFLAGS="$CFLAGS -fsigned-char"
+	;;
+    alpha_osf32)
+	CFLAGS="$CFLAGS -DPTR_64_BITS -taso -ieee_with_inexact"
+	SHARED_CC=ld
+	SHARED_FLAG="-shared"
+	;;
+    esac
+fi
+
+dnl Check if we load .o files or shared libraries
+AC_COMPILE_CHECK(svr4 dynamic loading, [#include <dlfcn.h>], [
+(void) dlopen("/", 0);
+],
+    if test "$PROLOG" = "ECLIPSE" && test "$ARCH" != sun4 && test "$ARCH" != "supersparc_sunos4"; then
+	TK_O="tk.so"
+	TK_SO="tk.so"
+	test -n "$verbose" && echo "	using tk.so to load the interface"
+    fi
+)
+
+PT_HAVE_LIB(tcl,7.4)
+PT_HAVE_LIB(tk,4.0)
+PT_HAVE_INCLUDE(tcl)
+PT_HAVE_INCLUDE(tk)
+
+#--------------------------------------------------------------------
+#       Check to see whether the system supports the matherr function
+#       and its associated type "struct exception".
+#--------------------------------------------------------------------
+ 
+ AC_COMPILE_CHECK([matherr support], [#include <math.h>], [
+ struct exception x;
+ x.type = DOMAIN;
+ x.type = SING;
+ ], AC_DEFINE(NEED_MATHERR))
+
+dnl Check if ranlib exists
+AC_PROG_RANLIB
+
+AC_SUBST(CC)
+AC_SUBST(CFLAGS)
+AC_SUBST(PROLOG)
+AC_SUBST(TOP_FILE)
+AC_SUBST(ARCH)
+AC_SUBST(PROLOG_INCLUDE)
+AC_SUBST(MAKE_ARCH)
+AC_SUBST(MOVE_TO_ARCH)
+AC_SUBST(OBJECTS)
+AC_SUBST(TK_O)
+AC_SUBST(TK_SO)
+AC_SUBST(SHARED_CC)
+AC_SUBST(SHARED_FLAG)
+AC_SUBST(LDFLAGS)
+AC_SUBST(X_INCLUDE)
+AC_SUBST(XLIBSW)
+
+AC_OUTPUT(Makefile)

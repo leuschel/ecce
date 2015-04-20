@@ -1,0 +1,46 @@
+
+%%----------------------------------------------%%
+%% A Simple answer Agent.                        %%
+%%----------------------------------------------%%
+ 
+:- agent(answer). 
+
+
+%:- use_messages(library('agents/protocols/messages')).
+:- message_def [type,sender,content,id].
+:- alarm_def [type,sender,content].
+
+:- message ask. 
+:- message no_more_ask.
+:- alarm problem.
+
+
+%:- use_protocol(library('agents/protocols/ask'),answer).
+
+:- activities([answering]).
+
+:- tasks([answer_ask/0]).
+
+:- data knowledge/2.
+
+main :-	show('Doing Main'),
+	register_service([answering]),
+	add_task(answer_ask,true).	
+
+answer_ask :-
+    recieve(_Sender,Msg),
+    show(Msg),nl.
+   
+
+when ask${sender => X, content => Question} do
+	( current_fact_nb(knowledge(Question,Answer)) ->
+	   send(X,message${type => inform,content => Answer})
+	;
+	  % input(X,Question,User_Answer), 
+	   send(X,message${type => inform, content => dont_know})
+	).
+
+when no_more_ask${} do true.
+
+on problem${sender => S, content => T} do	
+    show([problem,S,T]).

@@ -1,0 +1,31 @@
+:- use_package(library('dclp/and')).
+:- use_module(library(prolog_sys), [statistics/2]).
+
+main(M,S,O,E,N,R,D,Y) :-
+	store([E, D, Y, C1], 1),
+	store([N, R, C2], 2), 
+	store([O, C3], 3),
+	store([S, M], 4),
+	(X = [M,S,O,E,N,R,D,Y], 
+	 X in 0..9,
+	 all_different(X),
+	 C1 in 0..1,
+	 D + E .=. Y + 10*C1) @ 1,
+	([C1,C2] in 0..1,
+	 X1 = [M,S,O,E,N,R,D,Y], 
+	 X1 in 0..9,
+	 all_different(X1),
+	 C1 + N + R .=. E + 10*C2) @ 2,
+	([C2,C3] in 0..1,
+	 X2 = [M,S,O,E,N,R,D,Y], 
+	 X2 in 0..9,
+	 all_different(X2),
+	 C2 + E + O .=. N + 10*C3) @ 3,
+	(C3 in 0..1,
+	 X3 = [M,S,O,E,N,R,D,Y], 
+	 X3 in 0..9,
+	 all_different(X3),
+	 S .>. 0,
+	 M .>. 0,
+	 C3 + S + M .=. O + 10*M ) @ 4,
+	d_labeling([M,S,O,E,N,R,D,Y]).

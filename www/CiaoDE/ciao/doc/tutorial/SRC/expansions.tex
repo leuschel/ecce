@@ -1,0 +1,337 @@
+
+\section{Language Extension Packages: Operators and Expansions}
+\label{sec:expansions}
+
+Ciao provides means to extend the source language, both syntactically
+and semantically. This is usually done via operators and code
+expansions. These are classically applied at compile-time, and
+therefore such language extensions are best done via packages.
+
+Operators and code expansions are {\em local} to a file. This means
+that they are in effect for the compiler only during compilation of
+the module where the corresponding declarations (for an operator or a
+code expansion) appear. If the file is of the \verb+user+ module, then
+they are in effect only for that file.
+
+\subsection{Operators}
+
+An operator supersedes the syntactic restrictions of the language,
+allowing for so called {\em syntactic sugar}. For example, the atom
+\verb+is+ is defined as an operator in order to be able to write
+\verb+X is Y-1+ instead of the more cumbersome \verb+is(X,Y-1)+. Note
+that in both cases \verb+-+ is also used as an operator.
+
+Operators are declared with the \verb+op/3+ directive. For example,
+the following are the standard Ciao operator declarations:
+\begin{quote}
+\begin{verbatim}
+:- op(1200, xfx,[(:-)]).
+:- op(1200,  fx,[(:-).(?-)]).
+:- op(1100, xfy,[';']).
+:- op(1050, xfy,['->']).
+:- op(1000, xfy,[',']).
+:- op( 900,  fy,[(\+)]).
+:- op( 700, xfx,[(=).(\=).(==).(\==).(@<).(@>).(@=<).(@>=).
+                 (=..).(is).(=:=).(=\=).(<).(=<).(>).(>=)]).
+:- op( 550, xfx,[(:)]).
+:- op( 500, yfx,[(+).(-).(/\).(\/).(#)]).
+:- op( 500,  fy,[(++).(--)]).
+:- op( 400, yfx,[(*).(/).(//).(rem).(mod).(<<).(>>)]).
+:- op( 200,  fy,[(+).(-).(\)]).
+:- op( 200, xfx,['**']).
+:- op( 200, xfy,[(^)]).
+:- op(  25,  fy,[(^)]).
+\end{verbatim}
+\end{quote}
+
+The first argument of \verb+op/3+ is the operator(s) precedence,
+the second one its (their) associativity, and the third one an
+atom (or a list of atoms) identifying the operator(s) being declared.
+
+The {\bf precedence} of an operator determines how to parse terms with
+different operators when the program is read. The rule is: operators
+with higher precedence number are read first. Thus, a clause like:
+\begin{quote}
+\begin{verbatim}
+p(X) :- q(X) -> r(X) ; s(X).
+\end{verbatim}
+\end{quote}
+%
+is read as 
+\begin{quote}
+\begin{verbatim}
+':-'(p(X), ';'( '->'(q(X),r(X)), s(X) ) ).
+\end{verbatim}
+\end{quote}
+%
+and not as 
+\begin{quote}
+\begin{verbatim}
+':-'(p(X), '->'(q(X), ';'(r(X),s(X)) ) ).
+\end{verbatim}
+\end{quote}
+%
+nor as
+\begin{quote}
+\begin{verbatim}
+';'( '->'( ':-'(p(X),q(X)), r(X) ), s(X) ).
+\end{verbatim}
+\end{quote}
+%
+or any other term.
+
+The {\bf associativity} of an operator declares its number of
+arguments, its location with respect to its arguments, and the way a
+term has to be read when several operators of the same precedence
+appear in an expression. 
+
+An operator may be binary (two arguments) or unary
+(one argument). A unary operator is declared with \verb+fx+ or \verb+fy+
+if it is prefix (appears before its argument) or with \verb+xf+ or
+\verb+yf+ if it is postfix (appears after its argument).
+
+The difference between \verb+fx+ and \verb+fy+ (or \verb+xf+ and
+\verb+yf+) is in how the operator associates with operators of the
+same precedence. The form with \verb+y+ is associative: operators of
+the same precedence are allowed to appear to the right (if \verb+fy+;
+left, if \verb+yf+) of the declared operator. For example,
+ \verb+^ ^ 2+ is legal, and it represents the term \verb+'^'('^'(2))+.
+
+The form with \verb+x+ is not associative: operators to the right (if
+\verb+fy+; left, if \verb+yf+) of the declared one must have lower
+precedence (they can never have higher precedence, since the
+expression would be illegal). For example, \verb+^ ^ 2+ would be
+illegal if it was declared as: 
+\begin{quote}
+\begin{verbatim}
+:- op(  25,  fx,[(^)]).
+\end{verbatim}
+\end{quote}
+
+A binary operator is always infix: it must appear in between its two
+arguments. A binary operator is declared with \verb+xfx+ or \verb+xfy+
+or \verb+yfx+. The form \verb+xfx+ is not associative: if the operator
+arguments use operators, they have to be of lower precedence. Thus:
+\begin{quote}
+\begin{verbatim}
+p(X) :- q(X) :- r(X).
+\end{verbatim}
+\end{quote}
+%
+is not legal. You have to write either:
+\begin{quote}
+\begin{verbatim}
+p(X) :- ( q(X) :- r(X) ).
+\end{verbatim}
+\end{quote}
+%
+or
+\begin{quote}
+\begin{verbatim}
+( p(X) :- q(X) ) :- r(X).
+\end{verbatim}
+\end{quote}
+%
+depending on what you mean\ldots
+
+The form \verb+xfy+ is right-associative: operators of the same
+precedence can appear to the right. The rightmost argument, then, can
+be an expression with an operator of the same precedence. The leftmost
+argument, however, must be (if with operator) of lower
+precedence. Thus, \verb+X ** Y ** Z+ is legal, and it represents the term
+\verb+'**'(X,'**'(Y,Z))+, not the term \verb+'**'('**'(X,Y),Z)+.
+
+The form \verb+yfx+ is left-associative: operators of the same
+precedence can appear to the left. The leftmost argument can
+be an expression with an operator of the same precedence but not the
+rightmost argument. Thus, if \verb+**+ was declared \verb+yfx+, the
+expression \verb+X ** Y ** Z+ would still be legal, but it would
+represent the term \verb+'**'('**'(X,Y),Z)+, instead.
+
+\subsection{Run-time Operators}
+
+It is also possible to enable operators for terms read in during
+execution of a program. This is done with the \verb+operators:op/3+
+library predicate. The execution of goals for this predicate acts as
+the corresponding declaration. The operator declaration that takes
+place by executing such goals will be in effect for all the reading
+performed thereafter, until finalization of the program execution.
+
+It is also possible to enable the operator declarations of a module
+for run-time. This is done with the \verb+runtime_ops+ package:
+\begin{quote}
+\begin{verbatim}
+:- use_package(runtime_ops).
+\end{verbatim}
+\end{quote}
+
+A module using this package will enable all operators declared within
+the module as if their declarations had been done by calling the
+\verb+operators:op/3+ predicate at the beginning of the execution of
+the program. 
+
+\subsection{Code Expansions}
+
+Expansions are code translations which are applied by the compiler to
+the source code of a file before compiling it. Expansions must be
+enabled at compile-time and must be defined to the compiler. 
+
+In order to use expansions, you have to use a
+\verb+load_compilation_module+ directive (see
+Section~\ref{sec:paths}), which loads code into the compiler. This 
+code will define the expansions. The code needs be activated by
+declaring the expansion to be in effect. For example, the following
+file:
+\begin{quote}
+\begin{verbatim}
+:- include(library('functions/ops')).
+:- load_compilation_module(library('functions/functionstr')).
+:- add_goal_trans(defunc_goal/3).
+:- add_sentence_trans(defunc/3).
+\end{verbatim}
+\end{quote}
+%
+declares an expansion and the code that defines it. The expansion will
+be performed by predicates \verb+defunc_goal/3+ and \verb+defunc/3+,
+which are defined in the library module \verb+functionstr+.
+
+The compiler will load the module, activate the expansions, and call the
+corresponding predicates, giving the clauses of the file being compiled
+as arguments to them. The different expansion declarations correspond
+with different possible kinds of expansions. They are as follows:
+\begin{description}
+\item \verb+add_sentence_trans(Pred)+ for translations of the clauses
+  read in by the compiler, one at a time.
+\item \verb+add_term_trans(Pred)+ for translations of the clauses and
+  all of its terms and sub-terms, one clause, term, or sub-term at the
+  time. 
+\item \verb+add_clause_trans(Pred)+ also for translations of the
+  clauses, but during a compilation phase in which information on the
+  interface of related modules is available. The clause is represented
+  as a structure \verb+clause(Head,Body)+.
+\item \verb+add_goal_trans(Pred)+ for translations of each goal
+  present in the clauses of the code, one goal at a time.
+\end{description}
+%
+where \verb+Pred+ is a predicate spec for the predicate that performs
+the expansion. It must have arity two or three. The first argument is
+the input term, the second is the output term, and the third, if
+present, is the input module name of the code being expanded.
+
+\comment{Need examples!}
+
+The four different kinds of expansions are listed in the order in
+which they are applied to the code. Consult the reference manual for
+details. 
+
+
+\subsection{An Example Package}
+\label{sec:package}
+
+Let us define a package \verb+alog+ that will allow writing programs
+like the following one:
+\begin{quote}
+\begin{verbatim}
+:- module(m,[...],[alog,...]).
+
+p <- q & r & n => s
+   v t & z.
+\end{verbatim}
+\end{quote}
+%
+where clauses are defined with \verb+<-+ instead of \verb+:-+,
+conjunction is expressed with \verb+&+ and disjunction with \verb+v+.
+
+The operator \verb+=>+ is meant as a kind of conditional. The leftmost
+part is a module name, and the rightmost part a goal. Its intended
+meaning is that the goal succeeds {\em if} the module is loaded (in
+other words, {\em with} the module loaded). This implies dynamic
+loading of the modules referred to in this way.
+
+The following package \verb+alog.pl+ will do:
+\begin{quote}
+\begin{verbatim}
+:- op(1200, xfx,[(<-)]).
+:- op(1100, xfy,[v]).
+:- op(1000, xfy,[(&)]).
+:- op( 900, xfy,['=>']).
+
+:- load_compilation_module(library(alog_expand)).
+:- add_sentence_trans(alog_expand/2).
+
+:- use_module(library(compiler),[use_module/1]).
+
+M => Goal :- use_module(M), Goal.
+\end{verbatim}
+\end{quote}
+%
+where the code for \verb+(=>)/2+ implements the corresponding
+operator. 
+
+Note the different parts of the package. It includes code that will be
+included in the modules that use the package (e.g., module \verb+m+
+above), i.e., the definition of \verb+(=>)/2+. It includes import
+declarations for libraries that might be needed (e.g.,
+\verb+library(compiler)+). It also includes operator definitions; and,
+finally, a compilation module (\verb+library(alog_expand)+) and a
+declaration for compile-time code expansion.
+
+The operators enable the compiler to read clauses in the ``extended''
+syntax. The code expansion in module \verb+alog_expand+ will be in
+charge of translating this syntax to the standard one. The predicate
+that does the transformation is \verb+alog_expand/2+. This compilation
+module will look like: 
+\begin{quote}
+\begin{verbatim}
+:- module(alog_expand,[alog_expand/2],[]).
+
+alog_expand((H<-B),Clauses):-
+    expand_body(B,H,Clauses).
+
+expand_body(v(A,B),H,[(H:-ExpA)|Clauses]):- !,
+    expand_goal(A,ExpA),
+    expand_body(B,H,Clauses).
+expand_body(A,H,[(H:-ExpA)]):-
+    expand_goal(A,ExpA).
+
+expand_goal('&'(A,B),(A,ExpB)):- !,
+    expand_goal(B,ExpB).
+expand_goal(A,A).
+\end{verbatim}
+\end{quote}
+
+Note that, in order to simplify things, there is no syntax
+checking. However, this could be easily implemented. For example, to
+check that clauses are always written with \verb+<-+ you can do:
+\begin{quote}
+\begin{verbatim}
+alog_expand((H<-B),Clauses):- !,
+    expand_body(B,H,Clauses).
+alog_expand(Cl,_):-
+    error('Wrong clause syntax: '),
+    display_term(Cl),
+    nl.
+\end{verbatim}
+\end{quote}
+
+To check that there is only one ``rule'' per predicate, you can
+replace the first clause above by (see Section~\ref{sec:dynamic} for
+an explanation of ``data'' dynamic predicates):
+\begin{quote}
+\begin{verbatim}
+:- data clause_count/2.
+
+alog_expand((H<-_),_):-
+    functor(H,F,A),
+    clause_count(F,A), !,
+    error('More than one clause per predicate: '),
+    display_term(F/A),
+    nl.
+alog_expand((H<-B),Clauses):- !,
+    functor(H,F,A),
+    asserta_fact(clause_count(F,A)),
+    expand_body(B,H,Clauses).
+\end{verbatim}
+\end{quote}
+%
+and so on\ldots

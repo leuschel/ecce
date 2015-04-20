@@ -1,0 +1,9 @@
+#!/bin/sh
+exec ciao-shell $0 "$@" # -*- mode: ciao; -*-
+
+:- use_package([]).
+:- use_module(library(emacs)).
+:- use_module(library(errhandle)).
+
+main(_) :-
+	error_protect(emacs_eval_nowait("(run-ciao-toplevel)")).

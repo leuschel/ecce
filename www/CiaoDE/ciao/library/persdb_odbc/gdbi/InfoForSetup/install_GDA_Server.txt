@@ -1,0 +1,51 @@
+	=====================================
+	==Generic Database Access interface==
+	=====================================
+
+	This directory contains the executable files to run the
+Generic Database Access Server in a Windows NT/95
+environment. ´Server´ application lets CIAO Prolog access to
+predicates stored in an ODBC database (SQL persistent predicates
+library).
+
+	To install it, copy 'Server.exe' to the database machine (for
+more considerations, see below). 32 bits ODBC is needed. The ODBC data
+source must be defined (and its ODBC driver installed). For more
+information about installing ODBC data sources, see
+INSTALL_ODBC_SOURCE.TXT .
+
+	The application has been developed using Visual C++ 5.0 and
+the MFC's.
+
+	Two executable versions are distributed : 
+
+	- First is a shared DLL. Some others DLL's can be
+required. Try this option first.
+
+	- Second is a static compilation. Size requirements are
+bigger, but DLL requirements are smaller (32 bits ODBC is needed, but
+not much more). If you can't run with this option, please let us know
+(sources are also distributed, so you can compile it if you have
+Visual C++ 5.0 or later).
+
+	DLLExecutables directory
+	------------------------
+
+	This directory contains Server executable (Server.exe)
+compiled as a shared DLL, and two additional DLL's which maybe can be
+needed. Try first with this EXE file.  In an environment with Visual
+C++ 5.0 (or later) the DLL will be enough to run the application. If
+you have problems with MFC versions, copy MFC42.DLL and MSVCRT.DLL
+files in the same directory as Server.exe and try again. If the
+problem persists, try the next option.
+
+	StaticExecutables directory
+	---------------------------
+
+	If the previous try wasn't successful, copy the static version
+of Server.exe . If the application still doesn't work, please, contact
+us (you can also compile the sources with Visual C++ 5.0, of course if
+you use it).
+  					
+						CLIP, 3-November-1998	
+						

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+for f in *pl ; do
+    if grep -s '^:- *module(' $f > /dev/null ; then
+	echo "make_po(library('$1$f'))." >> $2
+	echo "gaf(library('$1$f'))." >> $2
+	echo "display(user_error,'$1$f')." >> $2
+	echo "nl(user_error)." >> $2
+    fi
+done
+
+for d in * ; do
+    if test -d $d ; then
+	if  test ! -f $d/Makefile -a \
+	         ! -f $d/.NOCOMPILE -a \
+	         ! -f $d/NOCOMPILE ; then
+#                ! -f $d/.nodistribute -a \
+#                ! -f $d/.NODISTRIBUTE -a \
+#                ! -f $d/NODISTRIBUTE      \
+           cd $d && $0 $1$d/ ../$2 && cd ..
+	fi
+    fi
+done
+

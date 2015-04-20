@@ -1,0 +1,442 @@
+
+:- module(davinci,[ davinci/0,
+	            topd/0,
+		    davinci_quit/0,
+		    davinci_put/1,
+		    davinci_ask/2,
+		    davinci_get/1,
+		    davinci_get_all/1,
+		    davinci_ugraph/1,
+		    davinci_lgraph/1
+		  ]).
+
+:- use_module(library(format),[ format/3 ]).
+%:- use_module(library(lists),[list/1,member/2]).
+:- use_module(library(ugraphs),[vertices_edges_to_ugraph/3]).
+:- use_module(library(system)).
+:- use_module(library(prompt),[prompt_for/2]).
+
+% daVinci's executable
+command('davinci -pipe').
+
+:- dynamic davinci/3,
+	   answer/1.
+
+% a command which can be used to synchronize with daVinci
+ask(show_message(string(''))).
+
+% ack token: daVinci's answer used to synchronize
+ack(ok).
+
+% answer from daVinci when it is ready
+ready(ok).
+
+% the command to quit
+quit(quit).
+
+% a question is a command which can be used with return of an answer
+% a question is special if the ack token is among their possible answers
+question(question_boolean(_,_,_,_,_),[answer_boolean(_),no_answer],normal).
+question(question_string(_,_,_),[answer_string(_),no_answer],normal).
+question(confirmer(_,_,_),[ok,no_answer],special).
+
+% this is the way daVinci reports errors back
+error(communication_error(_)).
+error(communication_crash(_)).
+
+% commands which do not need synchronization
+nosync(new_term(_)).
+nosync(new_term_placed(_)).
+nosync(question_boolean(_,_,_,_,_)).
+nosync(question_string(_,_,_)).
+nosync(select_nodes_labels(_)).
+nosync(quit).
+
+% -------------------------------------------------------------------------
+% davinci/0
+% start up a daVinci process
+% -------------------------------------------------------------------------
+
+davinci :-
+	\+ davinci(_,_,_),
+	command(Command),
+	exec(Command,[pipe(In),pipe(Out),std],Pid),
+	ready(Ok),
+	prompt_for(Out,X),
+	X=Ok,
+	assert(davinci(Pid,In,Out)).
+
+% -------------------------------------------------------------------------
+% topd/0
+% a toplevel to send to daVinci commands from standard input
+% -------------------------------------------------------------------------
+
+topd :-
+	davinci,
+	repeat,
+	  read(X),
+	  ( X=end_of_file
+	  -> true
+	  ; X=in
+	  -> davinci_get(M),
+	     writeq(M),
+	     nl,
+	     fail
+	  ; davinci_put(X),
+	    fail
+	  ), !,
+	davinci_quit.
+
+% -------------------------------------------------------------------------
+% davinci_quit/0
+% exit daVinci process
+% -------------------------------------------------------------------------
+
+davinci_quit :-
+	davinci(_Pid,In,Out),
+	quit(Q),
+	write(In,Q),
+	nl(In),
+	close(In),
+	close(Out),
+	retract(davinci(_,_,_)),
+	retractall(answer(_)).
+
+% -------------------------------------------------------------------------
+% davinci_put(+Term)
+% send a command
+% syntactically, a command is a term
+% semantically, it has to correspond to a command understood by daVinci
+% two terms are interpreted in a special way: string/1 and text/1
+% string(Term) is given to daVinci as "Term"
+% text(List) is given as "Term1\nTerm2\n...Term\n" for each Term in List
+% if your term has functors string/1 and text/1 that you don't want to
+%    be interpreted this way, use it twice, i.e.,
+%    string(string(Term)) is given to daVinci as string(Term')
+%    where Term' is the interpretation of Term
+% -------------------------------------------------------------------------
+
+davinci_put(Term):-
+	\+ question(Term,_,special),
+	davinci(_Pid,In,Out),
+	formatting(Term,In),
+	nl(In),
+	synchronize(Out,Term).
+
+synchronize(_Out,Term):-
+	nosync(Term), !.
+synchronize(Out,_Term):-
+	repeat,
+	  prompt_for(Out,Atom),
+	  atom2term(Atom,Answer),
+	  ( ack(Answer)
+	  -> true
+	  ; error(Answer)
+	  -> report_error(Answer)
+	  ; assertz(answer(Answer)),
+	    fail
+	  ), !.
+
+formatting(Term,In):-
+	atomic(Term), !,
+	write(In,Term).
+formatting(Term,In):-
+	Term=..[F|Args],
+	format(In,'~w(',[F]),
+	formatting_args(Args,In),
+	write(In,')').
+
+formatting_args([],_).
+formatting_args([Arg],In):- !,
+	formatting_arg(Arg,In).
+formatting_args([Arg|Args],In):-
+	formatting_arg(Arg,In),
+	write(In,','),
+	formatting_args(Args,In).
+
+formatting_arg(string(Arg),In):- !,
+	formatting_string(Arg,In).
+formatting_arg(text(Arg),In):- !,
+	formatting_text(Arg,In).
+formatting_arg(Arg,In):-
+	functor(Arg,'.',2), !,
+	write(In,'['),
+	formatting_args(Arg,In),
+	write(In,']').
+formatting_arg(Arg,In):-
+	formatting(Arg,In).
+
+formatting_string(string(Arg),In):- !,
+	formatting(string(Arg),In).
+formatting_string(Arg,In):-
+	format(In,'"~w"',[Arg]).
+
+formatting_text(text(Arg),In):- !,
+	formatting(text(Arg),In).
+formatting_text(Arg,In):-
+	write(In,'"'),
+	write_list(Arg,In),
+	write(In,'"').
+
+write_list([A|As],In):-
+	format(In,'~w\\n',[A]),
+	write_list(As,In).
+write_list([],_In).
+
+% -------------------------------------------------------------------------
+% davinci_ask(+Term,-Answer)
+% send a question and wait for answer
+% Term is as in davinci_put/1, but has to be a valid question (question/3)
+% Answer is a term corresponding to daVinci's answer
+% -------------------------------------------------------------------------
+
+davinci_ask(Term,Answer):-
+	question(Term,Answers,_),
+	davinci(_Pid,In,Out),
+	formatting(Term,In),
+	nl(In),
+	repeat,
+	  prompt_for(Out,Atom),
+	  atom2term(Atom,Answer),
+	  ( member(Answer,Answers)
+	  -> true
+	  ; error(Answer)
+	  -> report_error(Answer)
+	  ; assertz(answer(Answer)),
+	    fail
+	  ), !.
+
+report_error(Error):-
+	format(user_error,"daVinci: error: ~w~n",[Error]).
+
+% -------------------------------------------------------------------------
+% davinci_get(-Term)
+% get a message from daVinci
+% Term is a term corresponding to daVinci's message
+% -------------------------------------------------------------------------
+
+davinci_get(Term):-
+	retract(answer(Term)), !.
+davinci_get(Term):-
+	ask(NullMess),
+	davinci_put(NullMess),
+	( retract(answer(Term))
+	-> true
+	 ; Term = nil
+	).
+
+% -------------------------------------------------------------------------
+% davinci_get_all(-List)
+% get all pending messages
+% List is a list of terms as in davinci_get/1
+% -------------------------------------------------------------------------
+
+davinci_get_all(List):-
+	ask(NullMess),
+	davinci_put(NullMess),
+	findall(Answer,retract(answer(Answer)),List).
+
+% -------------------------------------------------------------------------
+% davinci_ugraph(+Graph)
+% send a graph
+% Graph is a term which denotes an ugraph as in SICStus3 library(ugraphs)
+% vertices of the form node/2 are interpreted in a special way
+% node(Term,List) is interpreted as a vertex Term with attributes List
+% List is a list of terms conforming the syntax of davinci_put/1 and
+%      corresponding to daVinci's graph nodes attributes
+% if your vertex has functor node/2 and you don't want it to be interpreted
+%      this way, use it twice, i.e.,
+%      node(node(T1,T2),[]) is given to daVinci as vertex node(T1,T2)
+% a vertex is used both as label and name of daVinci's graph node
+% daVinci's graph edges have label V1-V2 where V1 is the source and
+%      V2 the sink of the edge
+% there is no support for multiple edges between the same two vertices
+% -------------------------------------------------------------------------
+
+davinci_ugraph(Graph):-
+	ugraph2term(Graph,Term),
+	davinci_put(new_term(Term)).
+
+ugraph2term([N-Ns|Graph],[Node|Term]):-
+	node2term(N,V,As),
+	Node=l(string(V),n(string(''),As,Edges)),
+	edges(Ns,V,Edges),
+	ugraph2term(Graph,Term).
+ugraph2term([],[]).
+
+node2term(node(N,As0),N,As):- !,
+	( As0=[]
+	-> As=[a(string('OBJECT'),string(N))]
+	 ; As=As0
+	).
+node2term(N,N,As):-
+	As=[a(string('OBJECT'),string(N))].
+
+edges([N|Ns],Source,[Edge|Edges]):-
+	node2term(N,V,_),
+	Edge=l(string(Source-V),e(string(''),[],r(string(V)))),
+	edges(Ns,Source,Edges).
+edges([],_Source,[]).
+
+% -------------------------------------------------------------------------
+% davinci_lgraph(+Graph)
+% send a labeled graph
+% Graph is a term which denotes a wgraph as in SICStus3 library(wgraphs)
+%       except that the weights are labels, i.e.,
+%       they do not need to be integers
+% vertices of the form node/2 are interpreted in a special way
+% edge labels are converted into special intermediate vertices
+% duplicated labels are solved by adding dummy atoms ''
+% there is no support for multiple edges between the same two vertices
+% -------------------------------------------------------------------------
+
+davinci_lgraph(Graph):-
+	retractall(label(_)),
+	lgraph2ugraph(Graph,UGraph),
+	davinci_ugraph(UGraph).
+
+% This one is similar to wgraph_to_ugraph/2 in SICStus3 library(wgraphs)
+% except that the labels (weights) are converted into new vertices
+% These new vertices are special, in the sense that they have daVinci
+% attributes so that they will appear as text instead of box nodes
+lgraph2ugraph(LGraph,UGraph):-
+	lgraph2edges(LGraph,Edges),
+	vertices_edges_to_ugraph([],Edges,UGraph).
+
+lgraph2edges([N-LNs|LGraph],Edges):-
+	edgelist2edges(LNs,N,Edges,Edges0),
+	lgraph2edges(LGraph,Edges0).
+lgraph2edges([],[]).
+
+edgelist2edges([N2-L|LNs],N0,[N0-N1,N1-N2|Edges],Edges0):-
+	davinci_special_node(L,N1),
+	edgelist2edges(LNs,N0,Edges,Edges0).
+edgelist2edges([],_N0,Edges,Edges).
+
+davinci_special_node(L0,node(L,Attrs)):-
+	Attrs=[a(string('OBJECT'),Name),
+	       a(string('_GO'),string(text))],
+	solve_dup_label(L0,L),
+	assert(label(L)),
+	node_name(L0,Name).
+
+:- dynamic label/1.
+
+solve_dup_label(L,L1):-
+	label(L), !,
+	add_dummy(L,L0),
+	solve_dup_label(L0,L1).
+solve_dup_label(L,L).
+
+add_dummy(L,[' '|L]):- L=[_|_], !.
+add_dummy(L,[' ',L]).
+
+node_name(L,Name):-
+	list(L), !,
+	Name=text(L).
+node_name(L,string(L)).
+
+% -------------------------------------------------------------------------
+% atom2term(+Atom,-Term)
+% convert daVinci's messages into terms
+% Atom is an atom, but must have term syntax
+% Term is a term resulting from parsing Atom char by char
+% Note: there should be a standard way to do this! This one is ad-hoc
+% -------------------------------------------------------------------------
+
+atom2term(Atom,Term):-
+	name(Atom,String),
+	parse(String,Term).
+
+parse(String,Term):- parse_struct(String,Term,_).
+
+parse_struct(String0,Term,String):-
+	parse_functor(String0,Functor,String1),
+	parse_args(String1,Args,String),
+	Term=..[Functor|Args].
+
+parse_functor(String,Functor,String1):-
+	parse_functor0(String,FunctorString,String1),
+	name(Functor,FunctorString).
+
+parse_functor0([C|String],Functor,String1):-
+	parse_functor1(C,String,Functor,String1).
+parse_functor0([],[],[]).
+
+parse_functor1(C,String,[],[C|String]):-
+	open_parent(C), !.
+parse_functor1(C,String,[],[C|String]):-
+	close_parent(C), !.
+parse_functor1(C,String,[],[C|String]):-
+	close_list(C), !.
+parse_functor1(C,String,[],[C|String]):-
+	comma(C), !.
+parse_functor1(C,String,[],String1):-
+	blank(C), !,
+	trail_blanks(String,String1).
+parse_functor1(C,String,[C|Functor],String1):-
+	parse_functor0(String,Functor,String1).
+
+%parse_args([],[],[]).
+parse_args([C0|String0],Args,String):-
+	open_parent(C0), !,
+	parse_args0(String0,Args,[C1|String]),
+	close_parent(C1).
+parse_args(String,[],String).
+
+parse_args0(String0,[Arg|Args],String):-
+	parse_term(String0,Arg,String1),
+	parse_args1(String1,Args,String).
+
+parse_args1([C|String0],Args,String):-
+	comma(C), !,
+	parse_args0(String0,Args,String).
+parse_args1(String,[],String).
+
+parse_term([],'',[]).
+parse_term([C|String0],Term,String):-
+	parse_term0(C,String0,Term,String).
+	
+parse_term0(C0,String0,Term,String):-
+	open_list(C0), !,
+	parse_args0(String0,Term,[C1|String]),
+	close_list(C1).
+parse_term0(C0,String0,Term,String):-
+	quote(C0), !,
+	parse_string(String0,Str,String),
+	parse_term(Str,Term,[]).
+parse_term0(C0,String0,Term,String):-
+	parse_struct([C0|String0],Term,String).
+
+parse_string([],[],[]).
+parse_string([C|String],List,String1):-
+	parse_string0(C,String,List,String1).
+
+parse_string0(C,String,[],String):-
+	quote(C), !.
+parse_string0(C,String,[C|List],String1):-
+	parse_string(String,List,String1).
+
+trail_blanks([],[]).
+trail_blanks([C|String],String1):-
+	trail_blanks0(C,String,String1).
+
+trail_blanks0(C,String,String1):-
+	blank(C), !,
+	trail_blanks(String,String1).
+trail_blanks0(C,String,[C|String]).
+
+open_parent(C):-  "("=[C].
+close_parent(C):- ")"=[C].
+open_list(C):-    "["=[C].
+close_list(C):-   "]"=[C].
+comma(C):-        ","=[C].
+blank(C):-        " "=[C].
+quote(C):-   name('"',[C]).
+
+%% Control version comment prompting for the file.
+%% Local Variables: 
+%% mode: CIAO
+%% update-version-comments: "off"
+%% End:
+

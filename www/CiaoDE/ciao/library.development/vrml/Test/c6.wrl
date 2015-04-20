@@ -1,0 +1,71 @@
+#VRML V2.0 utf8 narmare sanningen
+
+Group {
+  children [
+     Transform {
+        rotation 0 0 1 .71
+        translation -1 0 0 
+        children 
+           Shape {
+              geometry Cylinder {
+                 height 1
+                 radius 2.1
+              }
+              appearance Appearance {
+                 material Material {
+                    diffuseColor 0 1 0
+                 }
+              }
+           }
+     }
+     Transform {
+        translation 1 0 0 
+        children 
+           Shape {
+              geometry Cylinder {
+                 height 3
+                 radius 2.1
+              }
+              appearance Appearance {
+                 material Material {
+                    diffuseColor 1 1 0
+                 }
+              }
+           }
+     }
+     Transform {
+        translation 2.5 -1 2 
+        children 
+           Shape {
+              geometry Sphere {
+		  radius 0.4
+              }
+              appearance Appearance {
+                 material Material {
+                    diffuseColor 0 0 1
+                 }
+              }
+           }
+     }
+  ]
+}
+
+
+PROTO Bandera [field SFVec3f location 1e-08 0 0] {
+        Transform {
+	    rotation 0 0 1 0
+	    translation IS location
+            children  
+                DEF estrella Shape {
+                    appearance    Appearance {
+                        material  Material {
+			    ambientIntensity  0.8 
+			     }
+			      }
+                    geometry  IndexedFaceSet {
+			color  NULL
+                         }
+	}
+      }
+}
+Bandera{location 20 32 0}

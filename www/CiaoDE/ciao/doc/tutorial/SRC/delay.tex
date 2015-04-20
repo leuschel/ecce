@@ -1,0 +1,86 @@
+
+\section{Delayed Goals: Dynamic Scheduling}
+
+The execution mechanism of Prolog is sequential: goals are executed
+one after the other. Instead, a dynamic scheduling execution policy
+can be defined in which some goals may suspend and await for certain
+conditions. Only when such conditions hold the suspended goal is
+awoken and resumes execution.
+
+Conditional delayed goals can be used in Ciao with the library
+meta-predicate \verb+when:when/2+. A goal \verb+when(Cond,Goal)+
+delays the execution of \verb+Goal+ until the condition \verb+Cond+
+holds. If the condition holds at the time of executing the call to
+\verb+when+ then no delay occurs: \verb+Goal+ is executed at the
+time. 
+
+The allowable conditions for delaying are \verb+ground/1+ and
+\verb+nonvar/1+, and conjuntions (with \verb+,+) and disjunctions
+(with \verb+;+) of them. The first one specifies that its argument
+must be ground (bound to a term without variables), and the second
+one that its argument not be a variable (i.e., be bound to a constant
+or a structure).
+
+Dynamic scheduling is useful in guaranteeing the conditions upon which
+executing a goal is safe. For example, one can perform safe
+arithmetics with a predicate \verb+safe_is/2+ defined (as an operator)
+as follows:
+\begin{quote}
+\begin{verbatim}
+X safe_is Y :- when(ground(Y),X is Y).
+\end{verbatim}
+\end{quote}
+%
+which will perform the arithmetic operation only when the (supposedly)
+arithmetic expression is completely defined (it contains no variable).
+
+The delaying conditions are checked for every time that a variable
+involved is unified. The delayed goals awake as soon as the conditions
+are met in one of such unifications. For example, with:
+\begin{quote}
+\begin{verbatim}
+:- use_module(library(when)).
+
+p:- when(ground(X),fail), write_2(X,b).
+
+write_2(a,Y):- display(Y), nl.
+\end{verbatim}
+\end{quote}
+%
+the goal \verb+p+ will just fail and print nothing, since the
+\verb+fail+ goal is awoken as soon as the first argument of
+\verb+write_2(X,b)+ gets bound to \verb+a+.
+
+However, unification operations involved in clause heads are
+considered as only one unficiation. Thus, the result of goal \verb+p+
+with:
+\begin{quote}
+\begin{verbatim}
+p:- when(ground(X),display(Y)), unify_2(X,Y).
+
+unify_2(a,b).
+\end{verbatim}
+\end{quote}
+%
+is that a \verb+b+ is printed, since both arguments are unified in a
+single unification operation, and only after this the delayed goal is
+awoken. 
+
+Explicit unification goals at the neck of clauses are also included in
+the head unification operation. Thus, the same result above will be
+obtained with:
+\begin{quote}
+\begin{verbatim}
+p:- when(ground(X),display(Y)), unify_2(X,Y).
+
+unify_2(a,Y):- Y=b.
+\end{verbatim}
+\end{quote}
+%
+since the goal \verb+Y=b+ is included as part of the unification
+operation for the head arguments.
+
+When the condition is as simple as that one variable be bound, you can
+use library predicate \verb+freeze:freeze/2+ instead of
+\verb+when/2+. A goal \verb+freeze(X,Goal)+ is equivalent to
+\verb+when(nonvar(X),Goal)+. 

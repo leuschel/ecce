@@ -1,0 +1,9 @@
+char *emulator_version = "Ciao 1.13.0-5270 (svn) : Mo Jan 16 18:53:19 CET 2006";
+char *emulator_architecture = "i86";
+char *emulator_os =    "LINUX";
+char *emulator_debug = "";
+double ciao_version =  1.13;
+int ciao_patch =       0;
+char *ciao_suffix =    "";
+char *exec_suffix =    "";
+char *installibdir =   "/home/asap/asap-online-demo/CiaoDE/ciao";

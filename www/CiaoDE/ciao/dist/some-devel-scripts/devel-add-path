@@ -1,0 +1,6 @@
+myself=`which $0`
+ROOTDIR=`dirname ${myself}`
+
+echo "Copy the following line:"
+echo "export PATH=${ROOTDIR}/ciaoc:$PATH; export PATH=${ROOTDIR}/shell:$PATH; export CIAOLIB=${ROOTDIR}; export CIAOENGINE=${ROOTDIR}/bin/LINUXi86/ciaoengine"
+

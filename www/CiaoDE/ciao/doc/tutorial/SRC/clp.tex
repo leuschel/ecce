@@ -1,0 +1,168 @@
+
+\section{Constraint Logic Programming}
+\label{sec:constr-logic-progr}
+
+Prolog is based on unification. Data of the program are terms, and
+unification solves equations between terms. A natural extension to
+this is to allow for other types of equations, for example, arithmetic
+equations, inequations, or disequations. This is what Constraint Logic
+Programming (CLP) does, providing the mechanisms to solve arithmetic
+constraints. See~\cite{marriot-stuckey-98} for a good introduction to
+CLP. 
+
+The Ciao packages for CLP allow for constraints over arithmetic
+expressions. Constraints include equations, inequations, and
+disequations. Constraints are expressed using the operators:  
+\begin{quote}
+\begin{verbatim}
+.=.   .<>.   .<.   .=<.   .>.   .>=.
+\end{verbatim}
+\end{quote}
+%
+for equalities (\verb+.=.+), inequalities (\verb+.<>.+), and
+disequalities between two arithmetic expressions.
+%
+Expressions are built with the usual arithmetic operators, numbers,
+and variables. 
+%
+For example:
+\begin{quote}
+\begin{verbatim}
+... :- ..., X+Y .=. 5, X-Y .=. 2, ...
+\end{verbatim}
+\end{quote}
+%
+sets up a system of equations that CLP will solve, yielding:
+\begin{quote}
+\begin{verbatim}
+Y .=. 1.5,
+X .=. 3.5 
+\end{verbatim}
+\end{quote}
+%
+and the disequalities:
+\begin{quote}
+\begin{verbatim}
+... :- ..., X+Y .>=. 5, X-Y .=<. 2, ...
+\end{verbatim}
+\end{quote}
+%
+set up a system of disequations, the solution of which can only be
+parametric (because there is not a unique solution). CLP will yield:
+\begin{quote}
+\begin{verbatim}
+X. >=. 5.0-Y,
+X .=<. 2.0+Y
+\end{verbatim}
+\end{quote}
+%
+in this case. Note how variable \verb+Y+ acts as a parameter of the
+solution. Once a value is assigned to \verb+Y+, the value(s) of \verb+X+
+is determined by the above solution inequations. For example:
+\begin{quote}
+\begin{verbatim}
+... :- ..., X+Y .>=. 5, X-Y .=<. 2, ..., Y .=. 0, ...
+\end{verbatim}
+\end{quote}
+%
+makes CLP answer ``no'', because for a value 0 for \verb+Y+ there are
+no values for \verb+X+ that satisfy the inequations. However:
+\begin{quote}
+\begin{verbatim}
+... :- ..., X+Y .>=. 5, X-Y .=<. 2, ..., Y .=. 2, ...
+\end{verbatim}
+\end{quote}
+%
+yields:
+\begin{quote}
+\begin{verbatim}
+X.>=.3.0,
+X.=<.4.0,
+Y.=.2.0 
+\end{verbatim}
+\end{quote}
+%
+since any real number between (and including) 3 and 4 satisfies the
+solution. 
+
+You can mix equations, inequations, and disequations arbitrarily. You
+can also mix constraints with the classical unification and Prolog
+arithmetic operator \verb+arithmetic:is/2+. 
+
+However, note that unification manipulates terms, which include
+numbers and expressions that may ``look like'' arithmetic expressions,
+but are not evaluated. Thus: 
+\begin{quote}
+\begin{verbatim}
+... :- ..., X+Y .>=. 5, X-Y .=<. 2, ..., Y = 2, ...
+\end{verbatim}
+\end{quote}
+%
+yields the same solution as above, but:
+\begin{quote}
+\begin{verbatim}
+... :- ..., X+Y .>=. 5, X-Y .=<. 2, ..., Y = 1+1, ...
+\end{verbatim}
+\end{quote}
+%
+fails, since \verb-1+1- is not a number, and can not participate in
+expressions involved in constraints.
+
+The particular domain of numbers which can be involved in constraints
+conditions the particular constraint system used. Thus, for real numbers,
+rational numbers, and (finite ranges of) integer numbers, we have
+CLP(R), CLP(Q), and CLP(FD) (for Finite Domains), respectively.
+
+Each of the constraint systems mentioned corresponds to a
+package. They are revised in the following, but please consult the
+Ciao reference manual for each package for details on the constraints
+and the operators that can be used in the expressions appearing in the
+constraints for each system.
+
+\subsection{Constraints over Reals}
+
+The package \verb+clpr+ enables CLP(R), which allows for constraints
+over real numbers. This means that the solutions for the variables
+involved in constraints are real numbers, and all numbers used in the
+expressions in constraints are considered real numbers. 
+
+The internal representation of real numbers may cause losses of
+precision. For example,
+\begin{quote}
+\begin{verbatim}
+?- X+Y .>=. 3, X=0.1.
+
+Y.>=.2.9,
+X.=.0.100000000000000089 ? 
+\end{verbatim}
+\end{quote}
+
+\comment{Incomplete}
+
+\subsection{Constraints over Rationals}
+
+The package \verb+clpq+ enables CLP(Q), which allows for constraints
+over rational numbers. This means that the solutions for the variables
+involved in constraints are rational numbers, and all numbers used in the
+expressions in constraints are considered rational. 
+
+The internal representation of rational numbers allows for infinite
+precision. For example,
+\begin{quote}
+\begin{verbatim}
+?- X+Y .>=. 3, X=0.1.
+
+X = 1/10,
+Y.>=.29/10 ? 
+\end{verbatim}
+\end{quote}
+
+\comment{The output {\tt X = 1/10} is incorrect!!!}
+
+\comment{Incomplete}
+
+The conversion of reals to rationals...
+
+\subsection{Finite Domain Constraints}
+
+\comment{Still under construction}

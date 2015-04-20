@@ -1,0 +1,53 @@
+
+[Very incomplete, should be expanded!!!! ]
+
+- We should not post any version without testing it. In order to test
+  a distribution, we typically post it in the alpha or beta
+  sites. The procedure of posting a version itself can be tested by
+  posting in Test. These are at: 
+
+  http://clip.dia.fi.upm.es/Software/Test/  
+  http://clip.dia.fi.upm.es/Software/Alpha/  
+  http://clip.dia.fi.upm.es/Software/Beta/  
+
+  (the Local user and password work)
+
+  To generate a distribution there select (by uncommenting) the
+  appropriate option in the SETTINGS file in the Ciao dist directory:
+
+  # DISTTYPE=
+  # DISTTYPE=Beta/
+  # DISTTYPE=Alpha/
+  # DISTTYPE=Test/
+
+- The main thing that we should make sure of when posting publicly
+  (outside Beta or Alpha) a version is that it installs properly in
+  all platforms, including the manuals, etc.. Also, we should make
+  sure that there is no weird stuff (libraries that normally work but
+  that have been left in an intermediary state and don't work, files
+  with comments in Spanish, directories with libraries that don't work
+  at all, etc., etc.).
+
+  Even then, we first post the version marked as "for testing" and
+  hope that a few brave souls will find the remaining bugs that we
+  cannot test here.
+
+- For producing a proper new version we should in addition at least
+  worry about the following:
+
+  - That everything really works. This typically requires completely
+    freezing the development version for some days in which we try
+    everything that we can think of in all platforms.
+    It is also necessary to try out all the examples in all the libraries.
+  - That we have the even version (1.8, 2.0, 2.2, ...) comment in 
+    /home/clip/Systems/ciao/doc/common/ciao.pl
+    properly updated in a user-frienly manner, summing up all the changes.
+  - That we do not have libraries that do not work.
+  - That libraries which are half cooked are marked as such if they
+    are included (e.g., the new active module/remote stuff, the
+    &-Prolog stuff, ...).
+  - We need to have a new announcement message and a new brochure.
+  - Also, a new version is typically motivated by at least one
+    major new feature (although many small ones can also do the trick,
+    I guess).
+

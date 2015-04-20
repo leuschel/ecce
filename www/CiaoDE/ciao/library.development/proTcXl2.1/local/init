@@ -1,0 +1,2 @@
+set auto_path "$protcl_library/local $auto_path"
+.t insert demo-icon.last "7. Loyd puzzle.\n" {demo demo-loyd}

@@ -1,0 +1,65 @@
+PiLLoW 1.1
+
+Programming in Logic Languages on the Web
+
+PiLLoW is distributed under the GNU Library General Public License, see
+the @tt{Copyright} file for details.
+
+@section{contacting the authors}
+
+Mail to @email{clip@@clip.dia.fi.upm.es} or visit
+@uref{http://www.clip.dia.fi.upm.es/}.
+
+@begin{verbatim}
+CLIP Group                                                  Grupo CLIP
+Dept. of Artificial Intelligence     Depto. de Inteligencia Artificial
+School of Computer Science                     Facultad de Informatica
+Technical University of Madrid       Universidad Politecnica de Madrid
+28660-Boadilla del Monte, MADRID      28660-Boadilla del Monte, MADRID
+SPAIN                                                            SPAIN
+@end{verbatim}
+
+@section{Getting the Package}
+
+The latest version of the Package is available at
+@uref{http://www.clip.dia.fi.upm.es/Software/}.
+
+The SWI-Prolog version of PiLLoW needs the @tt{clib} package for the
+HTTP conection facilities.  It is available from
+@uref{http://swi.psy.uva.nl/projects/SWI-Prolog/packages/clib/}
+
+@section{Directory map}
+
+  In the distribution you should find the following subdirectories:
+@begin{description}
+
+@item{@tt{doc}} contains an article in different formats explaining Web
+  programming in PiLLoW, and in non-Ciao distributions (in Ciao the
+  PiLLoW manual is inside the Ciao manual) the manual in three formats:
+  in GNU info in @tt{pillow_doc.info}, suitable for consulting in the
+  emacs editor; in Postscript in @tt{pillow_doc.ps}, for printing in a
+  Postscript printer or visualizing with @tt{ghostview} or similar
+  program; and in HTML inside the directory @tt{pillow_doc_html}.
+
+@item{@tt{examples}} contains programming examples, prepared to run in
+  the Ciao system, but easily adaptable to other Logic Programming systems.
+
+@item{@tt{images}} contains images used by the PiLLoW library or the examples.
+
+@end{description}
+
+@section{Mentioning this work}
+
+If you find this package useful and develop an application with it,
+we would appreciate if you mention our work by citing the article
+below and/or by putting a pointer to our WWW pages on PiLLoW
+@uref{http://www.clip.dia.fi.upm.es/Software/pillow/pillow.html} (easily
+achieved by including a @tt{pr} HTML term in the pages!).
+
+@begin{verbatim}
+@includeverbatim{pillow.bib}
+@end{verbatim}
+
+@section{Installation}
+
+Please read the file @tt{INSTALLATION} for installation instructions.

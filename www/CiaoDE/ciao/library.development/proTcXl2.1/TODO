@@ -1,0 +1,5 @@
+
+    * Calling Prolog from tcl.
+    * Rewrite xlib.c to adjust to SICStus foreign file conformance.
+    * xlib.c macro access is based on eclipse macros...
+    * CC in Makefile passed from the parent Makefile?

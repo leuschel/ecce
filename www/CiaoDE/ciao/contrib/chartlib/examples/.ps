@@ -1,0 +1,850 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 126 252 486 540
+%%Pages: 0
+%%Creator: (BLT 2.4 Barchart)
+%%CreationDate: (Thu Sep 13 11:43:06 2001)
+%%Title: (.ps)
+%%%%DocumentData: Clean7Bit
+%Orientation: Portrait
+%%DocumentNeededResources: font Helvetica Courier
+%%EndComments
+
+% including file "/usr/local/lib/blt2.4/bltGraph.pro"
+
+%
+% PostScript prolog file of the BLT graph widget.
+%
+% Copyright 1989-1992 Regents of the University of California.
+% Permission to use, copy, modify, and distribute this
+% software and its documentation for any purpose and without
+% fee is hereby granted, provided that the above copyright
+% notice appear in all copies.  The University of California
+% makes no representations about the suitability of this
+% software for any purpose.  It is provided "as is" without
+% express or implied warranty.
+%
+% Copyright 1991-1997 Bell Labs Innovations for Lucent Technologies.
+%
+% Permission to use, copy, modify, and distribute this software and its
+% documentation for any purpose and without fee is hereby granted, provided
+% that the above copyright notice appear in all copies and that both that the
+% copyright notice and warranty disclaimer appear in supporting documentation,
+% and that the names of Lucent Technologies any of their entities not be used
+% in advertising or publicity pertaining to distribution of the software
+% without specific, written prior permission.
+%
+% Lucent Technologies disclaims all warranties with regard to this software,
+% including all implied warranties of merchantability and fitness.  In no event
+% shall Lucent Technologies be liable for any special, indirect or
+% consequential damages or any damages whatsoever resulting from loss of use,
+% data or profits, whether in an action of contract, negligence or other
+% tortuous action, arising out of or in connection with the use or performance
+% of this software.
+%
+
+200 dict begin
+
+/BaseRatio 1.3467736870885982 def	% Ratio triangle base / symbol size
+/BgColorProc 0 def			% Background color routine (symbols)
+/DrawSymbolProc 0 def			% Routine to draw symbol outline/fill
+/StippleProc 0 def			% Stipple routine (bar segments)
+/DashesProc 0 def			% Dashes routine (line segments)
+ 
+% Define the array ISOLatin1Encoding (which specifies how characters are 
+% encoded for ISO-8859-1 fonts), if it isn't already present (Postscript 
+% level 2 is supposed to define it, but level 1 doesn't). 
+ 
+systemdict /ISOLatin1Encoding known not { 
+  /ISOLatin1Encoding [ 
+    /space /space /space /space /space /space /space /space 
+    /space /space /space /space /space /space /space /space 
+    /space /space /space /space /space /space /space /space 
+    /space /space /space /space /space /space /space /space 
+    /space /exclam /quotedbl /numbersign /dollar /percent /ampersand 
+    /quoteright 
+    /parenleft /parenright /asterisk /plus /comma /minus /period /slash 
+    /zero /one /two /three /four /five /six /seven 
+    /eight /nine /colon /semicolon /less /equal /greater /question 
+    /at /A /B /C /D /E /F /G 
+    /H /I /J /K /L /M /N /O 
+    /P /Q /R /S /T /U /V /W 
+    /X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore 
+    /quoteleft /a /b /c /d /e /f /g 
+    /h /i /j /k /l /m /n /o 
+    /p /q /r /s /t /u /v /w 
+    /x /y /z /braceleft /bar /braceright /asciitilde /space 
+    /space /space /space /space /space /space /space /space 
+    /space /space /space /space /space /space /space /space 
+    /dotlessi /grave /acute /circumflex /tilde /macron /breve /dotaccent 
+    /dieresis /space /ring /cedilla /space /hungarumlaut /ogonek /caron 
+    /space /exclamdown /cent /sterling /currency /yen /brokenbar /section 
+    /dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen 
+    /registered /macron 
+    /degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph 
+    /periodcentered 
+    /cedillar /onesuperior /ordmasculine /guillemotright /onequarter 
+    /onehalf /threequarters /questiondown 
+    /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla 
+    /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex 
+    /Idieresis 
+    /Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply 
+    /Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn 
+    /germandbls 
+    /agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla 
+    /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex 
+    /idieresis 
+    /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide 
+    /oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn 
+    /ydieresis 
+  ] def 
+} if 
+
+% font ISOEncode font 
+% This procedure changes the encoding of a font from the default 
+% Postscript encoding to ISOLatin1.  It's typically invoked just 
+% before invoking "setfont".  The body of this procedure comes from 
+% Section 5.6.1 of the Postscript book. 
+
+/ISOEncode { 
+  dup length dict
+  begin 
+    {1 index /FID ne {def} {pop pop} ifelse} forall 
+    /Encoding ISOLatin1Encoding def 
+    currentdict 
+  end 
+
+  % I'm not sure why it's necessary to use "definefont" on this new 
+  % font, but it seems to be important; just use the name "Temporary" 
+  % for the font. 
+
+  /Temporary exch definefont 
+} bind def 
+
+/Stroke {
+  gsave
+    stroke
+  grestore
+} def
+
+/Fill {
+  gsave
+    fill
+  grestore
+} def
+
+/SetFont { 	
+  % Stack: pointSize fontName
+  findfont exch scalefont ISOEncode setfont
+} def
+
+/Box {
+  % Stack: x y width height
+  newpath
+  exch 4 2 roll moveto
+  dup 0 rlineto
+  exch 0 exch rlineto
+  neg 0 rlineto
+  closepath
+} def
+
+/SetFgColor {
+  % Stack: red green blue
+  CL 0 eq { 
+    pop pop pop 0 0 0 
+  } if
+  setrgbcolor
+  CL 1 eq { 
+    currentgray setgray 
+  } if
+} def
+
+/SetBgColor {
+  % Stack: red green blue
+  CL 0 eq { 
+    pop pop pop 1 1 1 
+  } if
+  setrgbcolor
+  CL 1 eq { 
+    currentgray setgray 
+  } if
+} def
+
+% The next two definitions are taken from "$tk_library/prolog.ps"
+
+% desiredSize EvenPixels closestSize
+%
+% The procedure below is used for stippling.  Given the optimal size
+% of a dot in a stipple pattern in the current user coordinate system,
+% compute the closest size that is an exact multiple of the device's
+% pixel size.  This allows stipple patterns to be displayed without
+% aliasing effects.
+
+/EvenPixels {
+  % Compute exact number of device pixels per stipple dot.
+  dup 0 matrix currentmatrix dtransform
+  dup mul exch dup mul add sqrt
+
+  % Round to an integer, make sure the number is at least 1, and compute
+  % user coord distance corresponding to this.
+  dup round dup 1 lt {pop 1} if
+  exch div mul
+} bind def
+
+% width height string filled StippleFill --
+%
+% Given a path and other graphics information already set up, this
+% procedure will fill the current path in a stippled fashion.  "String"
+% contains a proper image description of the stipple pattern and
+% "width" and "height" give its dimensions.  If "filled" is true then
+% it means that the area to be stippled is gotten by filling the
+% current path (e.g. the interior of a polygon); if it's false, the
+% area is gotten by stroking the current path (e.g. a wide line).
+% Each stipple dot is assumed to be about one unit across in the
+% current user coordinate system.
+
+/StippleFill {
+  % Turn the path into a clip region that we can then cover with
+  % lots of images corresponding to the stipple pattern.  Warning:
+  % some Postscript interpreters get errors during strokepath for
+  % dashed lines.  If this happens, turn off dashes and try again.
+
+  gsave
+    {eoclip}
+    {{strokepath} stopped {grestore gsave [] 0 setdash strokepath} if clip}
+    ifelse
+
+    % Change the scaling so that one user unit in user coordinates
+    % corresponds to the size of one stipple dot.
+    1 EvenPixels dup scale
+
+    % Compute the bounding box occupied by the path (which is now
+    % the clipping region), and round the lower coordinates down
+    % to the nearest starting point for the stipple pattern.
+
+    pathbbox
+    4 2 roll
+    5 index div cvi 5 index mul 4 1 roll
+    6 index div cvi 6 index mul 3 2 roll
+
+    % Stack now: width height string y1 y2 x1 x2
+    % Below is a doubly-nested for loop to iterate across this area
+    % in units of the stipple pattern size, going up columns then
+    % across rows, blasting out a stipple-pattern-sized rectangle at
+    % each position
+
+    6 index exch {
+      2 index 5 index 3 index {
+	% Stack now: width height string y1 y2 x y
+
+	gsave
+	  1 index exch translate
+	  5 index 5 index true matrix {3 index} imagemask
+	grestore
+      } for
+      pop
+    } for
+    pop pop pop pop pop
+  grestore
+  newpath
+} bind def
+
+/LS {	% Stack: x1 y1 x2 y2
+  newpath 4 2 roll moveto lineto stroke
+} def
+
+/EndText {
+  %Stack :
+  grestore
+} def
+
+/BeginText {
+  %Stack :  w h theta centerX centerY
+  gsave
+    % Translate the origin to the center of bounding box and rotate
+    translate neg rotate
+    % Translate back to the origin of the text region
+    -0.5 mul exch -0.5 mul exch translate
+} def
+
+/DrawAdjText {
+  %Stack : str strWidth x y
+  moveto				% Go to the text position
+  exch dup dup 4 2 roll
+
+  % Adjust character widths to get desired overall string width
+  % adjust X = (desired width - real width)/#chars
+
+  stringwidth pop sub exch
+  length div
+  0 3 -1 roll
+
+  % Flip back the scale so that the string is not drawn in reverse
+
+  gsave
+    1 -1 scale
+    ashow
+  grestore
+} def
+
+/DrawBitmap {
+  % Stack: ?bgColorProc? boolean centerX centerY width height theta imageStr
+  gsave
+    6 -2 roll translate			% Translate to center of bounding box
+    4 1 roll neg rotate			% Rotate by theta
+    
+    % Find upperleft corner of bounding box
+    
+    2 copy -.5 mul exch -.5 mul exch translate
+    2 copy scale			% Make pixel unit scale
+    newpath
+    0 0 moveto 0 1 lineto 1 1 lineto 1 0 lineto
+    closepath
+    
+    % Fill rectangle with background color
+    
+    4 -1 roll { 
+      gsave 
+	4 -1 roll exec fill 
+      grestore 
+    } if
+    
+    % Paint the image string into the unit rectangle
+    
+    2 copy true 3 -1 roll 0 0 5 -1 roll 0 0 6 array astore 5 -1 roll
+    imagemask
+  grestore
+}def
+
+% Symbols:
+
+% Skinny-cross
+/Sc {
+  % Stack: x y symbolSize
+  gsave
+    3 -2 roll translate 45 rotate
+    0 0 3 -1 roll Sp
+  grestore
+} def
+
+% Skinny-plus
+/Sp {
+  % Stack: x y symbolSize
+  gsave
+    3 -2 roll translate
+    2 idiv
+    dup 2 copy
+    newpath neg 0 moveto 0 lineto
+    DrawSymbolProc
+    newpath neg 0 exch moveto 0 exch lineto
+    DrawSymbolProc
+  grestore
+} def
+
+% Cross
+/Cr {
+  % Stack: x y symbolSize
+  gsave
+    3 -2 roll translate 45 rotate
+    0 0 3 -1 roll Pl
+  grestore
+} def
+
+% Plus
+/Pl {
+  % Stack: x y symbolSize
+  gsave
+    3 -2 roll translate
+    dup 2 idiv
+    exch 6 idiv
+
+    %
+    %          2   3		The plus/cross symbol is a
+    %				closed polygon of 12 points.
+    %      0   1   4    5	The diagram to the left
+    %           x,y		represents the positions of
+    %     11  10   7    6	the points which are computed
+    %				below.
+    %          9   8
+    %
+
+    newpath
+    2 copy exch neg exch neg moveto dup neg dup lineto
+    2 copy neg exch neg lineto 2 copy exch neg lineto
+    dup dup neg lineto 2 copy neg lineto 2 copy lineto
+    dup dup lineto 2 copy exch lineto 2 copy neg exch lineto
+    dup dup neg exch lineto exch neg exch lineto
+    closepath
+    DrawSymbolProc
+  grestore
+} def
+
+% Circle
+/Ci {
+  % Stack: x y symbolSize
+  3 copy pop
+  moveto newpath
+  2 div 0 360 arc
+  closepath DrawSymbolProc
+} def
+
+% Square
+/Sq {
+  % Stack: x y symbolSize
+  dup dup 2 div dup
+  6 -1 roll exch sub exch
+  5 -1 roll exch sub 4 -2 roll Box
+  DrawSymbolProc
+} def
+
+% Line
+/Li {
+  % Stack: x y symbolSize
+  3 1 roll exch 3 -1 roll 2 div 3 copy
+  newpath
+  sub exch moveto add exch lineto
+  stroke
+} def
+
+% Diamond
+/Di {
+  % Stack: x y symbolSize
+  gsave
+    3 1 roll translate 45 rotate 0 0 3 -1 roll Sq
+  grestore
+} def
+    
+% Triangle
+/Tr {
+  % Stack: x y symbolSize
+  gsave
+    3 -2 roll translate
+    BaseRatio mul 0.5 mul		% Calculate 1/2 base
+    dup 0 exch 30 cos mul		% h1 = height above center point
+    neg					% b2 0 -h1
+    newpath moveto			% point 1;  b2
+    dup 30 sin 30 cos div mul		% h2 = height below center point
+    2 copy lineto			% point 2;  b2 h2
+    exch neg exch lineto		% 
+    closepath
+    DrawSymbolProc
+  grestore
+} def
+% Bitmap
+/Bm {
+  % Stack: x y symbolSize
+  gsave
+    3 1 roll translate pop DrawSymbolProc
+  grestore
+} def
+    
+%%BeginSetup
+gsave					% Save the graphics state
+
+% Default line/text style parameters
+
+1 setlinewidth				% width
+1 setlinejoin				% join
+0 setlinecap				% cap
+[] 0 setdash				% dashes
+
+/CL 0 def				% Set color level mode
+0 0 0 setrgbcolor			% color
+
+% Transform coordinate system to use X11 coordinates
+
+% Flip the y-axis by changing the origin and reversing the scale,
+% making the origin the upper left corner
+0.960000 -0.960000 scale
+0 -825 translate
+
+% User defined page layout
+
+%% Set color level
+/CL 2 def
+
+% Set origin
+131 262 translate
+
+
+%%EndSetup
+
+13 /Helvetica-Bold SetFont
+1 1 1 SetBgColor
+62 36 225 203 Box Fill
+
+gsave clip
+
+0 setlinejoin
+0 setlinecap
+0.639216 0.639216 0.639216 SetFgColor
+1 setlinewidth
+[  2 4] 0 setdash
+64 211 285 211 LS
+64 230 285 230 LS
+64 174 285 174 LS
+64 193 285 193 LS
+64 138 285 138 LS
+64 156 285 156 LS
+64 101 285 101 LS
+64 119 285 119 LS
+64 64 285 64 LS
+64 82 285 82 LS
+64 46 285 46 LS
+
+% Element "<=35"
+
+1 0 0 SetBgColor
+243 46 34 184 Box Fill
+
+0.282353 0.819608 0.8 SetFgColor
+    4 4
+	<80808080>
+    true StippleFill
+0.6 0 0 SetBgColor
+243 229 34 1 Box Fill
+
+276 46 1 184 Box Fill
+
+1 0.498039 0.498039 SetBgColor
+newpath 243 231 moveto
+243 46 lineto
+278 46 lineto
+276 48 lineto
+245 48 lineto
+245 229 lineto
+243 231 lineto
+243 231  lineto closepath Fill
+
+% Element ">35"
+
+0 0 1 SetBgColor
+200 90 34 140 Box Fill
+
+0.282353 0.819608 0.8 SetFgColor
+    4 4
+	<80808080>
+    true StippleFill
+0 0 0.6 SetBgColor
+200 229 34 1 Box Fill
+
+233 90 1 140 Box Fill
+
+0.498039 0.498039 1 SetBgColor
+newpath 200 231 moveto
+200 90 lineto
+235 90 lineto
+233 92 lineto
+202 92 lineto
+202 229 lineto
+200 231 lineto
+200 231  lineto closepath Fill
+
+% Element ">50"
+
+0 1 0 SetBgColor
+157 132 34 98 Box Fill
+
+0.282353 0.819608 0.8 SetFgColor
+    4 4
+	<80808080>
+    true StippleFill
+0 0.6 0 SetBgColor
+157 229 34 1 Box Fill
+
+190 132 1 98 Box Fill
+
+0.498039 1 0.498039 SetBgColor
+newpath 157 231 moveto
+157 132 lineto
+192 132 lineto
+190 134 lineto
+159 134 lineto
+159 229 lineto
+157 231 lineto
+157 231  lineto closepath Fill
+
+% Element ">65"
+
+0.866667 0.627451 0.866667 SetBgColor
+114 166 34 64 Box Fill
+
+0.282353 0.819608 0.8 SetFgColor
+    4 4
+	<80808080>
+    true StippleFill
+0.521569 0.376471 0.521569 SetBgColor
+114 229 34 1 Box Fill
+
+147 166 1 64 Box Fill
+
+1 0.878431 1 SetBgColor
+newpath 114 231 moveto
+114 166 lineto
+149 166 lineto
+147 168 lineto
+116 168 lineto
+116 229 lineto
+114 231 lineto
+114 231  lineto closepath Fill
+
+% Element ">80"
+
+1 1 0 SetBgColor
+72 195 34 35 Box Fill
+
+0.282353 0.819608 0.8 SetFgColor
+    4 4
+	<80808080>
+    true StippleFill
+0.6 0.6 0 SetBgColor
+72 229 34 1 Box Fill
+
+105 195 1 35 Box Fill
+
+1 1 0.498039 SetBgColor
+newpath 72 231 moveto
+72 195 lineto
+107 195 lineto
+105 197 lineto
+74 197 lineto
+74 229 lineto
+72 231 lineto
+72 231  lineto closepath Fill
+
+% Unset clipping
+grestore
+
+0.85098 0.85098 0.85098 SetBgColor
+0 0 374 38 Box Fill
+
+0 38 63 200 Box Fill
+
+286 38 88 200 Box Fill
+
+0 238 374 61 Box Fill
+
+1 1 1 SetBgColor
+62 237 224 1 Box Fill
+
+285 36 1 202 Box Fill
+
+0.509804 0.509804 0.509804 SetBgColor
+newpath 62 239 moveto
+62 36 lineto
+287 36 lineto
+285 38 lineto
+64 38 lineto
+64 237 lineto
+62 239 lineto
+62 239  lineto closepath Fill
+1 1 1 SetBgColor
+296 154 73 1 Box Fill
+
+368 42 1 113 Box Fill
+
+0.509804 0.509804 0.509804 SetBgColor
+newpath 296 156 moveto
+296 42 lineto
+370 42 lineto
+368 44 lineto
+298 44 lineto
+298 154 lineto
+296 156 lineto
+296 156  lineto closepath Fill
+
+/DrawSymbolProc {
+  gsave
+    1 1 0 SetBgColor
+    Fill
+    0.282353 0.819608 0.8 SetFgColor
+    4 4
+	<80808080>
+    true StippleFill
+  grestore
+} def
+
+315 54 13 Sq
+24 16 0 344 55 BeginText
+13 /Helvetica-Bold SetFont
+0 0 0 SetFgColor
+(>80) 24 0 13 DrawAdjText
+EndText
+
+/DrawSymbolProc {
+  gsave
+    0.866667 0.627451 0.866667 SetBgColor
+    Fill
+    0.282353 0.819608 0.8 SetFgColor
+    4 4
+	<80808080>
+    true StippleFill
+  grestore
+} def
+
+315 76 13 Sq
+24 16 0 344 77 BeginText
+13 /Helvetica-Bold SetFont
+0 0 0 SetFgColor
+(>65) 24 0 13 DrawAdjText
+EndText
+
+/DrawSymbolProc {
+  gsave
+    0 1 0 SetBgColor
+    Fill
+    0.282353 0.819608 0.8 SetFgColor
+    4 4
+	<80808080>
+    true StippleFill
+  grestore
+} def
+
+315 98 13 Sq
+24 16 0 344 99 BeginText
+13 /Helvetica-Bold SetFont
+0 0 0 SetFgColor
+(>50) 24 0 13 DrawAdjText
+EndText
+
+/DrawSymbolProc {
+  gsave
+    0 0 1 SetBgColor
+    Fill
+    0.282353 0.819608 0.8 SetFgColor
+    4 4
+	<80808080>
+    true StippleFill
+  grestore
+} def
+
+315 120 13 Sq
+24 16 0 344 121 BeginText
+13 /Helvetica-Bold SetFont
+0 0 0 SetFgColor
+(>35) 24 0 13 DrawAdjText
+EndText
+
+/DrawSymbolProc {
+  gsave
+    1 0 0 SetBgColor
+    Fill
+    0.282353 0.819608 0.8 SetFgColor
+    4 4
+	<80808080>
+    true StippleFill
+  grestore
+} def
+
+315 142 13 Sq
+33 16 0 348 143 BeginText
+13 /Helvetica-Bold SetFont
+0 0 0 SetFgColor
+(<=35) 33 0 13 DrawAdjText
+EndText
+88 16 0 174 18 BeginText
+13 /Helvetica-Bold SetFont
+0 0 0 SetFgColor
+(Curso 96-97) 88 0 13 DrawAdjText
+EndText
+130 14 0 174 285 BeginText
+12 /Helvetica-Bold SetFont
+0 0 0 SetFgColor
+(% Créditos aprobados) 130 0 11 DrawAdjText
+EndText
+18 10 90 89 263 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(80%) 18 0 8 DrawAdjText
+EndText
+18 10 90 132 263 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(65%) 18 0 8 DrawAdjText
+EndText
+18 10 90 174 263 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(50%) 18 0 8 DrawAdjText
+EndText
+18 10 90 217 263 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(35%) 18 0 8 DrawAdjText
+EndText
+12 10 90 260 260 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(0%) 12 0 8 DrawAdjText
+EndText
+0 setlinejoin
+0 setlinecap
+0 0 0 SetFgColor
+1 setlinewidth
+[ ] 0 setdash
+72 243 277 243 LS
+110 243 110 247 LS
+89 243 89 251 LS
+153 243 153 247 LS
+132 243 132 251 LS
+196 243 196 247 LS
+174 243 174 251 LS
+239 243 239 247 LS
+217 243 217 251 LS
+260 243 260 251 LS
+66 14 90 16 137 BeginText
+12 /Helvetica-Bold SetFont
+0 0 0 SetFgColor
+(% Alumnos) 66 0 11 DrawAdjText
+EndText
+6 10 0 44 230 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(0) 6 0 8 DrawAdjText
+EndText
+12 10 0 41 193 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(20) 12 0 8 DrawAdjText
+EndText
+12 10 0 41 156 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(40) 12 0 8 DrawAdjText
+EndText
+12 10 0 41 119 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(60) 12 0 8 DrawAdjText
+EndText
+12 10 0 41 82 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(80) 12 0 8 DrawAdjText
+EndText
+18 10 0 38 46 BeginText
+10 /Courier-Bold SetFont
+0 0 0 SetFgColor
+(100) 18 0 8 DrawAdjText
+EndText
+0 setlinejoin
+0 setlinecap
+0 0 0 SetFgColor
+1 setlinewidth
+[ ] 0 setdash
+58 230 58 46 LS
+58 211 54 211 LS
+58 230 50 230 LS
+58 174 54 174 LS
+58 193 50 193 LS
+58 138 54 138 LS
+58 156 50 156 LS
+58 101 54 101 LS
+58 119 50 119 LS
+58 64 54 64 LS
+58 82 50 82 LS
+58 46 50 46 LS
+showpage
+%Trailer
+grestore
+end
+%EOF

@@ -1,0 +1,36 @@
+#VRML V2.0 utf8
+#Example 11.6 - MovieTexture - startTime from TouchSensor
+NavigationInfo {
+  type	"EXAMINE"
+}
+Viewpoint {
+  position  -1.995 1.668 4.105
+  orientation       -0.639 -0.754 -0.153  0.617
+  fieldOfView       0.785
+}
+Group {
+  children  [
+    DEF Start_Movie TouchSensor { }
+    Shape {
+      appearance  Appearance {
+        material        Material {
+          ambientIntensity      0.25
+          diffuseColor  0.8 0.8 0.8
+        }
+        texture DEF Test_Movie MovieTexture {
+          url     "pyro.mps"
+        }
+      }
+      geometry Box { }
+    }
+    Sound {
+      source      USE Test_Movie
+      minFront    5
+      maxFront    10
+      minBack     3
+      maxBack     8
+    }
+  ]
+}
+ROUTE Start_Movie.touchTime TO Test_Movie.set_startTime
+#EOF

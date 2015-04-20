@@ -1,0 +1,12 @@
+
+set terminal postscript portrait
+set size 0.7,0.3
+set output "./on_method.ps"
+
+set data style linespoints
+
+set ylabel "Execution time (ms)"
+set xlabel "Number of methods"
+set pointsize 3
+
+plot "bench" index 0:1 title "" pt 2 

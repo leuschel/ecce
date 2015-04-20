@@ -1,0 +1,351 @@
+
+\section{Fuzzy Prolog}
+
+Prolog is based on First Order Logic, where the truth values are only
+{\em true} and {\em false}. In Fuzzy Logic, there is a whole range of
+truth values: any real from 0 (absolute falsity) to 1 (absolute
+truth). Fuzzy Prolog is a logic programming language based on
+this logic.
+
+A (logic) concept can be seen as a set which includes the elements of 
+``universe'' to which the concept is applicable. A predicate then can
+be associates with a {\em characteristic function} which determines if
+the arguments given to the predicates are in the set defining the
+predicate (satisfy the relation represented by the predicate) or not.
+%
+Given a relevant universal set $U$, a (classic) set $A$, associated to
+a predicate, can be defined by a characteristic function 
+$A : U\rightarrow \{0,1\}$. If an element $x$ in $U$ belongs to $A$
+then $A(x) = 1$, otherwise $A(x) = 0$.
+
+Fuzzy sets, on the other hand, try to model imprecise concepts. An
+element in the universal set belongs to a fuzzy sets in a certain
+grade. For example, the youth of a person given his age. A person
+which is 25 years old is certainly young, and if he is 50 then he is
+not young, but if he is 36 years old he is young in some
+grade. Therefore, a fuzzy set $A$ is defined by a characteristic
+function $A : X \rightarrow [0,1]$. Figure \ref{fig:fuzzysetyoung}
+shows the characteristic function for the fuzzy set for \texttt{young}.
+The value $A(x)$ is the membership value of $x$ in the fuzzy set $A$,
+if we consider $A$ as a predicate, this value is called the truth value.
+
+\begin{figure}[htbp]
+  \begin{center}
+\setlength{\unitlength}{2547sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(5175,2685)(1051,-3136)
+\thinlines
+{\color[rgb]{0,0,0}\put(1801,-2761){\vector( 0, 1){2250}}
+\put(1801,-2761){\vector( 1, 0){4125}}
+}%
+{\color[rgb]{0,0,0}\put(2401,-2761){\line( 0,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(3601,-2761){\line( 0,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(3001,-2761){\line( 0,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(4801,-2761){\line( 0,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(5401,-2761){\line( 0,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(1801,-961){\line(-1, 0){150}}
+}%
+\thicklines
+{\color[rgb]{0,0,0}\put(1801,-2761){\line( 1, 0){600}}
+\put(2401,-2761){\line( 1, 2){900}}
+\put(3301,-961){\line( 1, 0){600}}
+\put(3901,-961){\line( 1,-2){900}}
+\put(4801,-2761){\line( 1, 0){675}}
+}%
+\thinlines
+{\color[rgb]{0,0,0}\put(4201,-2761){\line( 0,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(1801,-1861){\line(-1, 0){150}}
+}%
+\put(2326,-3136){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}10}%
+}}}
+\put(2926,-3136){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}20}%
+}}}
+\put(4726,-3136){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}50}%
+}}}
+\put(5326,-3136){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}60}%
+}}}
+\put(3526,-3136){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}30}%
+}}}
+\put(4126,-3136){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}40}%
+}}}
+\put(1501,-2836){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}0}%
+}}}
+\put(1501,-1036){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}
+\put(1276,-1936){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}0.5}%
+}}}
+\put(6226,-2986){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Age}%
+}}}
+\put(1051,-586){\makebox(0,0)[lb]{\smash{\SetFigFont{8}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Youth}%
+}}}
+\end{picture}
+    \caption{The fuzzy set \texttt{young}}
+    \label{fig:fuzzysetyoung}
+  \end{center}
+\end{figure}
+
+The package \texttt{fuzzy} allows Ciao to interpret fuzzy
+predicates. Fuzzy predicates which correspond to fuzzy sets on a
+universal set of numbers and with characteristic functions which are
+polygonal can be defined by the operator 
+\texttt{:\# fuzzy\_predicate}. For example, the above fuzzy set
+\texttt{young} is defined as: 
+\begin{quote}
+\begin{verbatim}
+:- use_package([...,fuzzy,...]).
+
+young :# fuzzy_predicate [(0,0),(10,0),(25,1),(35,1),(50,0),(60,0)].
+\end{verbatim}
+\end{quote}
+%
+where each element in the list is a vertex in the polygonal function.
+This sentence defines a fuzzy predicate \texttt{young/2}, where the
+first argument is the age and the second argument represents the truth
+value. Truth values are assigned to the variable in the last argument
+as constraints (Section~\ref{sec:constr-logic-progr}) over real
+numbers. For example,
+
+\begin{verbatim}
+?- young(30,M).
+
+M = 1 ? 
+
+yes
+?- young(38,M).
+
+(M.=.0.8 ? 
+
+yes
+?- young(45,M).
+
+M.=.0.333333333333333313 ? 
+
+yes
+?- young(50,M).
+
+M = 0 ? 
+\end{verbatim}
+
+More complex fuzzy predicates can be defined by fuzzy clauses. We use
+\texttt{:{\tiny$^\sim$}} instead of \texttt{:-} as the neck of
+fuzzy clauses to distinguish them from Prolog clauses. For example,
+\begin{quote}
+{\tt
+\begin{tabbing} 
+young\_co\=uple(X,Y,Mu) :{\tiny$^\sim$} \\
+\>        age(X,X1), \\
+\>        age(Y,Y1),  \\
+\>        young(X1,MuX), \\
+\>        young(Y1,MuY). \\
+\\
+age(john,46). \\
+age(rose,36).
+\end{tabbing}
+}
+\end{quote}
+%
+defines a fuzzy predicate \texttt{young\_couple/3} that uses in its
+definition a fuzzy predicate \texttt{young/2} and a Prolog predicate
+\texttt{age/2}. The truth value of Prolog calls in the body of the
+fuzzy clause is 1 is it succeeds and 0 otherwise. The truth value of
+\texttt{young\_couple} is obtained by aggregating the truth values of
+the calls in the body. By default the aggregation function is
+\texttt{min}, i.e., the minimum from all body goals. In this example,
+
+\begin{verbatim}
+?- young_couple(john,rose,M).
+
+M.=.0.26 ? 
+\end{verbatim}
+%
+because $0.26$ is the minimum of $\{1,1,0.93,0.26\}$ which are the
+truth values of the calls \texttt{age(john,X1)},
+\texttt{age(rose,Y1)}, \texttt{young(46,MuX)} and
+\texttt{young(36,MuY)} respectively.
+
+Aggregation functions are indicated after the operator
+\texttt{:{\tiny$^\sim$}}. For example, if we want the truth value of
+\texttt{young\_couple/3} to be the product of the truth values in its
+definition then we write: 
+\begin{quote}
+{\tt
+\begin{tabbing} 
+young\_co\=uple(X,Y,Mu) :{\tiny$^\sim$} prod \\
+\>        age(X,X1), \\
+\>        age(Y,Y1),  \\
+\>        young(X1,MuX), \\
+\>        young(Y1,MuY).
+\end{tabbing}
+}
+\end{quote}
+%
+so that now:
+
+\begin{verbatim}
+?- young_couple(john,rose,M).
+
+M.=.0.23 ? 
+\end{verbatim}
+%
+since $0.23$ is the product of $\{1,1,0.93,0.26\}$. 
+
+Other {\em aggregations functions} are:
+\begin{itemize}
+\item \texttt{max}: the maximum truth value in the body of the
+  clause. It is a ``disjunctive'' aggregation operation.
+\item \texttt{luka}: the Lukasiewicz T-norm. It is a ``conjunctive''
+  operator like \texttt{min} and \texttt{prod}. The Lukasiewicz T-norm
+  of two values $x$ and $y$ is defined as $\max(0,x + y -1)$.
+\item \texttt{dluka}: the Lukasiewicz T-conorm. It is defined as
+  $\min(1,x + y)$. 
+\item \texttt{dprod} the product T-conorm. It is defined as $x + y -
+  (x * y)$.
+\end{itemize}
+%
+(T-conorms are disjunctive operators dual to the conjunctive operator
+of the corresponding T-norm.)
+
+The min-max fuzzy logic can be modeled using the operators \texttt{max} and
+\texttt{min}. In the same way, using the operators \texttt{luka} and
+\texttt{dluka} the lukasiewicz fuzzy logic can be modeled. Let us see
+an example. 
+
+Suppose we want to measure which is the possibility that a couple
+of values, obtained throwing two loaded dice, sum 5. Let us suppose we
+only know that one die is loaded to obtain a small value and the other
+is loaded to obtain a large value. The program to declare this is the
+following: 
+\begin{quote}
+{\tt
+\begin{tabbing} 
+small :\# fuzzy\_predicate([(1,1),(2,1),(3,0.7),(4,0.3),(5,0),(6,0)]). \\
+large :\# fuzzy\_predicate([(1,0),(2,0),(3,0.3),(4,0.7),(5,1),(6,1)]). \\
+\ \\
+die1(X,M)\= 123456789012345678901234567890\= two\_dice\=\kill
+die1(X,M)\> :{\tiny$^\sim$}       \> two\_dice\=(X,Y,M) :{\tiny$^\sim$} min \\
+\>       small(X,M).            \> \> die1(X,M1), \\
+\>                              \> \> die2(Y,M2). \\
+die2(X,M) :{\tiny$^\sim$} \\
+\>        large(X,M).
+\end{tabbing}
+}
+\end{quote}
+%
+where \texttt{two\_dice(X,Y,M)} gives the possibility that the first die
+obtains the value \texttt{X} and the second the value \texttt{Y}.
+Therefore in this clause we need a conjunctive operator as
+\texttt{min}. Now we can define:
+\begin{quote}
+{\tt
+\begin{tabbing} 
+sum(5,M)\= :{\tiny$^\sim$} max \\
+\>        two\_dice(4,1,M1), \\
+\>        two\_dice(1,4,M2), \\
+\>        two\_dice(3,2,M3), \\
+\>        two\_dice(2,3,M4).
+\end{tabbing}
+}
+\end{quote}
+%
+for which we need a disjunctive operator as \texttt{max} which
+aggregates the different ways of obtaining 5 for the sum. We will
+get for example: 
+
+\begin{verbatim}
+?- sum(5,M).
+
+M.=.0.7 ?
+\end{verbatim}
+
+The package also gives the possibility of defining fuzzy predicates
+which are the fuzzy negation of other fuzzy predicates. For example,
+the fuzzy predicate \texttt{small} could be defined as:
+\begin{quote}
+\begin{verbatim}
+small :# fnot large/2
+\end{verbatim}
+\end{quote}
+%
+so that the truth value \verb+M+ of \verb+small(X,M)+ is defined as
+\verb+1-N+ where \verb+N+ is the truth value of \verb+large(X,N)+.  
+
+It is possible to ``fuzzify'' Prolog predicates. For
+example to fuzzify \verb+age/2+ it is only necessary to write:
+\begin{quote}
+\begin{verbatim}
+age_f :# fuzzy age/2
+\end{verbatim}
+\end{quote}
+%
+and the program is expanded with a new fuzzy predicate
+\texttt{age\_f/3} (the last argument is the truth value) with truth
+value equal to 0 if \texttt{age/2} fails and 1 otherwise. 
+
+Prolog calls
+in bodies of fuzzy clauses are automatically fuzzified, except those
+that are enclosed in \verb+{}+ brackets. This is useful if we want
+truly prolog calls to define a fuzzy predicate, for example to set a
+threshold for a fuzzy clause like in the following program:
+\begin{quote}
+{\tt
+\begin{tabbing} 
+very\_goo\=d\_credit\_customer(X,Mu):{\tiny$^\sim$} min \\
+\>        good\_credit\_customer(X,M), \\
+\>        \{Mu .>=. 0.8\}.  \\
+very\_good\_credit\_customer(X,Mu):{\tiny$^\sim$} min \\
+\>        good\_credit\_customer(X,M), \\
+\>        fail, \\
+\>        \{Mu .<. 0.8\}.
+\end{tabbing}
+}
+\end{quote}
+%
+which defines a very good credit customer as a good credit customer
+with truth value greater than $0.8$. A  good credit customer is
+defined, for example, as follows:
+\begin{quote}
+{\tt
+\begin{tabbing} 
+good\_credit\_customer(john,0.8):{\tiny$^\sim$} . \\
+good\_credit\_customer(mary,0.5):{\tiny$^\sim$} . \\
+good\_credit\_customer(alan,0.9):{\tiny$^\sim$} . 
+\end{tabbing}
+}
+\end{quote}
+
+Note how fuzzy facts do require the operator \texttt{:{\tiny$^\sim$}}
+(with a space separating it from the final dot). Otherwise, they will
+be deemed as normal Prolog clauses. Mixing fuzzy clauses and Prolog
+clauses may cause unexpected behaviours. The compiler will signal
+the problem with a warning message indicating discontiguous clauses for
+the predicate.
+
+In this case we obtain the following answers: 
+
+\begin{verbatim}
+?- very_good_credit_customer(X,Mu).
+
+X = john,
+Mu.=.0.8 ? ;
+
+X = alan,
+Mu.=.0.9 ? ;
+
+Mu = 0,
+X = mary ? ;
+
+no
+?- 
+\end{verbatim}

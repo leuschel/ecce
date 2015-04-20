@@ -1,0 +1,140 @@
+:- module(c_itf,
+        [ make_depends/2,
+%	  mkdeps_use_module/4, mkdeps_ensure_loaded/2,
+%	  collect_module_data/3,
+	  defines_module/2, exports/3, imports/4, decl/2,
+%	  meta_args/2, 
+	  syntax/2,
+%	  multifile/4,
+	  pass_one/3,
+	  clause_read/4, includes/2, defines/3,
+%	  ensure_imported/3, % To be used for term expanders
+	  cleanup_data/0
+	],
+	[ assertions
+	]).
+
+:- comment(version(0*0+0,1998/1/28), "A first shot (Francisco Bueno
+   Carrillo)").
+
+:- data defines_module/2, % PATH defines MODULE
+        exports/3,        % MODULE exports F/A
+        imports/4,        % MODULE imports from OTHERMODULE F/A
+%        meta_args/2,      % MODULE has meta declaration META
+        decl/3,           % MODULE has declaration DECL with variable names VNs
+%        multifile/4,      % MODULE defines multifile F/A with mode MODE
+                          % (static or dynamic)
+        syntax/2,         % MODULE uses syntax files FILES
+%        import_nocheck/2, % MODULE makes import with OTHERMODULE
+        imports_all/2,    % MODULE imports all from OTHERMODULE (transient)
+%        loads/2,          % MODULE loads FILE (with ensure_loaded)  ""
+        uses/2.           % MODULE uses FILE (with use_module)      ""
+
+:- data clause_read/4, % We have read the clause HEAD :- BODY, with variable
+                       % names VNs starting at line LC, or if HEAD = 0,
+                       % BODY is a directive, if HEAD = 1, a declaration.
+        includes/2,    % MODULE includes PATH (for *.dep files)
+        defines/3.     % MODULE defines F/A
+
+:- data declaration/2, % MODULE understands GOAL declarations
+        base_name/3.   % FILE has base name PATH and is in DIRECTORY
+                       % (from absolute_file_name)
+
+make_depends(Files,Depends,Error):-
+        read_itfs(Files),
+        resolve_all_imports(_),
+        ( module_error -> Error = true ; Error = false),
+        collect_depends(Depends).
+
+collect_depends(Depends) :-
+        findall(file(Base, Dir, File), base_name(File, Base, Dir), Depends).
+
+
+%	absolute_file_name(File,InPathName),
+
+pass_one(Source,Module,Dir):-
+	open(Source,read,InStream),
+	defines_module(Source,M),
+	read_clauses(InStream,M,0).
+
+read_clauses(InStream,M,LC) :-
+	prolog:read_top_level(InStream,Cl0,D),
+        expand_term(Cl0,Cl),
+	variable_names_dict(D,VNs),
+	LC1 is LC+1,
+	handle_clause(Cl,M,VNs,LC1),    % fails at end_of_file
+	read_clauses(InStream,M,LC1).
+read_clauses(_InStream,_M,_LC).
+
+variable_names_dict([Name-Var|Di],[Name=Var|Do]):-
+	variable_names_dict(Di,Do).
+variable_names_dict([],[]).
+
+handle_clause((:-Goal),M,VNs,LC):- !,
+	handle_directive(Goal,M,VNs,LC).
+handle_clause((H:-B),M,VNs,LC):- !,
+	handle_rule(H,B,M,VNs,LC).
+handle_clause(H,VNs,LC):-
+	handle_rule(H,true,M,VNs,LC).
+
+handle_rule(H,B,M,VNs,LC):-
+	assertz_fact(clause_read(H,B,VNs,LC)),
+	functor(H,F,A),
+	( defines(M,F,A)
+	-> true
+	 ; assertz_fact(defines(M,F,A))
+	).
+
+% ignore
+handle_directive(module(_,_),_M,_VNs,_LC):- !.
+handle_directive(module(_,_,_),_M,_VNs,_LC):- !.
+handle_directive(use_module(_),_M,_VNs,_LC):- !.
+handle_directive(use_module(_,_),_M,_VNs,_LC):- !.
+handle_directive(syntax(_),_M,_VNs,_LC):- !.
+% assert
+handle_directive(Goal,M,VNs,LC):-
+	( declaration(M,Goal) -> H=1 ; H=0 ),
+	assertz_fact(clause_read(H,Goal,VNs,LC)).
+
+% -------------------------------------------------------------------------
+
+resolve_all_imports(CM) :-
+        retract_fact(imports_all(CM,IM)),
+        exports(IM, F, A),
+        assert_import(CM, IM, F, A),
+        fail.
+resolve_all_imports(_).
+
+assert_import(CM,IM,F,A) :-
+        imports(CM,IM1,F,A), !,
+        (IM1\==IM ->
+              inform_user(['WARNING: Predicate ',F,'/',A,
+                           ' already imported from ',IM1,
+                           ' -- calls to ',IM,':',F,'/',A,
+                           ' must be qualified']),
+              assertz_fact(imports(CM,IM,F,A))
+        ; true).
+assert_import(CM,IM,F,A) :-
+	assertz_fact(imports(CM,IM,F,A)).
+
+get_base_name(File, Base, Dir) :-
+        base_name(File, Base, Dir), !.
+get_base_name(File, Base, Dir) :-
+        prolog_flag(fileerrors, OldFE, off),
+        ( absolute_file_name(File, '_opt', '.itf', '.', Abs, Base, Dir),
+          Abs \== Base -> % Has .itf extension
+            set_prolog_flag(fileerrors, OldFE)
+        ; set_prolog_flag(fileerrors, OldFE),
+          absolute_file_name(File, '_opt', '.pl', '.', _, Base, Dir)
+        ),
+        assertz_fact(base_name(File, Base, Dir)).
+
+% -------------------------------------------------------------------------
+
+
+%% Control version comment prompting for the file.
+%% Local Variables: 
+%% mode: CIAO
+%% update-version-comments: "on"
+%% End:
+

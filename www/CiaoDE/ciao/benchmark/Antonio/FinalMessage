@@ -1,0 +1,78 @@
+From: Manuel Carro <boris@lml.ls.fi.upm.es>
+To: ciao@clip.dia.fi.upm.es
+Subject: Arrays: the sad story (ASAP people: jump to the last paragraph)
+Date: Tue, 28 May 2002 20:33:44 +0200
+
+
+    I've been playng around with the second program Antonio Costa (the
+guy in Brasil who tries to perform DSP with Prolog/Mercury) sent us.
+The files I'll refer to are in /home/clip/tmp/Antonio.  The second
+program he sent is wave2-original.pl, where he uses facts to store
+elements of an array.  This array is constructed once, and consulted
+afterwards, but not updated.
+
+    He accesses the array like this:
+
+newA(A, I, MU, Yhat, N, M, [X|NA]) :-
+   elem(A, I, AI), 
+   ( 
+        I > N -> X is AI 
+    ;
+        emg(N,YN),
+        Ni is N-I,
+        emg(Ni, YNi),
+        X is AI-2.0*MU*(YN-Yhat)*YNi
+   ),
+   I1 is I+1,
+   newA(A, I1, MU,  Yhat, N, M, NA).
+
+where emg/2 is the fact spec, and I (the displacement among
+consecutive accesses) changes dynamically, so using, e.g., two lists
+is not straightforward.  The call main(T) returns the time to construct
+the array and to process it afterwards.  A typical run gives T = [629,5140].
+
+    Following Paco's former mail I reimplemented his code (after
+cleaning some obvious things a little bit) using Lena Flodd extensible
+arrays, in the hope that that would improve speed.  No.  Not at all.
+A run with library(arrays) give, e.g., T = [500,9259].
+
+    As Lena's arrays are declarative and perform copying, I thought
+that a little bit of non-declarativeness for the sake of efficiency
+would be allowed.  So I implemented my own version of updatable arrays
+which use setarg/3; this is (as of now) to be found in
+/home/clip/tmp/Antonio/upd_arrays.pl , and give directly
+multidimensional arrays, and are updatable (with backtrackeable
+updates).  A sample run gives T = [4450,6049].  Creating the array by
+updating its initial contents is relatively expensive.
+    
+    As in the program the array is filled in once and consulted after
+that, I made another version where the initial array is full of free
+variables which are just instantiated and consulted.  A run gives now
+T = [199,6099].  Fast creation, (relatively) slow access.
+
+    Fearing that all the process needed to deal with an unlimited
+dumber of dimensions was the culprit, I specialized it to deal with
+only vectors, which is what the problem strictly needs
+(upd_vectors.pl).  In the same setting as the previous paragraph, a
+run gives now T = [129,5020].  About the same speed as with facts.
+
+    Probably indexing in the facts is making them go that fast, and
+probably a 2-D indexing in facts will not go as fast, while it will
+not affect much the array library.  But the point is that facts have,
+as of now, defeated a couple of libraries.  Should we implement them
+in C (not difficult at all, really --- much easier than what I have
+already done)?  Unfortunately the C interface is not yet working in
+Windows (and we need it!).  Any takers for this?
+
+
+    For ASAP: I want to remind that Antonio and his colleagues (see a
+previous email) aim at implementing an on-board system to drive
+prosthetic devices, where speed and size are of outmost
+importance... this is, really, an ASAP application! What we have
+achieved so far with this problem is about 15 times slower than
+needed.
+
+        MCL
+
+_________________________________________________________
+All programmers are optimists -- Frederick P. Brooks, Jr.

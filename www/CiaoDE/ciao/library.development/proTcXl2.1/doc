@@ -1,0 +1,285 @@
+%
+% sccsid("@(#)doc	1.9          94/09/13").
+% sccscr("@(#)  Copyright 1993 ECRC GmbH ").
+%
+
+
+	Predicates for the Prolog interface to Tcl/Tk - ProTcl
+	------------------------------------------------------
+
+ProTcl is a Prolog interface to the Tcl/Tl toolkit. It is a lightweight
+interface in that it does not try to map Tcl/Tk functions directly onto
+Prolog predicates. Instead, the Tcl/Tk commands are accessible
+from Prolog using the tcl_eval/1,2 predicate which accepts any
+Tcl expression and passes it to the Tcl interpreter.
+
+ProTcl also allows to call Prolog from a Tcl command or script
+using the 'prolog' command and to get back the value of variables
+(Eclipse only). It is possible to specify callback predicates
+in Prolog using the Tcl 'prolog_event' command.
+
+The Tcl/Tk interface is in the library tk, use
+	:- use_module(library(tk))
+to load it. The following predicates become available:
+
+tk_demo
+	Starts the Tcl/Tk demo program.
+
+tcl_test
+	Starts the Tcl test suite; not all test programs can be executed,
+	because they need additional commands not defined here.
+	
+tk_test
+	Starts the Tk test program suite, if available
+
+tk_file(File, Options)
+	Implements the Tcl/Tk command
+
+		wish -f File [other options] [Args]
+
+	Options is nil or a list of options from
+
+		[geometry(G), display(D), name(N), argv(Args), sync, nodisplay]
+
+	This command is to be used when there are no further Prolog goals
+	to be directly executed. After Tk reads and executes the file,
+	it enters its main loop that waits for events and serves them.
+	This predicate exits after all Tk windows have been destroyed,
+	i.e. using the Tcl command 'exit'. It is not possible to
+	use it for directly interpreting Tcl, use tk/1 for that purpose
+	(if available).
+
+
+tk(Options)
+	Implements the Tcl/Tk command
+
+		wish [options]
+
+	Options is the same as in tk_file/2, except for:
+	    nodisplay - starts just Tcl, without Tk
+	This predicate is used for interactive work with
+	Tk. It succeeds after creating
+	the top-level Tk window. Then it is possible to execute
+	Tcl/Tk commands in it. This predicate changes the Prolog
+	top-level loop so that while waiting for the user query
+	it also checks if there are any X events pending and if so,
+	it executes them. When a Prolog program is active,
+	it has to poll the events itself, e.g. using tk_do_one_event/1.
+
+
+tk_main_loop
+	Starts the Tk main loop which polls the events and serves them.
+	It succeeds after all windows have been destroyed.
+
+
+tk_do_one_event(Mask)
+	This is an interface to the Tk function Tk_DoOneEvent(). It waits
+	for a single event, invokes the handler(s) for it and
+	succeeds. If Mask is not zero, it is taken as a bitfields
+	of the following flags and the event processing is restricted
+	to the specified flags:
+
+	    TK_DONT_WAIT         16'1	don't wait for the events, process
+					only those that are ready
+	    TK_X_EVENTS          16'2	process X events
+	    TK_FILE_EVENTS       16'4	process Tk's file events
+	    TK_TIMER_EVENTS      16'8	process timer events
+	    TK_IDLE_EVENTS       16'10	process Tk_DoWhenIdle callbacks
+	    TK_ALL_EVENTS	 16'1e  process all event types
+
+	Thus e.g. 3 can be used to poll X events.
+
+tk_num_main_windows(N)
+	Returns the number of currently used windows. One of its main
+	uses is to recognize in Prolog that all windows have been
+	deleted and the application is thus finished.
+
+tcl_eval(Cmd)
+	Execute the Tcl/Tk command Cmd. Cmd can be an (Eclipse) string or an
+	atom and it is assumed to contain a valid Tcl/Tk command or
+	a series of commands separated by newlines or semicolons.
+
+tcl_eval(Cmd, Result)
+	The same as tcl_eval/1, but the returned Tcl value is unified
+	with Result.
+
+The Tcl command 'exit' is different from Tcl/Tk because it exits
+only Tcl but the Prolog process is still running. Use exit_prolog
+to exit back to Unix.
+
+There is also a Tcl command 'prolog' to call Prolog goals from Tcl:
+
+	prolog {pred arg1 arg2 ...} module
+
+The module argument is optional.
+The ECLiPSe version supports variable, atom, number and flat list
+arguments, the SICStus one only atoms.
+Examples:
+
+	prolog true			# call true/0
+	prolog {write a}		# call write(a)
+	prolog {p a b c} mod1		# call p(a, b, c) in mod1
+	prolog {p {a b c}}		# call p([a, b, c])
+
+In the Eclipse version, arguments whose name start with an uppercase
+character are interpreted as Prolog variables:
+
+	prolog {p X}			# call p(X)
+
+Variables are not recognized inside lists. To prevent a tcl
+argument to be interpreted as a Prolog list or a variable, it is necessary
+to enclose it into double braces, because for tcl X, "X" and {X}
+are all the same value:
+
+	prolog {p {{a b c}}}		# call p("a b c")
+	prolog {p {{X}}}		# call p("X")
+	prolog {p {X}}			# call p(X)
+	prolog {p X}			# call p(X)
+
+After the 'prolog' command is executed, the values of the Prolog
+variables can be accessed in the Tcl array $var indexed by the
+variable name, e.g:
+
+[eclipse 2]: wish.
+% prolog {append {a b} {c d} X}
+/usr/local/eclipse/lib/lists.pl compiled traceable 7012 bytes in 0.03 seconds
+
+% puts $var(X)
+a b c d
+
+The standard application initialization is performed at the
+beginning, but .wishrc is not sourced.
+In Eclipse, it is possible to use the predicate tk_load/1
+in the tk/tkext library to load a Tcl/Tk extension that defines
+its own Tcl_AppInit(). For other Prologs, the same effect
+can be probably achieved by changing the load_foreign_files
+call in foreign.pl.
+
+---------------------------------------------------------------------
+ECLiPSe only:
+
+wish
+	A wish-like interface, it reads commands from the input
+	stream and executes them. If a tk window and an interpreter
+	already exist, it is used, otherwise a new one is started.
+
+tclsh
+	The same without display, only Tcl commands are available.
+
+ECLiPSe has the means to execute Prolog event handlers in a more
+flexible way. The command
+
+	prolog_event [args]
+
+can be used as a callback procedure for Tk events and in this
+case Tk does not process them, but it returns the event data
+to Prolog which can then call the appropriate Prolog predicate
+to handle it. The main difference to the 'prolog' command
+being a callback procedure is that the Prolog predicate
+is executed at the same level as the main program, whereas
+with 'prolog' the callback is executed from inside Tk, which
+may cause problems if it is deeply nested.
+
+The following predicates can be used to process these Prolog events:
+
+tk_next_event(List)
+	Wait for the next Prolog event. List is a list of arguments
+	of the 'prolog_event' command. If no Prolog event
+	occurs by the time the application exits, List is 0.
+
+tk_next_event(Mask, List)
+	Wait for the next Prolog event, but handle only those Tk events
+	that correspond to Mask (see tk_do_one_event/1 above).
+
+tk_get_event(List)
+	Return the next Prolog event, if there is any. This predicate
+	does not block for events, it returns 0 if no Prolog event
+	is currently in the queue. All Tk events encountered in the queue
+	are also processed.
+
+tk_get_event(Mask, List)
+	Return the next Prolog event, but handle only those Tk events
+	currently in the queue that correspond to Mask.
+
+tk_do_one_event(Mask, List)
+	Similar to tk_do_one_event/1, but if a Prolog event is encountered,
+	List is bound to the command data, otherwise it is 0.
+
+Prolog events which are not processed explicitly by tk_next_event/1,2,
+tk_get_event/1,2 or tk_do_one_event/2 raise the event 333.
+The handler for this event receives in the second argument the list
+of prolog_event arguments.
+
+Example: We want to process in Prolog the X and Y coordinates of the
+cursor when the user presses the first button over the main window:
+
+[eclipse 2]: tk([]), tcl_eval('bind . <1> "prolog_event %x %y"').
+
+yes.
+[eclipse 3]: tk_next_event(E).		% now clicking in the window
+
+E = [41, 24]
+yes.
+[eclipse 4]: 3.
+tk_next_event(E).			% moved the mouse and clicked again
+
+E = [153, 167]
+yes.
+
+Note also that Tk events are processed when the Prolog toplevel
+is waiting for some input, but not when the debugger is waiting
+for input (in Eclipse).
+
+A very simple loop that would process Tk events in Prolog (like e.g. in XWIP)
+looks like this:
+
+
+% A basic loop that processes Tk events in Prolog
+
+tk_loop :-
+    tk_next_event(L),
+    (L = 0 ->
+	true				
+    ;
+	handle_event(L),
+	tk_loop
+    ).
+
+handle_event(L) :-
+    printf("event: %w\n%b", [L]).
+
+:- use_module(library(tk)).
+:- tk([]).
+:- tcl_eval('bind . <Enter> {prolog_event enter %x %y}').
+:- tcl_eval('bind . <Leave> {prolog_event leave %X %Y}').
+:- tcl_eval('button .b -text Quit -command exit; place .b -in .').
+:- tk_loop.
+
+Typically, an application might want to poll the events only
+at certain places instead of blocking for them; this is then done
+using tk_get_event/1,2.
+
+
+Loading Tcl/Tk Extensions
+-------------------------
+
+Extensions which are defined in Tcl/tk can be normally source'd.
+Extensions that define their own Tcl_AppInit function can use the
+predicate tk_load/1 from the tk/tkext library. The argument of
+this predicate is a string containing all .o files, libraries
+and other parameters that are to be used when loading and linking
+the Tcl/Tk toolkit. Typically, it will include a .o file which defines
+the Tcl_AppInit function and a library that contains all functions
+defined in the extension. All pathnames are relative to the
+current directory. For example, the tree widget can be loaded
+as follows (assuming the current directory is tree-3.6/treesh; the
+GNU pathnames vary from site to site):
+
+	:- lib('tk/tkext').
+	:- tk_load("tkAppInit.o ../dir/Dir.o -ltktree -lOS -lg++ -lgcc -L../tree -L../OS -lnsl -L/usr/local/gnu/lib/gcc-lib/sparc-sun-sunos4.1.1/2.5.7 -L/usr/local/gnu/lib").
+
+There must not be any main() in the .o files. This very example needs
+some of the GNU C++ libraries to be included because it is written
+in C++. The simplest way to figure out the correct parameters
+is to compile the application with the verbose option and to
+include the library arguments passed to the linker.

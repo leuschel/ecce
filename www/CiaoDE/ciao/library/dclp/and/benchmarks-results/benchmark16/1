@@ -1,0 +1,329 @@
+in(1,[1,4])
+in(4,[1,4])
+[[1|4]]
+[[1|4]]
+local_store(1,[x(1,_1305,_1305),x(4,_1066,_1066)])
+sent(msg(2,1,ok?(a([x(1,_1305,_1305),x(4,_1066,_1066)]))))
+ackleft(1)
+sent(msg(3,1,ok?(a([x(1,_1305,_1305),x(4,_1066,_1066)]))))
+ackleft(2)
+sent(msg(4,1,ok?(a([x(1,_1305,_1305),x(4,_1066,_1066)]))))
+ackleft(3)
+sending(msg(2,1,marker(0)))
+sent_message
+sending(msg(3,1,marker(0)))
+sent_message
+sending(msg(4,1,marker(0)))
+sent_message
+do_agent(1)
+received(msg(1,4,ack([x(4,_1437,_1437),x(1,_1421,_1421)])))
+current_marker_counter(0)
+pending_markers([marker(4),marker(3),marker(2)])
+ack([x(4,_1437,_1437),x(1,_1421,_1421)])
+Execution not terminated
+marker_counter_updated(0,1)
+ack(a(3))
+[[1|3]]
+[[2|4]]
+
+unified
+1
+told
+sent(msg(2,1,ok?(a([x(1,_1725,_1725),x(4,_1771,_1771)]))))
+ackleft(3)
+sent(msg(3,1,ok?(a([x(1,_1725,_1725),x(4,_1771,_1771)]))))
+ackleft(4)
+sending(msg(2,1,marker(1)))
+sent_message
+sending(msg(3,1,marker(1)))
+sent_message
+sending(msg(4,1,marker(1)))
+sent_message
+added_propagation([x(4,_1771,_1771),x(1,_1725,_1725)],1,[x(1,_1725,_1725),x(4,_1771,_1771)],4)
+newackleft(4)
+do_agent(1)
+received(msg(1,4,marker(0)))
+current_marker_counter(1)
+pending_markers([marker(4),marker(3),marker(2)])
+marker(0)
+discarded_marker(0)
+do_agent(1)
+received(msg(1,2,ack([x(2,_2354,_2354),x(4,_2241,_2241),x(1,_2094,_2094)])))
+current_marker_counter(1)
+pending_markers([marker(4),marker(3),marker(2)])
+ack([x(2,_2354,_2354),x(4,_2241,_2241),x(1,_2094,_2094)])
+Execution not terminated
+marker_counter_updated(1,2)
+ack(a(4))
+[[1|3]]
+[[2|4]]
+
+unified
+1
+4
+not_told
+sending(msg(2,1,marker(2)))
+sent_message
+sending(msg(3,1,marker(2)))
+sent_message
+sending(msg(4,1,marker(2)))
+sent_message
+added_propagation([x(2,_2354,_2354),x(4,_2803,_2803),x(1,_2685,_2685)],1,[x(1,_2685,_2685),x(4,_2803,_2803)],2)
+newackleft(3)
+do_agent(1)
+received(msg(1,2,marker(0)))
+current_marker_counter(2)
+pending_markers([marker(4),marker(3),marker(2)])
+marker(0)
+discarded_marker(0)
+do_agent(1)
+received(msg(1,3,marker(0)))
+current_marker_counter(2)
+pending_markers([marker(4),marker(3),marker(2)])
+marker(0)
+discarded_marker(0)
+do_agent(1)
+received(msg(1,3,ack([x(3,_3901,_3901),x(4,_3732,_3732),x(1,_3499,_3499),x(2,_3290,_3290)])))
+current_marker_counter(2)
+pending_markers([marker(4),marker(3),marker(2)])
+ack([x(3,_3901,_3901),x(4,_3732,_3732),x(1,_3499,_3499),x(2,_3290,_3290)])
+Execution not terminated
+marker_counter_updated(2,3)
+ack(a(3))
+[[1|3]]
+[[2|4]]
+
+unified
+1
+4
+not_told
+sending(msg(2,1,marker(3)))
+sent_message
+sending(msg(3,1,marker(3)))
+sent_message
+sending(msg(4,1,marker(3)))
+sent_message
+added_propagation([x(3,_3901,_3901),x(4,_4739,_4739),x(1,_4525,_4525),x(2,_3290,_3290)],1,[x(1,_4525,_4525),x(4,_4739,_4739)],3)
+newackleft(2)
+do_agent(1)
+received(msg(1,4,marker(2)))
+current_marker_counter(3)
+pending_markers([marker(4),marker(3),marker(2)])
+marker(2)
+discarded_marker(2)
+do_agent(1)
+received(msg(1,3,ack([x(3,_6519,_6519),x(4,_6264,_6264),x(1,_5886,_5886),x(2,_5561,_5561)])))
+current_marker_counter(3)
+pending_markers([marker(4),marker(3),marker(2)])
+ack([x(3,_6519,_6519),x(4,_6264,_6264),x(1,_5886,_5886),x(2,_5561,_5561)])
+Execution not terminated
+marker_counter_updated(3,4)
+ack(a(2))
+[[1|3]]
+[[2|4]]
+
+unified
+1
+4
+not_told
+sending(msg(2,1,marker(4)))
+sent_message
+sending(msg(3,1,marker(4)))
+sent_message
+sending(msg(4,1,marker(4)))
+sent_message
+added_propagation([x(3,_6519,_6519),x(4,_8015,_8015),x(1,_7783,_7783),x(2,_5561,_5561)],1,[x(1,_7783,_7783),x(4,_8015,_8015)],3)
+newackleft(1)
+do_agent(1)
+received(msg(1,4,marker(3)))
+current_marker_counter(4)
+pending_markers([marker(4),marker(3),marker(2)])
+marker(3)
+discarded_marker(3)
+do_agent(1)
+received(msg(1,3,marker(1)))
+current_marker_counter(4)
+pending_markers([marker(4),marker(3),marker(2)])
+marker(1)
+discarded_marker(1)
+do_agent(1)
+received(msg(1,3,marker(3)))
+current_marker_counter(4)
+pending_markers([marker(4),marker(3),marker(2)])
+marker(3)
+discarded_marker(3)
+do_agent(1)
+received(msg(1,3,marker(4)))
+current_marker_counter(4)
+pending_markers([marker(4),marker(3),marker(2)])
+marker(4)
+do_agent(1)
+received(msg(1,4,marker(4)))
+current_marker_counter(4)
+pending_markers([marker(4),marker(2)])
+marker(4)
+do_agent(1)
+received(msg(1,2,marker(4)))
+current_marker_counter(4)
+pending_markers([marker(2)])
+marker(4)
+Moving...
+Prop finished?
+store(1,[4])
+highers([])
+presumed_view([])
+Moving from propagation to search
+sending(msg(1,1,begin_labeling))
+sent_message
+sending(msg(2,1,begin_labeling))
+sent_message
+sending(msg(3,1,begin_labeling))
+sent_message
+sending(msg(4,1,begin_labeling))
+sent_message
+do_agent(1)
+received(msg(1,1,begin_labeling))
+do_agent(1)
+received(msg(1,3,prop_ended))
+[waiting_for_labs(1,4),waiting_for_labs(1,3),waiting_for_labs(1,2)]
+aun_queda(4)
+do_agent(1)
+received(msg(1,4,prop_ended))
+[waiting_for_labs(1,4),waiting_for_labs(1,2)]
+aun_queda(2)
+do_agent(1)
+received(msg(1,2,prop_ended))
+[waiting_for_labs(1,2)]
+No remaining prop_ended
+in(1,[1])
+[x(1,_11835,1)]
+sending(msg(2,1,ok?(a([x(1,_11835,1)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_11835,1)]))))
+sent_message
+sending(msg(4,1,ok?(a([x(1,_11835,1)]))))
+sent_message
+sending(msg(2,1,marker(4)))
+sent_message
+sending(msg(3,1,marker(4)))
+sent_message
+sending(msg(4,1,marker(4)))
+sent_message
+do_agent(1)
+received(msg(1,2,marker(3)))
+current_marker_counter(4)
+pending_markers([marker(4),marker(3),marker(2)])
+marker(3)
+discarded_marker(3)
+do_agent(1)
+received(msg(1,2,marker(4)))
+current_marker_counter(4)
+pending_markers([marker(4),marker(3),marker(2)])
+marker(4)
+do_agent(1)
+received(msg(1,4,marker(1)))
+current_marker_counter(4)
+pending_markers([marker(4),marker(3)])
+marker(1)
+discarded_marker(1)
+do_agent(1)
+received(msg(1,4,marker(4)))
+current_marker_counter(4)
+pending_markers([marker(4),marker(3)])
+marker(4)
+do_agent(1)
+received(msg(1,3,marker(2)))
+current_marker_counter(4)
+pending_markers([marker(3)])
+marker(2)
+discarded_marker(2)
+do_agent(1)
+received(msg(1,3,marker(4)))
+current_marker_counter(4)
+pending_markers([marker(3)])
+marker(4)
+Moving...
+store(1,[4])
+highers([])
+presumed_view([])
+Global execution finished
+sending(msg(1,1,show_stats))
+sent_message
+sending(msg(2,1,show_stats))
+sent_message
+sending(msg(3,1,show_stats))
+sent_message
+sending(msg(4,1,show_stats))
+sent_message
+do_agent(1)
+received(msg(1,1,show_stats))
+
+***************************************************
+STATISTICS OF AGENT 1
+*****************OK (propagation)**********************
+ok? messages received during propagation: 0
+
+******************ACK (propagation)********************
+1: ack from 3
+1: ack from 3
+1: ack from 2
+1: ack from 4
+ack messages received during propagation: 4
+
+****************NO GOOD (propagation)******************
+no_good messages received during propagation (none, I hope): 0
+
+************NEGLECTED NO GOOD (propagation)************
+no_good messages neglected during propagation (none, I hope): 0
+
+************BEGIN LABELING (propagation)***************
+1: begin_labeling from 1
+begin_labeling messages received during propagation (one, I hope): 1
+
+***********PROPAGATION ENDED (propagation)*************
+1: prop_ended from 2
+1: prop_ended from 4
+1: prop_ended from 3
+End of propagation messages received: 3
+
+**********TERMINATION DETECTION (propagation)**********
+1: marker from 2
+1: marker from 4
+1: marker from 3
+1: marker from 3
+1: marker from 3
+1: marker from 4
+1: marker from 4
+1: marker from 3
+1: marker from 2
+1: marker from 4
+Termination detection messages (markers) received during propagation: 10
+
+********************OK (labeling)**********************
+ok? messages received during labeling: 0
+
+*******************ACK (labeling)**********************
+ack messages received during labeling: 0
+
+******************NO GOOD (labeling)*******************
+no_good messages received during labeling: 0
+
+************NEGLECTED NO GOOD (labeling)************
+no_good messages neglected during labeling: 0
+
+**************BEGIN LABELING (labeling)****************
+begin_labeling messages received during labeling (none, I hope): 0
+
+*************PROPAGATION ENDED (labeling)**************
+End of propagation messages received during labeling (none, I hope): 0
+
+************TERMINATION DETECTION (labeling)***********
+1: marker from 3
+1: marker from 3
+1: marker from 4
+1: marker from 4
+1: marker from 2
+1: marker from 2
+Termination detection messages (markers) received during labeling: 6
+
+do_agent(1)

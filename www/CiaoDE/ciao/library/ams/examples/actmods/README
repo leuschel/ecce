@@ -1,0 +1,37 @@
+
+Example connection to an already running active module (daemon).
+
+0.- AMS must be enabled in the server host. See ../README.
+
+1.- The application is app.pl. It declares the application name and
+    one "public" active module (look at the code).
+
+2.- The active module is active.pl. 
+
+3.- The active module "active" has to be compiled as a Ciao actmod
+    with AMS publishing method, and started:
+
+              ciaoc -a actmods/amsbased_publish active
+              ./active &
+
+4.- See 3. in ../README. In this case the http address is useless, you
+    can put anything... 
+
+5.- Compile "app" and run it (with one argument)!
+
+    For example:    app 3
+
+If you run several "apps" at the time, they will all use the same
+"active" process.
+
+Note: "active" will keep running after your tests --you may want to
+       kill it. If you do this, the server would still think that it
+       is running (and won't allow you to restart it) --to use it
+       again you will have to kill and restart the server.
+
+Note: Steps 3 and 4 have been swapped wrt the general case (see ../README).
+      This is because if you precompile "active" before compiling it
+      with -a the thing won't work (!).
+      If you need to recompile "active" you can make it work by first
+      removing active_opt.pl, compiling "active", THEN precompiling it
+      (4) or rebuilding the _opt (which is a link) to recompile "app".

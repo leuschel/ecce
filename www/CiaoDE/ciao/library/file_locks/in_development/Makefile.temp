@@ -1,0 +1,28 @@
+MODULE=file_locks
+REQLIBS=
+
+include ../../SETTINGS
+include $(CIAOSRC)/makefile-sysindep
+include $(SYSDEP_FILES)/mkf-$(ARCH)
+
+SRCNAME=$(MODULE).c
+OBJNAME=$(MODULE)_$(ARCH).o
+LIBNAME=$(MODULE)_$(ARCH).so
+HEADERS=common_headers.h
+
+$(LIBNAME): $(HEADERS) $(OBJNAME) 
+	$(LD) $(LDSHARED) -o $(LIBNAME) $(OBJNAME) $(REQLIBS)
+
+$(OBJNAME): $(SRCNAME)
+	$(CC) $(CFLAGS) $(CCSHARED) -c $(SRCNAME) -o $(OBJNAME)
+
+$(HEADERS):
+	/bin/rm -f  $(HEADERS)
+	echo \#include \"$(CIAOSRC)/bin/$(ARCH)/datadefs.h\" > $(HEADERS)
+	echo \#include \"$(CIAOSRC)/bin/$(ARCH)/support.h\" >> $(HEADERS)
+
+clean:
+	/bin/rm -f $(OBJNAME)
+
+realclean: clean
+	/bin/rm -f $(LIBNAME) $(HEADERS)

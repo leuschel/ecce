@@ -1,0 +1,14 @@
+
+    * tcl is not a prefix anymore.
+    * tcl.pl almost completely rewritten.
+    * Prolog cannot be called from tcl -- some SICStus hooks
+    simulated, but not implemented.
+    * tcl_next_event returns only one atom or number. The foreign
+    interface for 0.7 does not construct lists (yet...). If a list of
+    args is passed to Tcl prolog_event, the whole list is translated
+    to an atom.
+    * tk_do_one_event_atom: returns an atom instead of a list.
+    * tk_do_one_event_atom_list: returns a list of atoms,
+    corresponding to the Tcl list. 
+    * tk_do_one_event: returns a (nested) list whose elemental
+    components are strings.

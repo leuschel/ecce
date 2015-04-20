@@ -1,0 +1,5 @@
+#!/bin/sh
+INSTENGINE="installed_engine_path"${CIAOARCH:+".$CIAOARCH"}exec_suffix
+ENGINE=${CIAOENGINE:-${INSTENGINE}}
+exec "$ENGINE" "$@" -C -b $0 
+

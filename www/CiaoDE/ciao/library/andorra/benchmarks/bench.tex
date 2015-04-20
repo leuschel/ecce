@@ -1,0 +1,22 @@
+
+\documentclass[12pt]{article}
+\title{Performance of Andorra}
+\author{Claudio Vaucheret}
+\begin{document}
+
+\maketitle
+
+\begin{table}[htbp]
+  \begin{center}
+    \begin{tabular}{||l||r||r|r|r|r|r||} \hline \hline
+        program name & ciao & qe\_andorra & and-user & andorra & ciao/and & ciao/user \\ \hline \hline 
+                       crypt & 1,145,409 & 86,619 & 69,209 & 69,499 & 16.481 & 16.550 \\ \hline dia\_sums & 1,789 & 269,100 & 217,769 & 685,770 & 0.003 & 0.008 \\ \hline fib & 29 & 520 & 619 & 4,979 & 0.006 & 0.047 \\ \hline map & 239 & 80 & 40 & 199 & 1.201 & 5.975 \\ \hline money & 745,940 & 550 & 340 & 339 & 2200.413 & 2193.941 \\ \hline mqu & $>$ 2 days & 99,040 & 155,509 & 485,670 & ---  & --- \\ \hline mutest & 0 & 39 & 130 & 139 & 0.000 & 0.000 \\ \hline qu\_evan & 30 & 4,899 & 3,609 & 8,989 & 0.003 & 0.008 \\ \hline qu\_vitor & 109 & 12,189 & 7,970 & 11,759 & 0.009 & 0.014 \\ \hline 
+        \hline 
+    \end{tabular}
+    \caption{Execution times in milliseconds}
+    
+  \end{center}
+\end{table}
+
+\end{document}
+                 

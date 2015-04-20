@@ -1,0 +1,11 @@
+
+	'Client' application runs a simple NT/W95 interface to use the 'Generic Database Access Server' commands. These commands are a basic set to access to databases from NT/W95 using SQL sentences (see Readme_GDA_User.txt, GDAServerCommands.txt for more details). 
+
+Installation
+============
+See install_GDA_Server.TXT ('Client' setup is almost the same as
+'Server' setup).  
+
+
+						CLIP, 3-November-1998
+				

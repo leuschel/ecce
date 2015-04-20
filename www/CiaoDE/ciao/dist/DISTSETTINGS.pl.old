@@ -1,0 +1,72 @@
+% ===========================================================================
+:- module(_,_,[make,functions, assertions]).
+% ===========================================================================
+:- comment(title, "CiaoPP Distribution SETTINGS").
+:- comment(author, "Edison Mera").
+:- comment(module, "These are SETTINGS for building the distribution").
+% ===========================================================================
+:- use_module(library(terms),[atom_concat/2]).
+
+% 
+%disttype:=
+%disttype:=Beta/
+%disttype:=Alpha/
+disttype:='Test/'.
+%disttype:=Motorola/
+%disttype:='ASAP/'.
+
+% 
+%-----------------------------------------------------------------------------
+% This is where the distribution will be installed:
+
+distdir    := ~atom_concat(['/home/edison/public_html/Software/', ~disttype, 'Ciao']).
+distdirurl := ~atom_concat(['~edison/Software/', ~disttype, 'Ciao']).
+
+%distdir    := ~atom_concat(['/home/edison/tmp/Software/', ~disttype, 'Ciao']).
+%distdirurl := ~atom_concat(['~edison/Software/', ~disttype, 'Ciao']).
+
+%DISTDIR    := /home/bueno/tmp
+%DISTDIRURL := ~bueno/tmp
+%
+% Other intallation sites (generally for tests):
+% DISTDIR:=/home/bueno/public_html/CiaoPP
+% DISTDIRURL := ~bueno/CiaoPP
+%-----------------------------------------------------------------------------
+% This is the location of the download script
+download := 'http://www.clip.dia.fi.upm.es/download_cgi/download.cgi'.
+% Mailing list recommended (leave empty for no list)
+%MAILLIST := ciaopp
+maillist := 'ciao-users'.
+%-----------------------------------------------------------------------------
+% location of the lpdoc library used during installation 
+% (basically, it is a mess to make the LPDOCLIB variable accessible 
+%  in the Makefile, so we define it here to make sure we use the right one)
+% 
+lpdoclib := '/home/clip/lib/lpdoc-1.9'.
+%-----------------------------------------------------------------------------
+% If uncommented, require user login for the installation site
+% (already taken care of in Beta site dir)
+% 
+distdiruser:='clipsoft'.
+%-----------------------------------------------------------------------------
+% These are the documentation formats to be installed in distribution dir
+% htmlindex must be one, so that the rest of the formats can be accessed
+distdocformats:=['ps', 'pdf', 'html', 'htmlindex'].
+% pdf was giving problems because of the figures...
+%-----------------------------------------------------------------------------
+% Documentation formats to be included in the tar files (from SHARED above)
+% 
+%tardocformats::=$(tardocformats)
+
+%-----------------------------------------------------------------------------
+% Permissions for distribution execs/dirs and data files
+%
+%execmode := 775
+%datamode := 664
+defaultgroup := 'asapcvs'.
+datamodemask := 'ug+rw,o+r,o-w'.
+htpasswd := '/usr/local/etc/httpd/support/htpasswd'.
+
+%-----------------------------------------------------------------------------
+% END
+% ----------------------------------------------------------------------------

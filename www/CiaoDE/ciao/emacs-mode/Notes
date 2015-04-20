@@ -1,0 +1,84 @@
+
+Emacs-mode and auto-interface.pl:
+---------------------------------
+- ciao-load-and-check-buffer is very strange: it calls twice the error
+  location: once after assertion checking and then once more... really
+  not well thought out. As a result the logic does not really work
+  (actions are left pending etc.)
+
+- Typo in 
+   :- comment(version(1*11+221,2004/04/21,18:42*25+'CEST'), "changed
+   \"customize\" behaivour in ciaopp to customize and exec (David
+   Trallero Mena)").
+  Many typos in English in auto_interface.pl code
+
+- auto_interface.pl has comments in Spanish. :-(
+  %% --- Estos dos no se preguntan si NF!!!
+
+- How come auto_interface does not have a single lpdoc version
+  comment?!?!? (except one by German)
+
+- When you select cutomize the cursor should go there.
+- At the end it comes back. Is this OK?
+
+- At the end of analyze, etc. you should see the output... (works?)
+
+- Optimize is missing parallelization, etc. Other things missing.
+
+- Add save config or soemething like that?
+
+- Help is not available yet for almost anything. 
+
+- The message "(press h for help)" is not very visible.
+  It is repeated in follwoing questions (not necessary?)
+
+- When I hit analyze with default values the output contains
+  nothing???!?!? I guess it is because Print Analysis Results is off.
+  Should be on by default?
+
+- Cunstomization of Check assertions is almost empty: it should have
+  as many options as analyze!!!!
+
+
+
+CiaoPP:
+-------
+- On output assertions are translated to very strange
+  things. Translation of a simple pred with only success produces an
+  empty comp and an empty calls and then a success and then also a
+  check pred whatever that is (????) 
+
+- Assertion checking of types does not seem to work.
+
+- This complains because check/1 does not exist (even though
+  assertions is loaded):
+  foo([X|Y]) :- 
+	p(X),
+	foo(Y),
+	check(var(Y)),
+	true.
+
+- Assrt check error messages should refer at least to the argument
+  instead of making the user parse the error message.
+
+- The {Analyzing /tmp/foo.pl... message should say the domain it is using.
+
+- Functions work better (yeah!) but,
+  if I put functions in the input then this:
+  :- load_compilation_module(library('functions/functionstr')).
+  :- add_goal_trans(defunc_goal/3).
+  :- add_sentence_trans(defunc/3).
+  appears in the CiaoPP output (:-().
+
+- The output of specialization of a very simple program 
+  includes spureous versions, apparently not connected with the exported
+  predicate and spureous assertions about non-existing
+  predicates. Need to clean it up.
+
+- Type output by default should not be called 'user' but rather
+  'visible' or 'defined' (we don't mean so much 'user' types, but
+  rather types that are visible to the module).
+
+- Do not print 'term' types since it contains no info???
+
+

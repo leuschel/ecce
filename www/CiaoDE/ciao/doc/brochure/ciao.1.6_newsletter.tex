@@ -1,0 +1,130 @@
+% -----------------------------------------------------------
+% Brochure for Ciao 1.6 announcement (sent to ALP newsletter)
+% -----------------------------------------------------------
+\documentclass{article}
+
+\usepackage{a4wide}
+\usepackage{twocolumn}
+\topmargin-0.5cm
+\tolerance=10000
+
+\makeatletter
+\def\subsection{\@startsection{subsection}{2}{\z@}{-1.0ex plus -1ex minus 
+ -.2ex}{0.7ex plus .2ex}{\normalsize\bf}}
+\makeatother
+
+\renewcommand{\baselinestretch}{0.95}
+\newcommand{\myitems}{
+\renewcommand{\baselinestretch}{0.5}
+\parsep 0pt \parindent 0pt \itemsep -4pt \topsep -3pt }
+
+\begin{document}
+
+\pagestyle{empty}
+
+\twocolumn[\begin{center}\begin{LARGE}
+\underline{{\bf Announcing Version 1.6 of the Ciao System}}\\ 
+\end{LARGE}\end{center}\ \\]
+
+Ciao is a \emph{public domain}, \emph{next generation} logic
+programming environment.
+
+Ciao is a complete Prolog system, supporting \emph{ISO-Prolog}, but
+its novel modular design allows both \emph{restricting} and
+\emph{extending} the language. This makes it possible to work with
+\emph{fully declarative subsets} of Prolog and also to \emph{extend}
+these subsets (or ISO-Prolog) both syntactically and semantically.
+Most importantly, these restrictions and extensions can be activated
+separately on each program module so that several extensions can 
+coexist in the same application for different modules.
+
+Ciao currently includes extensions for feature terms (records),
+functional logic programming, higher-order (with predicate
+abstractions), constraints, object-oriented programming, persistence,
+several control rules (breadth-first search, iterative deepening,
+...), concurrency (threads/engines), distributed execution (agents),
+concurrent built-in database, and parallel execution.  Libraries also
+support WWW programming, sockets, external interfaces (C, Java, TclTk,
+relational databases, etc.), etc.
+
+\emph{Programming in the large} is supported thanks to the robust
+module/class system, module-based automatic incremental compilation
+(with no need for makefiles), an assertion language for declaring
+(\emph{optional}) program properties (including types, modes,
+determinacy, non-failure, cost, ...), automatic static inference and
+static/dynamic checking of such assertions, program optimization and
+parallelization, and powerful automatic documentation generation (the
+latter tasks performed by the \emph{CiaoPP preprocessor} and the
+\emph{LPdoc autodocumenter}).  It is the novel modular design of Ciao
+which enables modular program development, effective global program
+analysis, and static debugging and optimization via source to source
+program transformation.
+
+\emph{Programming in the small} is supported by having reduced size
+executables, which only include those builtins and libraries used by
+the program, and by supporting \emph{scripts} written in Prolog.
+
+The compiler generates several forms of architecture-independent and
+stand-alone executables. Program modules can be compiled into compact
+bytecode and linked statically, dynamically, or autoloaded. The
+executables generated are very competitive in both performance and
+size with all current commercial and academic Prolog systems.
+
+The programming environment also offers a rich \texttt{emacs}
+interface (with direct access to top-level/debugger, preprocessor,
+and autodocumenter), embeddable source-level debugger with
+breakpoints, and some execution visualization tools. 
+
+\subsection*{1.4$\rightarrow$1.6 improvements:}
+
+\begin{itemize}
+\myitems
+\item Source-level debugger in emacs, breakpts.
+\item Debugger embeddable in executables.
+\item Many improvements to emacs interface.
+\item Menu-based interface to autodocumenter.
+\item Threads now available in Win32.
+\item Many improvements to threads.
+\item Modular clp(R) / clp(Q).
+\item Improved syntax for pred.~abstractions.
+\item Library of higher-order list predicates.
+\item Better code expansion facilities (macros).
+\item Compressed object code/executables. 
+\item The size of atoms is now unbound.
+\item Fast creation of new unique atoms.
+\item \#~of clauses/pred.~essentially unbound.
+\item Delayed goals with freeze restored.
+\item Faster compilation and execution.
+\item Much faster fast write/read. 
+\item Improved documentation.
+\item Other new libraries. 
+\item Improved installation/deinstallation.
+\item Many improvements to autodocumenter.
+\item Many bug fixes.
+\end{itemize}
+
+\subsection*{1.0$\rightarrow$1.4 improvements:}
+
+\begin{itemize}
+\myitems
+\item Automatic (re)compilation of foreign files.
+\item New version of O'Ciao objects, 
+      with improved performance. 
+\item New  (\&Prolog-like) concurrency / multiengine primitives. 
+\item Support for {\em predicate abstractions}.
+\item Reexportation of predicates. 
+\item Precedence of importations changed: last one is now higher. 
+\item Modules can implicitly export all preds.
+\item Improved documentation.
+\end{itemize}
+
+\subsection*{Contact / download info:}
+
+\texttt{http://www.clip.dia.fi.upm.es}\\ 
+\texttt{http://www.clip.dia.fi.upm.es/Software}\\ 
+\texttt{clip@clip.dia.fi.upm.es}\\ 
+Manuel Hermenegildo / The CLIP Group\\
+Facultad de Inform\'{a}tica -- UPM\\
+E-28660 Boadilla del Monte, Madrid, SPAIN
+
+\end{document}

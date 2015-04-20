@@ -1,0 +1,51 @@
+Done:
+-----
+
+- Compile-time precomputation of SQL statements using groundness
+  info. 
+
+- Optimization based on clustering: several consecutive persistent
+  predicates are precomputed at compile-time to a single complex SQL
+  statement. This optimization also takes into account ground info.
+
+- Some code added to test mysql_store_result (eager query request:
+  storing query results in client side) instead of mysql_use_result
+  (lazy query request) to check how both approaches behave.
+  As lazy option appears to be more useful (though it needs in the
+  worst case a different connection for each request), part of this
+  testing code must me removed.
+
+- Prefetch of database tuples. For every call of every goal, K tuples
+  are prefetched in advance. Objectives: check deterministic goals
+  (with K >= 2), and close as soon as possible useless db connections
+  (the max number of connections allowed is limited by db server).
+
+  Other approach to determinism analysis: check if ground arguments
+  include a unique key (this is not done). 
+
+Pending:
+--------
+
+- Unification of persdb and persdb_mysql. 
+
+- Integration of sql types with table creation.
+
+- Isolation of database specific constructions (SQL syntax, and API
+  primitives).
+
+----------
+
+- Work with normalized assertions in a flexible way (currently only
+  one 'screwed' form of assertion is allowed).
+
+- Clustering of some built-in predicates (comparison predicates,
+  etc.), and possibly some aggregation predicates.
+
+- Goal reordering for clustering.
+
+- Simplified version of memoing/tabling.
+
+- Use of determinism analysis info to close useless connections to
+  database. 
+
+

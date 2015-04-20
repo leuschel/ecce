@@ -1,0 +1,10 @@
+The @tt{ODBC Database Mediator Server} is a @concept{Win95/NT application}
+which provides a generic, socket-based access to information stored in
+@concept{ODBC databases}. 
+
+Two Ciao-Prolog libraries, @lib{db_client} and @lib{persdb_sql}, use
+this interface. They offer respectively a SQL-level and a Prolog-level
+data access. Installation of this server in all @index{Win95/NT
+machines} is needed in order to access to any ODBC database running on
+such machines.
+

@@ -1,0 +1,92 @@
+<html><head>
+<LINK rel="stylesheet" href="lpdoc.css" type="text/css">
+<title>The Ciao Prolog Development System WWW Site</title>
+</head>
+
+<body background="http://www.clip.dia.fi.upm.es/images/Clip_bg.gif">
+
+<img src="http://www.clip.dia.fi.upm.es/images/symbols1.gif"
+width=100% alt="------------"><p>
+
+<h1>
+<CENTER>
+<A href="http://www.clip.dia.fi.upm.es/index.html">
+<IMG SRC="http://www.clip.dia.fi.upm.es/images/clip.gif"
+     ALIGN=LEFT
+     ALT="CLIP">
+</A>
+<A href="http://www.gnu.org">
+<IMG SRC="http://www.clip.dia.fi.upm.es/images/gnu-head-sm.jpg"
+     WIDTH=63
+     ALIGN=RIGHT
+     ALT="GNU">
+</A>
+<BR>
+<FONT FACE="Helvetica" SIZE=6 color=#c30075>
+The 
+<IMG SRC="http://www.clip.dia.fi.upm.es/images/ciao_st.gif"
+     ALT="Ciao">
+Prolog Development System WWW Site
+</font>
+</CENTER>
+</h1>
+
+<img src="http://www.clip.dia.fi.upm.es/images/symbols1.gif"
+width=100% alt="------------"><p>
+
+<p>
+
+<FONT FACE="Helvetica" SIZE=4 color=#c30075>
+
+<p>
+
+<b>Copyright note:</b> All this software is provided under the <A
+href="COPYING">GNU Public License</a>. 
+
+<p>
+
+<b>Support:</b> Questions whose answer may be of general interest
+should be sent (in English) to <a
+href=mailto:ciao-users@clip.dia.fi.upm.es><tt>ciao-users@clip.dia.fi.upm.es</tt></a>.
+For more specific problems the Ciao developers can be reached at <a
+href="mailto:ciao@clip.dia.fi.upm.es"><tt>ciao@clip.dia.fi.upm.es</tt></a>. <b>Bugs</b>
+should be reported to <a
+href="mailto:ciao-bug@clip.dia.fi.upm.es"><tt>ciao-bug@clip.dia.fi.upm.es</tt></a>.
+Specific professional support and maintenance services are
+available. Please contact <a 
+href=mailto:clip@dia.fi.upm.es><tt>clip@dia.fi.upm.es</tt></a> for
+details.
+
+
+<p>
+
+<b>Subscribing to the <tt>ciao-users</tt> mailing list:</b> If you
+download any Ciao-related software, we highly recommended that you
+subscribe to the <a
+href=mailto:ciao-users@clip.dia.fi.upm.es><tt>ciao-users@clip.dia.fi.upm.es</tt></a>
+mailing list, so that you receive updates, bug fixes, and any other
+related info.  You can subscribe by checking the approriate
+option during the download process, or by sending an ascii message to <a
+href=mailto:ciao-users-request@clip.dia.fi.upm.es><tt>ciao-users-request@clip.dia.fi.upm.es</tt></a>,
+containing in the body the word <b>subscribe</b> alone in one
+line. Discussion is limited to Ciao-Prolog related topics and we will
+keep your email address strictly confidential.  An <a
+href=http://www.clip.dia.fi.upm.es/Mail/ciao-users/>archive of all
+messages to the list</a> is available.
+
+<p>
+
+<b>Version note:</b> Not all versions of the Ciao system components
+are guaranteed to work together. On the other hand the <em>current
+versions</em> in this page have typically been checked to be fully
+compatible. Thus, if you download one component and also use other
+components, we recommend downloading the newer version of those
+components too.
+
+<p>
+
+<h2>Available components of the
+    <IMG SRC="http://www.clip.dia.fi.upm.es/images/ciao_st.gif"
+     ALT="Ciao">
+    Prolog development system:</h2>
+

@@ -1,0 +1,96 @@
+# -*- mode: sh; -*-
+# --------------------------------------------------------------------
+# Warning: this file has been edited automatically during installation
+# This file is meant for inclusion in user initialization scripts
+# --------------------------------------------------------------------
+#
+# Setting paths for the executables:
+#
+
+# if [ ! "${CIAOBINDIR:-0}" = "0" ] ; then
+#     echo "{WARNING: redefining CIAOBINDIR environment variable}"
+# # exit 1
+# fi
+
+CIAOBINDIR=binary_directory
+
+if [ "${PATH:-0}" = "0" ]
+then
+    PATH=${CIAOBINDIR} ; export PATH
+else
+    export PATH=${CIAOBINDIR}:$(echo ${PATH}|sed -e s:'\:'${CIAOBINDIR}::g)
+#     case ${PATH} in
+# 	${CIAOBINDIR}:* | *:${CIAOBINDIR} | *:${CIAOBINDIR}:* ) ;;
+# 	* )
+# 	    PATH=${CIAOBINDIR}:${PATH} ;;
+#     esac
+fi
+
+#
+# Setting engine related paths: 
+# 
+# Setting this variable allows you to run the same Ciao executables in
+# different architectures, provided you have compiled and installed
+# the corresponding engine (and libraries, if the executable is not
+# static and/or .so libraries are used).
+#
+if [ ${CIAOARCH:-0} = 0 ]
+then
+    CIAOARCH=`ciao_get_arch` ; export CIAOARCH
+fi
+#
+# This is just to be able to run older versions of Ciao which looked
+# at ARCH instead of CIAOARCH:
+#
+#if [ ${ARCH:-0} = 0 ]
+#then
+#    ARCH=`ciao_get_arch` ; export ARCH
+#fi
+#
+#
+# Documentation-related paths:
+#
+# Setting this variable makes the manuals accessible to emacs (via M-x
+# info), the GNU info standalone manuals browser (type info at the
+# command line), the unix man command, etc.
+# 
+CIAODOCDIR=documentation_directory ; export CIAODOCDIR
+# Set MANPATH (checking that we do not add it twice)
+# The colon at the end is needed so that default paths are found!
+if [ "${MANPATH:-0}" = "0" ]
+then
+    MANPATH=${CIAODOCDIR}: ; export MANPATH
+else
+    case ${MANPATH} in
+	${CIAODOCDIR}:* | *:${CIAODOCDIR} | *:${CIAODOCDIR}:* ) ;;
+	* )
+	    MANPATH=${CIAODOCDIR}:${MANPATH} ;;
+    esac
+fi
+
+# Set INFOPATH (checking that we do not add it twice)
+if [ "${INFOPATH:-0}" = "0" ]
+then
+    INFOPATH=/usr/info:/usr/share/info:/usr/local/info:${CIAODOCDIR} ; export INFOPATH
+else
+    case ${INFOPATH} in
+	${CIAODOCDIR}:* | *:${CIAODOCDIR} | *:${CIAODOCDIR}:* ) ;;
+	* )
+	    INFOPATH=${CIAODOCDIR}:${INFOPATH} ;;
+    esac
+fi
+# 
+# --------------------------------------------------------------------
+# 
+# Note for the Ciao developers: the following settings may be useful
+# if you want to use the version currently in the development
+# directory. Please refer to the INSTALLATION file.
+# 
+# CIAOHOME=/home/clip/Systems/ciao ; export CIAOHOME
+# CIAOLIB=${CIAOHOME} ; export CIAOLIB
+# CIAOENGINE=${CIAOHOME}/bin/${CIAOARCH}/ciaoengine ; export CIAOENGINE
+# PATH=${CIAOHOME}/ciaoc:${CIAOHOME}/shell:${PATH}
+# 
+# PATH=/home/clip/Systems/ciaopp/src:${PATH}
+# --------------------------------------------------------------------
+

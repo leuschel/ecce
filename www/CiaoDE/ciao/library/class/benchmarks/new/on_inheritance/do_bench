@@ -1,0 +1,28 @@
+#!/bin/tcsh
+cd /home/apineda/benchmarks/new/on_inheritance
+ciaoc main_on_inheritance
+'rm' bench
+main_on_inheritance 0 250000 >bench
+echo "no me he muerto: 0"
+main_on_inheritance 1 250000 >>bench
+echo "no me he muerto: 1"
+main_on_inheritance 2 250000 >>bench
+echo "no me he muerto: 2"
+main_on_inheritance 3 250000 >>bench
+echo "no me he muerto: 3"
+main_on_inheritance 4 250000 >>bench
+echo "no me he muerto: 4"
+main_on_inheritance 5 250000 >>bench
+echo "no me he muerto: 5"
+main_on_inheritance 6 250000 >>bench
+echo "no me he muerto: 6"
+main_on_inheritance 7 250000 >>bench
+echo "no me he muerto: 7"
+main_on_inheritance 8 250000 >>bench
+echo "no me he muerto: 8"
+main_on_inheritance 9 250000 >>bench
+echo "no me he muerto: 9"
+main_on_inheritance 10 250000 >>bench
+echo "no me he muerto: 10"
+more bench
+gnuplot plot

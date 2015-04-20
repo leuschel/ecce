@@ -1,0 +1,11 @@
+
+hash.pl - supply an implementation for hash_term/2
+
+low.pl - supply an alternative for must_be/2
+         maybe concat_atom/2 could be substituted...
+
+check the role of Mod (module name) in the expansion ...
+
+the transformed code will call things like integer/1, ground/1
+    --check these are always available
+

@@ -1,0 +1,91 @@
+#VRML V2.0 utf8
+#Example 11.4 - PNG Transparency and the Billboard Node
+NavigationInfo {
+  type "FLY"
+}
+Viewpoint {
+  position   -0.3 0 10.9
+  orientation       0 0 1  0
+  fieldOfView       1.05
+}
+Background {
+  skyAngle   [ 1.0472, 2.09439 ]
+  skyColor   [ 0.1 0.1 1,
+             0.2 0.2 0.6,
+             0.6 0.6 0.7 ]
+}
+Group {
+  children    [
+    Transform {
+      children      Billboard {
+        children     DEF Cloud Shape {
+          appearance Appearance {
+            texture  ImageTexture {
+              url    "cloud-1.png"
+            }
+          }
+          geometry   IndexedFaceSet {
+            coord    Coordinate {
+              point  [ 1 -1 0,
+                     1 1 0,
+                     -1 1 0,
+                     -1 -1 0 ]
+            }
+            coordIndex    [ 0, 1, 2, 3, -1 ]
+            texCoord      TextureCoordinate {
+              point [ 1 0,
+                    1 1,
+                    0 1,
+                    0 0 ]
+            }
+            texCoordIndex [ 0, 1, 2, 3, -1 ]
+          }
+        }
+        axisOfRotation    0 0 0
+      }
+    }
+    Transform {
+      children      Billboard {
+        children    USE Cloud
+        axisOfRotation    0 0 0
+      }
+      translation   -3.88 2.85 1.71
+    }
+    Transform {
+      children      Billboard {
+        children    USE Cloud
+        axisOfRotation     0 0 0
+      }
+      translation   3.89 3.71 2.41
+    }
+    Transform {
+      children      Billboard {
+        children    USE Cloud
+        axisOfRotation     0 0 0
+      }
+      translation   -5.31 -3.77 3.23
+    }
+    Transform {
+      children      Billboard {
+        children    USE Cloud
+      axisOfRotation       0 0 0
+      }
+      translation   5.14 -3.46 5.16
+    }
+    Transform {
+      children      Billboard {
+        children    USE Cloud
+        axisOfRotation     0 0 0
+      }
+      translation   -9.62 2.75 8.22
+    }
+    Transform {
+      children      Billboard {
+        children    USE Cloud
+      axisOfRotation       0 0 0
+      }
+      translation   8.95 1.76 7.69
+    }
+  ]
+}
+#EOF

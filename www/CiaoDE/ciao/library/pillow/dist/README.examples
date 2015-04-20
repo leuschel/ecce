@@ -1,0 +1,5 @@
+- These are just some basic examples. See the PiLLoW web pages for 
+
+- Source files in this directory are prepared to run in the Ciao
+  system, in other systems they need minor changes, notably in the
+  header.

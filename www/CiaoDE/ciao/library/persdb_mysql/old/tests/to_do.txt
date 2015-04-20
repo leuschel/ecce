@@ -1,0 +1,54 @@
+TO DO
+=====
+=====
+
+Always: update versions and documentation
+
+New Facilities
+++++++++++++++
+
+- New predicate to automatically convert sql_persistent predicates into file
+persistent predicates 
+- SQL data types mapping to Prolog checking types (different SQL data types
+depending on the SQL manufacturer)
+- Tables creation,deletion : add a "closer to Prolog" way to deal with tables.
+
+Additionals:
+- Server 
+  * Tests: robustness, errors dealing
+  * Timeouts in connections
+  * Efficiency questions: not expirable connections
+  * Interactive facilities: get_tables, table_types
+  * Documentation
+
+Internal Implementation Improvements
+++++++++++++++++++++++++++++++++++++
+
+- Deletion Compiler (use a deletion SQL sentence instead a view deletion, to
+ keep compatibility with different ODBC versions).
+- pl2sql : repair it to avoid writing in a temporal file (revisit and
+test the last solution tried)
+- string2term : change it to avoid writing in a temporal file.
+
+- Conjunction of several external predicates : translate it to a single
+ query. Also disjunctions, ...
+
+
+TO REPAIR
+=========
+=========
+- Review view creation in deletion, ...
+- Tests: errors, responses to unexpected situations, ...
+	 * add timeouts in connections
+	 * text errors : lost letters, aphostrophes and other extended-ASCII
+characters, ...
+	 * review connections when server is off	 
+
+TO DO IN OTHER LIBRARIES
+========================
+========================
+- Review socket_recv_code/3
+
+
+	Madrid, 20th March 1998.
+ 

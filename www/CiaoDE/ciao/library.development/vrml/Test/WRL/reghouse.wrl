@@ -1,0 +1,343 @@
+#VRML V2.0 utf8
+
+
+
+Viewpoint { position 0 1.5 0 orientation 0 1 0 -0.7854 }
+
+
+
+# Prototype for a box-shaped region
+
+
+
+PROTO Region [   # Prototype for a box-shaped region
+
+    field SFString name "no name"
+
+    field SFVec3f bboxCenter 0 0 0
+
+    field SFVec3f bboxSize 0 0 0
+
+    eventIn SFBool seenBy
+
+    eventOut SFBool canSee
+
+    field MFNode children []
+
+    ] {
+
+
+
+DEF SW Switch {
+
+    whichChoice -1
+
+    choice Group {
+
+        bboxCenter IS bboxCenter
+
+        bboxSize IS bboxSize
+
+        children IS children
+
+    }
+
+}
+
+
+
+DEF PS ProximitySensor {
+
+    center IS bboxCenter
+
+    size IS bboxSize
+
+    isActive IS canSee
+
+}
+
+
+
+DEF SC Script {
+
+    url "Region.class"
+
+    eventIn SFBool countThese IS seenBy
+
+    eventOut SFInt32 showChildren
+
+    field SFString name IS name
+
+    eventIn SFBool regionActive
+
+}
+
+
+
+ROUTE PS.isActive TO SC.regionActive
+
+ROUTE SC.showChildren TO SW.whichChoice
+
+
+
+}  # end of PROTO
+
+
+
+# Specify an initial viewpoint
+
+
+
+#DEF HomeBase Viewpoint { position 0 1.5 0 }
+
+
+
+# Define the various regions
+
+
+
+DEF Storage Region {
+
+    name "storage"
+
+    bboxSize 4 3 7 bboxCenter -10 0 -3.5
+
+    children Transform {
+
+        translation -10 0 -3.5
+
+        children Inline { url "storage.wrl" }
+
+    }
+
+}
+
+
+
+DEF Workshop Region {
+
+    name "workshop"
+
+    bboxSize 4 3 7 bboxCenter -6 0 -3.5
+
+    children Transform {
+
+        translation -6 0 -3.5
+
+        children Inline { url "workshop.wrl" }
+
+    }
+
+}
+
+
+
+DEF Alcove Region {
+
+    name "alcove"
+
+    bboxSize 4 3 4 bboxCenter -2 0 -5.0
+
+    children Transform {
+
+        translation -2 0 -5.0
+
+        children Inline { url "alcove.wrl" }
+
+    }
+
+}
+
+
+
+DEF Kitchen Region {
+
+    name "kitchen"
+
+    bboxSize 9 3 4 bboxCenter 4.5 0 -5.0
+
+    children Transform {
+
+        translation 4.5 0 -5.0
+
+        children Inline { url "kitchen.wrl" }
+
+    }
+
+}
+
+
+
+DEF Bathroom Region {
+
+    name "bathroom"
+
+    bboxSize 5 3 3 bboxCenter 6.5 0 -1.5
+
+    children Transform {
+
+        translation 6.5 0 -1.5
+
+        children Inline { url "bathroom.wrl" }
+
+    }
+
+}
+
+
+
+DEF Closet Region {
+
+    name "closet"
+
+    bboxSize 5 3 3 bboxCenter 6.5 0 1.5
+
+    children Transform {
+
+        translation 6.5 0 1.5
+
+        children Inline { url "closet.wrl" }
+
+    }
+
+}
+
+
+
+DEF LivingRoom Region {
+
+    name "living"
+
+    bboxSize 8 3 6 bboxCenter 0 0 0.5
+
+    children Transform {
+
+        translation 0 0 0.0
+
+        children Inline { url "living.wrl" }
+
+    }
+
+}
+
+
+
+DEF Garage Region {
+
+    name "garage"
+
+    bboxSize 8 3 7 bboxCenter -8 0 3.5
+
+    children Transform {
+
+        translation -8 0 3.5
+
+        children Inline { url "garage.wrl" }
+
+    }
+
+}
+
+
+
+DEF Porch Region {
+
+    name "porch"
+
+    bboxSize 13 3 4 bboxCenter 2.5 0 5.0
+
+    children Transform {
+
+        translation 2.5 0 5.0
+
+        children Inline { url "porch.wrl" }
+
+    }
+
+}
+
+
+
+# Now specify the region-to-region visibility information
+
+
+
+ROUTE Storage.canSee TO Storage.seenBy
+
+ROUTE Storage.canSee TO Workshop.seenBy
+
+ROUTE Storage.canSee TO Alcove.seenBy
+
+
+
+ROUTE Workshop.canSee TO Workshop.seenBy
+
+ROUTE Workshop.canSee TO Storage.seenBy
+
+ROUTE Workshop.canSee TO Garage.seenBy
+
+ROUTE Workshop.canSee TO Alcove.seenBy
+
+ROUTE Workshop.canSee TO Kitchen.seenBy
+
+
+
+ROUTE Alcove.canSee TO Alcove.seenBy
+
+ROUTE Alcove.canSee TO Workshop.seenBy
+
+ROUTE Alcove.canSee TO Storage.seenBy
+
+ROUTE Alcove.canSee TO Kitchen.seenBy
+
+
+
+ROUTE Kitchen.canSee TO Kitchen.seenBy
+
+ROUTE Kitchen.canSee TO Alcove.seenBy
+
+ROUTE Kitchen.canSee TO Workshop.seenBy
+
+ROUTE Kitchen.canSee TO LivingRoom.seenBy
+
+ROUTE Kitchen.canSee TO Porch.seenBy
+
+
+ROUTE Bathroom.canSee TO Bathroom.seenBy
+
+ROUTE Bathroom.canSee TO LivingRoom.seenBy
+
+
+
+ROUTE Closet.canSee TO Closet.seenBy
+
+ROUTE Closet.canSee TO LivingRoom.seenBy
+
+
+
+ROUTE LivingRoom.canSee TO LivingRoom.seenBy
+
+ROUTE LivingRoom.canSee TO Closet.seenBy
+
+ROUTE LivingRoom.canSee TO Bathroom.seenBy
+
+ROUTE LivingRoom.canSee TO Kitchen.seenBy
+
+ROUTE LivingRoom.canSee TO Porch.seenBy
+
+
+
+ROUTE Porch.canSee TO Porch.seenBy
+
+ROUTE Porch.canSee TO LivingRoom.seenBy
+
+ROUTE Porch.canSee TO Garage.seenBy
+
+
+
+ROUTE Garage.canSee TO Garage.seenBy
+
+ROUTE Garage.canSee TO Porch.seenBy
+
+ROUTE Garage.canSee TO Workshop.seenBy
+

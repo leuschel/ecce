@@ -1,0 +1,798 @@
+in(1,[1,2])
+in(2,[1,2])
+[[1|16]]
+[[0|12]]
+local_store(1,[x(1,_816,_816),x(2,_752,_752)])
+sent(msg(2,1,ok?(a([x(1,_816,_816),x(2,_752,_752)]))))
+ackleft(1)
+sent(msg(3,1,ok?(a([x(1,_816,_816),x(2,_752,_752)]))))
+ackleft(2)
+sending(msg(2,1,marker(0)))
+sent_message
+sending(msg(3,1,marker(0)))
+sent_message
+do_agent(1)
+received(msg(1,2,marker(0)))
+current_marker_counter(0)
+pending_markers([marker(3),marker(2)])
+marker(0)
+do_agent(1)
+received(msg(1,2,ack([x(2,_998,_998),x(1,_969,_969)])))
+current_marker_counter(0)
+pending_markers([marker(3)])
+ack([x(2,_998,_998),x(1,_969,_969)])
+Execution not terminated
+marker_counter_updated(0,1)
+ack(a(2))
+adding_propagation([x(2,_998,_998),x(1,_969,_969)],1,_1116,2)
+a(1,[x(1,_1149,_1149),x(2,_1133,_1133)])
+tmp_a
+unify([x(1,_1149,_1149),x(2,_1133,_1133)],[x(2,_998,_998),x(1,_969,_969)])
+[[1|16]]
+[[0|12]]
+
+unified
+not_told
+sending(msg(2,1,marker(1)))
+sent_message
+sending(msg(3,1,marker(1)))
+sent_message
+added_propagation([x(2,_998,_998),x(1,_969,_969)],1,[x(1,_1149,_1149),x(2,_1133,_1133)],2)
+newackleft(1)
+do_agent(1)
+received(msg(1,3,ack([x(3,_1336,_1336),x(2,_1301,_1301),x(1,_1266,_1266)])))
+current_marker_counter(1)
+pending_markers([marker(3),marker(2)])
+ack([x(3,_1336,_1336),x(2,_1301,_1301),x(1,_1266,_1266)])
+Execution not terminated
+marker_counter_updated(1,2)
+ack(a(1))
+adding_propagation([x(3,_1336,_1336),x(2,_1301,_1301),x(1,_1266,_1266)],1,_1477,3)
+a(1,[x(1,_1510,_1510),x(2,_1494,_1494)])
+tmp_a
+unify([x(1,_1510,_1510),x(2,_1494,_1494)],[x(3,_1336,_1336),x(2,_1301,_1301),x(1,_1266,_1266)])
+[[1|16]]
+[[0|12]]
+
+unified
+not_told
+sending(msg(2,1,marker(2)))
+sent_message
+sending(msg(3,1,marker(2)))
+sent_message
+added_propagation([x(3,_1336,_1336),x(2,_1301,_1301),x(1,_1266,_1266)],1,[x(1,_1510,_1510),x(2,_1494,_1494)],3)
+newackleft(0)
+do_agent(1)
+received(msg(1,3,marker(0)))
+current_marker_counter(2)
+pending_markers([marker(3),marker(2)])
+marker(0)
+discarded_marker(0)
+do_agent(1)
+received(msg(1,2,marker(1)))
+current_marker_counter(2)
+pending_markers([marker(3),marker(2)])
+marker(1)
+discarded_marker(1)
+do_agent(1)
+received(msg(1,3,marker(1)))
+current_marker_counter(2)
+pending_markers([marker(3),marker(2)])
+marker(1)
+discarded_marker(1)
+do_agent(1)
+received(msg(1,2,marker(2)))
+current_marker_counter(2)
+pending_markers([marker(3),marker(2)])
+marker(2)
+do_agent(1)
+received(msg(1,3,marker(2)))
+current_marker_counter(2)
+pending_markers([marker(3)])
+marker(2)
+Moving...
+Prop finished?
+store(1,[2])
+highers([])
+presumed_view([])
+Moving from propagation to search
+sending(msg(1,1,begin_labeling))
+sent_message
+sending(msg(2,1,begin_labeling))
+sent_message
+sending(msg(3,1,begin_labeling))
+sent_message
+do_agent(1)
+received(msg(1,1,begin_labeling))
+do_agent(1)
+received(msg(1,3,prop_ended))
+[waiting_for_labs(1,3),waiting_for_labs(1,2)]
+aun_queda(2)
+do_agent(1)
+received(msg(1,2,prop_ended))
+[waiting_for_labs(1,2)]
+No remaining prop_ended
+Beginning actual labeling
+lab init phase 1
+lab init phase 2
+lab init phase 3
+in(1,[1])
+newl([x(1,_2278,1)])
+sending(msg(2,1,ok?(a([x(1,_2278,1)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_2278,1)]))))
+sent_message
+sending(msg(2,1,marker(2)))
+sent_message
+sending(msg(3,1,marker(2)))
+sent_message
+Actual labeling begun
+do_agent(1)
+received(msg(1,2,no_good([v(2,a(1,[x(1,_2487,1)]))])))
+current_marker_counter(2)
+pending_markers([marker(3),marker(2)])
+no_good([v(2,a(1,[x(1,_2487,1)]))])
+Execution not terminated
+marker_counter_updated(2,3)
+no_good_clause_1([v(2,a(1,[x(1,_2487,1)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_2487,1),x(1,_2606,1)])
+consistent([x(1,_2606,1)],[x(1,_2487,1)])
+e
+f
+change_assignments
+current_local_store
+l1_extracted
+l_extracted
+lab([1])
+lab([2])
+composed
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[2]
+asserted_old_assignment
+changing_assignments
+no_good_enforced_change([x(1,_2685,1)],[x(1,_2685,2)])
+sending(msg(2,1,ok?(a([x(1,_2685,2)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_2685,2)]))))
+sent_message
+sending(msg(2,1,marker(3)))
+sent_message
+sending(msg(3,1,marker(3)))
+sent_message
+g
+do_agent(1)
+received(msg(1,3,no_good([v(3,a(1,[x(1,_3493,2)]))])))
+current_marker_counter(3)
+pending_markers([marker(3),marker(2)])
+no_good([v(3,a(1,[x(1,_3493,2)]))])
+Execution not terminated
+marker_counter_updated(3,4)
+no_good_clause_1([v(3,a(1,[x(1,_3493,2)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_3493,2),x(1,_3633,2)])
+consistent([x(1,_3633,2)],[x(1,_3493,2)])
+e
+f
+change_assignments
+current_local_store
+l1_extracted
+l_extracted
+lab([1])
+lab([2])
+lab([3])
+composed
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[3]
+asserted_old_assignment
+changing_assignments
+no_good_enforced_change([x(1,_3735,2)],[x(1,_3735,3)])
+sending(msg(2,1,ok?(a([x(1,_3735,3)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_3735,3)]))))
+sent_message
+sending(msg(2,1,marker(4)))
+sent_message
+sending(msg(3,1,marker(4)))
+sent_message
+g
+do_agent(1)
+received(msg(1,2,no_good([v(2,a(1,[x(1,_4576,1)]))])))
+current_marker_counter(4)
+pending_markers([marker(3),marker(2)])
+no_good([v(2,a(1,[x(1,_4576,1)]))])
+Execution not terminated
+marker_counter_updated(4,5)
+no_good_clause_1([v(2,a(1,[x(1,_4576,1)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_4576,1),x(1,_4695,3)])
+KKDLAVAK(no_good([v(2,a(1,[x(1,_4576,1)]))]),1,2)
+marker_counter(1,5)
+do_agent(1)
+received(msg(1,2,marker(2)))
+current_marker_counter(4)
+pending_markers([marker(3),marker(2)])
+marker(2)
+discarded_marker(2)
+do_agent(1)
+received(msg(1,2,maybe_wake_up))
+do_agent(1)
+received(msg(1,3,no_good([v(3,a(1,[x(1,_4835,3)]))])))
+current_marker_counter(4)
+pending_markers([marker(3),marker(2)])
+no_good([v(3,a(1,[x(1,_4835,3)]))])
+Execution not terminated
+marker_counter_updated(4,5)
+no_good_clause_1([v(3,a(1,[x(1,_4835,3)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_4835,3),x(1,_5017,3)])
+consistent([x(1,_5017,3)],[x(1,_4835,3)])
+e
+f
+change_assignments
+current_local_store
+l1_extracted
+l_extracted
+lab([1])
+lab([2])
+lab([3])
+lab([4])
+composed
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[4]
+asserted_old_assignment
+changing_assignments
+no_good_enforced_change([x(1,_5165,3)],[x(1,_5165,4)])
+sending(msg(2,1,ok?(a([x(1,_5165,4)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_5165,4)]))))
+sent_message
+sending(msg(2,1,marker(5)))
+sent_message
+sending(msg(3,1,marker(5)))
+sent_message
+g
+do_agent(1)
+received(msg(1,2,no_good([v(2,a(1,[x(1,_6072,3)]))])))
+current_marker_counter(5)
+pending_markers([marker(3),marker(2)])
+no_good([v(2,a(1,[x(1,_6072,3)]))])
+Execution not terminated
+marker_counter_updated(5,6)
+no_good_clause_1([v(2,a(1,[x(1,_6072,3)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_6072,3),x(1,_6254,4)])
+KKDLAVAK(no_good([v(2,a(1,[x(1,_6072,3)]))]),1,2)
+marker_counter(1,6)
+do_agent(1)
+received(msg(1,2,marker(4)))
+current_marker_counter(5)
+pending_markers([marker(3),marker(2)])
+marker(4)
+discarded_marker(4)
+do_agent(1)
+received(msg(1,2,maybe_wake_up))
+do_agent(1)
+received(msg(1,2,marker(5)))
+current_marker_counter(5)
+pending_markers([marker(3),marker(2)])
+marker(5)
+do_agent(1)
+received(msg(1,2,no_good([v(2,a(1,[x(1,_6468,4)]))])))
+current_marker_counter(5)
+pending_markers([marker(3)])
+no_good([v(2,a(1,[x(1,_6468,4)]))])
+Execution not terminated
+marker_counter_updated(5,6)
+no_good_clause_1([v(2,a(1,[x(1,_6468,4)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_6468,4),x(1,_6725,4)])
+consistent([x(1,_6725,4)],[x(1,_6468,4)])
+e
+f
+change_assignments
+current_local_store
+l1_extracted
+l_extracted
+lab([1])
+lab([2])
+lab([3])
+lab([4])
+lab([5])
+composed
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[5]
+asserted_old_assignment
+changing_assignments
+no_good_enforced_change([x(1,_6965,4)],[x(1,_6965,5)])
+sending(msg(2,1,ok?(a([x(1,_6965,5)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_6965,5)]))))
+sent_message
+sending(msg(2,1,marker(6)))
+sent_message
+sending(msg(3,1,marker(6)))
+sent_message
+g
+do_agent(1)
+received(msg(1,3,no_good([v(3,a(1,[x(1,_8004,5)]))])))
+current_marker_counter(6)
+pending_markers([marker(3),marker(2)])
+no_good([v(3,a(1,[x(1,_8004,5)]))])
+Execution not terminated
+marker_counter_updated(6,7)
+no_good_clause_1([v(3,a(1,[x(1,_8004,5)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_8004,5),x(1,_8438,5)])
+consistent([x(1,_8438,5)],[x(1,_8004,5)])
+e
+f
+change_assignments
+current_local_store
+l1_extracted
+l_extracted
+lab([1])
+lab([2])
+lab([3])
+lab([4])
+lab([5])
+lab([6])
+composed
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[6]
+asserted_old_assignment
+changing_assignments
+no_good_enforced_change([x(1,_8862,5)],[x(1,_8862,6)])
+sending(msg(2,1,ok?(a([x(1,_8862,6)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_8862,6)]))))
+sent_message
+sending(msg(2,1,marker(7)))
+sent_message
+sending(msg(3,1,marker(7)))
+sent_message
+g
+do_agent(1)
+received(msg(1,2,no_good([v(2,a(1,[x(1,_10165,5)]))])))
+current_marker_counter(7)
+pending_markers([marker(3),marker(2)])
+no_good([v(2,a(1,[x(1,_10165,5)]))])
+Execution not terminated
+marker_counter_updated(7,8)
+no_good_clause_1([v(2,a(1,[x(1,_10165,5)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_10165,5),x(1,_10599,6)])
+KKDLAVAK(no_good([v(2,a(1,[x(1,_10165,5)]))]),1,2)
+marker_counter(1,8)
+do_agent(1)
+received(msg(1,3,no_good([v(3,a(1,[x(1,_10644,6)]))])))
+current_marker_counter(7)
+pending_markers([marker(3),marker(2)])
+no_good([v(3,a(1,[x(1,_10644,6)]))])
+Execution not terminated
+marker_counter_updated(7,8)
+no_good_clause_1([v(3,a(1,[x(1,_10644,6)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_10644,6),x(1,_11414,6)])
+consistent([x(1,_11414,6)],[x(1,_10644,6)])
+e
+f
+change_assignments
+current_local_store
+l1_extracted
+l_extracted
+lab([1])
+lab([2])
+lab([3])
+lab([4])
+lab([5])
+lab([6])
+lab([7])
+composed
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[7]
+asserted_old_assignment
+changing_assignments
+no_good_enforced_change([x(1,_12206,6)],[x(1,_12206,7)])
+sending(msg(2,1,ok?(a([x(1,_12206,7)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_12206,7)]))))
+sent_message
+sending(msg(2,1,marker(8)))
+sent_message
+sending(msg(3,1,marker(8)))
+sent_message
+g
+do_agent(1)
+received(msg(1,2,marker(6)))
+current_marker_counter(8)
+pending_markers([marker(3),marker(2)])
+marker(6)
+discarded_marker(6)
+do_agent(1)
+received(msg(1,2,maybe_wake_up))
+do_agent(1)
+received(msg(1,3,no_good([v(3,a(1,[x(1,_14132,7)]))])))
+current_marker_counter(8)
+pending_markers([marker(3),marker(2)])
+no_good([v(3,a(1,[x(1,_14132,7)]))])
+Execution not terminated
+marker_counter_updated(8,9)
+no_good_clause_1([v(3,a(1,[x(1,_14132,7)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_14132,7),x(1,_15574,7)])
+consistent([x(1,_15574,7)],[x(1,_14132,7)])
+e
+f
+change_assignments
+current_local_store
+l1_extracted
+l_extracted
+lab([1])
+lab([2])
+lab([3])
+lab([4])
+lab([5])
+lab([6])
+lab([7])
+lab([8])
+composed
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[8]
+asserted_old_assignment
+changing_assignments
+no_good_enforced_change([x(1,_17102,7)],[x(1,_17102,8)])
+sending(msg(2,1,ok?(a([x(1,_17102,8)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_17102,8)]))))
+sent_message
+sending(msg(2,1,marker(9)))
+sent_message
+sending(msg(3,1,marker(9)))
+sent_message
+g
+do_agent(1)
+received(msg(1,2,no_good([v(2,a(1,[x(1,_19989,7)]))])))
+current_marker_counter(9)
+pending_markers([marker(3),marker(2)])
+no_good([v(2,a(1,[x(1,_19989,7)]))])
+Execution not terminated
+marker_counter_updated(9,10)
+no_good_clause_1([v(2,a(1,[x(1,_19989,7)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_19989,7),x(1,_21431,8)])
+KKDLAVAK(no_good([v(2,a(1,[x(1,_19989,7)]))]),1,2)
+marker_counter(1,10)
+do_agent(1)
+received(msg(1,2,marker(8)))
+current_marker_counter(9)
+pending_markers([marker(3),marker(2)])
+marker(8)
+discarded_marker(8)
+do_agent(1)
+received(msg(1,2,maybe_wake_up))
+do_agent(1)
+received(msg(1,2,marker(9)))
+current_marker_counter(9)
+pending_markers([marker(3),marker(2)])
+marker(9)
+do_agent(1)
+received(msg(1,2,no_good([v(2,a(1,[x(1,_21645,8)]))])))
+current_marker_counter(9)
+pending_markers([marker(3)])
+no_good([v(2,a(1,[x(1,_21645,8)]))])
+Execution not terminated
+marker_counter_updated(9,10)
+no_good_clause_1([v(2,a(1,[x(1,_21645,8)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_21645,8),x(1,_24422,8)])
+consistent([x(1,_24422,8)],[x(1,_21645,8)])
+e
+f
+change_assignments
+current_local_store
+l1_extracted
+l_extracted
+lab([1])
+lab([2])
+lab([3])
+lab([4])
+lab([5])
+lab([6])
+lab([7])
+lab([8])
+lab([9])
+composed
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[9]
+asserted_old_assignment
+changing_assignments
+no_good_enforced_change([x(1,_27422,8)],[x(1,_27422,9)])
+sending(msg(2,1,ok?(a([x(1,_27422,9)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_27422,9)]))))
+sent_message
+sending(msg(2,1,marker(10)))
+sent_message
+sending(msg(3,1,marker(10)))
+sent_message
+g
+do_agent(1)
+received(msg(1,2,no_good([v(2,a(1,[x(1,_32421,9)]))])))
+current_marker_counter(10)
+pending_markers([marker(3),marker(2)])
+no_good([v(2,a(1,[x(1,_32421,9)]))])
+Execution not terminated
+marker_counter_updated(10,11)
+no_good_clause_1([v(2,a(1,[x(1,_32421,9)]))])
+s0
+a
+b
+c
+d
+consistent?([x(1,_32421,9),x(1,_37895,9)])
+consistent([x(1,_37895,9)],[x(1,_32421,9)])
+e
+f
+change_assignments
+current_local_store
+l1_extracted
+l_extracted
+lab([1])
+lab([2])
+lab([3])
+lab([4])
+lab([5])
+lab([6])
+lab([7])
+lab([8])
+lab([9])
+lab([10])
+composed
+a
+consistent?
+consistent!
+vals_extracted
+b2
+b3
+[10]
+asserted_old_assignment
+changing_assignments
+no_good_enforced_change([x(1,_43839,9)],[x(1,_43839,10)])
+sending(msg(2,1,ok?(a([x(1,_43839,10)]))))
+sent_message
+sending(msg(3,1,ok?(a([x(1,_43839,10)]))))
+sent_message
+sending(msg(2,1,marker(11)))
+sent_message
+sending(msg(3,1,marker(11)))
+sent_message
+g
+do_agent(1)
+received(msg(1,2,marker(10)))
+current_marker_counter(11)
+pending_markers([marker(3),marker(2)])
+marker(10)
+discarded_marker(10)
+do_agent(1)
+received(msg(1,2,maybe_wake_up))
+do_agent(1)
+received(msg(1,2,marker(11)))
+current_marker_counter(11)
+pending_markers([marker(3),marker(2)])
+marker(11)
+do_agent(1)
+received(msg(1,3,marker(11)))
+current_marker_counter(11)
+pending_markers([marker(3)])
+marker(11)
+Moving...
+Global execution finished
+sending(msg(1,1,harvest))
+sent_message
+sending(msg(2,1,harvest))
+sent_message
+sending(msg(3,1,harvest))
+sent_message
+sending(msg(1,1,show_stats))
+sent_message
+sending(msg(2,1,show_stats))
+sent_message
+sending(msg(3,1,show_stats))
+sent_message
+do_agent(1)
+received(msg(1,1,harvest))
+Collection results...
+sending(msg(1,1,collect([x(1,_53318,10)])))
+sent_message
+do_agent(1)
+received(msg(1,1,show_stats))
+
+***************************************************
+STATISTICS OF AGENT 1
+*****************OK (propagation)**********************
+ok? messages received during propagation: 0
+
+******************ACK (propagation)********************
+1: ack from 3
+1: ack from 2
+ack messages received during propagation: 2
+
+****************NO GOOD (propagation)******************
+no_good messages received during propagation (none, I hope): 0
+
+************NEGLECTED NO GOOD (propagation)************
+no_good messages neglected during propagation (none, I hope): 0
+
+************BEGIN LABELING (propagation)***************
+1: begin_labeling from 1
+begin_labeling messages received during propagation (one, I hope): 1
+
+***********PROPAGATION ENDED (propagation)*************
+1: prop_ended from 2
+1: prop_ended from 3
+End of propagation messages received: 2
+
+**********TERMINATION DETECTION (propagation)**********
+1: marker from 3
+1: marker from 2
+1: marker from 3
+1: marker from 2
+1: marker from 3
+1: marker from 2
+Termination detection messages (markers) received during propagation: 6
+
+********************OK (labeling)**********************
+ok? messages received during labeling: 0
+
+*******************ACK (labeling)**********************
+ack messages received during labeling: 0
+
+******************NO GOOD (labeling)*******************
+1: no_good from 2
+1: no_good from 2
+1: no_good from 2
+1: no_good from 3
+1: no_good from 3
+1: no_good from 2
+1: no_good from 3
+1: no_good from 2
+1: no_good from 2
+1: no_good from 3
+1: no_good from 2
+1: no_good from 3
+1: no_good from 2
+no_good messages received during labeling: 13
+
+************NEGLECTED NO GOOD (labeling)************
+1: neglected_no_good from 2
+1: neglected_no_good from 2
+1: neglected_no_good from 2
+1: neglected_no_good from 2
+no_good messages neglected during labeling: 4
+
+**************BEGIN LABELING (labeling)****************
+begin_labeling messages received during labeling (none, I hope): 0
+
+*************PROPAGATION ENDED (labeling)**************
+End of propagation messages received during labeling (none, I hope): 0
+
+************TERMINATION DETECTION (labeling)***********
+1: marker from 3
+1: marker from 2
+1: marker from 2
+1: marker from 2
+1: marker from 2
+1: marker from 2
+1: marker from 2
+1: marker from 2
+1: marker from 2
+Termination detection messages (markers) received during labeling: 9
+
+do_agent(1)
+received(msg(1,2,marker(7)))
+current_marker_counter(11)
+pending_markers([])
+marker(7)
+discarded_marker(7)
+do_agent(1)
+received(msg(1,2,collect([x(2,_64398,5)])))
+asserted(b(2,5))
+collected_from(2,[x(2,_64398,5)])
+do_agent(1)
+received(msg(1,3,collect([x(3,_64501,15)])))
+asserted(b(3,15))
+collected_from(3,[x(3,_64501,15)])
+do_agent(1)
+received(msg(1,1,collect([x(1,_64659,10)])))
+asserted(b(1,10))
+collected_from(1,[x(1,_64659,10)])
+do_agent(1)

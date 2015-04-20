@@ -1,0 +1,69 @@
+% Op declarations.
+
+:- public op/3, current_op/3, op_setup/0, 
+          current_prefixop/3, current_infixop/4, current_postfixop/3.
+
+op(Prec, Ass, Ops) :-
+	nonvar(Ass),
+	integer(Prec), 0=<Prec, Prec=<1200,
+	op_ass(Ass, Left, Prec, Right, Type),
+	op_atoms(Ops, Atoms, []), !,
+	op(Atoms, Prec, current_op(_,Left,Prec,Right,Type),
+	                current_op(_,_,_,_,Type)).
+op(Prec, Ass, Ops) :-
+	errmsg(op(Prec,Ass,Ops), 'illegal arguments'),
+	fail.
+
+op_atoms([]) --> !.
+op_atoms([X|Xs]) --> !, {atom(X)}, [X], op_atoms(Xs).
+op_atoms(X) --> op_atoms([X]).
+
+op([], _, _, _).
+op([X|Xs], Prec, AddTemplate, DeleteTemplate) :-
+	(   arg(1, DeleteTemplate, X),
+	    unsetall(DeleteTemplate),
+            Prec>0,
+	    arg(1, AddTemplate, X),
+	    setz(AddTemplate),
+	    fail
+	;   true
+	),
+	op(Xs, Prec, AddTemplate, DeleteTemplate).
+
+current_op(Prec, Ass, Op) :-
+	setting(current_op(Op,Left,Prec,Right,Type)),
+	op_ass(Ass, Left, Prec, Right, Type).
+
+current_prefixop(Op, Less, Prec) :-
+	setting(current_op(Op,0,Less,Prec,pre)), !.
+
+current_infixop(Op, Left, Prec, Right) :-
+	setting(current_op(Op,Left,Prec,Right,in)), !.
+
+current_postfixop(Op, Prec, Less) :-
+	setting(current_op(Op,Prec,Less,0,post)), !.
+
+op_ass(fy, 0, Prec, Prec, pre).
+op_ass(fx, 0, Prec, Less, pre) :- Less is Prec-1.
+op_ass(yfx, Prec, Prec, Less, in) :- Less is Prec-1.
+op_ass(xfy, Less, Prec, Prec, in) :- Less is Prec-1.
+op_ass(xfx, Less, Prec, Less, in) :- Less is Prec-1.
+op_ass(yf, Prec, Prec, 0, post).
+op_ass(xf, Less, Prec, 0, post) :- Less is Prec-1.
+
+op_setup :-
+	op(1200, xfx,[(:-),(-->)]),
+	op(1200,  fx,[(:-),(?-)]),
+	op(1150,  fx,[(mode),(public),(dynamic),(multifile),(wait)]),
+	op(1100, xfy,[';']),
+	op(1050, xfy,['->']),
+	op(1000, xfy,[',']),
+	op( 900,  fy,[(\+),(spy),(nospy)]),
+	op( 700, xfx,[(=),(is),(=..),(==),(\==),(@<),(@>),(@=<),(@>=),(=:=),(=\=),(<),(=<),(>),(>=)]),
+	op( 500, yfx,[(+),(-),(/\),(\/)]),
+	op( 500,  fx,[(+),(-)]),
+        op( 500,  yf,[(++),(--)]),
+	op( 400, yfx,[(*),(/),(//),(<<),(>>)]),
+	op( 300, xfx,[(mod)]),
+	op( 200, xfy,[(^)]). 
+

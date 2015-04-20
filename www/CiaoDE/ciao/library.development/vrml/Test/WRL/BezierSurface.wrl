@@ -1,0 +1,63 @@
+#VRML V2.0 utf8
+
+
+EXTERNPROTO NurbsSurface [ field SFBool   debug
+                           field SFInt32  uSegments
+                           field SFInt32  vSegments
+                           field MFFloat  uKnotSequence
+                           field MFFloat  vKnotSequence
+                           field SFInt32  numUControlPoints
+                           field SFInt32  numVControlPoints
+                           field MFFloat  controlPoints
+                           field SFBool   ccw
+                           field SFFloat  creaseAngle
+                           field SFBool   solid             ]
+"http://www.ocnus.com/NURBS/NurbsSurface.wrl"
+
+
+
+Viewpoint {
+  position       0 0 25
+  orientation    0 0 1  0
+  fieldOfView    0.785398
+  description    "NURBS Bezier Surface"
+}
+
+Shape {
+  appearance
+      Appearance {
+        material
+           Material { diffuseColor 1 1 0 }
+        texture
+           ImageTexture { url "quilt.gif" }
+      }
+  geometry
+      NurbsSurface {      # Bezier Surface
+        debug             FALSE
+        creaseAngle       0.5
+        uSegments         20
+        vSegments         20
+        uKnotSequence  [  0,  0,  0,  0,
+                          1,  1,  1,  1, ]
+        vKnotSequence  [  0,  0,  0,  0,
+                          1,  1,  1,  1, ]
+        numUControlPoints   4
+        numVControlPoints   4
+        controlPoints [ -9  -2   8  1,
+                        -4   1   8  1,
+                         4  -3   6  1,
+                        10  -1   8  1,
+                        -6   3   4  1,
+                         0  -1   4  1,
+                         2  -1   4  1,
+                         6   2   4  1,
+                       -10  -2  -2  1,
+                        -4  -4  -2  1,
+                         4  -1  -2  1,
+                        10   0  -2  1,
+                        -9   2  -6  1,
+                        -4  -4  -5  1,
+                         4   3  -5  1,
+                         9  -2  -6  1, ]
+      }
+}

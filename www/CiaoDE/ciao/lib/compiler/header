@@ -1,0 +1,5 @@
+#!/bin/sh
+INSTENGINE="/home/asap/asap-online-demo/CiaoDE/ciao/bin/ciaoengine"${CIAOARCH:+".$CIAOARCH"}""
+ENGINE=${CIAOENGINE:-${INSTENGINE}}
+exec "$ENGINE" "$@" -C -b $0 
+

@@ -1,0 +1,132 @@
+# -*- mode: Makefile; -*-
+# ----------------------------------------------------------------------------
+# Settings which are common to makefiles below
+# but which you should not need to change
+#-----------------------------------------------------------------------------
+# *** This is here so that it can be seen by dist and doc
+TARDOCFORMATS=ps pdf manl info infoindex html htmlindex
+# Define this to be the main file name (with suffix if there is one).
+MAIN=ciao
+CIAOSRC=$(CIAODESRC)/$(MAIN)
+SRC=$(CIAOSRC)
+ACTUALDIR=$(notdir $(CIAOSRC))
+BASEMAIN=$(basename $(notdir $(MAIN)))
+VERSIONFILE=version/GlobalVersion
+VERSION:=$(shell cat $(CIAOSRC)/$(VERSIONFILE))
+PATCHFILE=version/GlobalPatch
+PATCH:=$(shell cat $(CIAOSRC)/$(PATCHFILE))
+VERSIONMAIN=$(BASEMAIN)-$(VERSION)
+VPMAIN=$(VERSIONMAIN)p$(PATCH)
+WIN32VPMAIN=$(VERSIONMAIN)p$(PATCH)Win32
+SRCLIB=$(CIAOSRC)
+BOOTSTRAPDIR=$(CIAOSRC)/bootstrap
+SRCBINDIR=$(CIAODESRC)/bin
+BUILDBINDIR=$(RPM_BUILD_ROOT)$(BINDIR)
+BUILDLIBDIR = $(RPM_BUILD_ROOT)$(LIBDIR)
+BUILDREALLIBDIR=$(RPM_BUILD_ROOT)$(REALLIBDIR)
+BUILDXEMACSINITDIR=$(RPM_BUILD_ROOT)$(XEMACSINITDIR)
+BUILDCIAOMODEINITDIR=$(RPM_BUILD_ROOT)$(CIAOMODEINITDIR)
+#CIAOROOT not used any longer
+#CIAOROOT=$(SRCLIB)
+INSTALLEDINCLUDEDIR=$(REALLIBDIR)/include/$(CIAOARCH)
+STATOBJ=sockets_c.o random.o # fastrw.o
+REMOTEMACHINES=torquemada mayor clip
+
+ifeq (CYGWIN,$(findstring CYGWIN,$(shell uname)))
+# SRC=$(SAMBASRCDIR)
+ ALT=win32
+ EXECSUFFIX=.exe
+endif
+
+ifeq ($(OSTYPE),cygwin)
+#  SRC=$(SAMBASRCDIR)
+  ALT=win32
+  EXECSUFFIX=.exe
+endif
+
+ifeq ($(OSTYPE),cygwin32)
+#   SRC=$(SAMBASRCDIR)
+  ALT=win32
+  EXECSUFFIX=.exe
+endif
+
+# The next is a kludge to use the .cpx extension in Windows
+
+ifeq ($(ALT),win32)
+  CIAOSUFFIX=.cpx
+endif
+
+DISTSTATICCOMP=ciaoc.sta
+STATICCOMPNAME=ciaoc-$(VERSION)$(CIAOSUFFIX)
+CIAOSHELLNAME=ciaosh
+CIAOC=$(SRCBINDIR)/$(STATICCOMPNAME)
+BOOTSTRAP_CIAOC=$(BOOTSTRAPDIR)/$(DISTSTATICCOMP)
+CIAOSHELL=$(CIAOSRC)/shell/$(CIAOSHELLNAME) -f
+
+include $(CIAOSRC)/makefile-sysindep
+
+include $(SYSDEP_FILES)/mkf-$(CIAOARCH)
+
+OBJDIR=$(CIAOSRC)/bin/$(CIAOARCH)$(CIAODEBUG)
+OBJDIRBOOT=$(CIAOSRC)/bin/$(CIAOARCH)
+
+SRCINCLUDEDIR=$(CIAOSRC)/include/$(CIAOARCH)$(CIAODEBUG)
+NODEBUGSRCINCLUDEDIR=$(CIAOSRC)/include/$(CIAOARCH)
+
+ENGINEBASE=ciaoengine
+ENGINENAME=$(ENGINEBASE)$(EXECSUFFIX)
+ENGINEBASESTAT=$(ENGINEBASE).sta
+ENGINENAMESTAT=$(ENGINEBASESTAT)$(EXECSUFFIX)
+
+INSTALLEDENGINE=$(ENGINEDIR)/$(ENGINEBASE)
+
+INSTALLEDENGINEARCH=$(INSTALLEDENGINE).$(CIAOARCH)$(EXECSUFFIX)
+INSTALLEDENGINESTAT=$(INSTALLEDENGINE).sta$(EXECSUFFIX)
+INSTALLEDENGINEARCHSTAT=$(INSTALLEDENGINE).$(CIAOARCH).sta$(EXECSUFFIX)
+
+SETLOCALCIAO=CIAOALIASPATH="" CIAOLIB=$(SRCLIB) CIAOENGINE=$(OBJDIR)/$(ENGINENAME)
+RELSETLOCALCIAO=CIAOALIASPATH="" CIAOLIB=$(CIAOSRC) CIAOENGINE=$(OBJDIR)/$(ENGINENAME)
+SETLOCALCIAOBOOT=CIAOALIASPATH="" CIAOLIB=$(SRCLIB) CIAOENGINE=$(OBJDIRBOOT)/$(ENGINENAME)
+
+LOCALENGINE=CIAOALIASPATH="" CIAOLIB=$(SRCLIB) $(OBJDIR)/$(ENGINENAME)
+ABSLOCALENGINE=CIAOALIASPATH="" CIAOLIB=$(CIAOSRC) $(OBJDIR)/$(ENGINENAME)
+
+LPMAKE=$(SRCBINDIR)/lpmake.sta
+LPMAKEDEFOPTS    =-m Makefile
+LPMAKEINSTALLOPTS=-l distutils/installmkf -m LPSETTINGS
+LPMAKEREADMEOPTS =-l distutils/readmemkf  -m  RSETTINGS
+LPMAKECMD=     $(SETLOCALCIAO) $(LPMAKE) $(LPMAKEDEFOPTS) $(LPMAKEOPTS)
+LPMAKEINSTALL= $(SETLOCALCIAO) $(LPMAKE) $(LPMAKEINSTALLOPTS)
+LPMAKEREADME=  $(SETLOCALCIAO) $(LPMAKE) $(LPMAKEREADMEOPTS)
+
+INSTALL_LOG=$(CIAODESRC)/install.log
+
+CONFIG_SOURCE_COMPONENTS=$(SRCBINDIR)/config_source_components$(CIAOSUFFIX)
+
+#-----------------------------------------------------------------------------
+# Control Version System 
+
+# Kludge: svnversion is checked only over etc to improve performance
+
+SVNVERSION=svnversion
+REVISIONBASE0:=$(shell which $(SVNVERSION) >/dev/null 2>&1 \
+  && $(SVNVERSION) $(CIAODESRC)/etc)
+
+ifeq ($(REVISIONBASE0),)
+  REVISIONBASE=exported
+else
+  REVISIONBASE=$(REVISIONBASE0)
+endif
+
+ifeq ($(REVISIONBASE),exported)
+  REVISION=$(shell \
+	if [ -e $(CIAODESRC)/REVISION ]; then \
+		( cat $(CIAODESRC)/REVISION) ; \
+	else \
+		echo " (Unknown Revision) " ; \
+	fi )
+else
+  REVISION="$(REVISIONBASE) (svn) "
+endif
+
+#-----------------------------------------------------------------------------

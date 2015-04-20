@@ -1,0 +1,9 @@
+1) Compile server and client ("make" in this directory willdo).
+2) Start the server in a host (see [a], below).
+3) Start the client (either in the same host, or in a different one).
+   The name of the host running the server should be given as the one
+   and only argument to the client program (see [a], below).
+5) They just run alone, and exit when finished.
+
+[a] There is a simple example in the "run" target of the Mafile in
+this directory.

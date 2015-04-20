@@ -1,0 +1,396 @@
+/* $Header: /tmp_mnt/auto/srclocal/sicstus/sicstus0.7/Library/RCS/toplev.pl,v 1.9 90/12/12 09:01:51 matsc Exp Locker: matsc $ */
+/* Copyright (C) 1988,1989 Swedish Institute of Computer Science and The Aerospace Corporation. */
+
+:- public break/0, handle_error/2.
+
+top :-
+	op_setup,
+        modules,
+	'$context_switch',
+ 	reset_debugger(_),
+	spy_internal( initialize_module_state ),
+	shell_or_not_shell.
+
+shell_or_not_shell:-
+	utrace( unix(argv([File|Rest])) ), !,
+	shell_file(shell,File),
+	( toplev_protect(main(Rest)) -> true
+        ; nl, display('{program ended with failure}') ),
+	halt.
+shell_or_not_shell:-
+	version,
+ 	(   '$read_init',
+	    '$unix_access'('~/.ciaorc', 0) ->
+	    consult('~/.ciaorc')
+	;   true
+	),
+	break_body.
+
+on_abort :-
+	retractall_internal('$syntax error'(_,_)),
+	retractall_internal('$shell loaded'(_,_,_)),
+	retractall_internal('$override'(_,_)),
+	undoall(_),				% cleanup for compiler
+ 	clause_internal('$current cd'(Dir,_), Ptr),
+ 	'$unix_cd'(_, Dir),
+ 	'$purge'(Ptr),
+	fail.
+on_abort :-
+	format(user_error, '{ Execution aborted }~n', []),
+	spy_internal( restore_module_state ),
+	spy_internal( restore_source_files ),
+	fail.
+on_abort :-
+ 	reset_debugger(_),
+	break_body.
+
+break :-
+ 	'$breaklevel'(Level, 1),
+        current_input(Input),
+        current_output(Output),
+ 	set_input(user),
+	set_output(user),
+	reset_debugger(State),
+ 	(   Level1 is Level+1,
+	    format(user, '{ Break level ~w }~n', [Level1]),
+	    break_body,
+	    fail
+ 	;   format(user, '{ End break }~n', [])
+	),
+ 	'$breaklevel'(_, -1),
+	set_input(Input),
+ 	set_output(Output),
+	set_debugger(State).
+
+break_body :-
+        repeat,
+        toplev_protect('SYSCALL'(break_body_protected(Query))),
+	Query == end_of_file,
+	!.
+
+toplev_protect(Goal) :-
+        intercept(
+                 intercept(Goal, control_c, 'SYSCALL'(do_interrupt_command(0'
+                 ))),
+                 error(Error,Where),
+                 handle_error(Error, Where)
+        ).
+
+handle_error(Error, Where) :-
+        current_output(S),
+        set_output(user_error),
+        display('{ERROR: '),
+        display_where(Where),
+        display(' - '),
+        display_error(Error),
+        display('}'),
+        nl,
+        set_output(S),
+        fail.
+
+display_where(P/N-A) :- !,
+        format("~a/~d, arg ~d", [P,N,A]). 
+display_where(P/N) :- !,
+        format("~a/~d", [P,N]). 
+display_where(W) :-
+        display(W).
+
+display_error(instantiation_error) :- !,
+        display('instantiation error').
+display_error(type_error(Type, Culprit)) :- !,
+        format("expected ~a, found ~p", [Type,Culprit]).
+display_error(domain_error(Domain, Culprit)) :- !,
+        format("expected ~a, found ~p", [Domain,Culprit]).
+display_error(X) :-
+        display(X).
+
+break_body_protected(Query) :-
+	adjust_debugger,
+	'$prompt'(Prompt, '[Clp(H)] ?- '),
+	read_top_level(user, RawQuery, Variables),
+	'$prompt'(_, Prompt),
+	( nonvar(RawQuery),
+	  expand_term_internal((?- RawQuery), (?- Query0))
+	   -> true
+	    ; Query0 = RawQuery ),
+	( wellformed_body(Query0, +, Query1)
+	-> module_name_expansion((?- Query1), (?- Query))
+	 ; format(user,"{ERROR: ~q - illegal goal}~n",[Query0]),
+	   fail ),
+	do_query(Query, Variables).
+
+do_query(Query, Variables):-            % Changed ATTVARS
+        var(Query), !,
+        (type(Query,attv) -> detach_attribute(Query) ; true),
+        Variables=dic(Query, _, _, _),
+        (
+            var(Query) ->
+            format(user_error,
+                  "[ERROR: anonymous variable at top level]~n", [])
+        ;
+            format(user_error, 
+                  "[ERROR: ~s - variable at top level]~n", [Query])
+        ).
+
+do_query(end_of_file, _) :- !.
+do_query((:- Command), Variables) :- !,
+ 	do_imperative(Command, Variables, call).
+do_query((?- Command), Variables) :- !,
+	do_query(Command, Variables).
+do_query(Question, Variables) :-
+	'$prompt'(Old, '|: '),
+        (    
+            call(Question),
+            answer_constraints(Variables, Dict, Constraints),
+            solution_var_names( Dict, Names0, []),           % _A... names
+            sort(Names0, Names1),
+            display_solution(Dict, '', Sep0, 0, N, Names1, Names),
+            display_constraints(Constraints, Sep0, Sep, N, Names),
+            ok_solution(Sep) ->
+            ttynl, display(user, yes)
+        ;   
+            ttynl, display(user, no)
+        ),
+        '$prompt'(_, Old),
+        ttynl.
+
+/* Added a hook dump_constraints/3 for clp[qr] .DCG. */
+answer_constraints(Variables, Dict, Constraints) :-
+        call_user_def(dump_constraints(Variables, Dict, Constraints)), !.
+answer_constraints(Variables, Dict, Constraints) :-
+        di(Variables, Dict, Cs),
+        tc(Cs, Constraints).
+
+tc([], []).
+tc([cva(Var, cva(Term))|Vars], [attach_attribute(Var, Term)|Rest]):-
+        tc(Vars, Rest).
+
+
+ %% Taken out for ATTRVARS (CVAs not only for freezing goals)
+ %%
+ %% check_constraints([], _).
+ %% check_constraints([_-Goal|Vs], Sep) :-
+ %% 	check_goal(Goal, Sep),
+ %% 	check_constraints(Vs, ',').
+ %% 
+ %% check_goal(true, _) :- !.
+ %% check_goal((G1,G2), Sep) :- !,
+ %% 	check_goal(G1, Sep),
+ %%  	check_goal(G2, ',').
+ %% check_goal(G, Sep) :-
+ %% 	format(user, '~a~n~p', [Sep,G]).
+
+ %% ok_solution('').
+ %% ok_solution(',') :-
+ %%  	display(user, ' ? '),
+ %% 	repeat,
+ %% 	ttyflush,
+ %% 	ttyget0(C),
+ %% 	(   C = 0'
+ %% 	;   C = 0';,
+ %% 	    ttyskipeol
+ %% 	;   ttyskipeol,				% invalid
+ %% 	    display(user, 'Action (";" for more choices, otherwise <return>): '),
+ %% 	    fail
+ %% 	), !,
+ %% 	C = 0'
+ %%         .
+
+ok_solution('').
+ok_solution(',') :-
+        ttyput(0' ), ttyput(0'?), ttyput(0' ),
+        ttyflush,
+        ttyget0(C),
+        (   C = 10                            % end of line
+        ;   C = 26/*, seen*/			% end of file
+        ;   C = 121, ttyskip(10)		% y(es)
+        ;   ttyskip(10), fail			% other
+        ).
+
+ %% ok_solution(D, Sep0, Sep) :- var(D), !, Sep0=Sep.
+ %% ok_solution(dic(Var,[Val|_],L,R), Sep0, Sep) :-
+ %%  	ok_solution(L, Sep0, Sep1),
+ %% 	current_output(Curr), set_output(user),
+ %% 	'$display'(Sep1),
+ %% 	nl,
+ %% 	display_string(Var),
+ %% 	display_string(" = "),
+ %% 	write_out(Val, print(1000000), quote, 699, 0, 0, '(', 2'100, _),
+ %% 	set_output(Curr),
+ %% 	ok_solution(R, ',', Sep).
+
+
+ %% Variables = dic([88],[_244|_143],dic([87],[_244|_191],_188,_189),
+ %%                                  dic([89],[_247|_159],_156,
+ %%                                      dic([90],[_165|_175],_172,_173)))
+ %% Dict =      dic([88],[_592|_676],dic([87],[_592|_659],_640,_641),
+ %%                                  dic([89],[_576|_577],_523,
+ %%                                      dic([90],[_548|_549],_530,_531)))
+ %% Cs=[cva(_576,cva(f(_592,_576))),cva(_592,cva(g(_592,_576)))]
+ %%         Y          X    Y           X          X    Y
+ %% X = W,
+ %% attach_attribute(Y,f(W,Y)),
+ %% attach_attribute(W,g(W,Y))
+
+
+
+ %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ %% NewDic is a copy of Dic with fresh, non-attributed variables, and
+ %% OrdAttrs is a list containing a representation of the attributes
+ %% which where associated with each attributed variables in Dic. The
+ %% variables contained in OrdAttrs are the same (in the sense of
+ %% ==/2) as those in NewDic. Thus, NewDic plus OrdAttr convey the
+ %% same information as Dic, but expanded.
+ %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+di(Dic, NewDic, OrdAttrs):- 
+        di(Dic, NewDic, Attrs, [], _InternalDictionnarie),
+        sort(Attrs, OrdAttrs).
+
+di(X, _Copy, At, At, _Internaldict):- var(X), !. % A tree's leaf
+di(dic(Name, [NonVar|Queue], Left, Right), NewDic, At0, At2, IntDict):-
+        nonvar(NonVar), !,
+        NewDic = dic(Name, [NonVar|NewQueue], NewL, NewR),
+        makeQ(Queue, NewQueue),
+        di(Left, NewL, At0, At1, IntDict),
+        di(Right, NewR, At1, At2, IntDict).
+di(dic(Name, [Var|Queue], Left, Right), NewDic, At0, At3, IntDict):-
+        assoc(IntDict, Var, NewVar),
+%%        dic_lookup(IntDIct, Var, NewVar),
+        NewDic = dic(Name, [NewVar|NewQueue], NewL, NewR),
+        makeQ(Queue, NewQueue),
+        add_to_attributes(Var, NewVar, IntDict, At0, At1), 
+        di(Left, NewL, At1, At2, IntDict),
+        di(Right, NewR, At2, At3, IntDict).
+
+add_to_attributes(Var, NewVar, Dict, [CVA|Rest], Rest):-
+        get_attribute(Var, Attribute), !,
+        CVA = cva(NewVar, cva(RenamedTerm)),
+        rename_term(Attribute, Dict, RenamedTerm).
+add_to_attributes(_Var, _NewVar, _Dict, At, At).
+
+
+rename_term(X, _Dict, X):- atomic(X), !.
+rename_term(X, Dict, Y):- var(X), !,
+        assoc(Dict, X, Y).
+%%        dic_lookup(Dict, X, Y).
+rename_term([X|Xs], Dict, [Y|Ys]):- !,
+        assoc(Dict, X, Y),
+%%        dic_lookup(Dict, X, Y).
+        rename_term(Xs, Dict, Ys).
+rename_term(X, Dict, Y):-
+        functor(X, Name, Ar),
+        functor(Y, Name, Ar),        
+        rename_subterms(Ar, Dict, X, Y).
+
+rename_subterms(0, _, _, _):- !.
+rename_subterms(N, Dict, X, Y):- 
+        N > 0,
+        arg(N, X, A),
+        arg(N, Y, B),
+        rename_term(A, Dict, B),
+        N1 is N - 1,
+        rename_subterms(N1, Dict, X, Y).
+
+makeQ(Q, _NQ):- var(Q), !.
+makeQ([], []).
+
+assoc(Dict, Ev1, Ev2):- var(Dict), !, Dict = [assoc(Ev1, Ev2)|_].
+assoc([assoc(Var1, Var2)|_], ExtVar1, ExtVar2):- Var1 == ExtVar1, !,
+        Var2 = ExtVar2.
+assoc([_Assoc|RestDic], Ev1, Ev2):- assoc(RestDic, Ev1, Ev2).
+
+solution_var_names(D) --> {var(D)}, !.
+solution_var_names(dic(Var,[Val|_],L,R)) -->
+ 	solution_var_names(L),
+	solution_taken_name(Var),
+	{   var(Val) -> atom_chars(AtomVar, Var), Val='$VAR'(AtomVar)
+	;   true
+	},
+	solution_var_names(R).
+
+solution_taken_name([0'_,Letter]) -->
+	{Letter >= 0'A, Letter =< 0'Z}, !,
+	{I is Letter-0'A},
+	[I].
+solution_taken_name([0'_,Letter|Tail]) -->
+	{Letter >= 0'A, Letter =< 0'Z},
+	{number_chars(N, Tail)},
+	{integer(N), N>0}, !,
+	{I is 26*N+Letter-0'A},
+	[I].
+solution_taken_name(_) --> [].
+
+term_variables(X, L) :- term_variables(X, L, []).
+term_variables(X,[X|R],R) :- var(X),!.
+term_variables(Term,Vars,RVars) :-
+	functor(Term,_,A),
+	term_variables_args(A,Term,Vars,RVars), !.
+term_variables(_,R,R).
+
+term_variables_args(0,_,R,R) :- !.
+term_variables_args(N,T,Var,RVars) :-
+	N1 is N-1,
+	term_variables_args(N1,T,Var,Var1),
+	arg(N,T,ARG),
+        term_variables(ARG,Var1,RVars).
+
+display_solution(D, Sep, Sep, I, I, Names, Names) :- var(D), !.
+display_solution(dic(Var,[Val|_],Q,R), Sep0, Sep, I, L, Names0, Names) :-
+        display_solution(Q, Sep0, Sep1, I, J, Names0, Names1),
+        atom_chars(VarAtom, Var),
+	(   Val='$VAR'(VarAtom) -> Sep2=Sep1, K=J, Names2=Names1
+ 	;   Sep2=',',
+	    term_variables(Val, Vars),
+	    number_solution_variables(Vars, J, K, Names1, Names2),
+            format("~a~n~s = ", [Sep1, Var]),
+            'SYSCALL'(write_out(Val, print(1000000), noquote, 699, 0, 0, '(', 2'100, _))
+        ),
+	display_solution(R, Sep2, Sep, K, L, Names2, Names).
+
+display_constraints([], Sep, Sep, _, _).
+display_constraints([Goal|Vs], Sep0, Sep, I, Names0) :-
+        check_goal(Goal, Sep0, Sep1, I, J, Names0, Names),
+        display_constraints(Vs, Sep1, Sep, J, Names).
+
+check_goal(true, Sep, Sep, I, I, Names, Names) :- !.
+check_goal((G1,G2), Sep0, Sep, I, K, Names0, Names) :- !,
+	check_goal(G1, Sep0, Sep1, I, J, Names0, Names1),
+ 	check_goal(G2, Sep1, Sep, J, K, Names1, Names).
+check_goal(G, Sep, ',', I, K, Names0, Names) :-
+	term_variables(G, Vars),
+	number_solution_variables(Vars, I, K, Names0, Names),
+	format('~a~n~p', [Sep,G]).
+
+number_solution_variables([], I, I, Names, Names).
+number_solution_variables([X|Xs], I, K, Names0, Names) :-
+	(   nonvar(X) -> J=I, Names1=Names0
+	;   unique_solution_variable(X, I, J, Names0, Names1)
+	),
+	number_solution_variables(Xs, J, K, Names1, Names).
+
+unique_solution_variable(X, I, J, Names0, Names) :-
+	Mod is I mod 26 + 0'A,
+	(   I>=26 ->
+	    Rest is I//26,
+	    String = [0'_,Mod|Name],
+	    name(Rest, Name)
+	;   String = [0'_,Mod]
+	),
+	unique_solution_variable(Names0, I, Names), !,
+	J is I+1,
+        name(XName, String),
+	X = '$VAR'(XName).
+unique_solution_variable(X, I, K, Names0, Names) :-
+	J is I+1,
+	unique_solution_variable(X, J, K, Names0, Names).
+
+unique_solution_variable([], _, []).
+unique_solution_variable([S|Ss], S1, [S|Ss]) :- S1 @< S, !.
+unique_solution_variable([S|Ss], S1, Ss1) :- S1 @> S,
+	unique_solution_variable(Ss, S1, Ss1).
+
+time_and_size(Time, Size) :-
+ 	'$runtime'([Time|_]),
+	'$program_usage'([Size|_]).

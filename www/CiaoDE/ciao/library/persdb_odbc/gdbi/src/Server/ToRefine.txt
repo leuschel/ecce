@@ -1,0 +1,8 @@
+See labels from 'Changes_tags.txt' and use 'Find in Files' to see the 
+outstanding questions. Next notes are not complete nor legible.
+
+tableAttributes DbHandle16 InexistentTable -> nothing is returned
+CTables, CColumns :
+	* CRecordset::m_nFields
+	* nOpenType by default is now forwardOnly
+		BOOL Open(UINT nOpenType = forwardOnly, LPCSTR lpszSQL = NULL,

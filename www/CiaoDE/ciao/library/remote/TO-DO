@@ -1,0 +1,7 @@
+- Set down a way to launch remote goals in a (a)synchronous way. This has
+  to be specified by the programmer of the client because you have no way
+  to know whether it can be blocking or not ===> assertions to declare
+  concurrent or sequential goals.
+
+- Those goals declared as concurrent can be launched in a threaded way,
+  using one free thread of those the server has been assigned.

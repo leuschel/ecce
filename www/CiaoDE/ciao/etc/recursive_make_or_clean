@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Usage: $0 directory make_command make_target
+
+dir=$1
+lpreadme=$2
+lpmake=$3
+make=$4
+target=$5
+
+# If there is a LPSETTINGS.pl file, then invoke it with a distclean target
+# using lpdoc
+# If there is a Makefile, then invoke it with a "distclean" target
+# Otherwise, remove *.dep, *.po, *.itf files
+# Go down the directories tree, so that local Makefiles do not have to
+# take care of dependencies
+
+if test -f $dir/RSETTINGS.pl -o -L $dir/RSETTINGS.pl ; then
+   cd $dir && echo "$target $dir ..." && echo "$lpreadme $target"|bash
+else
+if test -f $dir/LPSETTINGS.pl -o -L $dir/LPSETTINGS.pl ; then
+   cd $dir && echo "$target $dir ..." && echo "$lpmake $target"|bash
+else
+if test -f $dir/Makefile -o -L $dir/Makefile ; then
+   cd $dir && echo "$target $dir ..." && $make $target
+else
+   /bin/rm -f $dir/*.dep $dir/*.po $dir/*.itf $dir/*.o $dir/*.so $dir/*.asr $dir/*.ast $dir/tmpciao*
+fi
+fi
+fi
+
+for new_dir in $dir/* ; do
+    if test -d $new_dir ; then
+       $0 $new_dir "$lpreadme" "$lpmake" $make $target
+    fi
+done

@@ -1,0 +1,291 @@
+Fichero modules.pl:
+
+   Predicados definidos:      Utilizado en:
+   (:-)/1                     ????
+   add_meta_predicate/2       modules.pl 
+   all_exports/2              modules.pl 
+   assert_export0/2           modules.pl 
+   assert_export_list/2       modules.pl 
+   assert_exports/3           modules.pl 
+   assert_if_not_in/1         modules.pl 
+   assert_import0/3           modules.pl 
+   assert_import_list/3       modules.pl 
+   assert_imports/4           modules.pl 
+   atom_expand/3              modules.pl 
+   atom_expand0/4             modules.pl 
+   atom_expansion/3           modules.pl 
+   atom_expansion0/4          modules.pl 
+   body_expansion/3           modules.pl 
+   body_expansion0/3          modules.pl 
+   builtin/2                  modules.pl 
+   call_private/1             modules.pl 
+   call_qualification/4       modules.pl 
+   change_current_module/1    modules.pl 
+   check_exported/4           modules.pl 
+   check_import_clash/4       modules.pl 
+   check_import_list/3        modules.pl 
+   check_interface_defined/2  modules.pl 
+   check_loaded_module/1      modules.pl 
+   check_loading_code/1       modules.pl 
+   check_local_clash/2        modules.pl 
+   check_meta_args/3          modules.pl 
+   check_specs/2              modules.pl 
+   exports/3                  modules.pl 
+   head_expansion/3           modules.pl 
+   imported/3                 modules.pl 
+   imports/4                  modules.pl 
+   initialize_module_state/0  ????
+   interface_defined/0        modules.pl 
+   interface_undefined/0      modules.pl 
+   interfaces_undefined/0     modules.pl 
+   loaded_code/0              modules.pl 
+   loaded_module/1            modules.pl 
+   loading_code/0             modules.pl 
+   loads_code/1               ????
+   meta_argument/4            modules.pl 
+   meta_argument_expansion/6  modules.pl 
+   meta_predicate/1           modules.pl 
+   meta_predicate/3           modules.pl 
+   meta_predicate_directive/2 modules.pl 
+   meta_predicate_expansion/7 modules.pl 
+   module/2                   modules.pl 
+   module_action/3            ????
+   module_action0/3           modules.pl 
+   module_declaration/2       modules.pl 
+   module_directive/2         modules.pl 
+   module_name_clause_expansion/2
+                              modules.pl 
+   module_name_command_expansion/2
+                              modules.pl 
+   module_name_declaration_expansion/2
+                              modules.pl 
+   module_name_directive_expansion/2
+                              modules.pl 
+   module_name_expansion/2    modules.pl 
+   module_name_goal_expansion/2
+                              ????
+   module_name_meta_argument_expansion/4
+                              ????
+   module_state/2             ????
+   modules/0                  ????
+   modules/1                  ????
+   myabort/0                  modules.pl 
+   nomodules/0                ????
+   noshow/0                   ????
+   (nospy)/0                  ????
+   one_of/1                   modules.pl 
+   qualification/3            modules.pl 
+   qualified_atom_expansion/4 modules.pl 
+   qualified_meta_argument/4  modules.pl 
+   restore_module_state/0     ????
+   restore_module_state/1     ????
+   setof_internal/3           modules.pl 
+   show/0                     ????
+   show/1                     modules.pl 
+   spec/4                     modules.pl 
+   (spy)/0                    ????
+   spy_internal/1             modules.pl 
+   spy_module_state/0         ????
+   spy_state/1                modules.pl 
+   spy_state0/1               modules.pl 
+   uniquely_imported/4        modules.pl 
+   unqualified_atom_expansion/4
+                              modules.pl 
+   use_file/2                 modules.pl 
+   use_module/3               modules.pl 
+   use_module_directive/4     modules.pl 
+   use_module_directive0/3    modules.pl 
+   use_module_diretive0/3     ????
+   warning/1                  modules.pl 
+   warning0/1                 modules.pl 
+
+   Predicados utilizados:     Definido en:
+   add_meta_predicate/2       modules.pl
+   all_exports/2              modules.pl
+   assert_export0/2           modules.pl
+   assert_export_list/2       modules.pl
+   assert_exports/3           modules.pl
+   assert_if_not_in/1         modules.pl
+   assert_import0/3           modules.pl
+   assert_import_list/3       modules.pl
+   assert_imports/4           modules.pl
+   asserta_internal/2         ????
+   atom_expand/3              modules.pl
+   atom_expand0/4             modules.pl
+   atom_expansion/3           modules.pl
+   atom_expansion0/4          modules.pl
+   body_expansion/3           modules.pl
+   body_expansion0/3          modules.pl
+   builtin/2                  modules.pl
+   call_private/1             modules.pl
+   call_qualification/4       modules.pl
+   change_current_module/1    modules.pl
+   check_exported/4           modules.pl
+   check_import_clash/4       modules.pl
+   check_import_list/3        modules.pl
+   check_interface_defined/2  modules.pl
+   check_loaded_module/1      modules.pl
+   check_loading_code/1       modules.pl
+   check_local_clash/2        modules.pl
+   check_meta_args/3          modules.pl
+   check_specs/2              modules.pl
+   clause_internal/2          ????
+   exports/3                  modules.pl
+   fcompile_mode/2            ????
+   fshell_file_recursive/2    ????
+   head_expansion/3           modules.pl
+   imported/3                 modules.pl
+   imports/4                  modules.pl
+   interface_defined/0        modules.pl
+   interface_undefined/0      modules.pl
+   interfaces_undefined/0     modules.pl
+   loaded_code/0              modules.pl
+   loaded_module/1            modules.pl
+   loading_code/0             modules.pl
+   meta_argument/4            modules.pl
+   meta_argument_expansion/6  modules.pl
+   meta_predicate/1           modules.pl
+   meta_predicate/3           modules.pl
+   meta_predicate_directive/2 modules.pl
+   meta_predicate_expansion/7 modules.pl
+   module/2                   modules.pl
+   module_action0/3           modules.pl
+   module_declaration/2       modules.pl
+   module_directive/2         modules.pl
+   module_name_clause_expansion/2
+                              modules.pl
+   module_name_command_expansion/2
+                              modules.pl
+   module_name_declaration_expansion/2
+                              modules.pl
+   module_name_directive_expansion/2
+                              modules.pl
+   module_name_expansion/2    modules.pl
+   myabort/0                  modules.pl
+   one_of/1                   modules.pl
+   qualification/3            modules.pl
+   qualified_atom_expansion/4 modules.pl
+   qualified_meta_argument/4  modules.pl
+   retractall_internal/1      ????
+   setof_internal/3           modules.pl
+   show/1                     modules.pl
+   spec/4                     modules.pl
+   spy_internal/1             modules.pl
+   spy_state/1                modules.pl
+   spy_state0/1               modules.pl
+   uniquely_imported/4        modules.pl
+   unqualified_atom_expansion/4
+                              modules.pl
+   use_file/2                 modules.pl
+   use_module/3               modules.pl
+   use_module_directive/4     modules.pl
+   use_module_directive0/3    modules.pl
+   warning/1                  modules.pl
+   warning0/1                 modules.pl
+
+
+   Predicado                  Definido en         Utilizado en
+
+   (:-)/1                     modules.pl          ????
+   add_meta_predicate/2       modules.pl          modules.pl 
+   all_exports/2              modules.pl          modules.pl 
+   assert_export0/2           modules.pl          modules.pl 
+   assert_export_list/2       modules.pl          modules.pl 
+   assert_exports/3           modules.pl          modules.pl 
+   assert_if_not_in/1         modules.pl          modules.pl 
+   assert_import0/3           modules.pl          modules.pl 
+   assert_import_list/3       modules.pl          modules.pl 
+   assert_imports/4           modules.pl          modules.pl 
+   asserta_internal/2         ????                modules.pl 
+   atom_expand/3              modules.pl          modules.pl 
+   atom_expand0/4             modules.pl          modules.pl 
+   atom_expansion/3           modules.pl          modules.pl 
+   atom_expansion0/4          modules.pl          modules.pl 
+   body_expansion/3           modules.pl          modules.pl 
+   body_expansion0/3          modules.pl          modules.pl 
+   builtin/2                  modules.pl          modules.pl 
+   call_private/1             modules.pl          modules.pl 
+   call_qualification/4       modules.pl          modules.pl 
+   change_current_module/1    modules.pl          modules.pl 
+   check_exported/4           modules.pl          modules.pl 
+   check_import_clash/4       modules.pl          modules.pl 
+   check_import_list/3        modules.pl          modules.pl 
+   check_interface_defined/2  modules.pl          modules.pl 
+   check_loaded_module/1      modules.pl          modules.pl 
+   check_loading_code/1       modules.pl          modules.pl 
+   check_local_clash/2        modules.pl          modules.pl 
+   check_meta_args/3          modules.pl          modules.pl 
+   check_specs/2              modules.pl          modules.pl 
+   clause_internal/2          ????                modules.pl 
+   exports/3                  modules.pl          modules.pl 
+   fcompile_mode/2            ????                modules.pl 
+   fshell_file_recursive/2    ????                modules.pl 
+   head_expansion/3           modules.pl          modules.pl 
+   imported/3                 modules.pl          modules.pl 
+   imports/4                  modules.pl          modules.pl 
+   initialize_module_state/0  modules.pl          ????
+   interface_defined/0        modules.pl          modules.pl 
+   interface_undefined/0      modules.pl          modules.pl 
+   interfaces_undefined/0     modules.pl          modules.pl 
+   loaded_code/0              modules.pl          modules.pl 
+   loaded_module/1            modules.pl          modules.pl 
+   loading_code/0             modules.pl          modules.pl 
+   loads_code/1               modules.pl          ????
+   meta_argument/4            modules.pl          modules.pl 
+   meta_argument_expansion/6  modules.pl          modules.pl 
+   meta_predicate/1           modules.pl          modules.pl 
+   meta_predicate/3           modules.pl          modules.pl 
+   meta_predicate_directive/2 modules.pl          modules.pl 
+   meta_predicate_expansion/7 modules.pl          modules.pl 
+   module/2                   modules.pl          modules.pl 
+   module_action/3            modules.pl          ????
+   module_action0/3           modules.pl          modules.pl 
+   module_declaration/2       modules.pl          modules.pl 
+   module_directive/2         modules.pl          modules.pl 
+   module_name_clause_expansion/2
+                              modules.pl          modules.pl 
+   module_name_command_expansion/2
+                              modules.pl          modules.pl 
+   module_name_declaration_expansion/2
+                              modules.pl          modules.pl 
+   module_name_directive_expansion/2
+                              modules.pl          modules.pl 
+   module_name_expansion/2    modules.pl          modules.pl 
+   module_name_goal_expansion/2
+                              modules.pl          ????
+   module_name_meta_argument_expansion/4
+                              modules.pl          ????
+   module_state/2             modules.pl          ????
+   modules/0                  modules.pl          ????
+   modules/1                  modules.pl          ????
+   myabort/0                  modules.pl          modules.pl 
+   nomodules/0                modules.pl          ????
+   noshow/0                   modules.pl          ????
+   (nospy)/0                  modules.pl          ????
+   one_of/1                   modules.pl          modules.pl 
+   qualification/3            modules.pl          modules.pl 
+   qualified_atom_expansion/4 modules.pl          modules.pl 
+   qualified_meta_argument/4  modules.pl          modules.pl 
+   restore_module_state/0     modules.pl          ????
+   restore_module_state/1     modules.pl          ????
+   retractall_internal/1      ????                modules.pl 
+   setof_internal/3           modules.pl          modules.pl 
+   show/0                     modules.pl          ????
+   show/1                     modules.pl          modules.pl 
+   spec/4                     modules.pl          modules.pl 
+   (spy)/0                    modules.pl          ????
+   spy_internal/1             modules.pl          modules.pl 
+   spy_module_state/0         modules.pl          ????
+   spy_state/1                modules.pl          modules.pl 
+   spy_state0/1               modules.pl          modules.pl 
+   uniquely_imported/4        modules.pl          modules.pl 
+   unqualified_atom_expansion/4
+                              modules.pl          modules.pl 
+   use_file/2                 modules.pl          modules.pl 
+   use_module/3               modules.pl          modules.pl 
+   use_module_directive/4     modules.pl          modules.pl 
+   use_module_directive0/3    modules.pl          modules.pl 
+   use_module_diretive0/3     modules.pl          ????
+   warning/1                  modules.pl          modules.pl 
+   warning0/1                 modules.pl          modules.pl 
+

@@ -1,0 +1,65 @@
+# ----------------------------------------------------------------------------
+# This makefile is used to build/install all the ciao manuals
+#-----------------------------------------------------------------------------
+include ../SETTINGS
+include ../SHARED
+#-----------------------------------------------------------------------------
+
+MAIN=ciao
+
+default:
+	@echo "*** ---------------------------------------------------------"
+	@echo "*** Building $(MAIN) documentation ..."
+	@echo "*** ---------------------------------------------------------"
+	-cd ../emacs-mode; $(MAKE) CiaoMode.pl
+	-cd reference; 'rm' $(MAIN).htmlindex
+	-cd reference; CIAOLIB=$(SRC) $(MAKE) all
+
+install: 
+	@echo "*** ---------------------------------------------------------"
+	@echo "*** Installing $(MAIN) documentation..."
+	@echo "*** ---------------------------------------------------------"
+	cd reference; CIAOLIB=$(SRC) $(MAKE) install
+	@echo "*** ---------------------------------------------------------"
+	@echo "*** Installing $(MAIN) documentation libraries..."
+	@echo "*** ---------------------------------------------------------"
+	mkdir -p $(REALLIBDIR)/doc
+	-chmod $(EXECMODE) $(REALLIBDIR)/doc
+	mkdir -p $(REALLIBDIR)/doc/common
+	-chmod $(EXECMODE) $(REALLIBDIR)/doc/common
+	-cp common/* $(REALLIBDIR)/doc/common
+	-chmod $(DATAMODE) $(REALLIBDIR)/doc/common/*
+	@echo "*** ---------------------------------------------------------"
+	@echo "*** Done."
+	@echo "*** ---------------------------------------------------------"
+
+uninstall: 
+	@echo "*** ---------------------------------------------------------"
+	@echo "*** Uninstalling $(MAIN) documentation ..."
+	@echo "*** ---------------------------------------------------------"
+	cd reference; $(MAKE) uninstall
+# Not needed, since the whole $(REALLIBDIR) is eliminated on uninstall
+#	-'rm' -r $(REALLIBDIR)/doc/common 
+
+# Will be taken care of by recursive distribution script!
+distclean:
+
+clean:
+	@echo "*** ---------------------------------------------------------"
+	@echo "*** Cleaning up (clean) $(MAIN) doc directories ..."
+	@echo "*** ---------------------------------------------------------"
+	cd reference; $(MAKE) clean
+
+realclean:
+	@echo "*** ---------------------------------------------------------"
+	@echo "*** Cleaning up (realclean) $(MAIN) doc directories ..."
+	@echo "*** ---------------------------------------------------------"
+	cd reference; $(MAKE) realclean
+
+braveclean:
+	@echo "*** ---------------------------------------------------------"
+	@echo "*** Cleaning up (braveclean) $(MAIN) doc directories ..."
+	@echo "*** ---------------------------------------------------------"
+	cd reference; $(MAKE) braveclean
+
+#-----------------------------------------------------------------------------

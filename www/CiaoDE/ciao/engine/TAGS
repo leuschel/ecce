@@ -1,0 +1,4455 @@
+
+ADDING_OBJECTS_TO_STATICENG,55
+1) In SHARED,1,0
+2) In engine/Makefile,Makefile2,57
+
+COMMENTS-concurrency,935
+char *mem_start;mem_start9,66
+SP_INTEGER mem_prog_count 15,166
+    Program space is shared,17,244
+facts.  This can be done by any worker at any time,18,313
+static TAGGED *tiny_blocks tiny_blocks25,536
+memory from this pool,29,748
+struct sw_on_key_node **atmtab;atmtab35,828
+CLOCK def_clock=48,1349
+    The policy needs to be changed,50,1382
+    The policy needs to be changed, since dynamically added predicates50,1382
+      StoreH;123,3748
+      w 126,3804
+      goto proceed_r;127,3874
+struct worker *self;self132,3906
+  *current_insn,current_insn141,4120
+  *current_insn, *last_insn;last_insn141,4120
+  x_variables,144,4161
+  x_variables, cells,144,4161
+  x_variables, cells, insns,144,4161
+  x_variables, cells, insns, maxtemps;144,4161
+  *trail_origo;trail_origo147,4215
+static long last_walltime_secs 154,4270
+static long last_walltime_usecs 155,4347
+int ErrArgNo;162,4555
+TAGGED Culprit;163,4569
+
+DMALLOC.H,1560
+#define __DMALLOC_H__25,863
+#define DMALLOC_SIZE 42,1265
+#define DMALLOC_PNT	48,1475
+#define DMALLOC_FREE_RET	49,1503
+#define DMALLOC_PNT	51,1539
+#define DMALLOC_FREE_RET	52,1567
+#define CALLOC_ERROR	58,1643
+#define MALLOC_ERROR	59,1693
+#define REALLOC_ERROR	60,1743
+#define FREE_ERROR	63,1847
+#define FREE_NOERROR	64,1892
+#define DMALLOC_VERIFY_ERROR	66,1943
+#define DMALLOC_VERIFY_NOERROR	67,2002
+#define DMALLOC_DEFAULT_FILE	72,2137
+#define DMALLOC_DEFAULT_LINE	73,2169
+#define DMALLOC_UNKNOWN_FILE	74,2200
+#define ALLOC(80,2315
+#define MALLOC(84,2416
+#define CALLOC(89,2555
+#define REALLOC(93,2669
+#define REMALLOC(97,2795
+#define FREE(101,2893
+#define calloc(228,6296
+#define free(231,6386
+#define malloc(234,6458
+#define realloc(237,6537
+#define xcalloc(241,6629
+#define xfree(244,6722
+#define xmalloc(247,6797
+#define xrealloc(250,6879
+#define xstrdup(253,6972
+#define bcmp(263,7208
+#define bcopy(265,7275
+#define memcmp(268,7350
+#define memcpy(270,7422
+#define memset(272,7498
+#define index(275,7572
+#define rindex(277,7635
+#define strcat(280,7701
+#define strcmp(282,7767
+#define strlen(284,7830
+#define strtok(286,7887
+#define bzero(289,7953
+#define memccpy(292,8020
+#define memchr(294,8101
+#define strchr(297,8174
+#define strrchr(299,8240
+#define strcpy(302,8307
+#define strncpy(304,8374
+#define strcasecmp(306,8456
+#define strncasecmp(308,8531
+#define strspn(310,8612
+#define strcspn(312,8681
+#define strncat(314,8752
+#define strncmp(316,8831
+#define strpbrk(318,8906
+#define strstr(320,8976
+
+M_time.c,49
+static char ignore;8,209
+void microtime(20,325
+
+M_time.h,161
+#define microtimeinit(7,114
+#define microtime(8,151
+#define nanotime(13,260
+#define microtime(14,313
+#define microtime(19,416
+#define microtimeinit(24,480
+
+Makefile,2162
+SHELL=9,169
+OBJFILES=10,183
+MAIN_FILE=20,636
+DATADEFS=23,698
+SUPPORT=24,789
+CCOMPILATIONSUPPORT=26,888
+OBJSFORLIB=33,996
+OBJ=34,1029
+CIAOSHLIB=35,1060
+install:install43,1161
+uninstall:uninstall72,2374
+$(ENGINENAME):$(ENGINENAME)84,2673
+ciaoemulator:ciaoemulator89,2767
+libciao:libciao104,3262
+ciaoobject:ciaoobject111,3445
+clean:clean114,3521
+realclean:realclean121,3695
+distclean:distclean124,3764
+configure.h:configure.h129,3828
+crossconfigure.h:crossconfigure.h133,3915
+configure:configure137,4026
+alloc.o:alloc.o140,4141
+attr.o:attr.o141,4246
+builtin.o:builtin.o142,4314
+cmnd.o:cmnd.o143,4384
+dynlink.o:dynlink.o144,4458
+format.o:format.o145,4507
+float_consts.o:float_consts.o146,4593
+float_tostr.o:float_tostr.o147,4624
+heapgc.o:heapgc.o148,4668
+help.o:help.o149,4764
+indexing.o:indexing.o150,4783
+initial.o:initial.o152,4976
+inout.o:inout.o154,5248
+interface.o:interface.o155,5348
+interrupt.o:interrupt.o156,5406
+kprim.o:kprim.o157,5481
+locks.o:locks.o158,5522
+main.o:main.o159,5583
+main_exec.o:main_exec.o160,5794
+misc.o:misc.o161,5819
+nondet.o:nondet.o162,5943
+objareas.o:objareas.o163,6015
+own_malloc_bin.o:own_malloc_bin.o164,6133
+own_malloc_linear.o:own_malloc_linear.o165,6192
+prolog_tasks.o:prolog_tasks.o166,6254
+profile.o:profile.o167,6361
+qget.o:qget.o168,6419
+qinsert.o:qinsert.o169,6499
+qread.o:qread.o170,6599
+registers.o:registers.o171,6696
+ciao.o:ciao.o172,6721
+stacks.o:stacks.o173,6747
+start.o:start.o174,6818
+streams.o:streams.o175,6827
+string.o:string.o176,6904
+support.o:support.o177,6926
+tasks.o:tasks.o178,7027
+term_support.o:term_support.o180,7169
+timing.o:timing.o181,7263
+unix_utils.o:unix_utils.o182,7310
+version.o:version.o183,7403
+startgoal.o:startgoal.o184,7414
+wam.o:wam.o187,7607
+ciao_prolog.o:ciao_prolog.o195,7920
+wambuiltin.o:wambuiltin.o203,8241
+wamfunction.o:wamfunction.o204,8335
+wamsupport.o:wamsupport.o205,8406
+gauge.o:gauge.o206,8473
+bignum.o:bignum.o207,8528
+sockets_c.o:sockets_c.o227,9002
+random.o:random.o231,9151
+touch:touch251,9672
+tags:tags254,9694
+mode:mode257,9711
+
+Win32Threads.h,31
+#define _Win32Threads_H_	4,36
+
+a.out,74
+#define ENG_FLT_ROUND 10,2778
+#define %s s13,2897
+#define %ss17,2961
+
+access.h,1836
+#define Offset(9,266
+#define CharOffset(10,308
+#define OnHeap(16,432
+#define OffHeaptop(17,512
+#define HeapYounger(18,565
+#define HeapDifference(19,620
+#define HeapCharDifference(20,680
+#define HeapOffset(21,740
+#define HeapCharOffset(22,787
+#define HeapNext(23,847
+#define HeapPush(24,877
+#define HeapDecr(25,945
+#define OnStack(31,1050
+#define OffStacktop(32,1129
+#define StackYounger(33,1183
+#define StackDifference(34,1239
+#define StackCharDifference(35,1300
+#define StackOffset(36,1361
+#define StackCharOffset(37,1408
+#define StackNext(38,1475
+#define StackDecr(39,1506
+#define OnTrail(45,1606
+#define OffTrailtop(46,1686
+#define TrailYounger(47,1732
+#define TrailDifference(48,1788
+#define TrailCharDifference(49,1849
+#define TrailOffset(50,1910
+#define TrailCharOffset(51,1957
+#define TrailPop(52,2018
+#define TrailNext(53,2048
+#define TrailPush(54,2079
+#define TrailPushCheck(55,2118
+#define OnChoice(63,2264
+#define OffChoicetop(64,2348
+#define ChoiceYounger(65,2393
+#define ChoiceOffset(66,2450
+#define ChoiceCharOffset(67,2498
+#define ChoiceDifference(68,2565
+#define ChoiceCharDifference(69,2627
+#define ChoicePrev(70,2689
+#define ChoiceNext(71,2721
+#define ChoicePush(72,2753
+#define ChoiceFromInt(77,2833
+#define ChoiceToInt(78,2900
+#define ChoiceFromInt(80,2976
+#define ChoiceToInt(81,3059
+#define RefHeap(84,3137
+#define RefCar(87,3183
+#define RefCdr(90,3236
+#define RefArg(93,3289
+#define RefHeapNext(96,3346
+#define PushRefHeapNext(99,3398
+#define RefStack(102,3459
+#define HeapPushRefStack(105,3506
+#define RefHVA(108,3566
+#define RefCVA(111,3619
+#define RefSVA(114,3672
+#define LoadSVA(117,3725
+#define Load2SVA(118,3764
+#define PreLoadHVA(119,3810
+#define ConstrHVA(120,3853
+#define LoadHVA(121,3901
+#define Load2HVA(122,3955
+#define LoadCVA(123,4021
+
+access.h~,1804
+#define Offset(9,266
+#define CharOffset(10,308
+#define OnHeap(16,432
+#define OffHeaptop(17,512
+#define HeapYounger(18,565
+#define HeapDifference(19,620
+#define HeapCharDifference(20,680
+#define HeapOffset(21,740
+#define HeapCharOffset(22,787
+#define HeapNext(23,847
+#define HeapPush(24,877
+#define HeapDecr(25,945
+#define OnStack(31,1050
+#define OffStacktop(32,1129
+#define StackYounger(33,1183
+#define StackDifference(34,1239
+#define StackCharDifference(35,1300
+#define StackOffset(36,1361
+#define StackCharOffset(37,1408
+#define StackNext(38,1475
+#define StackDecr(39,1506
+#define OnTrail(45,1606
+#define OffTrailtop(46,1686
+#define TrailYounger(47,1732
+#define TrailDifference(48,1788
+#define TrailCharDifference(49,1849
+#define TrailOffset(50,1910
+#define TrailCharOffset(51,1957
+#define TrailPop(52,2018
+#define TrailNext(53,2048
+#define TrailPush(54,2079
+#define OnChoice(62,2208
+#define OffChoicetop(63,2292
+#define ChoiceYounger(64,2337
+#define ChoiceOffset(65,2394
+#define ChoiceCharOffset(66,2442
+#define ChoiceDifference(67,2509
+#define ChoiceCharDifference(68,2571
+#define ChoicePrev(69,2633
+#define ChoiceNext(70,2665
+#define ChoicePush(71,2697
+#define ChoiceFromInt(76,2777
+#define ChoiceToInt(77,2844
+#define ChoiceFromInt(79,2920
+#define ChoiceToInt(80,3003
+#define RefHeap(83,3081
+#define RefCar(86,3127
+#define RefCdr(89,3180
+#define RefArg(92,3233
+#define RefHeapNext(95,3290
+#define PushRefHeapNext(98,3342
+#define RefStack(101,3403
+#define HeapPushRefStack(104,3450
+#define RefHVA(107,3510
+#define RefCVA(110,3563
+#define RefSVA(113,3616
+#define LoadSVA(116,3669
+#define Load2SVA(117,3708
+#define PreLoadHVA(118,3754
+#define ConstrHVA(119,3797
+#define LoadHVA(120,3845
+#define Load2HVA(121,3899
+#define LoadCVA(122,3965
+
+alloc.c,929
+ENG_INT total_mem_count 38,897
+ENG_INT mem_prog_count 42,1102
+ENG_INT num_of_predicates 45,1217
+#define THRESHHOLD 58,1742
+#define NTINY 59,1764
+static TAGGED *tiny_blocks tiny_blocks61,1783
+static TAGGED *get_tiny_blocks(get_tiny_blocks63,1861
+#define ENSURE_ADDRESSABLE(105,2766
+#define ENSURE_ADDRESSABLE(110,2976
+TAGGED *checkalloc(checkalloc114,3052
+void checkdealloc(152,3955
+TAGGED *checkrealloc(checkrealloc173,4343
+struct worker *create_and_init_wam(create_and_init_wam239,6200
+struct worker *wam_list wam_list253,6671
+SLOCK    wam_list_l;254,6703
+struct worker *free_wam(free_wam256,6725
+void release_wam(273,7067
+#define CREATE_TYPED_STORAGE(284,7261
+struct worker *create_wam_storage(create_wam_storage286,7335
+void create_wam_areas(299,7628
+void init_alloc(338,8814
+BOOL program_usage(365,9554
+BOOL internal_symbol_usage(376,9795
+BOOL total_usage(388,10075
+BOOL statistics(402,10303
+
+alloc.c~,853
+ENG_INT total_mem_count 38,897
+ENG_INT mem_prog_count 42,1102
+ENG_INT num_of_predicates 45,1217
+#define THRESHHOLD 58,1742
+#define NTINY 59,1764
+static TAGGED *tiny_blocks tiny_blocks61,1783
+static TAGGED *get_tiny_blocks(get_tiny_blocks63,1861
+TAGGED *checkalloc(checkalloc103,2710
+void checkdealloc(146,3785
+TAGGED *checkrealloc(checkrealloc167,4173
+struct worker *create_and_init_wam(create_and_init_wam221,5634
+struct worker *wam_list wam_list235,6105
+SLOCK    wam_list_l;236,6137
+struct worker *free_wam(free_wam238,6159
+void release_wam(255,6501
+#define CREATE_TYPED_STORAGE(266,6695
+struct worker *create_wam_storage(create_wam_storage268,6769
+void create_wam_areas(281,7062
+void init_alloc(320,8248
+BOOL program_usage(347,8988
+BOOL internal_symbol_usage(358,9229
+BOOL total_usage(370,9509
+BOOL statistics(384,9737
+
+alloc.h,599
+#define kB 6,73
+#define kCells 7,95
+#define STATICMAXATOM 10,119
+#define USE_DYNAMIC_ATOM_SIZE 12,197
+# define MAXATOM 15,311
+# define MAXATOM 17,354
+#define CONTPAD 21,395
+#define CALLPAD 22,453
+#define STACKPAD 24,528
+#define CHOICEPAD 27,650
+#define ATMTABSIZE 30,685
+#define QLOADSIZE 31,749
+#define GLOBALSTKSIZE 33,805
+#define LOCALSTKSIZE 34,869
+#define CHOICESTKSIZE 35,906
+#define TRAILSTKSIZE 36,943
+#define XREGBANKSIZE 37,980
+#define GETENV(41,1155
+#define INC_MEM_PROG(50,1302
+#define DEC_MEM_PROG(56,1496
+#define INC_MEM_PROG(63,1680
+#define DEC_MEM_PROG(65,1750
+
+attr.c,595
+  atm_var,34,1252
+  atm_var, atm_attv,34,1252
+  atm_var, atm_attv, atm_float,34,1252
+  atm_var, atm_attv, atm_float, atm_int,34,1252
+  atm_var, atm_attv, atm_float, atm_int, atm_str,34,1252
+  atm_var, atm_attv, atm_float, atm_int, atm_str, atm_atm,34,1252
+  atm_var, atm_attv, atm_float, atm_int, atm_str, atm_atm, atm_lst;34,1252
+TAGGED fu1_type(36,1333
+TAGGED fu1_get_attribute(64,1930
+BOOL bu2_attach_attribute(85,2248
+BOOL bu1_detach_attribute(128,3296
+BOOL bu2_update_attribute(150,3729
+void collect_pending_unifications(180,4578
+void collect_one_pending_unification(235,5855
+
+bignum.c,1173
+#define HalfUnit 23,776
+#define HalfMask 24,807
+#define BNMIN 26,860
+#define BNMAX 27,912
+#define ZeroLength 29,965
+#define BignumRawLength(31,1004
+#define BignumLength(33,1039
+#define MakeLength(35,1101
+#define SetBignumLength(37,1154
+#define BignumPos(39,1219
+#define WordPos(41,1274
+#define BignumCheck(43,1309
+# define Getshort(48,1415
+# define Getshort(50,1481
+ENG_INT bn_length(56,1644
+BOOL bn_positive(62,1714
+static void bn_negate(71,1875
+static void bn_canonize(83,2074
+int bn_add(98,2375
+int bn_incr(176,3644
+int bn_plus(197,3983
+int bn_subtract(211,4204
+int bn_decr(305,5712
+int bn_minus(326,6054
+int bn_and(352,6464
+int bn_or(390,7077
+int bn_xor(428,7689
+int bn_not(466,8302
+int bn_lshift(491,8736
+int bn_rshift(532,9565
+int bn_compare(575,10313
+static void bn_mult_knuth(599,10733
+int bn_multiply(623,11217
+BOOL bn_quotient_wanted;646,11677
+static int bn_div_mod_quot_wanted(648,11703
+static int bn_div_mod_quot_not_wanted(751,14463
+int bn_quotient_remainder_quot_wanted(858,17313
+int bn_quotient_remainder_quot_not_wanted(878,17704
+int bn_from_float(900,18103
+int bn_from_string(973,19693
+void bn_to_string(1019,20549
+
+builtin.c,394
+BOOL set_predtrace(24,435
+BOOL run_determ_c(76,1575
+static TAGGED safe_deref(120,2590
+void wr_tagged(131,2714
+void wr_tagged_rec(140,2812
+static ENG_FLT fzero 198,3896
+static unsigned long *zeros zeros199,3951
+void checkasserts(201,4029
+void wr_functor(210,4198
+void wr_functor_1(253,4930
+void wr_call(271,5326
+void wr_functor_spec(299,5830
+void wr_x(307,5941
+void wr_y(314,6012
+
+ciao.c,123
+# define _POSIX_SOURCE 8,116
+ENG_pred_ref ENG_predicate(19,255
+int ENG_put_string(29,470
+int ENG_query_cut_fail(38,651
+
+ciao.h,256
+#  define PROTO(9,187
+#  define VA_PROTO1(10,214
+#  define PROTO(12,256
+#  define VA_PROTO1(13,283
+typedef long ENG_qid;21,440
+typedef char *ENG_pred_ref;ENG_pred_ref22,483
+typedef int ENG_term_ref;23,542
+typedef unsigned long int ENG_term;25,569
+
+ciao_gluecode.h,147
+#define __CIAO_GLUECODE_H__2,34
+#define DECL_STATE 17,273
+#define INIT_STATE 18,334
+#define IMPLICIT_STATE 19,399
+#define GLUECODE_TRY(27,606
+
+ciao_prolog.c,5666
+# define X_OK 29,709
+# define MAXPATHLEN 70,1498
+ciao_state ciao_implicit_state;84,1740
+void *ciao_malloc(ciao_malloc96,2097
+void ciao_free(100,2153
+struct _ciao_query 110,2340
+void ciao_ensure_heap(117,2496
+ciao_bool ciao_is_char_code_list(126,2802
+int ciao_is_int_list(143,3214
+int ciao_list_length(160,3576
+#define TEMPLATE(175,3877
+TEMPLATE(187,4186
+#define TEMPLATE(191,4307
+#define TEMPLATE(215,5057
+TEMPLATE(230,5425
+ciao_term ciao_pointer_to_address(240,5711
+void *ciao_address_to_pointer(ciao_address_to_pointer244,5869
+ciao_bool ciao_is_address(248,6019
+BOOL quiet_flag_bool;255,6340
+int ciao_opts(259,6406
+#define SUBDIR_WINDOWS_BIN 355,9624
+INSN *call_code;call_code405,11422
+INSN *default_code;default_code406,11439
+INSN *null_code;null_code407,11459
+struct try_node nullgoal_alt;408,11476
+struct try_node defaultgoal_alt;409,11506
+struct try_node startgoal_alt;410,11539
+void ciao_initcode(412,11571
+void ciao_init(452,12654
+void ciao_reinit(470,12967
+ciao_state ciao_state_new(478,13118
+void ciao_state_free(487,13268
+void ciao_load_ql_files(498,13604
+void ciao_load_qfile_s(520,14135
+void ciao_load_qfile(527,14322
+FILE *ciao_open_qfile(ciao_open_qfile531,14436
+void ciao_load_embedded_qfile_s(565,15430
+void ciao_load_embedded_qfile(572,15629
+FILE *ciao_open_embedded_qfile(ciao_open_embedded_qfile576,15755
+void ciao_open_emulator(591,16165
+ciao_term ciao_var_s(635,17262
+ciao_term ciao_var(647,17523
+ciao_term ciao_structure_a_s(651,17591
+ciao_term ciao_structure_a(677,18415
+ciao_term ciao_integer_s(681,18562
+ciao_term ciao_integer(688,18743
+ciao_term ciao_float_s(692,18827
+ciao_term ciao_float(699,19007
+ciao_bool ciao_is_integer_s(703,19090
+ciao_bool ciao_is_integer(710,19238
+ciao_bool ciao_fits_in_int_s(714,19340
+ciao_bool ciao_fits_in_int(726,19834
+ciao_bool ciao_is_variable_s(730,19938
+ciao_bool ciao_is_variable(737,20083
+int ciao_to_integer_s(741,20187
+int ciao_to_integer(749,20381
+ciao_bool ciao_to_integer_check_s(753,20477
+ciao_bool ciao_to_integer_check(760,20684
+ciao_bool ciao_is_number_s(764,20813
+ciao_bool ciao_is_number(771,20959
+double ciao_to_float_s(775,21059
+double ciao_to_float(783,21251
+char *ciao_get_number_chars_s(ciao_get_number_chars_s787,21346
+char *ciao_get_number_chars(ciao_get_number_chars801,21802
+ciao_term ciao_put_number_chars_s(807,22017
+ciao_term ciao_put_number_chars(815,22292
+ciao_bool ciao_is_atom_s(820,22421
+ciao_bool ciao_is_atom(827,22563
+const char *ciao_atom_name_s(ciao_atom_name_s831,22659
+const char *ciao_atom_name(ciao_atom_name844,22932
+char *ciao_atom_name_dup_s(ciao_atom_name_dup_s848,23034
+char *ciao_atom_name_dup(ciao_atom_name_dup857,23258
+const char *ciao_structure_name_s(ciao_structure_name_s861,23362
+const char *ciao_structure_name(ciao_structure_name877,23707
+int ciao_structure_arity_s(881,23819
+int ciao_structure_arity(894,24059
+ciao_bool ciao_is_list_s(898,24165
+ciao_bool ciao_is_list(905,24309
+ciao_bool ciao_is_empty_list_s(909,24405
+ciao_bool ciao_is_empty_list(916,24578
+ciao_bool ciao_is_structure_s(920,24686
+ciao_bool ciao_is_structure(927,24835
+ciao_term ciao_structure_arg_s(931,24941
+ciao_term ciao_structure_arg(941,25175
+ciao_term ciao_list_head_s(945,25293
+ciao_term ciao_list_head(954,25474
+ciao_term ciao_list_tail_s(958,25574
+ciao_term ciao_list_tail(967,25755
+ciao_term ciao_atom_s(973,25879
+ciao_term ciao_atom(977,25985
+ciao_term ciao_empty_list_s(981,26077
+ciao_term ciao_empty_list(985,26163
+ciao_term ciao_list_s(989,26245
+ciao_term ciao_list(993,26376
+ciao_term ciao_dlist_a_s(997,26488
+ciao_term ciao_dlist_a(1010,26756
+ciao_term ciao_listn_a_s(1014,26889
+ciao_term ciao_listn_a(1018,27030
+#define GETARGS(1022,27141
+ciao_term ciao_structure_s(1033,27412
+ciao_term ciao_structure(1038,27568
+ciao_term ciao_listn_s(1043,27695
+ciao_term ciao_listn(1048,27822
+ciao_term ciao_dlist_s(1053,27920
+ciao_term ciao_dlist(1058,28069
+ciao_term ciao_copy_term_s(1064,28190
+ciao_term ciao_copy_term(1070,28424
+ciao_bool ciao_unify_s(1074,28553
+ciao_bool ciao_unify(1080,28740
+ciao_bool ciao_equal_s(1084,28842
+ciao_bool ciao_equal(1093,29032
+void ciao_at_exit(1097,29134
+JMP_BUF abort_env;1107,29334
+int ciao_firstgoal(1109,29412
+int ciao_boot(1145,30559
+ciao_choice ciao_get_choice(1153,30799
+ciao_bool ciao_more_solutions(1159,30932
+void ciao_cut(1163,31047
+void ciao_fail(1171,31267
+ciao_bool ciao_query_next(1180,31457
+ciao_bool ciao_query_ok(1187,31661
+void ciao_query_end(1200,31977
+ciao_query *ciao_query_begin_term_s(ciao_query_begin_term_s1220,32353
+ciao_query *ciao_query_begin_term(ciao_query_begin_term1278,33712
+ciao_query *ciao_query_begin_s(ciao_query_begin_s1282,33828
+ciao_query *ciao_query_begin(ciao_query_begin1287,34020
+ciao_bool ciao_commit_call_term_s(1292,34174
+ciao_bool ciao_commit_call_term(1303,34401
+ciao_bool ciao_commit_call_s(1307,34515
+ciao_bool ciao_commit_call(1312,34705
+jmp_buf ciao_gluecode_jmpbuf;1321,34961
+void ciao_raise_exception_s(1323,34992
+void ciao_raise_exception(1331,35191
+#define GARBAGE_PROTECTION1337,35384
+#define REF_TABLE_PAD 1341,35440
+#define REF_TABLE_CHUNK_SIZE 1342,35464
+#define REF_TABLE_CHUNKS 1343,35496
+TAGGED create_ref_table(1345,35524
+ciao_term ciao_ref(1373,36241
+TAGGED ciao_unref(1439,37655
+void ciao_frame_begin_s(1451,37849
+void ciao_frame_begin(1469,38318
+void ciao_frame_end_s(1473,38390
+void ciao_frame_end(1485,38596
+ciao_term ciao_ref(1491,38671
+TAGGED ciao_unref(1495,38746
+void ciao_frame_begin_s(1499,38826
+void ciao_frame_end_s(1502,38875
+void ciao_frame_begin(1505,38920
+void ciao_frame_end(1508,38951
+
+ciao_prolog.c~,5666
+# define X_OK 29,709
+# define MAXPATHLEN 70,1498
+ciao_state ciao_implicit_state;84,1740
+void *ciao_malloc(ciao_malloc96,2097
+void ciao_free(100,2153
+struct _ciao_query 110,2340
+void ciao_ensure_heap(117,2496
+ciao_bool ciao_is_char_code_list(126,2802
+int ciao_is_int_list(143,3214
+int ciao_list_length(160,3576
+#define TEMPLATE(175,3877
+TEMPLATE(187,4186
+#define TEMPLATE(191,4307
+#define TEMPLATE(215,5057
+TEMPLATE(230,5425
+ciao_term ciao_pointer_to_address(240,5711
+void *ciao_address_to_pointer(ciao_address_to_pointer244,5869
+ciao_bool ciao_is_address(248,6019
+BOOL quiet_flag_bool;255,6340
+int ciao_opts(259,6406
+#define SUBDIR_WINDOWS_BIN 355,9624
+INSN *call_code;call_code405,11422
+INSN *default_code;default_code406,11439
+INSN *null_code;null_code407,11459
+struct try_node nullgoal_alt;408,11476
+struct try_node defaultgoal_alt;409,11506
+struct try_node startgoal_alt;410,11539
+void ciao_initcode(412,11571
+void ciao_init(452,12654
+void ciao_reinit(470,12967
+ciao_state ciao_state_new(478,13118
+void ciao_state_free(487,13268
+void ciao_load_ql_files(498,13604
+void ciao_load_qfile_s(520,14135
+void ciao_load_qfile(527,14322
+FILE *ciao_open_qfile(ciao_open_qfile531,14436
+void ciao_load_embedded_qfile_s(565,15430
+void ciao_load_embedded_qfile(572,15629
+FILE *ciao_open_embedded_qfile(ciao_open_embedded_qfile576,15755
+void ciao_open_emulator(591,16165
+ciao_term ciao_var_s(635,17262
+ciao_term ciao_var(647,17523
+ciao_term ciao_structure_a_s(651,17591
+ciao_term ciao_structure_a(677,18415
+ciao_term ciao_integer_s(681,18562
+ciao_term ciao_integer(688,18743
+ciao_term ciao_float_s(692,18827
+ciao_term ciao_float(699,19007
+ciao_bool ciao_is_integer_s(703,19090
+ciao_bool ciao_is_integer(710,19238
+ciao_bool ciao_fits_in_int_s(714,19340
+ciao_bool ciao_fits_in_int(726,19834
+ciao_bool ciao_is_variable_s(730,19938
+ciao_bool ciao_is_variable(737,20083
+int ciao_to_integer_s(741,20187
+int ciao_to_integer(749,20381
+ciao_bool ciao_to_integer_check_s(753,20477
+ciao_bool ciao_to_integer_check(760,20684
+ciao_bool ciao_is_number_s(764,20813
+ciao_bool ciao_is_number(771,20959
+double ciao_to_float_s(775,21059
+double ciao_to_float(783,21251
+char *ciao_get_number_chars_s(ciao_get_number_chars_s787,21346
+char *ciao_get_number_chars(ciao_get_number_chars801,21802
+ciao_term ciao_put_number_chars_s(807,22017
+ciao_term ciao_put_number_chars(815,22292
+ciao_bool ciao_is_atom_s(820,22421
+ciao_bool ciao_is_atom(827,22563
+const char *ciao_atom_name_s(ciao_atom_name_s831,22659
+const char *ciao_atom_name(ciao_atom_name844,22932
+char *ciao_atom_name_dup_s(ciao_atom_name_dup_s848,23034
+char *ciao_atom_name_dup(ciao_atom_name_dup857,23258
+const char *ciao_structure_name_s(ciao_structure_name_s861,23362
+const char *ciao_structure_name(ciao_structure_name877,23707
+int ciao_structure_arity_s(881,23819
+int ciao_structure_arity(894,24059
+ciao_bool ciao_is_list_s(898,24165
+ciao_bool ciao_is_list(905,24309
+ciao_bool ciao_is_empty_list_s(909,24405
+ciao_bool ciao_is_empty_list(916,24578
+ciao_bool ciao_is_structure_s(920,24686
+ciao_bool ciao_is_structure(927,24835
+ciao_term ciao_structure_arg_s(931,24941
+ciao_term ciao_structure_arg(941,25175
+ciao_term ciao_list_head_s(945,25293
+ciao_term ciao_list_head(954,25474
+ciao_term ciao_list_tail_s(958,25574
+ciao_term ciao_list_tail(967,25755
+ciao_term ciao_atom_s(973,25879
+ciao_term ciao_atom(977,25985
+ciao_term ciao_empty_list_s(981,26077
+ciao_term ciao_empty_list(985,26163
+ciao_term ciao_list_s(989,26245
+ciao_term ciao_list(993,26376
+ciao_term ciao_dlist_a_s(997,26488
+ciao_term ciao_dlist_a(1010,26756
+ciao_term ciao_listn_a_s(1014,26889
+ciao_term ciao_listn_a(1018,27030
+#define GETARGS(1022,27141
+ciao_term ciao_structure_s(1033,27412
+ciao_term ciao_structure(1038,27568
+ciao_term ciao_listn_s(1043,27695
+ciao_term ciao_listn(1048,27822
+ciao_term ciao_dlist_s(1053,27920
+ciao_term ciao_dlist(1058,28069
+ciao_term ciao_copy_term_s(1064,28190
+ciao_term ciao_copy_term(1070,28424
+ciao_bool ciao_unify_s(1074,28553
+ciao_bool ciao_unify(1080,28740
+ciao_bool ciao_equal_s(1084,28842
+ciao_bool ciao_equal(1093,29032
+void ciao_at_exit(1097,29134
+JMP_BUF abort_env;1107,29334
+int ciao_firstgoal(1109,29412
+int ciao_boot(1145,30559
+ciao_choice ciao_get_choice(1153,30799
+ciao_bool ciao_more_solutions(1159,30932
+void ciao_cut(1163,31047
+void ciao_fail(1171,31267
+ciao_bool ciao_query_next(1180,31457
+ciao_bool ciao_query_ok(1187,31661
+void ciao_query_end(1200,31977
+ciao_query *ciao_query_begin_term_s(ciao_query_begin_term_s1220,32353
+ciao_query *ciao_query_begin_term(ciao_query_begin_term1278,33712
+ciao_query *ciao_query_begin_s(ciao_query_begin_s1282,33828
+ciao_query *ciao_query_begin(ciao_query_begin1287,34020
+ciao_bool ciao_commit_call_term_s(1292,34174
+ciao_bool ciao_commit_call_term(1303,34401
+ciao_bool ciao_commit_call_s(1307,34515
+ciao_bool ciao_commit_call(1312,34705
+jmp_buf ciao_gluecode_jmpbuf;1321,34961
+void ciao_raise_exception_s(1323,34992
+void ciao_raise_exception(1331,35191
+#define GARBAGE_PROTECTION1337,35384
+#define REF_TABLE_PAD 1341,35440
+#define REF_TABLE_CHUNK_SIZE 1342,35464
+#define REF_TABLE_CHUNKS 1343,35496
+TAGGED create_ref_table(1345,35524
+ciao_term ciao_ref(1373,36241
+TAGGED ciao_unref(1430,37510
+void ciao_frame_begin_s(1442,37704
+void ciao_frame_begin(1460,38173
+void ciao_frame_end_s(1464,38245
+void ciao_frame_end(1476,38451
+ciao_term ciao_ref(1482,38526
+TAGGED ciao_unref(1486,38601
+void ciao_frame_begin_s(1490,38681
+void ciao_frame_end_s(1493,38730
+void ciao_frame_begin(1496,38775
+void ciao_frame_end(1499,38806
+
+ciao_prolog.h,332
+#define __CIAO_PROLOG_H__2,32
+typedef struct goal_str *ciao_state;ciao_state9,100
+#define CIAO_ERROR 13,178
+#define ciao_true 14,199
+#define ciao_false 15,219
+typedef unsigned int ciao_choice;17,241
+typedef unsigned int ciao_term;18,275
+typedef unsigned int ciao_bool;19,307
+typedef struct _ciao_query ciao_query;228,6900
+
+ciaoengine.pl~,26
+   function in 440,19610
+
+compat.h,768
+# define __svr4__7,150
+#define LINUX11,214
+# define HOST_sun 15,253
+#  define HOST_sun4 17,284
+# define HOST_symmetry 22,360
+# define HOST_sgi 26,427
+# define LONGJMP(30,473
+# define SETJMP(31,518
+# define JMP_BUF 32,551
+#   define JMP_BUF 36,752
+#   define SETJMP(37,775
+#   define LONGJMP(38,801
+#   define JMP_BUF 41,1004
+#   define SETJMP(42,1041
+#   define LONGJMP(43,1082
+#  define JMP_BUF 47,1187
+#  define SETJMP(48,1223
+#  define LONGJMP(49,1263
+#  define JMP_BUF 51,1317
+#  define SETJMP(52,1356
+#  define LONGJMP(53,1402
+#define SIGNAL 59,1499
+#define SIGBLOCK(60,1521
+#define SIGPAUSE_0(61,1566
+#define SIGNAL(63,1676
+#define SIGBLOCK(74,1923
+#define SIGPAUSE_0(83,2139
+#define UNBLOCK_SIG(94,2316
+#define UNBLOCK_SIG(101,2539
+
+configure.c,504
+#define VOLATILE 26,1089
+#define PROTO(27,1115
+#define VOLATILE29,1146
+#define PROTO(30,1163
+#define LOTS 61,1933
+#define MIN_MEM_BLOCK_CHARS 62,1952
+#define TAG_MASK 64,1987
+#define ALIGN 65,2015
+#define ROUND_CHARS(66,2092
+#define MIN_MEM_BLOCK 67,2168
+static ENG_INT base 71,2321
+ENG_FLT safe_addition(87,3035
+void find_fp_bits(94,3172
+jmp_buf buf;122,3823
+void handler(124,3837
+int main(133,3924
+int turn_point(243,6668
+void generate_defines(279,7363
+char *strsep(strsep351,10453
+
+configure.c.bak,351
+#define VOLATILE 26,1065
+#define PROTO(27,1091
+#define VOLATILE29,1122
+#define PROTO(30,1139
+#define LOTS 58,1871
+#define MIN_MEM_BLOCK_CHARS 59,1890
+#define TAG_MASK 61,1925
+#define ALIGN 62,1953
+#define ROUND_CHARS(63,2030
+#define MIN_MEM_BLOCK 64,2106
+jmp_buf buf;69,2196
+void handler(71,2210
+int main(78,2265
+int turn_point(181,4926
+
+configure.c.old,413
+#define VOLATILE 26,1065
+#define PROTO(27,1091
+#define VOLATILE29,1122
+#define PROTO(30,1139
+#define LOTS 60,1892
+#define MIN_MEM_BLOCK_CHARS 61,1911
+#define TAG_MASK 63,1946
+#define ALIGN 64,1974
+#define ROUND_CHARS(65,2051
+#define MIN_MEM_BLOCK 66,2127
+jmp_buf buf;71,2217
+void handler(73,2231
+int main(82,2318
+int turn_point(187,5023
+void generate_defines(223,5701
+char *strsep(strsep296,8787
+
+datadefs.h,115
+#define _DATADEFS_H3,89
+#define VOLATILE 6,132
+#define PROTO(7,158
+#define VOLATILE9,189
+#define PROTO(10,206
+
+debug.h,24
+#define _DEBUG_H_6,117
+
+dynlink.c,542
+# define MAX_FILENAME 50,979
+# define MAX_FILENAME 52,1041
+#  define LIB_LOADING_TYPE 61,1291
+#  define LIB_LOADING_TYPE 63,1363
+# define LIB_LOADING_TYPE 66,1443
+# define LIB_LOADING_TYPE 68,1544
+# define LIB_LOADING_TYPE 70,1650
+typedef struct lobj 78,1906
+} *loaded_object;loaded_object83,2063
+loaded_object all_loaded_objects 85,2082
+BOOL prolog_dynlink(93,2382
+BOOL prolog_dynunlink(212,5737
+void unload_if_present(238,6274
+void add_to_loaded_objects(291,7912
+BOOL prolog_dynlink(316,8707
+BOOL prolog_dynunlink(325,8944
+
+dynlink.c.orig,506
+# define MAX_FILENAME 45,920
+# define MAX_FILENAME 47,982
+#  define LIB_LOADING_TYPE 56,1232
+#  define LIB_LOADING_TYPE 58,1304
+# define LIB_LOADING_TYPE 61,1384
+# define LIB_LOADING_TYPE 63,1485
+typedef struct lobj 71,1741
+} *loaded_object;loaded_object76,1898
+loaded_object all_loaded_objects 78,1917
+BOOL prolog_dynlink(86,2217
+BOOL prolog_dynunlink(172,4542
+void unload_if_present(198,5079
+void add_to_loaded_objects(247,6605
+BOOL prolog_dynlink(272,7400
+BOOL prolog_dynunlink(281,7637
+
+fix_path.h,46
+#define FIX_PATHS1,0
+#define REN_PAIRS 2,18
+
+flinkage.c,80
+int (*(ENG_pre_linkage[ENG_pre_linkage1,0
+char *ENG_pre_map[ENG_pre_map2,34
+
+float_consts.c,446
+long double powtable10[powtable1023,1152
+long double *powtable[powtable57,4226
+long double invpowtable10[invpowtable1065,4519
+long double *invpowtable[invpowtable101,8074
+long double powl_int(112,8496
+double invlog2[invlog2135,8887
+char digits_upper[digits_upper150,9841
+char digits_lower[digits_lower151,9905
+void fillpowtable(153,9970
+void freepowtable(169,10364
+void fillallpowtable(174,10440
+void freeallpowtable(180,10535
+
+float_consts.h,263
+#define FLOAT_CONSTS_H18,1057
+#define SIGN_MASK 20,1081
+#define SHR_EXP 21,1120
+#define MAX_EXP 22,1141
+#define MIN_EXP 23,1164
+#define EXP_MASK 24,1187
+#define SIG_MASK 25,1226
+#define HIDD_BIT 26,1265
+#define EXP_CHAR 32,1398
+#define FRAC_SEP 33,1419
+
+float_tostr.c,263
+static char countLeadingZeros32(46,1983
+static char countLeadingZeros64(86,3432
+char * nextDigit(101,3693
+char * generate(137,4319
+} long_double_bits;249,6389
+static char * scale_zero(251,6410
+static char * scale(292,7212
+char * float_to_string(528,12854
+
+float_tostr.c~,263
+static char countLeadingZeros32(46,1983
+static char countLeadingZeros64(86,3432
+char * nextDigit(101,3693
+char * generate(137,4319
+} long_double_bits;249,6390
+static char * scale_zero(251,6411
+static char * scale(292,7213
+char * float_to_string(528,12855
+
+float_tostr.h,30
+#define FLOAT_TOSTR_H19,1056
+
+format.c,141
+#define MAX_OUTPUT_DIGITS 37,912
+#define BUFF_SIZE 38,943
+BOOL prolog_format_print_float(40,975
+BOOL prolog_format_print_integer(98,2342
+
+gauge.c,120
+#define ISNOTRY(18,264
+BOOL counter_values(23,345
+BOOL reset_counters(62,1156
+BOOL emulated_clause_counters(78,1472
+
+gcdatadefs.h,351
+#define GC_MARKMASK 5,124
+#define GC_FIRSTMASK 6,147
+#define gc_IsMarked(8,171
+#define gc_IsFirst(9,213
+#define gc_IsForM(10,256
+#define gc_MarkM(11,312
+#define gc_MarkF(12,353
+#define gc_UnmarkM(13,395
+#define gc_UnmarkF(14,440
+#define gc_PutValue(15,486
+#define gc_PutValueFirst(16,536
+#define PreHeapRead(18,605
+#define HeapPop(19,638
+
+gcsupport.h,260
+#define gc_Reverse(5,111
+#define gc_Undo(12,283
+#define gc_Advance(14,334
+#define gc_TrailStart	22,570
+#define gc_HeapStart	23,634
+#define gc_StackStart	24,686
+#define gc_ChoiceStart	25,738
+#define gc_ReverseChoice(29,783
+#define gc_UndoChoice(38,986
+
+heapgc.c,648
+#define SEGMENTED_GC 4,114
+#define EARLY_RESET 5,137
+BOOL gc_usage(43,1071
+BOOL gc_mode(58,1384
+BOOL gc_trace(66,1511
+BOOL gc_margin(76,1674
+#define gc_shuntVariable(124,2657
+static void shuntVariables(133,2887
+static void markTrail(218,5183
+static void markFrames(277,6696
+static void markChoicepoints(308,7382
+void compressTrail(363,8644
+static void markVariable(394,9357
+#define intoRelocationChain(482,11434
+static void updateRelocationChain(490,11637
+static void sweepTrail(521,12242
+static void sweepFrames(557,13056
+static void sweepChoicepoints(588,13679
+static void compressHeap(618,14334
+void GarbageCollect(712,16652
+
+heapgc.c~,648
+#define SEGMENTED_GC 4,114
+#define EARLY_RESET 5,137
+BOOL gc_usage(43,1071
+BOOL gc_mode(58,1384
+BOOL gc_trace(66,1511
+BOOL gc_margin(76,1674
+#define gc_shuntVariable(124,2657
+static void shuntVariables(133,2887
+static void markTrail(218,5183
+static void markFrames(277,6696
+static void markChoicepoints(308,7382
+void compressTrail(363,8644
+static void markVariable(394,9357
+#define intoRelocationChain(482,11434
+static void updateRelocationChain(490,11637
+static void sweepTrail(521,12242
+static void sweepFrames(557,13056
+static void sweepChoicepoints(588,13679
+static void compressHeap(618,14334
+void GarbageCollect(712,16652
+
+indexing.c,1058
+#define ISNOTRY(42,1368
+static void set_nondet(49,1534
+static void incore_insert(98,3045
+static struct try_node *incore_copy(incore_copy131,3934
+struct sw_on_key_node *incore_gethash(incore_gethash154,4533
+struct sw_on_key *new_switch_on_key(new_switch_on_key172,4947
+static void incore_puthash(199,5626
+static void free_try(234,6707
+static void free_sw_on_key(247,6923
+static void free_emulinfo(269,7393
+static void free_incoreinfo(282,7753
+static int gcdef_count=303,8325
+static int gcdef_limit=304,8387
+static struct gcdef 305,8449
+} *gcdef_bin;gcdef_bin308,8546
+void leave_to_gc(310,8561
+static void make_undefined(331,9064
+BOOL empty_gcdef_bin(379,10523
+void relocate_gcdef_clocks(396,10811
+static void free_info(408,11055
+BOOL prolog_abolish(466,12637
+BOOL abolish(479,12958
+static void init_interpreted(500,13596
+BOOL define_predicate(526,14350
+BOOL erase_clause(587,15832
+BOOL clause_number(599,16035
+BOOL compiled_clause(613,16304
+struct sw_on_key_node *dyn_puthash(dyn_puthash686,18391
+BOOL set_property(706,18773
+
+initial.c,7148
+struct statistics stats 54,1310
+struct sw_on_key_node **atmtab;atmtab78,2011
+struct sw_on_key *prolog_atoms;prolog_atoms80,2141
+  *prolog_chars=prolog_chars82,2295
+CInfo builtintab[builtintab85,2344
+struct sw_on_key *switch_on_function;switch_on_function89,2500
+BOOL predtrace 335,14335
+BOOL profile 336,14412
+BOOL prof_include_time 337,14489
+BOOL stop_on_pred_calls 338,14566
+BOOL debug_gc 340,14662
+BOOL debug_threads 341,14739
+BOOL debug_choicepoints 342,14816
+BOOL debug_concchoicepoints 343,14893
+BOOL debug_mem 344,14970
+BOOL debug_conc 345,15047
+CLOCK def_clock=349,15210
+struct stream_node *stream_user_input;stream_user_input358,15518
+struct stream_node *stream_user_output;stream_user_output359,15595
+struct stream_node *stream_user_error;stream_user_error360,15672
+struct stream_node *root_stream_ptr;root_stream_ptr363,15751
+struct sw_on_key  *prolog_predicates prolog_predicates365,15829
+struct sw_on_key **predicates_location predicates_location367,15952
+pthread_attr_t detached_thread;370,16081
+pthread_attr_t joinable_thread;371,16113
+SLOCK    prolog_predicates_l;375,16215
+SLOCK    mem_mng_l;378,16301
+SLOCK    worker_id_pool_l;382,16439
+SLOCK    atom_id_l;386,16562
+LOCK stream_list_l;389,16635
+SLOCK ops_counter_l;393,16716
+BOOL wam_initialized 396,16745
+#define IsLowerChar(400,16831
+#define IsUpperChar(401,16874
+#define IsDigit(402,16917
+#define IsSymbolChar(403,16960
+char symbolchar[symbolchar407,17023
+ TAGGED atom_success;410,17067
+ TAGGED atom_failure;411,17089
+ TAGGED atom_share;415,17120
+ TAGGED atom_noshare;416,17166
+ TAGGED atom_nil;417,17214
+ TAGGED atom_list;418,17244
+ TAGGED atom_user_input;419,17274
+ TAGGED atom_user_output;420,17319
+ TAGGED atom_user_error;421,17365
+ TAGGED atom_read;422,17409
+ TAGGED atom_write;423,17443
+ TAGGED atom_append;424,17478
+ TAGGED atom_socket;425,17515
+ TAGGED atom_symlink;426,17552
+ TAGGED atom_regular;427,17591
+ TAGGED atom_directory;428,17630
+ TAGGED atom_fifo;429,17673
+ TAGGED atom_unknown;430,17706
+ TAGGED atom_prolog;431,17745
+ TAGGED atom_user;432,17783
+ TAGGED atom_lessthan;433,17816
+ TAGGED atom_greaterthan;434,17850
+ TAGGED atom_equal;435,17886
+ TAGGED atom_off;436,17917
+ TAGGED atom_on;437,17948
+ TAGGED atom_error;438,17977
+ TAGGED atom_trace;439,18012
+ TAGGED atom_debug;440,18047
+ TAGGED atom_fail;441,18082
+ TAGGED atom_all;442,18115
+ TAGGED atom_terse;443,18146
+ TAGGED atom_verbose;444,18181
+ TAGGED atom_compiled;445,18220
+ TAGGED atom_interpreted;446,18261
+ TAGGED atom_builtin;447,18307
+ TAGGED atom_true;448,18347
+ TAGGED atom_retry_hook;449,18380
+ TAGGED atom_unprofiled;450,18426
+ TAGGED atom_profiled;451,18470
+ TAGGED atom_concurrent;453,18555
+ TAGGED atom_wait;454,18599
+ TAGGED atom_dynamic;455,18632
+ TAGGED atom_multifile;456,18671
+ TAGGED atom_installibdir;457,18714
+ TAGGED atom_block;459,18742
+ TAGGED atom_no_block;460,18782
+ TAGGED atom_self;463,18832
+ TAGGED atom_create;464,18882
+ TAGGED atom_counter;469,18956
+ TAGGED functor_neck;472,19012
+ TAGGED functor_list;473,19034
+ TAGGED functor_cut;474,19056
+ TAGGED functor_minus;475,19077
+ TAGGED functor_slash;476,19100
+ TAGGED functor_and;477,19123
+ TAGGED functor_functor;478,19144
+ TAGGED functor_tagged;479,19169
+ TAGGED functor_emul_entry;480,19193
+ TAGGED functor_builtin;481,19221
+ TAGGED functor_Dref;482,19246
+ TAGGED functor_Dstream;483,19268
+ TAGGED functor_Dsetarg;484,19293
+ TAGGED functor_large;485,19318
+ TAGGED functor_long;486,19341
+ TAGGED functor_active;489,19365
+ TAGGED functor_pending;490,19389
+ TAGGED functor_failed;491,19414
+ TAGGED functor_available;492,19438
+ TAGGED current_prompt;496,19468
+ TAGGED current_unknown;497,19492
+ TAGGED current_compiling;502,19651
+ TAGGED current_ferror_flag;503,19678
+ TAGGED current_quiet_flag;507,19829
+ TAGGED current_gcmode;508,19857
+ TAGGED current_gctrace;509,19881
+ TAGGED current_gcmargin;510,19906
+ TAGGED current_radix;513,20043
+ struct try_node *address_nd_repeat;address_nd_repeat515,20068
+ struct try_node *address_nd_current_instance;address_nd_current_instance516,20105
+ struct try_node *address_nd_current_atom;address_nd_current_atom517,20152
+ struct try_node *address_nd_current_predicate;address_nd_current_predicate518,20195
+ struct try_node *address_nd_predicate_property;address_nd_predicate_property519,20243
+ struct try_node *address_nd_current_stream;address_nd_current_stream520,20292
+ struct try_node *address_nd_atom_concat;address_nd_atom_concat521,20337
+ struct definition *address_true;address_true523,20380
+ struct definition *address_fail;address_fail524,20414
+ struct definition *address_call;address_call532,20599
+ struct definition *address_internal_call address_internal_call534,20663
+ struct definition *address_interpret_goal;address_interpret_goal536,20720
+ struct definition *address_call_with_cont;address_call_with_cont537,20764
+ struct definition *address_interpret_compiled_goal;address_interpret_compiled_goal538,20841
+ struct definition *address_interpret_c_goal;address_interpret_c_goal539,20894
+ struct definition *address_undefined_goal;address_undefined_goal540,20940
+ struct definition *address_help;address_help541,20984
+ struct definition *address_restart;address_restart542,21019
+ struct definition *address_trace;address_trace543,21057
+ struct definition *address_getct;address_getct544,21092
+ struct definition *address_getct1;address_getct1545,21127
+ struct definition *address_get;address_get546,21163
+ struct definition *address_get2;address_get2547,21196
+ struct definition *address_get1;address_get1548,21230
+ struct definition *address_get12;address_get12549,21264
+ struct definition *address_peek;address_peek550,21299
+ struct definition *address_peek2;address_peek2551,21333
+ struct definition *address_skip;address_skip552,21368
+ struct definition *address_skip2;address_skip2553,21402
+ struct definition *address_error;address_error554,21437
+struct definition *address_pending_unifications;address_pending_unifications557,21592
+struct definition *address_uvc;address_uvc558,21641
+struct definition *address_ucc;address_ucc559,21673
+static void classify_atom(567,21887
+#define MIN_MEM_CHUNK_SIZE 633,24186
+#define MAX(634,24218
+struct atom *new_atom_check(new_atom_check637,24279
+static BOOL prolog_atom_mode(705,26050
+static BOOL prolog_ciaolibdir(725,26452
+static struct definition *define_builtin(define_builtin732,26573
+static TAGGED deffunctor(746,26930
+struct definition *define_c_mod_predicate(define_c_mod_predicate753,27051
+void undefine_c_mod_predicate(805,28813
+static void unused_initialize_intrinsics(824,29492
+static void deffunction(862,30919
+static void deffunction_nobtin(874,31204
+static void define_functions(887,31461
+void init_kanji(941,33574
+void init_latin1(964,34234
+void init_streams(984,34775
+void init_locks(1002,35370
+void init_once(1028,35957
+void glb_init_each_time(1519,57846
+void local_init_each_time(1540,58187
+void init_each_time(1604,60124
+void init_streams_each_time(1612,60222
+void reinitialize(1621,60455
+
+initial.c~,7148
+struct statistics stats 54,1310
+struct sw_on_key_node **atmtab;atmtab78,2011
+struct sw_on_key *prolog_atoms;prolog_atoms80,2141
+  *prolog_chars=prolog_chars82,2295
+CInfo builtintab[builtintab85,2344
+struct sw_on_key *switch_on_function;switch_on_function89,2500
+BOOL predtrace 333,14158
+BOOL profile 334,14235
+BOOL prof_include_time 335,14312
+BOOL stop_on_pred_calls 336,14389
+BOOL debug_gc 338,14485
+BOOL debug_threads 339,14562
+BOOL debug_choicepoints 340,14639
+BOOL debug_concchoicepoints 341,14716
+BOOL debug_mem 342,14793
+BOOL debug_conc 343,14870
+CLOCK def_clock=347,15033
+struct stream_node *stream_user_input;stream_user_input356,15341
+struct stream_node *stream_user_output;stream_user_output357,15418
+struct stream_node *stream_user_error;stream_user_error358,15495
+struct stream_node *root_stream_ptr;root_stream_ptr361,15574
+struct sw_on_key  *prolog_predicates prolog_predicates363,15652
+struct sw_on_key **predicates_location predicates_location365,15775
+pthread_attr_t detached_thread;368,15904
+pthread_attr_t joinable_thread;369,15936
+SLOCK    prolog_predicates_l;373,16038
+SLOCK    mem_mng_l;376,16124
+SLOCK    worker_id_pool_l;380,16262
+SLOCK    atom_id_l;384,16385
+LOCK stream_list_l;387,16458
+SLOCK ops_counter_l;391,16539
+BOOL wam_initialized 394,16568
+#define IsLowerChar(398,16654
+#define IsUpperChar(399,16697
+#define IsDigit(400,16740
+#define IsSymbolChar(401,16783
+char symbolchar[symbolchar405,16846
+ TAGGED atom_success;408,16890
+ TAGGED atom_failure;409,16912
+ TAGGED atom_share;413,16943
+ TAGGED atom_noshare;414,16989
+ TAGGED atom_nil;415,17037
+ TAGGED atom_list;416,17067
+ TAGGED atom_user_input;417,17097
+ TAGGED atom_user_output;418,17142
+ TAGGED atom_user_error;419,17188
+ TAGGED atom_read;420,17232
+ TAGGED atom_write;421,17266
+ TAGGED atom_append;422,17301
+ TAGGED atom_socket;423,17338
+ TAGGED atom_symlink;424,17375
+ TAGGED atom_regular;425,17414
+ TAGGED atom_directory;426,17453
+ TAGGED atom_fifo;427,17496
+ TAGGED atom_unknown;428,17529
+ TAGGED atom_prolog;429,17568
+ TAGGED atom_user;430,17606
+ TAGGED atom_lessthan;431,17639
+ TAGGED atom_greaterthan;432,17673
+ TAGGED atom_equal;433,17709
+ TAGGED atom_off;434,17740
+ TAGGED atom_on;435,17771
+ TAGGED atom_error;436,17800
+ TAGGED atom_trace;437,17835
+ TAGGED atom_debug;438,17870
+ TAGGED atom_fail;439,17905
+ TAGGED atom_all;440,17938
+ TAGGED atom_terse;441,17969
+ TAGGED atom_verbose;442,18004
+ TAGGED atom_compiled;443,18043
+ TAGGED atom_interpreted;444,18084
+ TAGGED atom_builtin;445,18130
+ TAGGED atom_true;446,18170
+ TAGGED atom_retry_hook;447,18203
+ TAGGED atom_unprofiled;448,18249
+ TAGGED atom_profiled;449,18293
+ TAGGED atom_concurrent;451,18378
+ TAGGED atom_wait;452,18422
+ TAGGED atom_dynamic;453,18455
+ TAGGED atom_multifile;454,18494
+ TAGGED atom_installibdir;455,18537
+ TAGGED atom_block;457,18565
+ TAGGED atom_no_block;458,18605
+ TAGGED atom_self;461,18655
+ TAGGED atom_create;462,18705
+ TAGGED atom_counter;467,18779
+ TAGGED functor_neck;470,18835
+ TAGGED functor_list;471,18857
+ TAGGED functor_cut;472,18879
+ TAGGED functor_minus;473,18900
+ TAGGED functor_slash;474,18923
+ TAGGED functor_and;475,18946
+ TAGGED functor_functor;476,18967
+ TAGGED functor_tagged;477,18992
+ TAGGED functor_emul_entry;478,19016
+ TAGGED functor_builtin;479,19044
+ TAGGED functor_Dref;480,19069
+ TAGGED functor_Dstream;481,19091
+ TAGGED functor_Dsetarg;482,19116
+ TAGGED functor_large;483,19141
+ TAGGED functor_long;484,19164
+ TAGGED functor_active;487,19188
+ TAGGED functor_pending;488,19212
+ TAGGED functor_failed;489,19237
+ TAGGED functor_available;490,19261
+ TAGGED current_prompt;494,19291
+ TAGGED current_unknown;495,19315
+ TAGGED current_compiling;500,19474
+ TAGGED current_ferror_flag;501,19501
+ TAGGED current_quiet_flag;505,19652
+ TAGGED current_gcmode;506,19680
+ TAGGED current_gctrace;507,19704
+ TAGGED current_gcmargin;508,19729
+ TAGGED current_radix;511,19866
+ struct try_node *address_nd_repeat;address_nd_repeat513,19891
+ struct try_node *address_nd_current_instance;address_nd_current_instance514,19928
+ struct try_node *address_nd_current_atom;address_nd_current_atom515,19975
+ struct try_node *address_nd_current_predicate;address_nd_current_predicate516,20018
+ struct try_node *address_nd_predicate_property;address_nd_predicate_property517,20066
+ struct try_node *address_nd_current_stream;address_nd_current_stream518,20115
+ struct try_node *address_nd_atom_concat;address_nd_atom_concat519,20160
+ struct definition *address_true;address_true521,20203
+ struct definition *address_fail;address_fail522,20237
+ struct definition *address_call;address_call530,20422
+ struct definition *address_internal_call address_internal_call532,20486
+ struct definition *address_interpret_goal;address_interpret_goal534,20543
+ struct definition *address_call_with_cont;address_call_with_cont535,20587
+ struct definition *address_interpret_compiled_goal;address_interpret_compiled_goal536,20664
+ struct definition *address_interpret_c_goal;address_interpret_c_goal537,20717
+ struct definition *address_undefined_goal;address_undefined_goal538,20763
+ struct definition *address_help;address_help539,20807
+ struct definition *address_restart;address_restart540,20842
+ struct definition *address_trace;address_trace541,20880
+ struct definition *address_getct;address_getct542,20915
+ struct definition *address_getct1;address_getct1543,20950
+ struct definition *address_get;address_get544,20986
+ struct definition *address_get2;address_get2545,21019
+ struct definition *address_get1;address_get1546,21053
+ struct definition *address_get12;address_get12547,21087
+ struct definition *address_peek;address_peek548,21122
+ struct definition *address_peek2;address_peek2549,21156
+ struct definition *address_skip;address_skip550,21191
+ struct definition *address_skip2;address_skip2551,21225
+ struct definition *address_error;address_error552,21260
+struct definition *address_pending_unifications;address_pending_unifications555,21415
+struct definition *address_uvc;address_uvc556,21464
+struct definition *address_ucc;address_ucc557,21496
+static void classify_atom(565,21710
+#define MIN_MEM_CHUNK_SIZE 631,24009
+#define MAX(632,24041
+struct atom *new_atom_check(new_atom_check635,24102
+static BOOL prolog_atom_mode(703,25873
+static BOOL prolog_ciaolibdir(723,26275
+static struct definition *define_builtin(define_builtin730,26396
+static TAGGED deffunctor(744,26753
+struct definition *define_c_mod_predicate(define_c_mod_predicate751,26874
+void undefine_c_mod_predicate(803,28636
+static void unused_initialize_intrinsics(822,29315
+static void deffunction(860,30742
+static void deffunction_nobtin(872,31027
+static void define_functions(885,31284
+void init_kanji(939,33397
+void init_latin1(962,34057
+void init_streams(982,34598
+void init_locks(1000,35193
+void init_once(1026,35780
+void glb_init_each_time(1508,57225
+void local_init_each_time(1529,57566
+void init_each_time(1593,59503
+void init_streams_each_time(1601,59601
+void reinitialize(1610,59834
+
+initial.h,60
+ TAGGED atom_success;62,1958
+ TAGGED atom_failure;63,1980
+
+inout.c,1440
+BOOL code_class(39,901
+#define INC_COUNTS(51,1129
+void writechar(59,1312
+#define SAVE_XREGS(83,1769
+#define RESTORE_XREGS(92,1999
+#define REGS_TO_SAVE 101,2236
+#define PEEK 103,2314
+#define GET 104,2332
+#define GET1 105,2350
+#define EXITCOND(107,2369
+static int readchar(111,2521
+BOOL flush_output(211,5241
+BOOL flush_output1(223,5513
+BOOL getct(241,5885
+BOOL getct1(258,6254
+BOOL get(275,6650
+BOOL get2(290,6944
+BOOL get1(310,7330
+BOOL get12(327,7653
+BOOL peek(348,8065
+BOOL peek2(363,8362
+BOOL nl(383,8751
+BOOL nl1(393,8908
+BOOL put(409,9186
+BOOL put2(424,9474
+BOOL tab(445,9897
+BOOL tab2(459,10147
+BOOL skip(479,10518
+BOOL skip2(500,10953
+void print_string(530,11732
+void print_variable(559,12318
+void print_number(571,12649
+void print_atom(580,12826
+void display_term(626,13782
+BOOL prolog_display(687,15112
+BOOL prolog_display2(695,15242
+BOOL prolog_displayq(710,15519
+BOOL prolog_displayq2(718,15650
+BOOL prolog_clearerr(733,15928
+#define FASTRW_VERSION 750,16239
+#define FASTRW_MAX_VARS 751,16267
+#define SPACE_FACTOR 753,16297
+BOOL prolog_fast_read_in_c(761,16554
+#define CHECK_HEAP_SPACE 786,17322
+#define CHECK_HEAP_SPACE790,17472
+BOOL prolog_fast_read_in_c_aux(793,17505
+BOOL prolog_fast_write_in_c(907,20776
+void prolog_fast_write_in_c_aux(919,21029
+unsigned char sizeLZ(1001,23435
+void outLZ(1007,23572
+BOOL compressLZ(1017,23890
+BOOL inLZ(1064,25192
+BOOL copyLZ(1080,25677
+
+instrdefs.h,7737
+#define INITCALLQ 2,48
+#define INITCALL 3,68
+#define FIRSTCALLQ 4,87
+#define FIRSTCALL 5,108
+#define FIRSTCALL_1Q 6,128
+#define FIRSTCALL_1 7,151
+#define FIRSTCALL_2Q 8,173
+#define FIRSTCALL_2 9,196
+#define FIRSTCALL_3Q 10,218
+#define FIRSTCALL_3 11,241
+#define FIRSTCALL_4Q 12,263
+#define FIRSTCALL_4 13,287
+#define FIRSTCALL_5Q 14,310
+#define FIRSTCALL_5 15,334
+#define FIRSTCALL_6Q 16,357
+#define FIRSTCALL_6 17,381
+#define FIRSTCALL_7Q 18,404
+#define FIRSTCALL_7 19,428
+#define FIRSTCALL_8Q 20,451
+#define FIRSTCALL_8 21,475
+#define FIRSTCALL_NQ 22,498
+#define FIRSTCALL_N 23,522
+#define CALLQ 24,545
+#define CALL 25,562
+#define CALL_1Q 26,578
+#define CALL_1 27,597
+#define CALL_2Q 28,615
+#define CALL_2 29,634
+#define CALL_3Q 30,652
+#define CALL_3 31,671
+#define CALL_4Q 32,689
+#define CALL_4 33,708
+#define CALL_5Q 34,726
+#define CALL_5 35,745
+#define CALL_6Q 36,763
+#define CALL_6 37,782
+#define CALL_7Q 38,800
+#define CALL_7 39,819
+#define CALL_8Q 40,837
+#define CALL_8 41,856
+#define CALL_NQ 42,874
+#define CALL_N 43,893
+#define LASTCALLQ 44,911
+#define LASTCALL 45,932
+#define LASTCALL_1Q 46,952
+#define LASTCALL_1 47,975
+#define LASTCALL_2Q 48,997
+#define LASTCALL_2 49,1020
+#define LASTCALL_3Q 50,1042
+#define LASTCALL_3 51,1065
+#define LASTCALL_4Q 52,1087
+#define LASTCALL_4 53,1110
+#define LASTCALL_5Q 54,1132
+#define LASTCALL_5 55,1155
+#define LASTCALL_6Q 56,1177
+#define LASTCALL_6 57,1200
+#define LASTCALL_7Q 58,1222
+#define LASTCALL_7 59,1245
+#define LASTCALL_8Q 60,1267
+#define LASTCALL_8 61,1290
+#define LASTCALL_NQ 62,1312
+#define LASTCALL_N 63,1335
+#define EXECUTEQ 64,1357
+#define EXECUTE 65,1377
+#define PROCEED 66,1396
+#define NECK 67,1415
+#define NECK_PROCEED 68,1431
+#define FAIL 69,1455
+#define BRANCH 70,1471
+#define PUT_X_VOID 71,1489
+#define PUT_X_VARIABLE 72,1511
+#define PUT_X_VALUE 73,1537
+#define PUT_X_UNSAFE_VALUE 74,1560
+#define PUT_Y_FIRST_VARIABLE 75,1590
+#define PUT_Y_VARIABLE 76,1622
+#define PUT_Y_VALUE 77,1648
+#define PUT_Y_UNSAFE_VALUE 78,1671
+#define PUT_CONSTANTQ 79,1701
+#define PUT_CONSTANT 80,1726
+#define PUT_STRUCTUREQ 81,1750
+#define PUT_STRUCTURE 82,1776
+#define PUT_NIL 83,1801
+#define PUT_LIST 84,1820
+#define PUT_YFVAR_YVAR 85,1840
+#define PUT_YVAR_YVAR 86,1866
+#define PUT_XVAL_XVAL 87,1891
+#define PUT_YVAL_YVAL 88,1916
+#define PUT_YVAL_YUVAL 89,1941
+#define PUT_YUVAL_YVAL 90,1967
+#define PUT_YUVAL_YUVAL 91,1993
+#define GET_X_VARIABLE 92,2020
+#define GET_X_VALUE 93,2046
+#define GET_Y_FIRST_VARIABLE 94,2069
+#define GET_Y_VARIABLE 95,2101
+#define GET_Y_FIRST_VALUE 96,2127
+#define GET_Y_VALUE 97,2156
+#define GET_CONSTANTQ 98,2179
+#define GET_CONSTANT 99,2204
+#define GET_STRUCTUREQ 100,2228
+#define GET_STRUCTURE 101,2254
+#define GET_NIL 102,2279
+#define GET_LIST 103,2299
+#define GET_CONSTANT_X0Q 104,2320
+#define GET_CONSTANT_X0 105,2349
+#define GET_STRUCTURE_X0Q 106,2377
+#define GET_STRUCTURE_X0 107,2407
+#define GET_NIL_X0 108,2436
+#define GET_LIST_X0 109,2459
+#define GET_XVAR_XVAR 110,2483
+#define GET_YFVAR_YVAR 111,2509
+#define GET_YVAR_YVAR 112,2536
+#define GET_CONSTANT_NECK_PROCEEDQ 113,2562
+#define GET_CONSTANT_NECK_PROCEED 114,2601
+#define GET_NIL_NECK_PROCEED 115,2639
+#define UNIFY_VOID 116,2672
+#define UNIFY_VOID_1 117,2695
+#define UNIFY_VOID_2 118,2720
+#define UNIFY_VOID_3 119,2745
+#define UNIFY_VOID_4 120,2770
+#define UNIFY_X_VARIABLE 121,2795
+#define UNIFY_X_VALUE 122,2824
+#define UNIFY_X_LOCAL_VALUE 123,2850
+#define UNIFY_Y_FIRST_VARIABLE 124,2882
+#define UNIFY_Y_VARIABLE 125,2917
+#define UNIFY_Y_FIRST_VALUE 126,2946
+#define UNIFY_Y_VALUE 127,2978
+#define UNIFY_Y_LOCAL_VALUE 128,3004
+#define UNIFY_CONSTANTQ 129,3036
+#define UNIFY_CONSTANT 130,3064
+#define UNIFY_STRUCTUREQ 131,3091
+#define UNIFY_STRUCTURE 132,3120
+#define UNIFY_NIL 133,3148
+#define UNIFY_LIST 134,3170
+#define UNIFY_CONSTANT_NECK_PROCEEDQ 135,3193
+#define UNIFY_CONSTANT_NECK_PROCEED 136,3234
+#define UNIFY_NIL_NECK_PROCEED 137,3274
+#define U2_VOID_XVAR 138,3309
+#define U2_VOID_XVAL 139,3334
+#define U2_VOID_XLVAL 140,3359
+#define U2_VOID_YFVAR 141,3385
+#define U2_VOID_YVAR 142,3411
+#define U2_VOID_YFVAL 143,3436
+#define U2_VOID_YVAL 144,3462
+#define U2_VOID_YLVAL 145,3487
+#define U2_XVAR_VOID 146,3513
+#define U2_XVAR_XVAR 147,3538
+#define U2_XVAR_XVAL 148,3563
+#define U2_XVAR_XLVAL 149,3588
+#define U2_XVAR_YFVAR 150,3614
+#define U2_XVAR_YVAR 151,3640
+#define U2_XVAR_YFVAL 152,3665
+#define U2_XVAR_YVAL 153,3691
+#define U2_XVAR_YLVAL 154,3716
+#define U2_YFVAR_VOID 155,3742
+#define U2_YVAR_VOID 156,3768
+#define U2_YFVAR_XVAR 157,3793
+#define U2_YVAR_XVAR 158,3819
+#define U2_YFVAR_YVAR 159,3844
+#define U2_YVAR_YVAR 160,3870
+#define U2_YFVAR_XVAL 161,3895
+#define U2_YVAR_XVAL 162,3921
+#define U2_YFVAR_XLVAL 163,3946
+#define U2_YVAR_XLVAL 164,3973
+#define U2_YFVAR_YVAL 165,3999
+#define U2_YVAR_YVAL 166,4025
+#define U2_YFVAR_YLVAL 167,4050
+#define U2_YVAR_YLVAL 168,4077
+#define U2_XVAL_VOID 169,4103
+#define U2_XLVAL_VOID 170,4128
+#define U2_XVAL_XVAR 171,4154
+#define U2_XLVAL_XVAR 172,4179
+#define U2_XVAL_YFVAR 173,4205
+#define U2_XLVAL_YFVAR 174,4231
+#define U2_XVAL_YVAR 175,4258
+#define U2_XLVAL_YVAR 176,4283
+#define U2_XVAL_XVAL 177,4309
+#define U2_XLVAL_XVAL 178,4334
+#define U2_XVAL_XLVAL 179,4360
+#define U2_XLVAL_XLVAL 180,4386
+#define U2_XVAL_YFVAL 181,4413
+#define U2_XLVAL_YFVAL 182,4439
+#define U2_XVAL_YVAL 183,4466
+#define U2_XLVAL_YVAL 184,4491
+#define U2_XVAL_YLVAL 185,4517
+#define U2_XLVAL_YLVAL 186,4543
+#define U2_YFVAL_VOID 187,4570
+#define U2_YVAL_VOID 188,4596
+#define U2_YLVAL_VOID 189,4621
+#define U2_YFVAL_XVAR 190,4647
+#define U2_YVAL_XVAR 191,4673
+#define U2_YLVAL_XVAR 192,4698
+#define U2_YVAL_YVAR 193,4724
+#define U2_YLVAL_YVAR 194,4749
+#define U2_YFVAL_XVAL 195,4775
+#define U2_YVAL_XVAL 196,4801
+#define U2_YLVAL_XVAL 197,4826
+#define U2_YFVAL_XLVAL 198,4852
+#define U2_YVAL_XLVAL 199,4879
+#define U2_YLVAL_XLVAL 200,4905
+#define U2_YFVAL_YFVAL 201,4932
+#define U2_YVAL_YFVAL 202,4959
+#define U2_YLVAL_YFVAL 203,4985
+#define U2_YFVAL_YVAL 204,5012
+#define U2_YVAL_YVAL 205,5038
+#define U2_YLVAL_YVAL 206,5063
+#define U2_YFVAL_YLVAL 207,5089
+#define U2_YVAL_YLVAL 208,5116
+#define U2_YLVAL_YLVAL 209,5142
+#define CUTB_X 210,5169
+#define CUTF 211,5188
+#define CUTB_X_NECK 212,5205
+#define CUTB_NECK 213,5229
+#define CUTB_X_NECK_PROCEED 214,5251
+#define CUTB_NECK_PROCEED 215,5283
+#define CUTE_X 216,5313
+#define CUTF_X 217,5332
+#define CUTE_X_NECK 218,5351
+#define CUTE_NECK 219,5375
+#define CUT_Y 220,5397
+#define CHOICE_X 221,5415
+#define CHOICE_YF 222,5436
+#define CHOICE_Y 223,5458
+#define FUNCTION_1Q 224,5479
+#define FUNCTION_1 225,5503
+#define FUNCTION_2Q 226,5526
+#define FUNCTION_2 227,5550
+#define BUILTIN_1Q 228,5573
+#define BUILTIN_1 229,5596
+#define BUILTIN_2Q 230,5618
+#define BUILTIN_2 231,5641
+#define BUILTIN_3Q 232,5663
+#define BUILTIN_3 233,5686
+#define RETRY_INSTANCE 234,5708
+#define KONTINUE 235,5735
+#define LEAVE 236,5756
+#define EXIT_TOPLEVEL 237,5774
+#define DYNAMIC_NECK_PROCEED 238,5800
+#define RETRY_CQ 239,5833
+#define RETRY_C 240,5854
+#define HEAPMARGIN_CALLQ 241,5874
+#define HEAPMARGIN_CALL 242,5903
+#define GET_CONSTRAINT 243,5931
+#define BUMP_COUNTERQ 244,5958
+#define BUMP_COUNTER 245,5984
+#define COUNTED_NECKQ 246,6009
+#define COUNTED_NECK 247,6035
+#define PUT_LARGEQ 248,6060
+#define PUT_LARGE 249,6083
+#define GET_LARGEQ 250,6105
+#define GET_LARGE 251,6128
+#define GET_LARGE_X0Q 252,6150
+#define GET_LARGE_X0 253,6176
+#define UNIFY_LARGEQ 254,6201
+#define UNIFY_LARGE 255,6226
+#define INITTRUE 256,6250
+#define FIRSTTRUE_N 257,6271
+
+interrupt.c,176
+struct definition *int_address int_address24,514
+static void interrupt_h(28,593
+void control_c_normal(53,1227
+void enable_conditions(66,1433
+static void abortmsg(81,1835
+
+locks.c,560
+BOOL lock_is_unset_win32(26,629
+BOOL lock_is_unset(34,806
+BOOL prolog_lock_atom(52,1189
+BOOL prolog_unlock_atom(74,1729
+BOOL prolog_lock_atom_state(94,2220
+BOOL prolog_lock_atom_bin(126,3170
+BOOL prolog_unlock_atom_bin(142,3501
+BOOL prolog_unlock_predicate(163,4030
+BOOL prolog_lock_atom(197,5049
+BOOL prolog_lock_atom_state(200,5106
+BOOL prolog_unlock_atom(203,5169
+BOOL prolog_unlock_predicate(210,5356
+unsigned long int ops_counter 225,5629
+SLOCK ops_counter_l;226,5664
+unsigned long int get_inc_counter(228,5686
+void reset_counter(237,5888
+
+locks.h,3695
+#define _LOCKS_H_ 3,25
+#define GENERAL_LOCKS6,171
+#define NULL 9,213
+#define Init_slock(14,364
+#define Wait_Acquire_slock(15,396
+#define Release_slock(16,428
+#define Destroy_slock(17,460
+#define SLock_is_unset(18,492
+#define Init_lock(21,599
+#define Wait_Acquire_lock(22,630
+#define Release_lock(23,661
+#define Destroy_lock(24,692
+#define Lock_is_unset(25,723
+#define Init_Cond(28,779
+#define Cond_Var_Init(29,803
+#define Cond_Var_Wait(30,831
+#define Cond_Var_Broadcast(31,865
+#define Wait_Acquire_Cond_lock(32,898
+#define Release_Cond_lock(33,935
+#define Cond_Begin(34,967
+#define Broadcast_Cond(35,992
+#define Wait_For_Cond_End(36,1021
+#define Wait_For_Cond_Begin(37,1053
+#define Cond_Lock_is_unset(40,1118
+typedef char CONDITION;43,1165
+typedef char SLOCK;44,1242
+typedef char LOCK;45,1262
+#define USE_LOCKS49,1317
+#define HAVE_NATIVE_SLOCKS57,1691
+typedef volatile unsigned long int SLOCK_ST;65,1795
+} SLOCK;69,1908
+#define lock_offset 73,1944
+#define LockOffSet(74,2021
+#define LockOffSet(76,2146
+#   define aswap(83,2415
+#   define aswap(97,3122
+#   define asm_ll(109,3656
+#   define asm_sc(117,3860
+#  define aswap(125,4080
+#define mips_try_lock(131,4212
+# define mips_lock(133,4259
+#define Init_slock(146,4628
+#define Wait_Acquire_slock(160,5013
+#define Wait_Acquire_slock(162,5062
+#define Release_slock(168,5184
+#define Destroy_slock(169,5237
+#define SLock_is_unset(170,5317
+#define HAVE_LIB_LOCKS188,5967
+#define RELINQUISH_PROCESSOR 204,6396
+#define RELINQUISH_PROCESSOR 206,6446
+typedef pthread_mutex_t LOCK;209,6484
+#define Init_lock(211,6515
+#define Wait_Acquire_lock(212,6573
+#define Release_lock(213,6625
+#define Destroy_lock(214,6679
+#define Lock_is_unset(215,6734
+#define CONDITIONAL_VARS217,6782
+typedef pthread_cond_t COND_VAR;219,6808
+#define Cond_Var_Init(221,6842
+#define Cond_Var_Wait(222,6904
+#define Cond_Var_Broadcast(224,7031
+#define HAVE_LIB_LOCKS229,7199
+typedef CRITICAL_SECTION LOCK;237,7461
+#define Init_lock(239,7493
+#define Wait_Acquire_lock(240,7552
+#define Release_lock(241,7606
+#define Destroy_lock(242,7660
+#define Lock_is_unset(243,7715
+#define CONDITIONAL_VARS245,7769
+#define RELINQUISH_PROCESSOR246,7794
+typedef HANDLE COND_VAR;248,7824
+#define Cond_Var_Init(250,7850
+#define Cond_Var_Wait(255,8042
+#define Cond_Var_Broadcast(260,8234
+typedef SLOCK LOCK;269,8491
+#define Init_lock(271,8512
+#define Wait_Acquire_lock(272,8556
+#define Release_lock(273,8610
+#define Destroy_lock(274,8664
+#define Lock_is_unset(275,8718
+typedef LOCK SLOCK;283,8953
+#define Init_slock(285,8974
+#define Wait_Acquire_slock(286,9018
+#define Release_slock(287,9072
+#define Destroy_slock(288,9126
+#define SLock_is_unset(289,9180
+typedef SLOCK int;297,9384
+typedef LOCK  int;298,9403
+#define Init_slock(300,9423
+#define Wait_Acquire_slock(301,9455
+#define Release_slock(302,9487
+#define Destroy_slock(303,9519
+#define SLock_is_unset(304,9551
+#define Init_lock(306,9585
+#define Wait_Acquire_lock(307,9616
+#define Release_lock(308,9647
+#define Destroy_lock(309,9678
+#define Lock_is_unset(310,9709
+#define Wait_Acquire_Cond_lock(317,9893
+#define Release_Cond_lock(318,9964
+#define Wait_For_Cond_End(347,10619
+#define Cond_Lock_is_unset(348,10676
+#define Cond_Begin(349,10739
+#define Init_Cond(353,10826
+#define Wait_For_Cond_Begin(357,11054
+#define Broadcast_Cond(370,11712
+#define Init_Cond(376,11912
+#define Wait_For_Cond_Begin(377,11962
+#define Broadcast_Cond(389,12702
+typedef struct conditionstruct 393,12764
+} CONDITION;398,12879
+#define GET_INC_COUNTER 407,13145
+#define RESET_COUNTER 408,13187
+#define GET_INC_COUNTER 410,13231
+#define RESET_COUNTER 411,13257
+
+main.bak,189
+#define USAGE_STRING 34,675
+BOOL interactive 36,755
+void load_ql_files(92,2154
+struct worker *create_and_init_wam(create_and_init_wam118,2874
+int main(138,3401
+void at_exit(312,8473
+
+main.c,16
+int main(9,278
+
+main.h,224
+int debug_c 7,67
+# define MAXPATHLEN 11,117
+char *pathname=pathname14,150
+char source_path[source_path16,251
+int prolog_force_interactive 17,327
+char *library_directory library_directory19,405
+# define X_OK 34,871
+
+main_exec.c,146
+BOOL interactive 17,332
+void ENG_init(19,359
+void ENG_load_internal_ql(120,2920
+void ENG_start_user_ql(141,3394
+void ENG_kick_start(148,3462
+
+metaengine,17
+INSTENGINE=2,10
+
+metaengine.pl~,121
+	write_string_to_file('wamread.c', String)15,342
+	write_string_to_file('wamwrite.c', String2)17,414
+	OutStream 22,577
+
+misc.c,1285
+BOOL set_glv(35,810
+BOOL get_glv(56,1224
+BOOL set_glv(75,1598
+BOOL get_glv(81,1698
+int compare_help(105,2233
+static int compare_aux(130,2646
+static int compare_args_aux(247,5345
+BOOL prolog_internal_call(309,7095
+BOOL prolog_current_executable(325,7421
+BOOL prompt(333,7550
+BOOL unknown(341,7671
+BOOL metachoice(350,7796
+BOOL metacut(358,7897
+BOOL retry_cut(369,8076
+BOOL setarg(404,8892
+BOOL undo(489,10879
+BOOL frozen(502,11177
+BOOL defrost(515,11464
+BOOL debugger_state(538,11803
+BOOL debugger_mode(567,12372
+BOOL compiling(657,14187
+BOOL ferror_flag(674,14450
+BOOL quiet_flag(708,15051
+BOOL spypoint(716,15184
+BOOL prolog_radix(738,15636
+BOOL constraint_list(747,15783
+int find_constraints(780,16450
+BOOL prolog_eq(833,17702
+BOOL prolog_dif(847,17984
+BOOL large_data(977,20781
+BOOL prolog_interpreted_clause(990,21045
+struct int_info *current_clauses_aux(current_clauses_aux1019,21753
+BOOL insertz_aux(1034,22061
+BOOL prolog_erase_atom(1081,23224
+#define NEW_ATOM_LEN 1116,24145
+#define NUM_OF_CHARS 1117,24169
+static char allowed_char_table[allowed_char_table1118,24193
+static char new_atom_str[new_atom_str1120,24310
+#define FIRST_CHAR 1121,24356
+#define LAST_CHAR 1122,24377
+unsigned int x 1124,24414
+BOOL prolog_new_atom(1126,24439
+
+nondet.c,1684
+typedef enum {BLOCK,BLOCK28,585
+typedef enum {BLOCK, NO_BLOCK}NO_BLOCK28,585
+typedef enum {BLOCK, NO_BLOCK} BlockingType;28,585
+#define E	69,2371
+#define SetE(70,2404
+void pop_frame(76,2642
+void push_frame(96,3008
+void pop_choicept(114,3351
+void push_choicept(123,3514
+BOOL nd_atom_concat(152,4202
+BOOL current_atom(184,4858
+BOOL nd_current_atom(209,5489
+BOOL current_clauses(259,6895
+static BOOL current_stream_data(284,7529
+BOOL current_stream(308,8003
+BOOL nd_current_stream(333,8701
+BOOL prolog_repeat(355,9363
+BOOL nd_repeat(362,9461
+BOOL current_predicate(373,9717
+BOOL nd_current_predicate(395,10280
+static unsigned int predicate_property_bits(431,11314
+BOOL predicate_property(445,11645
+BOOL nd_predicate_property(467,12234
+struct instance *current_instance(current_instance510,13639
+static struct instance *current_instance_noconc(current_instance_noconc539,14379
+BOOL first_instance(635,17443
+BOOL next_instance(660,18114
+BOOL current_key(705,19352
+BOOL close_predicate(789,22025
+BOOL open_predicate(802,22321
+BOOL close_predicate(816,22693
+BOOL open_predicate(822,22753
+static struct instance *current_instance_conc(current_instance_conc853,23913
+static BOOL wait_for_an_instance_pointer(976,28237
+static struct instance *first_possible_instance(first_possible_instance1012,29447
+BOOL next_instance_conc(1071,31377
+void jump_to_next_instance(1198,35967
+InstanceHandle *make_handle_to(make_handle_to1232,36965
+void remove_handle(1258,37972
+static void change_handle_to_instance(1278,38445
+static void link_handle(1298,39061
+static void unlink_handle(1334,40393
+void move_queue(1376,41754
+void remove_link_chains(1430,43419
+
+nondet_defs.h,98
+typedef enum {X5,X56,160
+typedef enum {X5, X2}X26,160
+typedef enum {X5, X2} WhichChain;6,160
+
+objareas.c,424
+BOOL prolog_purge(27,609
+#define InstOrNull(53,1392
+BOOL prolog_erase(55,1453
+BOOL prolog_ptr_ref(161,5249
+BOOL inserta(204,6361
+BOOL insertz(298,9224
+int compile_large(397,12149
+BOOL make_bytecode_object(410,12391
+struct instance *active_instance(active_instance581,17497
+void clock_overflow(669,19919
+static void relocate_table_clocks(718,21365
+void relocate_clocks(734,21766
+void expunge_instance(759,22209
+
+objareas.h,1272
+#define CACHE_INCREMENTAL_CLAUSE_INSERTION8,253
+typedef unsigned short int CLOCK;10,297
+#define ACTIVE_INSTANCE(13,333
+#define ACTIVE_INSTANCE_conc(21,562
+#define NumberOfCounters(30,815
+struct emul_info 38,1066
+typedef struct instance_handle 55,1712
+} InstanceHandle;60,2009
+struct instance 74,2642
+typedef enum {DYNAMIC,DYNAMIC95,3349
+typedef enum {DYNAMIC, CONC_OPEN,95,3349
+typedef enum {DYNAMIC, CONC_OPEN, CONC_CLOSED}CONC_CLOSED95,3349
+typedef enum {DYNAMIC, CONC_OPEN, CONC_CLOSED} Behavior;95,3349
+struct int_info 97,3407
+struct und_info 117,3907
+typedef BOOL   (*CInfo)CInfo121,3943
+typedef TAGGED (*TInfo)TInfo122,3970
+struct stream_node 125,4075
+struct atom 145,4633
+struct try_node 169,5418
+#define ArityToOffset(182,5992
+#define OffsetToArity(184,6074
+#define LOG_SWITCH_KEY 202,6536
+#define SwitchSize(205,6563
+#define SizeToMask(206,6618
+struct sw_on_key_node 212,6823
+struct sw_on_key 240,8091
+struct incore_info 252,8339
+#define SetEnterInstr(264,8811
+union definfo 274,9036
+struct definition 287,9227
+#define DEF_SIBLING(313,10281
+struct statistics 321,10525
+struct c_code_info 347,11408
+#define INCR_COUNTER(352,11472
+#define INCR_ENTRY_COUNTER(353,11509
+struct other_stuff 357,11567
+struct qlstream 365,11727
+
+objareas.h~,1272
+#define CACHE_INCREMENTAL_CLAUSE_INSERTION8,253
+typedef unsigned short int CLOCK;10,297
+#define ACTIVE_INSTANCE(13,333
+#define ACTIVE_INSTANCE_conc(21,562
+#define NumberOfCounters(30,815
+struct emul_info 38,1066
+typedef struct instance_handle 55,1712
+} InstanceHandle;60,2009
+struct instance 74,2642
+typedef enum {DYNAMIC,DYNAMIC95,3349
+typedef enum {DYNAMIC, CONC_OPEN,95,3349
+typedef enum {DYNAMIC, CONC_OPEN, CONC_CLOSED}CONC_CLOSED95,3349
+typedef enum {DYNAMIC, CONC_OPEN, CONC_CLOSED} Behavior;95,3349
+struct int_info 97,3407
+struct und_info 117,3907
+typedef BOOL   (*CInfo)CInfo121,3943
+typedef TAGGED (*TInfo)TInfo122,3970
+struct stream_node 125,4075
+struct atom 145,4633
+struct try_node 169,5418
+#define ArityToOffset(182,5992
+#define OffsetToArity(184,6074
+#define LOG_SWITCH_KEY 202,6536
+#define SwitchSize(205,6563
+#define SizeToMask(206,6618
+struct sw_on_key_node 212,6823
+struct sw_on_key 240,8091
+struct incore_info 252,8339
+#define SetEnterInstr(264,8811
+union definfo 274,9036
+struct definition 287,9227
+#define DEF_SIBLING(313,10281
+struct statistics 321,10525
+struct c_code_info 344,11327
+#define INCR_COUNTER(349,11391
+#define INCR_ENTRY_COUNTER(350,11428
+struct other_stuff 354,11486
+struct qlstream 362,11646
+
+own_malloc_bin.c,1393
+#define TRUE 27,629
+#define FALSE 28,644
+typedef unsigned long int TAGGED;29,660
+typedef int BOOL;30,737
+#define MIN_MEM_ALLOC 34,791
+#define ALIGN 37,876
+#define TW_TO_CHARS(38,953
+#define CHARS_TO_TW(39,988
+static int min_mem_alloc 41,1069
+struct mem_block_str 48,1366
+typedef struct mem_block_str MEM_BLOCK;57,1739
+#define HEADER_SIZE 59,1780
+static MEM_BLOCK *block_list block_list61,1840
+struct block_tree 63,1900
+typedef struct block_tree BLOCK_TREE;70,2036
+static BLOCK_TREE *free_blocks_tree free_blocks_tree74,2101
+static BLOCK_TREE *disposed_tree_nodes disposed_tree_nodes75,2145
+static BLOCK_TREE *search_free_block(search_free_block100,3184
+static void insert_free_block(142,4190
+static void remove_free_block(188,5531
+void change_free_block(293,8994
+static void test_tree(303,9187
+static void test(314,9368
+BLOCK_TREE *create_new_node(create_new_node342,10213
+void add_block_to_node(366,10872
+void remove_block_from_node(379,11139
+static void insert_block(397,11547
+static TAGGED *reserve_block(reserve_block412,12027
+static MEM_BLOCK *create_new_block(create_new_block443,13101
+static MEM_BLOCK *find_mem_block(find_mem_block467,13708
+static void dealloc_block(487,14144
+void dump_blocks(513,14936
+#define ADJUST_BLOCK(532,15351
+TAGGED *own_malloc(own_malloc534,15425
+void own_free(571,16378
+TAGGED *own_realloc(own_realloc590,16937
+
+own_malloc_defs.h,294
+#define USE_OWN_MALLOC_LINUX 2,77
+#  define USE_OWN_MALLOC17,838
+#  define Malloc(18,863
+#  define Free(19,901
+#  define Realloc(20,937
+#  define Malloc(22,985
+#  define Free(23,1019
+#  define Realloc(24,1059
+#  define Malloc(30,1192
+#  define Free(31,1224
+#  define Realloc(32,1252
+
+own_malloc_linear.c,954
+#define TRUE 31,639
+#define FALSE 32,654
+typedef unsigned long int TAGGED;33,670
+typedef int BOOL;34,747
+#define MIN_MEM_ALLOC 38,801
+#define ALIGN 41,886
+#define TW_TO_CHARS(42,963
+#define CHARS_TO_TW(43,998
+static int min_mem_alloc 45,1079
+struct mem_block_str 52,1362
+typedef struct mem_block_str MEM_BLOCK;60,1702
+#define HEADER_SIZE 62,1743
+static MEM_BLOCK *block_list block_list64,1803
+static MEM_BLOCK *free_block_list free_block_list65,1840
+#define find_mem_block(77,2329
+static MEM_BLOCK *locate_block(locate_block82,2513
+static TAGGED *reserve_block(reserve_block115,3353
+static void insert_block(147,4321
+static void insert_free_block(162,4700
+static void remove_free_block(178,5074
+static MEM_BLOCK *create_new_block(create_new_block197,5561
+static void dealloc_block(221,6182
+#define ADJUST_BLOCK(249,7003
+TAGGED *own_malloc(own_malloc251,7077
+void own_free(287,7973
+TAGGED *own_realloc(own_realloc306,8532
+
+predtyp.h,881
+#define ENTER_COMPACTCODE 7,189
+#define ENTER_COMPACTCODE_INDEXED 8,217
+#define ENTER_PROFILEDCODE 9,253
+#define ENTER_PROFILEDCODE_INDEXED 10,282
+#define ENTER_FASTCODE 11,319
+#define ENTER_FASTCODE_INDEXED 12,344
+#define ENTER_UNDEFINED 13,377
+#define ENTER_C 14,403
+#define ENTER_INTERPRETED 15,421
+#define BUILTIN_ABORT 16,449
+#define BUILTIN_APPLY 17,473
+#define BUILTIN_CALL 18,498
+#define BUILTIN_SYSCALL 19,522
+#define BUILTIN_NODEBUGCALL 20,549
+#define BUILTIN_TRUE 21,580
+#define BUILTIN_FAIL 22,604
+#define BUILTIN_CURRENT_INSTANCE 23,628
+#define BUILTIN_RESTORE 24,664
+#define BUILTIN_COMPILE_TERM 25,691
+#define BUILTIN_GELER 26,723
+#define BUILTIN_INSTANCE 27,748
+#define BUILTIN_DIF 28,776
+#define SPYPOINT 29,799
+#define WAITPOINT 30,819
+#define BREAKPOINT 31,840
+#define TABLE 33,863
+#define EMUL_INFO 34,928
+#define OTHER_STUFF 35,949
+
+profile.c,228
+ENG_FLT time_last_addition;18,332
+struct definition *last_called_predicate last_called_predicate19,360
+void add_to_profiling(21,410
+void dump_profile(39,796
+static int compare_times(99,2758
+char * predicate_type(114,3103
+
+prolog_tasks.c,384
+int killing_threads 23,441
+BOOL prolog_eng_kill(35,945
+BOOL prolog_eng_killothers(65,1609
+BOOL prolog_eng_wait(126,3244
+BOOL prolog_eng_self(165,4386
+BOOL prolog_eng_status(182,4759
+#define NOT_CALLABLE(190,4848
+#define ENSURE_CALLABLE(192,4928
+BOOL prolog_eng_release(201,5233
+BOOL prolog_eng_call(221,5635
+BOOL prolog_eng_backtrack(292,8017
+BOOL prolog_eng_cut(352,9868
+
+qget.c,235
+#define WORKSTRINGLEN 25,583
+static char workstring[workstring30,711
+int getshort(49,1067
+ENG_INT getlong(67,1394
+TAGGED getlarge(82,1665
+ENG_FLT getdouble(113,2317
+char *getstring(getstring127,2586
+void getbytecode(143,2932
+
+qinsert.c,389
+#define QL(28,731
+#define QLCHECK(29,756
+struct qlinfo 32,827
+#define GETC(64,1802
+static int ql_getc(66,1830
+static int qlgetshort(82,2071
+static ENG_INT qlgetlong(94,2228
+static char *qlgetstring(qlgetstring105,2433
+static TAGGED qlgetlarge(115,2585
+static ENG_FLT qlgetdouble(148,3307
+void qlgetbytecode(159,3513
+static void ql_load_dbnode(275,6216
+BOOL qlinsert(305,6981
+
+qinstrdefs.h,508
+#define ISCOMPRESSED 5,139
+#define ISSCRIPT 6,176
+#define ENSURE_SPACE 10,250
+#define LOAD_ATOM 11,274
+#define LOAD_FUNCTOR 12,295
+#define LOAD_NUMBER_S 13,319
+#define LOAD_NUMBER_L 14,344
+#define LOAD_NUMBER_F 15,369
+#define LOAD_VARIABLE 17,395
+#define LOAD_NIL 18,420
+#define LOAD_LIST 19,440
+#define LOAD_TUPLE 20,461
+#define LOAD_ARGUMENT 21,483
+#define LOAD_DBNODE 22,508
+#define RETURN 24,532
+#define RELOC_POINTER 26,551
+#define RELOC_EMUL_ENTRY 27,576
+#define RELOC_COUNTER 28,604
+
+qread.c,1162
+#define QL(27,536
+#define QLCHECK(28,561
+struct qlinfo 31,632
+#define QLBFSIZE 40,759
+int  qlbuffidx,41,781
+int  qlbuffidx, qlbuffend;41,781
+unsigned char qlbuff[qlbuff42,808
+int buffered_input(52,1205
+int  Last,69,1600
+int  Last, PrefixSize,69,1600
+int  Last, PrefixSize, Size[Size69,1600
+int  Last, PrefixSize, Size[4096], Buffer[Buffer69,1600
+int  Last, PrefixSize, Size[4096], Buffer[3840], BufferP;69,1600
+char *Dict[Dict70,1658
+char *Dict[4096], *First,First70,1658
+char *Dict[4096], *First, Vault[Vault70,1658
+char *Dict[4096], *First, Vault[200000], compressed,70,1658
+char *Dict[4096], *First, Vault[200000], compressed, remaining;70,1658
+#define InLZ(79,2187
+int readLZ(85,2418
+TAGGED *qlarray=qlarray129,3576
+int qloffset=130,3653
+struct qlinfo *qlstack=qlstack131,3730
+BOOL push_qlinfo(133,3808
+BOOL pop_qlinfo(158,4314
+void expand_qload(173,4625
+struct emul_info *latest_bytecode;latest_bytecode190,5008
+int latest_bytecode_size;191,5085
+static void load_dbnode(193,5163
+void reloc_pointer(224,5937
+void reloc_counter(240,6255
+void reloc_emul_entry(265,6931
+BOOL qread1(281,7222
+BOOL prolog_qread(405,9761
+
+qread_defs.h,262
+#define BUFFERED_PO17,521
+#define ALLOW_COMPRESSED_CODE21,605
+# define GETC(25,672
+#  define GETC_LZ(32,826
+#  define GETC(34,872
+#  define UNGETC(37,939
+#  define UNGETC(41,1072
+#  define GETC_LZ(45,1160
+#  define GETC(47,1196
+# define UNGETC(49,1230
+
+registers.c,85
+int reg_bank_size 5,93
+char **prolog_argv;prolog_argv7,174
+int prolog_argc;8,251
+
+registers.h,2551
+#define SIZEOFWORKER(5,147
+#define REGISTER 13,354
+#define Arg 17,406
+#define Argdecl 18,420
+#define WAMENV 20,465
+#define WToX0	23,499
+#define Xb(24,557
+#define X(25,619
+#define X2_CHN 41,1194
+#define ClockSlot 42,1211
+#define X5_CHN 43,1231
+#define RootArg 44,1248
+#define InvocationAttr 45,1266
+#define PrevDynChpt 46,1291
+#define DynamicPreserved 47,1313
+#define BLOCKIDX 49,1342
+#define EXECIDX 50,1366
+#define SET_BLOCKING(52,1391
+#define SET_NONBLOCKING(53,1444
+#define IS_BLOCKING(54,1501
+#define IS_NONBLOCKING(55,1545
+#define SET_EXECUTING(57,1594
+#define SET_NONEXECUTING(58,1647
+#define EXECUTING(59,1704
+#define NONEXECUTING(60,1745
+#define InitialNode 64,1818
+#define InitialValueTrail 67,1952
+#define EToY0	69,2023
+#define Yb(70,2080
+#define Y(71,2142
+#define X_OffsetToIndex(74,2211
+#define Y_OffsetToIndex(75,2265
+#define FrameSizeToCount(76,2319
+#define Heap_Start 82,2446
+#define Heap_End 83,2488
+#define Heap_Warn_Soft 84,2532
+#define Heap_Warn 85,2578
+#define Int_Heap_Warn 86,2619
+#define Stack_Start 87,2664
+#define Stack_End 88,2707
+#define Stack_Warn 89,2748
+#define Choice_End 90,2790
+#define Choice_Start 91,2832
+#define USE_TAGGED_CHOICE_START94,2878
+#define Tagged_Choice_Start 97,2948
+#define Trail_Start 100,3007
+#define Trail_End 101,3050
+#define Input_Stream_Ptr 106,3138
+#define Output_Stream_Ptr 107,3195
+#define Error_Stream_Ptr 108,3253
+#define Numstack_Top 113,3372
+#define Numstack_End 114,3416
+#define Numstack_First 115,3460
+#define Numstack_Last 116,3506
+#define Current_Debugger_State 121,3614
+#define Current_Debugger_Mode 122,3686
+#define Atom_Buffer 127,3832
+#define Atom_Buffer_Length 128,3876
+#define Last_Insn 133,3953
+#define Expanded_Worker 137,4041
+#define Next_Worker(139,4093
+#define Stop_This_Goal(141,4141
+#define GLOBVAR(145,4218
+#define Gc_Total_Grey 149,4334
+#define Gcgrey 150,4384
+#define Total_Found 151,4427
+#define Cvas_Found 152,4479
+#define Gc_Aux_Node 153,4531
+#define Gc_Choice_Start 154,4583
+#define Gc_Trail_Start 155,4635
+#define Gc_Heap_Start 156,4687
+#define Gc_Stack_Start 157,4737
+#define TopConcChpt 162,4848
+#define GlobReg(166,4920
+#define ErrArgNo 170,4997
+#define Culprit 171,5032
+#define ComputeA(175,5129
+#define NewShadowregs(183,5330
+#define SetShadowregs(189,5448
+#define SaveGtop(195,5585
+#define RestoreGtop(198,5647
+#define SaveLtop(201,5714
+#define RestoreLtop(204,5776
+#define FrameSize(207,5841
+#define LOffset	210,5915
+#define SetEvent	215,5991
+#define TestEvent	216,6056
+
+stacks.c,440
+BOOL stack_shift_usage(31,573
+BOOL termheap_usage(46,975
+BOOL envstack_usage(60,1337
+BOOL choice_usage(76,1729
+BOOL trail_usage(90,2086
+void explicit_heap_overflow(108,2528
+static void calculate_segment_node(163,4044
+void choice_overflow(177,4396
+void stack_overflow(297,8414
+static BOOL gcexplicit 392,11137
+BOOL gc_start(395,11217
+void heap_overflow(405,11407
+void collect_goals_from_trail(562,16100
+void trail_gc(624,17339
+
+stacks.c.~1~,440
+BOOL stack_shift_usage(31,573
+BOOL termheap_usage(46,975
+BOOL envstack_usage(60,1337
+BOOL choice_usage(76,1729
+BOOL trail_usage(90,2086
+void explicit_heap_overflow(108,2528
+static void calculate_segment_node(163,4044
+void choice_overflow(177,4396
+void stack_overflow(297,8384
+static BOOL gcexplicit 392,11107
+BOOL gc_start(395,11187
+void heap_overflow(405,11377
+void collect_goals_from_trail(561,16004
+void trail_gc(623,17243
+
+stacks.c.~2~,440
+BOOL stack_shift_usage(31,573
+BOOL termheap_usage(46,975
+BOOL envstack_usage(60,1337
+BOOL choice_usage(76,1729
+BOOL trail_usage(90,2086
+void explicit_heap_overflow(108,2528
+static void calculate_segment_node(163,4044
+void choice_overflow(177,4396
+void stack_overflow(297,8394
+static BOOL gcexplicit 392,11117
+BOOL gc_start(395,11197
+void heap_overflow(405,11387
+void collect_goals_from_trail(561,16014
+void trail_gc(623,17253
+
+stacks.c.~3~,440
+BOOL stack_shift_usage(31,573
+BOOL termheap_usage(46,975
+BOOL envstack_usage(60,1337
+BOOL choice_usage(76,1729
+BOOL trail_usage(90,2086
+void explicit_heap_overflow(108,2528
+static void calculate_segment_node(163,4044
+void choice_overflow(177,4396
+void stack_overflow(297,8414
+static BOOL gcexplicit 392,11137
+BOOL gc_start(395,11217
+void heap_overflow(405,11407
+void collect_goals_from_trail(561,16034
+void trail_gc(623,17273
+
+stacks.c~,440
+BOOL stack_shift_usage(31,573
+BOOL termheap_usage(46,975
+BOOL envstack_usage(60,1337
+BOOL choice_usage(76,1729
+BOOL trail_usage(90,2086
+void explicit_heap_overflow(108,2528
+static void calculate_segment_node(163,4044
+void choice_overflow(177,4396
+void stack_overflow(297,8384
+static BOOL gcexplicit 392,11107
+BOOL gc_start(395,11187
+void heap_overflow(405,11377
+void collect_goals_from_trail(561,16004
+void trail_gc(623,17243
+
+start.c,276
+#define USAGE_STRING 36,742
+#define SUBDIR_WINDOWS_BIN 38,822
+BOOL interactive 40,863
+char emulatorlength[emulatorlength41,889
+void load_ql_files(97,2336
+static void open_emulator(115,2748
+int start(153,3596
+int start_prolog_program(439,12859
+void at_exit(452,13088
+
+start.c~,276
+#define USAGE_STRING 35,717
+#define SUBDIR_WINDOWS_BIN 37,797
+BOOL interactive 39,838
+char emulatorlength[emulatorlength40,864
+void load_ql_files(96,2311
+static void open_emulator(114,2723
+int start(152,3571
+int start_prolog_program(438,12834
+void at_exit(451,13063
+
+startgoal.c,122
+JMP_BUF abort_env;32,660
+void firstgoal(35,739
+THREAD_RES_T startgoal(78,2008
+THREAD_RES_T make_backtracking(159,4923
+
+startgoal.c~,122
+JMP_BUF abort_env;32,660
+void firstgoal(35,739
+THREAD_RES_T startgoal(77,1940
+THREAD_RES_T make_backtracking(154,4771
+
+streams.c,825
+#  define MAXPATHLEN 20,365
+#  define MAXPATHLEN 22,402
+#define ENG_NOFILES 26,444
+BOOL prolog_bootversion(44,871
+BOOL is_var_or_alias_or_stream(76,1623
+BOOL prolog_open(96,2079
+    STRANGE_SOURCE_SINK,104,2218
+    INEXISTENT_SOURCE_SINK,105,2243
+    CANNOT_OPEN,106,2271
+    SYS_ERROR,107,2288
+    FINISHED_RESOURCES108,2303
+BOOL prolog_close(191,4672
+BOOL prolog_unix_popen(247,6271
+void ENG_perror(269,6698
+#  define sys_errlist 274,6753
+BOOL prolog_current_input(294,7397
+BOOL prolog_set_input(306,7646
+BOOL prolog_current_output(325,7986
+BOOL prolog_set_output(337,8237
+BOOL prolog_replace_stream(359,8730
+BOOL prolog_get_stream(393,9619
+BOOL prolog_current_error(415,10158
+BOOL prolog_stream_code(436,10766
+BOOL character_count(474,11754
+BOOL line_position(490,12065
+BOOL line_count(506,12394
+
+support.c,1577
+void failc(44,1491
+void trail_push_check(58,1849
+static struct sw_on_key_node *atom_gethash(atom_gethash73,2255
+TAGGED init_atom_check(121,3484
+TAGGED make_large(262,7787
+#define NumstackBlockSize(295,8459
+void numstack_init(297,8518
+static void numstack_overflow(310,8763
+TAGGED bn_call(335,9389
+TAGGED make_integer_check(397,10867
+TAGGED make_float_check(432,11564
+TAGGED make_integer(467,12273
+TAGGED make_float(481,12508
+struct stream_node *insert_new_stream(insert_new_stream505,12989
+struct stream_node *new_stream(new_stream517,13339
+static int file_is_tty(535,13762
+void update_stream(545,13945
+void update_std_streams(560,14277
+void update_std_streams(576,14671
+struct definition *new_functor(new_functor595,15262
+void expand_sw_on_key(625,16014
+void add_definition(654,16723
+struct definition *insert_definition(insert_definition667,17002
+TAGGED make_structure(702,17947
+struct definition *find_definition(find_definition727,18447
+struct definition *parse_definition(parse_definition756,19058
+static struct definition **find_subdef_chain(find_subdef_chain769,19331
+static struct definition *parse_1_definition(parse_1_definition794,20023
+BOOL cunify_args(853,21607
+static BOOL cunify_args_aux(876,22084
+BOOL cunify(936,23642
+static BOOL cunify_aux(958,24032
+ENG_INT get_integer(1065,26073
+ENG_FLT get_float(1076,26267
+TAGGED ptr_to_stream_noalias(1111,26965
+TAGGED ptr_to_stream(1132,27457
+struct stream_node *stream_to_ptr(stream_to_ptr1154,28017
+struct stream_node *stream_to_ptr_check(stream_to_ptr_check1194,28990
+
+support.c.new,1575
+void failc(42,1446
+static struct sw_on_key_node *atom_gethash(atom_gethash60,1911
+TAGGED init_atom_check(108,3140
+TAGGED make_large(249,7443
+#define NumstackBlockSize(282,8115
+void numstack_init(284,8174
+static void numstack_overflow(297,8419
+TAGGED bn_call(322,9045
+TAGGED make_integer_check(384,10523
+TAGGED make_float_check(419,11220
+TAGGED make_integer(454,11929
+TAGGED make_float(468,12164
+struct stream_node *insert_new_stream(insert_new_stream492,12645
+struct stream_node *new_stream(new_stream504,12995
+static int file_is_tty(521,13393
+void update_stream(531,13576
+void update_std_streams(546,13908
+void update_std_streams(562,14302
+struct definition *new_functor(new_functor581,14893
+void expand_sw_on_key(611,15645
+void add_definition(640,16342
+struct definition *insert_definition(insert_definition653,16621
+TAGGED make_structure(688,17566
+struct definition *find_definition(find_definition713,18066
+struct definition *parse_definition(parse_definition742,18677
+static struct definition **find_subdef_chain(find_subdef_chain755,18950
+static struct definition *parse_1_definition(parse_1_definition780,19642
+BOOL cunify_args(839,21226
+static BOOL cunify_args_aux(862,21703
+BOOL cunify(922,23261
+TAGGED cctagtosva(945,23670
+static BOOL cunify_aux(952,23734
+ENG_INT get_integer(1101,26617
+ENG_FLT get_float(1112,26811
+TAGGED ptr_to_stream_noalias(1147,27509
+TAGGED ptr_to_stream(1168,28001
+struct stream_node *stream_to_ptr(stream_to_ptr1190,28561
+struct stream_node *stream_to_ptr_check(stream_to_ptr_check1230,29534
+
+support.c~,1546
+void failc(44,1491
+static struct sw_on_key_node *atom_gethash(atom_gethash62,1956
+TAGGED init_atom_check(110,3185
+TAGGED make_large(251,7488
+#define NumstackBlockSize(284,8160
+void numstack_init(286,8219
+static void numstack_overflow(299,8464
+TAGGED bn_call(324,9090
+TAGGED make_integer_check(386,10568
+TAGGED make_float_check(421,11265
+TAGGED make_integer(456,11974
+TAGGED make_float(470,12209
+struct stream_node *insert_new_stream(insert_new_stream494,12690
+struct stream_node *new_stream(new_stream506,13040
+static int file_is_tty(524,13463
+void update_stream(534,13646
+void update_std_streams(549,13978
+void update_std_streams(565,14372
+struct definition *new_functor(new_functor584,14963
+void expand_sw_on_key(614,15715
+void add_definition(643,16424
+struct definition *insert_definition(insert_definition656,16703
+TAGGED make_structure(691,17648
+struct definition *find_definition(find_definition716,18148
+struct definition *parse_definition(parse_definition745,18759
+static struct definition **find_subdef_chain(find_subdef_chain758,19032
+static struct definition *parse_1_definition(parse_1_definition783,19724
+BOOL cunify_args(842,21308
+static BOOL cunify_args_aux(865,21785
+BOOL cunify(925,23343
+static BOOL cunify_aux(947,23733
+ENG_INT get_integer(1054,25774
+ENG_FLT get_float(1065,25968
+TAGGED ptr_to_stream_noalias(1100,26666
+TAGGED ptr_to_stream(1121,27158
+struct stream_node *stream_to_ptr(stream_to_ptr1143,27718
+struct stream_node *stream_to_ptr_check(stream_to_ptr_check1183,28691
+
+support.h,3873
+#define _SUPPORT_H4,84
+#define DerefHeap(84,3816
+#define DerefCar(93,3966
+#define DerefCdr(102,4114
+#define DerefArg(111,4262
+#define DerefHeapNext(120,4414
+#define DEREF(130,4573
+#define SwitchOnVar(139,4697
+#define SwitchOnHeapVar(164,5230
+#define DerefSwitch(186,5627
+#define DerefHeapSwitch(195,5799
+#define YoungerHeapVar(198,5871
+#define YoungerStackVar(199,5916
+#define CondHVA(201,5964
+#define CondCVA(202,6018
+#define CondSVA(203,6090
+#define CondStackvar(204,6144
+#define BindingOfHVA(206,6181
+#define BindingOfCVA(207,6219
+#define BindingOfSVA(208,6257
+#define BindingOfStackvar(209,6295
+#define BindSVA(215,6424
+#define BindCVA(223,6561
+#define BindHVA(230,6676
+#define Wake 237,6786
+#define WakeCount 242,6874
+#define PlainUntrail(245,6958
+#define WAM_ABORT 267,7706
+#define WAM_INTERRUPTED 268,7755
+#define SERIOUS_FAULT(277,7887
+#define MAJOR_FAULT(280,8023
+#define USAGE_FAULT(282,8081
+#define MINOR_FAULT(284,8139
+#define INSTANTIATION_ERROR 291,8342
+#define TYPE_ERROR(292,8376
+#define DOMAIN_ERROR(293,8439
+#define EXISTENCE_ERROR(294,8501
+#define PERMISSION_ERROR(295,8565
+#define REPRESENTATION_ERROR(296,8633
+#define EVALUATION_ERROR(297,8698
+#define RESOURCE_ERROR 298,8761
+#define SYNTAX_ERROR 299,8821
+#define SYSTEM_ERROR 300,8884
+#define USER_EXCEPTION 301,8947
+#define RANGE_PER_ERROR 303,9009
+#define START_INST 305,9087
+#define START_TYPE 306,9111
+#define START_DOM 307,9135
+#define START_EXIST 308,9159
+#define START_PERM 309,9183
+#define START_REPRES 310,9207
+#define START_EVAL 311,9231
+#define START_RES 312,9255
+#define START_SYNTAX 313,9279
+#define START_SYSTEM 314,9303
+#define START_USER 315,9327
+#define STRICT_ATOM 318,9371
+#define ATOMIC 319,9402
+#define BYTE 320,9433
+#define CHARACTER 321,9464
+#define COMPOUND 322,9495
+#define EVALUABLE 323,9526
+#define IN_BYTE 324,9557
+#define INTEGER 325,9588
+#define LIST 326,9619
+#define NUMBER 327,9650
+#define PREDICATE_INDICATOR 328,9681
+#define VARIABLE 329,9712
+#define CALLABLE 330,9743
+#define CHARACTER_CODE_LIST 333,9795
+#define SOURCE_SINK 334,9829
+#define STREAM 335,9863
+#define IO_MODE 336,9897
+#define NOT_EMPTY_LIST 337,9931
+#define NOT_LESS_THAN_ZERO 338,9965
+#define OPERATOR_PRIORITY 339,9999
+#define PROLOG_FLAG 340,10033
+#define READ_OPTION 341,10067
+#define FLAG_VALUE 342,10101
+#define CLOSE_OPTION 343,10135
+#define STREAM_OPTION 344,10169
+#define STREAM_OR_ALIAS 345,10203
+#define STREAM_POSITION 346,10237
+#define STREAM_PROPERTY 347,10271
+#define WRITE_OPTION 348,10305
+#define OPERATOR_SPECIFIER 349,10339
+#define PROCEDURE 353,10398
+#define ACCESS 364,10655
+#define CREATE 365,10677
+#define INPUT 366,10699
+#define MODIFY 367,10721
+#define OPEN 368,10743
+#define OUTPUT 369,10765
+#define REPOSITION 370,10787
+#define BINARY_STREAM 373,10824
+#define TEXT_STREAM 378,10929
+#define FLAG 379,10960
+#define OPERATOR 380,10991
+#define PAST_END_OF_STREAM 381,11022
+#define PRIVATE_PROCEDURE 382,11053
+#define STATIC_PROCEDURE 383,11084
+#define IN_CHARACTER_CODE 391,11228
+#define MAX_ARITY 392,11258
+#define MAX_INTEGER 394,11323
+#define MIN_INTEGER 395,11353
+#define CHARACTER_CODE 396,11383
+#define FLOAT_OVERFLOW 399,11437
+#define INT_OVERFLOW 400,11462
+#define E_UNDEFINED 401,11487
+#define E_UNDERFLOW 402,11512
+#define ZERO_DIVISOR 403,11537
+#define BUILTIN_ERROR(439,12451
+#define ERROR_IN_ARG(442,12550
+#define NDEREF(448,12704
+#define MakeLST(466,13079
+#define MakeSTR(479,13442
+#define Unify_constant(486,13626
+#define ENG_PRINTF1(495,13868
+#define ENG_PRINTF2(498,13970
+#define ENG_PRINTF3(501,14078
+#define ENG_PRINTF4(504,14192
+#define ENG_TTYPRINTF0(507,14312
+#define ENG_TTYPRINTF1(509,14377
+#define ENG_TTYPRINTF2(511,14447
+#define ENG_TTYPRINTF3(513,14523
+#define ENG_TTYPRINTF4(515,14605
+#define EXPAND_ATOM_BUFFER(518,14694
+
+support.h~,3869
+#define _SUPPORT_H4,84
+#define DerefHeap(84,3816
+#define DerefCar(93,3966
+#define DerefCdr(102,4114
+#define DerefArg(111,4262
+#define DerefHeapNext(120,4414
+#define DEREF(130,4573
+#define SwitchOnVar(139,4697
+#define SwitchOnHeapVar(164,5230
+#define DerefSwitch(186,5627
+#define DerefHeapSwitch(195,5799
+#define YoungerHeapVar(198,5871
+#define YoungerStackVar(199,5916
+#define CondHVA(201,5964
+#define CondCVA(202,6018
+#define CondSVA(203,6090
+#define CondStackvar(204,6144
+#define BindingOfHVA(206,6181
+#define BindingOfCVA(207,6219
+#define BindingOfSVA(208,6257
+#define BindingOfStackvar(209,6295
+#define BindSVA(211,6327
+#define BindCVA(218,6432
+#define BindHVA(224,6515
+#define Wake 232,6621
+#define WakeCount 237,6709
+#define PlainUntrail(240,6793
+#define WAM_ABORT 262,7541
+#define WAM_INTERRUPTED 263,7590
+#define SERIOUS_FAULT(272,7722
+#define MAJOR_FAULT(275,7858
+#define USAGE_FAULT(277,7916
+#define MINOR_FAULT(279,7974
+#define INSTANTIATION_ERROR 286,8177
+#define TYPE_ERROR(287,8211
+#define DOMAIN_ERROR(288,8274
+#define EXISTENCE_ERROR(289,8336
+#define PERMISSION_ERROR(290,8400
+#define REPRESENTATION_ERROR(291,8468
+#define EVALUATION_ERROR(292,8533
+#define RESOURCE_ERROR 293,8596
+#define SYNTAX_ERROR 294,8656
+#define SYSTEM_ERROR 295,8719
+#define USER_EXCEPTION 296,8782
+#define RANGE_PER_ERROR 298,8844
+#define START_INST 300,8922
+#define START_TYPE 301,8946
+#define START_DOM 302,8970
+#define START_EXIST 303,8994
+#define START_PERM 304,9018
+#define START_REPRES 305,9042
+#define START_EVAL 306,9066
+#define START_RES 307,9090
+#define START_SYNTAX 308,9114
+#define START_SYSTEM 309,9138
+#define START_USER 310,9162
+#define STRICT_ATOM 313,9206
+#define ATOMIC 314,9237
+#define BYTE 315,9268
+#define CHARACTER 316,9299
+#define COMPOUND 317,9330
+#define EVALUABLE 318,9361
+#define IN_BYTE 319,9392
+#define INTEGER 320,9423
+#define LIST 321,9454
+#define NUMBER 322,9485
+#define PREDICATE_INDICATOR 323,9516
+#define VARIABLE 324,9547
+#define CALLABLE 325,9578
+#define CHARACTER_CODE_LIST 328,9630
+#define SOURCE_SINK 329,9664
+#define STREAM 330,9698
+#define IO_MODE 331,9732
+#define NOT_EMPTY_LIST 332,9766
+#define NOT_LESS_THAN_ZERO 333,9800
+#define OPERATOR_PRIORITY 334,9834
+#define PROLOG_FLAG 335,9868
+#define READ_OPTION 336,9902
+#define FLAG_VALUE 337,9936
+#define CLOSE_OPTION 338,9970
+#define STREAM_OPTION 339,10004
+#define STREAM_OR_ALIAS 340,10038
+#define STREAM_POSITION 341,10072
+#define STREAM_PROPERTY 342,10106
+#define WRITE_OPTION 343,10140
+#define OPERATOR_SPECIFIER 344,10174
+#define PROCEDURE 348,10233
+#define ACCESS 359,10490
+#define CREATE 360,10512
+#define INPUT 361,10534
+#define MODIFY 362,10556
+#define OPEN 363,10578
+#define OUTPUT 364,10600
+#define REPOSITION 365,10622
+#define BINARY_STREAM 368,10659
+#define TEXT_STREAM 373,10764
+#define FLAG 374,10795
+#define OPERATOR 375,10826
+#define PAST_END_OF_STREAM 376,10857
+#define PRIVATE_PROCEDURE 377,10888
+#define STATIC_PROCEDURE 378,10919
+#define IN_CHARACTER_CODE 386,11063
+#define MAX_ARITY 387,11093
+#define MAX_INTEGER 389,11158
+#define MIN_INTEGER 390,11188
+#define CHARACTER_CODE 391,11218
+#define FLOAT_OVERFLOW 394,11272
+#define INT_OVERFLOW 395,11297
+#define E_UNDEFINED 396,11322
+#define E_UNDERFLOW 397,11347
+#define ZERO_DIVISOR 398,11372
+#define BUILTIN_ERROR(434,12286
+#define ERROR_IN_ARG(437,12385
+#define NDEREF(443,12539
+#define MakeLST(461,12914
+#define MakeSTR(474,13277
+#define Unify_constant(481,13461
+#define ENG_PRINTF1(490,13703
+#define ENG_PRINTF2(493,13805
+#define ENG_PRINTF3(496,13913
+#define ENG_PRINTF4(499,14027
+#define ENG_TTYPRINTF0(502,14147
+#define ENG_TTYPRINTF1(504,14212
+#define ENG_TTYPRINTF2(506,14282
+#define ENG_TTYPRINTF3(508,14358
+#define ENG_TTYPRINTF4(510,14440
+#define EXPAND_ATOM_BUFFER(513,14529
+
+task_areas.h,562
+  IDLE,5,78
+  WORKING,6,155
+  PENDING_SOLS,7,232
+  FAILED	8,309
+} Thread_State;9,379
+struct wam_private 15,508
+#define NO_ACTION 27,759
+#define SHARES_STRUCTURE 28,787
+#define HAS_CONTINUATION 29,815
+#define KEEP_STACKS 30,843
+#define BACKTRACKING 31,871
+#define CREATE_THREAD 32,899
+#define CREATE_WAM 33,927
+#define NEEDS_FREEING 34,955
+struct goal_str 42,1282
+typedef struct goal_str  goal_descriptor;60,1953
+typedef struct goal_str *goal_descriptor_p;goal_descriptor_p61,1995
+#define TermToGoalDesc(63,2040
+#define GoalDescToTerm(64,2108
+
+tasks.c,799
+SLOCK    goal_desc_list_l;30,633
+goal_descriptor_p goal_desc_list 31,660
+SLOCK thread_to_free_l;33,702
+THREAD_T thread_to_free 34,726
+unsigned int global_goal_number 37,770
+void init_goal_desc_list(43,935
+void reinit_list(59,1413
+void allow_thread_cancellation(93,2302
+void disallow_thread_cancellation(101,2442
+goal_descriptor_p init_first_gd_entry(108,2558
+goal_descriptor_p gimme_a_new_gd(127,3103
+goal_descriptor_p attach_me_to_goal_desc_list(142,3562
+void associate_wam_goal(167,4355
+void print_task_status(180,4710
+TAGGED list_of_goals(215,5855
+BOOL prolog_eng_status1(261,7143
+void unlink_wam(274,7471
+void make_goal_desc_free(294,8151
+struct worker *get_my_worker(get_my_worker319,8874
+goal_descriptor_p look_for_a_free_goal_desc(350,9796
+void enqueue_thread(369,10286
+
+term_support.c,972
+#define TopOfOldHeap 48,1420
+#define Xop(49,1468
+#define Xinv(50,1512
+#define ODDOP(51,1557
+#define EVENOP(56,1665
+#define EMIT(61,1777
+#define GCTEST(64,1819
+static void c_term_trail_push(120,3960
+static void c_term_size(143,4538
+static INSN *emit_unify_void(emit_unify_void225,6560
+static BOOL c_term(249,6965
+BOOL compile_term(506,12044
+struct instance *compile_term_aux(compile_term_aux540,13008
+TAGGED decode_instance_key(697,17319
+  radixlim1,766,18522
+  radixlim2,767,18535
+  radixlim3;768,18548
+BOOL prolog_init_radix(770,18562
+BOOL prolog_name(788,18900
+BOOL prolog_atom_codes(794,18988
+BOOL prolog_number_codes(800,19083
+BOOL string_to_number(816,19590
+static BOOL prolog_constant_codes(893,21337
+BOOL prolog_atom_length(1038,25710
+BOOL prolog_sub_atom(1058,26151
+BOOL prolog_atom_concat(1106,27042
+void number_to_string(1235,30287
+BOOL prolog_copy_term(1408,34085
+static void copy_it(1440,34719
+TAGGED cross_copy_term(1513,36649
+
+termdefs.h,5711
+#define _TERMDEFS_H9,280
+#define ANY 13,379
+#define SAME 14,456
+typedef unsigned short int INSN;16,472
+typedef unsigned long int TAGGED;17,549
+typedef unsigned long int UNTAGGED;18,626
+typedef int BOOL;21,735
+# define FALSE 22,791
+# define TRUE 23,808
+typedef long ENG_INT;26,832
+typedef long long ENG_LINT;27,854
+typedef double ENG_FLT;28,882
+#define WORDSIZE 33,968
+#define SmallShift 34,988
+#define TAGSIZE 35,1058
+#define ARITYSIZE 36,1076
+#define TAGOFFSET 37,1096
+#define ARITYOFFSET 38,1142
+#define ARITYLIMIT 39,1202
+#define TAGMASK	41,1247
+#define QMask	42,1318
+#define ZMask	43,1375
+#define POINTERMASK	44,1432
+#define INDEXMASK	45,1492
+#define Tag(49,1641
+#define Tag(51,1711
+#define TagIndex(54,1769
+#define PointerPart(56,1839
+#define TagToPointer(59,1909
+#define TagToPointer(61,1990
+#define IndexPart(64,2060
+#define HasTag(66,2112
+#define TagOf(67,2170
+#define CT(68,2224
+#define IsVar(70,2297
+#define TagIsHVA(72,2369
+#define TagIsCVA(73,2412
+#define TagIsSVA(74,2446
+#define TagIsSmall(75,2502
+#define TagIsLarge(76,2553
+#define TagIsNUM(77,2608
+#define TagIsATM(78,2664
+#define TagIsLST(79,2698
+#define TagIsSTR(80,2732
+#define TagIsStructure(81,2778
+#define STRIsLarge(82,2836
+#define TermToPointer(85,2906
+#define TermToPointerOrNull(86,2975
+#define PointerToTerm(88,3083
+#define PointerToTermOrZero(89,3148
+#define TermToPointer(92,3252
+#define TermToPointerOrNull(93,3308
+#define PointerToTerm(94,3370
+#define PointerToTermOrZero(95,3422
+#define VarIsCVA(99,3513
+#define TermIsATM(102,3602
+#define TermIsLST(103,3665
+#define IsHeapTerm(109,3902
+#define IsHeapVar(111,3975
+#define IsStackVar(112,4021
+#define IsAtomic(113,4079
+#define IsComplex(114,4134
+#define TermIsAtomic(116,4182
+#define TermIsComplex(117,4237
+#define TagBitFunctor 119,4296
+#define TagBitComplex 120,4370
+#define TagBitCVA 122,4445
+#define TagBitSVA 123,4497
+#define HVA 127,4619
+#define CVA 128,4664
+#define SVA 129,4716
+#define UBV 130,4762
+#define NUM 132,4830
+#define ATM 133,4883
+#define LST 134,4945
+#define STR 135,4981
+#define MAXTAG 137,5023
+#define NOTAG 138,5040
+#define ERRORTAG 140,5057
+#define TaggedLow	153,5450
+#define TaggedZero	154,5479
+#define TaggedHigh	155,5516
+#define HighInt	156,5553
+#define MakeSmall(159,5620
+#define GetSmall(160,5691
+#define GetString(161,5767
+#define USE_ATOM_LEN163,5810
+#define GetAtomLen(166,5858
+#define MakeFunctorFix 169,5915
+#define MakeFunctorFloat 170,5966
+#define LargeIsFloat(171,6017
+#define MakeLarge(173,6082
+#define MakeInteger(174,6141
+#define MakeFloat(175,6222
+#define MakeAtom(176,6265
+#define MakeString(177,6301
+#define GetInteger(179,6343
+#define GetFloat(180,6412
+#define IntIsSmall(182,6491
+#define IsInteger(183,6548
+#define IsFloat(184,6624
+#define IsNumber(185,6678
+#define IsAtom(186,6731
+#define IsString(187,6761
+# define CTagToHVA(194,6978
+# define CTagToCVA(195,7017
+# define CTagToSVA(196,7056
+# define CTagToLST(197,7095
+# define CTagToSTR(198,7134
+# define CTagToGoal(199,7173
+# define CTagToDef(200,7227
+# define CTagToCar(201,7280
+# define CTagToCdr(202,7319
+# define CTagToArg(203,7372
+# define CTagToPointer(204,7427
+# define CTagToHVA(206,7494
+# define CTagToCVA(207,7531
+# define CTagToSVA(208,7568
+# define CTagToLST(209,7605
+# define CTagToSTR(210,7642
+# define CTagToGoal(211,7679
+# define CTagToDef(212,7718
+# define CTagToCar(213,7755
+# define CTagToCdr(214,7792
+# define CTagToArg(215,7829
+# define CTagToPointer(216,7870
+# define TagToHVA(222,7984
+# define TagToCVA(223,8035
+# define TagToSVA(224,8072
+# define TagToUBV(225,8109
+# define TagToLST(226,8146
+# define TagToSTR(227,8183
+# define TagHVA(229,8221
+# define TagSVA(230,8268
+# define TagCVA(231,8298
+# define TagToHVA(234,8349
+# define TagToCVA(235,8412
+# define TagToSVA(236,8478
+# define TagToUBV(237,8544
+# define TagToLST(238,8610
+# define TagToSTR(239,8676
+# define TagHVA(241,8743
+# define TagSVA(242,8773
+# define TagCVA(243,8803
+# define TagToHVA(245,8839
+# define TagToCVA(246,8889
+# define TagToSVA(247,8944
+# define TagToUBV(248,8999
+# define TagToLST(249,9054
+# define TagToSTR(250,9109
+# define TagHVA(252,9165
+# define TagSVA(253,9212
+# define TagCVA(254,9242
+#define LargeArity(263,9373
+#define LargeInsns(265,9416
+#define Arity(267,9459
+#define SetArity(268,9506
+#define TagToAtom(270,9590
+#define TagToHeadfunctor(276,9858
+#define TagToArg(277,9899
+#define TagToCar(278,9947
+#define TagToCdr(279,9979
+#define TagToGoal(280,10025
+#define TagToDef(281,10072
+#define TagToInstance(283,10119
+#define TagToInstHandle(284,10188
+#define TagToInstancePtr(285,10259
+#define TagToStream(286,10332
+#define TagToRoot(287,10396
+#define TagToEmul(288,10455
+#define TagToFunctor(289,10515
+struct numstack 291,10580
+struct io_streams 309,11233
+struct debugger_state 315,11435
+#define MAXGLOBALVARS 321,11603
+struct misc_info{misc_info324,11636
+struct worker 364,13157
+struct frame 448,15457
+typedef enum {CHOICE,CHOICE454,15662
+typedef enum {CHOICE,MARKER}MARKER454,15662
+typedef enum {CHOICE,MARKER} node_type;454,15662
+struct node 457,15724
+struct extension_regs 468,16038
+struct marker 472,16143
+struct node 481,16452
+typedef unsigned long Bignum;493,16691
+#define ChoiceptMarkPure(495,16722
+#define ChoiceptTestPure(496,16786
+#define ChoiceptMarkStatic(498,16844
+#define ChoiceptTestStatic(499,16910
+#define ChoiceptMarkNoCVA(502,16997
+#define ChoiceptTestNoCVA(503,17072
+#define ChoiceptMarkNoCVA(505,17148
+#define ChoiceptTestNoCVA(506,17222
+#define BPL	511,17359
+#define BPT	512,17400
+#define BPTP	513,17443
+#define BPF	514,17489
+#define Deposit(517,17584
+
+threads.h,1615
+#define _THREADS_H3,97
+#define _CIAO_THREADS_H_6,167
+#define USE_POSIX_THREADS16,488
+#define USE_WIN32_THREADS20,542
+typedef pthread_t THREAD_T;28,708
+typedef pthread_t THREAD_ID;29,763
+typedef void *    THREAD_ARG;30,832
+typedef void *    THREAD_RES_T;31,862
+typedef void *(*THREAD_START)THREAD_START32,894
+#define Thread_Create_GoalId(41,1084
+#define Thread_Join(46,1226
+#define Thread_Exit(47,1277
+#define Thread_Id 48,1326
+#define Allow_Thread_Cancel 49,1369
+#define Disallow_Thread_Cancel 52,1522
+#define Thread_Cancel(55,1675
+#define Thread_Equal(56,1720
+#define Thread_Dispose(57,1779
+typedef HANDLE THREAD_T;67,1976
+typedef DWORD  THREAD_ID;68,2025
+typedef LPVOID THREAD_ARG;69,2086
+typedef DWORD  THREAD_RES_T;70,2159
+typedef LPTHREAD_START_ROUTINE  THREAD_START;71,2188
+#define Thread_Create_GoalId(84,2586
+#define Thread_Join(88,2784
+#define Thread_Exit(93,2904
+#define Thread_Id 94,2952
+#define Allow_Thread_Cancel 97,3100
+#define Disallow_Thread_Cancel 98,3129
+#define Thread_Cancel(99,3162
+#define Thread_Dispose(100,3241
+#define Thread_Equal(101,3312
+typedef int THREAD_T;125,3777
+typedef int THREAD_ID;126,3799
+typedef void *THREAD_ARG;THREAD_ARG127,3862
+typedef void *THREAD_RES_T;THREAD_RES_T128,3888
+typedef void *(*THREAD_START)THREAD_START129,3916
+#define Thread_Id 132,3957
+#define Thread_Create_GoalId(133,3984
+#define Thread_Create_no_Id(135,4109
+#define Thread_Join(136,4165
+#define Thread_Exit(137,4188
+#define Allow_Thread_Cancel138,4265
+#define Disallow_Thread_Cancel139,4293
+#define Thread_Cancel(140,4324
+#define Thread_Equal(141,4375
+
+timing.c,1048
+ENG_LINT internal_userclick_std(21,452
+ENG_LINT internal_systemclick_std(28,634
+static void init_frequency_info(35,818
+ENG_LINT internal_userclick_std(46,983
+ENG_LINT internal_systemclick_std(54,1095
+static void init_frequency_info(62,1209
+ENG_FLT usertime(75,1564
+BOOL prolog_time(82,1686
+ENG_LINT internal_wallclick_std(98,2055
+static ENG_LINT cpuspeed 123,2714
+ENG_LINT internal_wallclick_tsc(149,3476
+void init_statistics(159,3758
+void init_statistics(173,4082
+ENG_FLT walltime(182,4206
+static BOOL generic_time(192,4474
+BOOL prolog_runtime(218,5190
+BOOL prolog_usertime(224,5330
+BOOL prolog_systemtime(230,5479
+BOOL prolog_walltime(236,5638
+static BOOL generic_click(243,5821
+BOOL prolog_wallclick(265,6300
+BOOL prolog_userclick(271,6430
+BOOL prolog_systemclick(277,6560
+BOOL prolog_runclick(283,6702
+inline static BOOL generic_clockfreq(290,6857
+BOOL prolog_userclockfreq(299,7076
+BOOL prolog_systemclockfreq(305,7180
+BOOL prolog_wallclockfreq(311,7288
+void reset_statistics(317,7392
+BOOL prolog_datime(330,7832
+
+timing.c~,921
+ENG_LINT internal_userclick_std(21,452
+ENG_LINT internal_systemclick_std(28,634
+static void init_frequency_info(35,818
+ENG_LINT internal_userclick_std(46,983
+ENG_LINT internal_systemclick_std(54,1095
+static void init_frequency_info(62,1209
+ENG_FLT usertime(75,1564
+BOOL prolog_time(82,1686
+ENG_LINT internal_wallclick_std(98,2055
+static ENG_LINT cpuspeed 123,2714
+ENG_LINT internal_wallclick_tsc(149,3476
+void init_statistics(159,3758
+void init_statistics(173,4082
+ENG_FLT walltime(182,4206
+BOOL prolog_runtime(190,4474
+static BOOL generic_time(211,5022
+BOOL prolog_walltime(234,5560
+BOOL prolog_usertime(240,5709
+BOOL prolog_systemtime(246,5858
+BOOL prolog_runtime(252,6015
+static BOOL generic_click(259,6189
+BOOL prolog_wallclick(281,6668
+BOOL prolog_userclick(287,6798
+BOOL prolog_systemclick(293,6928
+BOOL prolog_runclick(299,7070
+void reset_statistics(305,7191
+BOOL prolog_datime(318,7631
+
+unix_utils.c,1355
+# define MAXPATHLEN 45,890
+#define DriveSelector(49,942
+char cwd[cwd54,1092
+BOOL expand_file_name(56,1171
+struct ren_pair 210,4497
+static struct ren_pair rename_path_pairs[rename_path_pairs212,4541
+int fix_path(214,4598
+void compute_cwd(237,5071
+BOOL prolog_unix_cd(247,5172
+BOOL prolog_unix_shell0(279,6092
+BOOL prolog_unix_shell2(293,6377
+BOOL prolog_unix_system2(332,7376
+BOOL prolog_unix_argv(350,7804
+BOOL prolog_unix_mktemp(374,8183
+BOOL prolog_unix_access(398,8776
+BOOL prolog_directory_files(433,9603
+  BOOL prolog_file_properties(509,11485
+BOOL prolog_unix_chmod(578,13462
+BOOL prolog_unix_umask(611,14650
+BOOL prolog_unix_delete(636,15201
+BOOL prolog_unix_rename(663,16112
+BOOL prolog_unix_mkdir(702,17406
+BOOL prolog_unix_rmdir(734,18308
+BOOL prolog_current_host(764,19182
+BOOL prolog_getenvstr(814,20692
+int setenv(849,21453
+BOOL prolog_setenvstr(870,21893
+BOOL prolog_pause(925,23403
+BOOL prolog_getpid(951,23879
+#  define S_ISDIR(987,25181
+BOOL prolog_find_file(990,25238
+BOOL prolog_path_is_absolute(1113,27946
+BOOL prolog_expand_file_name(1132,28254
+BOOL prolog_getarch(1161,28758
+BOOL prolog_getos(1174,28941
+BOOL prolog_version(1187,29187
+#define Read 1201,29460
+#define Write 1202,29477
+#define STDIN 1204,29495
+#define STDOUT 1205,29513
+#define STDERR 1206,29531
+BOOL prolog_exec(1209,29550
+
+wam.c,171
+int start_of_savedump 3,65
+#define SAVE_FIELD(67,1521
+#define SAVE_WAM_STATE 69,1585
+#define RECOVER_FIELD(83,1835
+#define RECOVER_WAM_STATE 85,1902
+int wam(98,2186
+
+wam.c~,171
+int start_of_savedump 3,65
+#define SAVE_FIELD(66,1501
+#define SAVE_WAM_STATE 68,1565
+#define RECOVER_FIELD(82,1815
+#define RECOVER_WAM_STATE 84,1882
+int wam(97,2166
+
+wam.h,3951
+#define PredTrace(6,157
+#define PredTrace(11,312
+#define PredTrace(14,380
+#define TagIsHVAw(19,453
+#define TagIsHVAw(21,492
+#define P	24,549
+#define B	25,562
+#define SetB(26,594
+#define E	27,650
+#define SetE(28,683
+#define H	29,740
+#define LoadH	30,755
+#define StoreH	31,790
+#define S	32,826
+#define Func	33,841
+#define Setfunc(34,880
+#define Htab	35,933
+#define SetHtab(36,973
+#define HtabNode	37,1014
+#define SetHtabNode(38,1060
+#define Alts	39,1101
+#define SetAlts(40,1140
+#define Pdeep	42,1182
+#define Pshallow	43,1224
+#define Pplus0	46,1287
+#define Pplus1	47,1309
+#define Pplus2	48,1327
+#define Pplus3	49,1349
+#define Pplus4	50,1371
+#define Pplus5	51,1393
+#define Pplus6	52,1415
+#define Pplus7	53,1437
+#define Pplus8	54,1459
+#define Pplus9	55,1481
+#define Pplus2align	59,1589
+#define Pplus4align	60,1621
+#define Pplus6align	61,1653
+#define Pplus2align	63,1691
+#define Pplus4align	64,1717
+#define Pplus6align	65,1743
+#define OPCODE	68,1777
+#define SPnext	69,1800
+#define SP0	70,1836
+#define SP1	71,1872
+#define SP2	72,1908
+#define SP3	73,1944
+#define SP4	74,1980
+#define SP5	75,2016
+#define SP6	76,2052
+#define SP7	77,2088
+#define SP8	78,2124
+#define SP9	79,2160
+#define Pnext	80,2196
+#define P0	81,2218
+#define P1	82,2240
+#define P2	83,2262
+#define P3	84,2284
+#define P4	85,2306
+#define P5	86,2328
+#define P6	87,2350
+#define P7	88,2372
+#define P8	89,2394
+#define P9	90,2416
+#define T1	91,2438
+#define T2	92,2470
+#define T3	93,2507
+#define C1	94,2539
+#define C2	95,2571
+#define C3	96,2608
+#define C4	97,2640
+#define C5	98,2677
+#define BP1	99,2709
+#define BP2	100,2741
+#define LP1	101,2778
+#define LP2	102,2809
+#define LP3	103,2845
+#define LP4	104,2876
+#define LP5	105,2912
+#define LP6	106,2943
+#define LP7	107,2979
+#define DISPATCH_R(109,3011
+#define DISPATCH_W(110,3066
+#define GetFirstValue(114,3186
+#define Unify_local_value 125,3368
+#define Unify_heap_atom(142,3623
+#define Unify_atom(150,3801
+#define Unify_atom_internal(159,3988
+#define Unify_heap_structure(167,4115
+#define Unify_structure(176,4424
+#define Unify_heap_large(186,4786
+#define Unify_large(196,5105
+#define Unify_heap_list(207,5453
+#define Unify_list(216,5695
+#define U1_VOID_R(228,6012
+#define U1_VOID_W(230,6059
+#define U1_XVAR_R(232,6121
+#define U1_XVAR_W(234,6169
+#define U1_YVAR_R(236,6213
+#define U1_YVAR_W(238,6261
+#define U1_XVAL_R(240,6305
+#define U1_XVAL_R2(241,6366
+#define U1_XVAL_R3(242,6430
+#define U1_XVAL_W(244,6495
+#define U1_YVAL_R(246,6540
+#define U1_YVAL_R2(247,6619
+#define U1_YVAL_R3(248,6701
+#define U1_YVAL_W(250,6784
+#define U1_YFVAL_R(252,6838
+#define U1_YFVAL_W(254,6909
+#define	U1_XLVAL_W(256,6976
+#define	U1_XLVALC_W(258,7031
+#define	U1_YLVAL_W(260,7086
+#define	U1_YLVALC_W(262,7152
+#define TRYEACH_R(265,7219
+#define TRYEACH_W(268,7281
+#define REPORT_CLEANUP(273,7363
+#define REPORT_CUT(278,7547
+#define REPORT_CUT(282,7673
+#define REPORT_CLEANUP(283,7701
+#define   ConcChptCleanUp(287,7772
+#define    ConcChptCleanUp(293,7971
+#define DOCUT 300,8223
+#define PUT_YVOID 308,8378
+#define RefStackUnsafe(315,8508
+#define CUNIFY(335,8810
+#define EUNIFY(344,8934
+#define EMUL_TO_GOAL 352,9088
+#define DEALLOCATE 369,9510
+#define CODE_PROCEED 375,9596
+#define UnsafeVar(382,9690
+#define SetA(384,9759
+#define ComputeE 390,9897
+#define ComputeLtop(400,10179
+#define SETUP_PENDING_CALL(409,10382
+#define CODE_RETRY_INSTANCE_DEBUG_1 423,10723
+#define CODE_RETRY_INSTANCE_DEBUG_2 441,11453
+#define CODE_RETRY_INSTANCE_DEBUG_3 447,11612
+#define CODE_RETRY_INSTANCE_DEBUG_1459,12086
+#define CODE_RETRY_INSTANCE_DEBUG_2460,12122
+#define CODE_RETRY_INSTANCE_DEBUG_3461,12158
+#define CODE_RETRY_INSTANCE 464,12202
+#define CODE_NECK_DEBUG 492,13175
+#define CODE_NECK_DEBUG499,13351
+#define CODE_NECK 502,13383
+#define CODE_NECK_PROCEED 530,14202
+#define CODE_COUNTED_NECK 561,14976
+#define CODE_COUNTED_NECK573,15227
+
+wam.h~,3951
+#define PredTrace(6,157
+#define PredTrace(11,312
+#define PredTrace(14,380
+#define TagIsHVAw(19,453
+#define TagIsHVAw(21,492
+#define P	24,549
+#define B	25,562
+#define SetB(26,594
+#define E	27,650
+#define SetE(28,683
+#define H	29,740
+#define LoadH	30,755
+#define StoreH	31,790
+#define S	32,826
+#define Func	33,841
+#define Setfunc(34,880
+#define Htab	35,933
+#define SetHtab(36,973
+#define HtabNode	37,1014
+#define SetHtabNode(38,1060
+#define Alts	39,1101
+#define SetAlts(40,1140
+#define Pdeep	42,1182
+#define Pshallow	43,1224
+#define Pplus0	46,1287
+#define Pplus1	47,1309
+#define Pplus2	48,1327
+#define Pplus3	49,1349
+#define Pplus4	50,1371
+#define Pplus5	51,1393
+#define Pplus6	52,1415
+#define Pplus7	53,1437
+#define Pplus8	54,1459
+#define Pplus9	55,1481
+#define Pplus2align	59,1589
+#define Pplus4align	60,1621
+#define Pplus6align	61,1653
+#define Pplus2align	63,1691
+#define Pplus4align	64,1717
+#define Pplus6align	65,1743
+#define OPCODE	68,1777
+#define SPnext	69,1800
+#define SP0	70,1836
+#define SP1	71,1872
+#define SP2	72,1908
+#define SP3	73,1944
+#define SP4	74,1980
+#define SP5	75,2016
+#define SP6	76,2052
+#define SP7	77,2088
+#define SP8	78,2124
+#define SP9	79,2160
+#define Pnext	80,2196
+#define P0	81,2218
+#define P1	82,2240
+#define P2	83,2262
+#define P3	84,2284
+#define P4	85,2306
+#define P5	86,2328
+#define P6	87,2350
+#define P7	88,2372
+#define P8	89,2394
+#define P9	90,2416
+#define T1	91,2438
+#define T2	92,2470
+#define T3	93,2507
+#define C1	94,2539
+#define C2	95,2571
+#define C3	96,2608
+#define C4	97,2640
+#define C5	98,2677
+#define BP1	99,2709
+#define BP2	100,2741
+#define LP1	101,2778
+#define LP2	102,2809
+#define LP3	103,2845
+#define LP4	104,2876
+#define LP5	105,2912
+#define LP6	106,2943
+#define LP7	107,2979
+#define DISPATCH_R(109,3011
+#define DISPATCH_W(110,3066
+#define GetFirstValue(113,3159
+#define Unify_local_value 123,3328
+#define Unify_heap_atom(140,3583
+#define Unify_atom(148,3761
+#define Unify_atom_internal(157,3948
+#define Unify_heap_structure(165,4075
+#define Unify_structure(174,4384
+#define Unify_heap_large(184,4746
+#define Unify_large(194,5065
+#define Unify_heap_list(205,5413
+#define Unify_list(214,5655
+#define U1_VOID_R(226,5972
+#define U1_VOID_W(228,6019
+#define U1_XVAR_R(230,6081
+#define U1_XVAR_W(232,6129
+#define U1_YVAR_R(234,6173
+#define U1_YVAR_W(236,6221
+#define U1_XVAL_R(238,6265
+#define U1_XVAL_R2(239,6326
+#define U1_XVAL_R3(240,6390
+#define U1_XVAL_W(242,6455
+#define U1_YVAL_R(244,6500
+#define U1_YVAL_R2(245,6579
+#define U1_YVAL_R3(246,6661
+#define U1_YVAL_W(248,6744
+#define U1_YFVAL_R(250,6798
+#define U1_YFVAL_W(252,6869
+#define	U1_XLVAL_W(254,6936
+#define	U1_XLVALC_W(256,6991
+#define	U1_YLVAL_W(258,7046
+#define	U1_YLVALC_W(260,7112
+#define TRYEACH_R(263,7179
+#define TRYEACH_W(266,7241
+#define REPORT_CLEANUP(271,7323
+#define REPORT_CUT(276,7507
+#define REPORT_CUT(280,7633
+#define REPORT_CLEANUP(281,7661
+#define   ConcChptCleanUp(285,7732
+#define    ConcChptCleanUp(291,7931
+#define DOCUT 298,8183
+#define PUT_YVOID 306,8338
+#define RefStackUnsafe(313,8468
+#define CUNIFY(333,8770
+#define EUNIFY(342,8894
+#define EMUL_TO_GOAL 350,9048
+#define DEALLOCATE 367,9470
+#define CODE_PROCEED 373,9556
+#define UnsafeVar(380,9650
+#define SetA(382,9719
+#define ComputeE 388,9857
+#define ComputeLtop(398,10139
+#define SETUP_PENDING_CALL(407,10342
+#define CODE_RETRY_INSTANCE_DEBUG_1 421,10683
+#define CODE_RETRY_INSTANCE_DEBUG_2 439,11413
+#define CODE_RETRY_INSTANCE_DEBUG_3 445,11572
+#define CODE_RETRY_INSTANCE_DEBUG_1457,12046
+#define CODE_RETRY_INSTANCE_DEBUG_2458,12082
+#define CODE_RETRY_INSTANCE_DEBUG_3459,12118
+#define CODE_RETRY_INSTANCE 462,12162
+#define CODE_NECK_DEBUG 490,13135
+#define CODE_NECK_DEBUG497,13311
+#define CODE_NECK 500,13343
+#define CODE_NECK_PROCEED 528,14162
+#define CODE_COUNTED_NECK 559,14936
+#define CODE_COUNTED_NECK571,15187
+
+wambuiltin.c,633
+static char *illexp illexp16,293
+BOOL bu2_numeq(23,479
+BOOL bu2_numne(42,930
+BOOL bu2_numlt(61,1379
+BOOL bu2_numle(82,1892
+BOOL bu2_numgt(103,2408
+BOOL bu2_numge(124,2921
+BOOL bu1_atom(145,3437
+BOOL bu1_atomic(155,3589
+BOOL bu1_float(165,3769
+BOOL bu1_integer(175,3918
+BOOL bu1_number(185,4071
+BOOL bu1_var(195,4222
+BOOL bu1_nonvar(205,4362
+BOOL bu2_lexeq(215,4505
+BOOL bu2_lexne(224,4648
+BOOL bu2_lexlt(231,4761
+BOOL bu2_lexle(238,4873
+BOOL bu2_lexgt(245,4986
+BOOL bu2_lexge(252,5098
+TAGGED fu2_compare(259,5211
+TAGGED fu2_arg(278,5544
+BOOL bu3_functor(327,6427
+BOOL bu2_univ(373,7448
+BOOL bu1_if(465,9395
+
+wamfunction.c,1036
+static char *illexp illexp32,908
+TAGGED fu1_minus(35,987
+TAGGED fu1_plus(58,1442
+TAGGED fu1_integer(76,1777
+TAGGED fu1_float(94,2145
+TAGGED fu1_add1(109,2392
+TAGGED fu1_sub1(132,2856
+TAGGED fu2_plus(158,3333
+TAGGED fu2_minus(183,3870
+TAGGED fu2_times(208,4418
+TAGGED fu2_fdivide(236,5045
+TAGGED fu2_idivide(250,5309
+TAGGED fu2_rem(270,5816
+TAGGED fu2_mod(290,6312
+TAGGED fu1_abs(321,7201
+TAGGED fu1_sign(346,7820
+TAGGED fu1_not(371,8495
+TAGGED fu2_xor(387,8770
+TAGGED fu2_and(405,9104
+TAGGED fu2_or(423,9451
+static TAGGED lsh_internal(441,9795
+static TAGGED rsh_internal(490,10549
+TAGGED fu2_lsh(512,10922
+TAGGED fu2_rsh(529,11238
+TAGGED fu2_gcd(560,11968
+# define aint(637,14174
+TAGGED fu1_intpart(640,14229
+TAGGED fu1_fractpart(655,14455
+TAGGED fu1_floor(670,14685
+TAGGED fu1_round(690,15120
+TAGGED fu1_ceil(710,15559
+TAGGED fu2_pow(730,15992
+TAGGED fu1_exp(744,16257
+TAGGED fu1_log(757,16456
+TAGGED fu1_sqrt(770,16655
+TAGGED fu1_sin(783,16856
+TAGGED fu1_cos(796,17055
+TAGGED fu1_atan(809,17254
+
+wamread.c,7275
+LoadH;3,63
+goto w_inittrue;4,70
+LoadH;6,105
+goto w_firsttrue_n;7,112
+goto r_initcall;10,153
+LoadH;13,197
+goto w_initcall;14,204
+goto r_firstcall_n;17,245
+LoadH;20,298
+goto w_firstcall_n;21,305
+goto r_firstcall_8;24,349
+LoadH;27,402
+goto w_firstcall_8;28,409
+goto r_firstcall_7;31,453
+LoadH;34,506
+goto w_firstcall_7;35,513
+goto r_firstcall_6;38,557
+LoadH;41,610
+goto w_firstcall_6;42,617
+goto r_firstcall_5;45,661
+LoadH;48,714
+goto w_firstcall_5;49,721
+goto r_firstcall_4;52,765
+LoadH;55,818
+goto w_firstcall_4;56,825
+goto r_firstcall_3;59,869
+LoadH;62,922
+goto w_firstcall_3;63,929
+goto r_firstcall_2;66,973
+LoadH;69,1026
+goto w_firstcall_2;70,1033
+goto r_firstcall_1;73,1077
+LoadH;76,1130
+goto w_firstcall_1;77,1137
+goto r_firstcall;80,1179
+LoadH;83,1226
+goto w_firstcall;84,1233
+goto r_call_n;87,1270
+LoadH;90,1308
+goto w_call_n;91,1315
+goto r_call_8;94,1349
+LoadH;97,1387
+goto w_call_8;98,1394
+goto r_call_7;101,1428
+LoadH;104,1466
+goto w_call_7;105,1473
+goto r_call_6;108,1507
+LoadH;111,1545
+goto w_call_6;112,1552
+goto r_call_5;115,1586
+LoadH;118,1624
+goto w_call_5;119,1631
+goto r_call_4;122,1665
+LoadH;125,1703
+goto w_call_4;126,1710
+goto r_call_3;129,1744
+LoadH;132,1782
+goto w_call_3;133,1789
+goto r_call_2;136,1823
+LoadH;139,1861
+goto w_call_2;140,1868
+goto r_call_1;143,1902
+LoadH;146,1940
+goto w_call_1;147,1947
+goto r_call;150,1979
+LoadH;153,2011
+goto w_call;154,2018
+goto r_lastcall_n;157,2054
+LoadH;160,2104
+goto w_lastcall_n;161,2111
+goto r_lastcall_8;164,2153
+LoadH;167,2203
+goto w_lastcall_8;168,2210
+goto r_lastcall_7;171,2252
+LoadH;174,2302
+goto w_lastcall_7;175,2309
+goto r_lastcall_6;178,2351
+LoadH;181,2401
+goto w_lastcall_6;182,2408
+goto r_lastcall_5;185,2450
+LoadH;188,2500
+goto w_lastcall_5;189,2507
+goto r_lastcall_4;192,2549
+LoadH;195,2599
+goto w_lastcall_4;196,2606
+goto r_lastcall_3;199,2648
+LoadH;202,2698
+goto w_lastcall_3;203,2705
+goto r_lastcall_2;206,2747
+LoadH;209,2797
+goto w_lastcall_2;210,2804
+goto r_lastcall_1;213,2846
+LoadH;216,2896
+goto w_lastcall_1;217,2903
+goto r_lastcall;220,2943
+LoadH;223,2987
+goto w_lastcall;224,2994
+LoadH;226,3026
+P 227,3033
+goto enter_predicate;228,3042
+LoadH;230,3078
+P 231,3085
+goto enter_predicate;232,3094
+LoadH;234,3133
+goto w_put_x_void;235,3140
+LoadH;237,3180
+goto w_put_x_variable;238,3187
+LoadH;247,3354
+goto w_put_x_unsafe_value;248,3361
+LoadH;250,3415
+goto w_put_y_first_variable;251,3422
+LoadH;253,3472
+goto w_put_y_variable;254,3479
+LoadH;256,3523
+goto w_put_yfvar_yvar;257,3530
+LoadH;259,3573
+goto w_put_yvar_yvar;260,3580
+LoadH;269,3773
+goto w_put_y_unsafe_value;270,3780
+DISPATCH_R(2+BPTP)BPTP273,3840
+DISPATCH_R(1+BPTP)BPTP276,3892
+LoadH;281,3977
+goto w_put_largeq;282,3984
+LoadH;284,4019
+goto w_put_large;285,4026
+LoadH;287,4065
+goto w_put_structureq;288,4072
+LoadH;290,4115
+goto w_put_structure;291,4122
+LoadH;293,4159
+goto w_put_list;294,4166
+LoadH;296,4204
+goto w_put_yval_yuval;297,4211
+LoadH;299,4255
+goto w_put_yuval_yval;300,4262
+LoadH;302,4307
+goto w_put_yuval_yuval;303,4314
+goto r_get_constant;317,4587
+DISPATCH_R(1+BPTP)BPTP321,4666
+goto r_get_large;324,4708
+goto r_get_structure;331,4844
+                {DISPATCH_W(1+BPTP)BPTP337,4970
+goto r_get_constant_neck_proceed;352,5223
+LoadH;356,5341
+goto w_neck_proceed;357,5348
+LoadH;361,5449
+goto w_neck_proceed;362,5456
+w->local_top local_top365,5500
+w->next_node next_node366,5559
+DOCUT;367,5597
+w->local_top local_top371,5652
+w->next_node next_node372,5711
+DOCUT;375,5781
+w->next_node next_node384,5992
+goto r_cutb_neck_proceed;386,6085
+DOCUT;389,6156
+goto proceed_r;395,6303
+w->next_node next_node398,6342
+w->local_top local_top399,6380
+DOCUT;400,6432
+w->next_node next_node405,6507
+goto r_cute_neck;406,6548
+w->local_top local_top409,6595
+DOCUT;410,6647
+w->next_alt next_alt412,6691
+w->next_node next_node419,6865
+goto r_cutf;420,6906
+DOCUT;423,6938
+w->next_node next_node429,7019
+DOCUT;430,7053
+ComputeE;437,7173
+goto r_choice_y;438,7183
+LoadH;444,7293
+goto w_kontinue;445,7300
+goto r_exit_toplevel;448,7338
+goto exit_toplevel;451,7397
+goto proceed_r;458,7537
+goto proceed_r;465,7671
+S 467,7711
+DISPATCH_R(1+BPTP)BPTP468,7731
+S 470,7774
+DISPATCH_R(0+BPTP)BPTP471,7794
+DISPATCH_R(1+BPTP)BPTP479,7994
+DISPATCH_R(0+BPTP)BPTP481,8036
+S 485,8106
+ComputeE;495,8288
+goto r_get_y_variable;496,8298
+ComputeE;502,8413
+goto r_get_yvar_yvar;503,8423
+P 510,8544
+Numstack_End 514,8603
+DISPATCH_R(4+2*BPTP)BPTP517,8696
+Numstack_End 520,8749
+DISPATCH_R(3+2*BPTP)BPTP523,8842
+Numstack_End 526,8897
+DISPATCH_R(5+2*BPTP)BPTP529,8997
+Numstack_End 532,9050
+DISPATCH_R(4+2*BPTP)BPTP535,9150
+DISPATCH_R(2+BPTP)BPTP539,9235
+DISPATCH_R(1+BPTP)BPTP543,9316
+DISPATCH_R(3+BPTP)BPTP547,9406
+DISPATCH_R(2+BPTP)BPTP551,9494
+DISPATCH_R(4+BPTP)BPTP555,9591
+DISPATCH_R(3+BPTP)BPTP559,9686
+CODE_RETRY_INSTANCE;562,9745
+LoadH;564,9787
+goto w_get_constraint;565,9794
+goto r_unify_x_local_value;585,10137
+ComputeE;590,10259
+goto r_unify_y_variable;591,10269
+goto r_unify_y_local_value;600,10452
+goto r_unify_constant;606,10572
+DISPATCH_R(0+BPTP)BPTP611,10677
+goto r_unify_large;614,10721
+goto r_unify_structure;622,10885
+		{DISPATCH_W(0+BPTP)BPTP629,11023
+goto r_unify_constant_neck_proceed;644,11267
+LoadH;649,11411
+goto w_neck_proceed;650,11418
+LoadH;654,11517
+goto w_neck_proceed;655,11524
+ComputeE;661,11629
+goto r_u2_void_yvar;662,11639
+goto r_u2_void_xlval;669,11759
+goto r_u2_void_ylval;679,11934
+ComputeE;693,12172
+goto r_u2_xvar_yvar;694,12182
+goto r_u2_xvar_xlval;701,12302
+goto r_u2_xvar_ylval;711,12477
+ComputeE;717,12587
+goto r_u2_yvar_void;718,12597
+ComputeE;725,12718
+goto r_u2_yvar_xvar;726,12728
+ComputeE;733,12849
+goto r_u2_yvar_yvar;734,12859
+goto r_u2_yfvar_xlval;741,12980
+ComputeE;744,13042
+goto r_u2_yvar_xval;745,13052
+goto r_u2_yvar_xlval;748,13108
+goto r_u2_yfvar_ylval;754,13218
+ComputeE;757,13280
+goto r_u2_yvar_yval;758,13290
+goto r_u2_yvar_ylval;761,13346
+goto r_u2_yfval_xlval;779,13656
+goto r_u2_yfval_ylval;785,13770
+goto r_u2_xlval_void;791,13883
+goto r_u2_xlval_xvar;798,14016
+t0 801,14075
+goto r_u2_xlval_yfvar;806,14159
+ComputeE;809,14221
+goto r_u2_xval_yvar;810,14231
+goto r_u2_xlval_yvar;813,14287
+goto r_u2_xval_xlval;820,14410
+goto r_u2_xlval_xval;823,14469
+goto r_u2_xlval_xlval;826,14528
+goto r_u2_xlval_yfval;832,14641
+goto r_u2_xval_ylval;839,14768
+goto r_u2_xlval_yval;842,14827
+goto r_u2_xlval_ylval;845,14886
+goto r_u2_ylval_void;851,14998
+goto r_u2_ylval_xvar;858,15131
+goto r_u2_ylval_yvar;865,15264
+goto r_u2_ylval_yfval;872,15388
+goto r_u2_yval_xlval;879,15515
+goto r_u2_ylval_xval;882,15574
+goto r_u2_ylval_xlval;885,15633
+goto r_u2_yval_ylval;891,15745
+goto r_u2_ylval_yval;894,15804
+goto r_u2_ylval_ylval;897,15863
+goto r_bump_counter;904,15981
+  INCR_COUNTER(*(ENG_INT **)P)908,16047
+goto r_counted_neck;913,16128
+CODE_COUNTED_NECK;916,16184
+goto r_neck;918,16211
+goto fail;920,16235
+goto r_heapmargin_call;923,16274
+DISPATCH_R(1+BPL)BPL930,16477
+CODE_NECK;933,16515
+LoadH;936,16568
+goto w_dynamic_neck_proceed;937,16575
+LoadH;939,16623
+goto w_neck_proceed;940,16630
+CODE_PROCEED;943,16676
+
+wamsupport.c,767
+INSN *startgoalcode;startgoalcode17,318
+INSN *bootcode;bootcode18,388
+INSN *internal_calling;internal_calling20,488
+INSN *startgoalcode_cont;startgoalcode_cont22,573
+INSN *contcode;contcode23,655
+INSN *failcode;failcode24,732
+INSN *exitcode;exitcode25,809
+static INSN insn_fail[insn_fail27,887
+struct try_node *null_alt null_alt28,964
+struct try_node *termcode;termcode30,1045
+struct try_node *fail_alt;fail_alt31,1122
+static struct try_node *get_null_alt(get_null_alt34,1254
+int p2_offset(69,2097
+struct try_node *def_retry_c(def_retry_c87,2414
+void init_bootcode(124,3467
+void init_internal_calling(146,4130
+void init_startgoalcode(167,4733
+void init_startgoalcode_cont(196,5588
+void init_contcode(211,6062
+TAGGED evaluate(232,6429
+
+wamwrite.c,6682
+ComputeE;4,75
+goto firsttrue;10,197
+  PUT_YVOID;14,275
+E->next_insn next_insn16,299
+E->frame frame17,328
+w->frame frame18,349
+w->next_insn next_insn19,363
+w->local_top local_top20,386
+goto w_initcall;26,503
+ComputeE;29,547
+goto w_firstcall;35,676
+goto w_firstcall_n;38,718
+goto w_firstcall_8;41,762
+goto w_firstcall_7;44,806
+goto w_firstcall_6;47,850
+goto w_firstcall_5;50,894
+goto w_firstcall_4;53,938
+goto w_firstcall_3;56,982
+goto w_firstcall_2;59,1026
+goto w_firstcall_1;62,1070
+goto w_firstcall;65,1112
+goto w_call_n;68,1149
+goto w_call_8;71,1183
+goto w_call_7;74,1217
+goto w_call_6;77,1251
+goto w_call_5;80,1285
+goto w_call_4;83,1319
+goto w_call_3;86,1353
+goto w_call_2;89,1387
+goto w_call_1;92,1421
+goto w_call;95,1453
+goto w_lastcall_n;98,1489
+goto w_lastcall_8;101,1531
+goto w_lastcall_7;104,1573
+goto w_lastcall_6;107,1615
+goto w_lastcall_5;110,1657
+goto w_lastcall_4;113,1699
+goto w_lastcall_3;116,1741
+goto w_lastcall_2;119,1783
+goto w_lastcall_1;122,1825
+goto w_lastcall;125,1865
+  PUT_YVOID;129,1944
+goto w_firstcall_8;130,1957
+PUT_YVOID;133,2010
+goto w_firstcall_7;134,2021
+PUT_YVOID;137,2074
+goto w_firstcall_6;138,2085
+PUT_YVOID;141,2138
+goto w_firstcall_5;142,2149
+PUT_YVOID;145,2202
+goto w_firstcall_4;146,2213
+PUT_YVOID;149,2266
+goto w_firstcall_3;150,2277
+PUT_YVOID;153,2330
+goto w_firstcall_2;154,2341
+PUT_YVOID;157,2394
+goto w_firstcall_1;158,2405
+PUT_YVOID;161,2458
+goto w_firstcall;162,2469
+E->next_insn next_insn165,2516
+E->frame frame166,2545
+w->frame frame167,2566
+w->next_insn next_insn168,2580
+w->local_top local_top169,2611
+P 170,2656
+goto enter_predicate;173,2708
+goto w_call_8;184,2899
+t1 187,2937
+goto w_call_7;193,3044
+t1 196,3082
+goto w_call_6;202,3189
+t1 205,3227
+goto w_call_5;211,3334
+t1 214,3372
+goto w_call_4;220,3479
+t1 223,3517
+goto w_call_3;229,3624
+t1 232,3662
+goto w_call_2;238,3769
+t1 241,3807
+goto w_call_1;247,3914
+t1 250,3952
+goto w_call;256,4059
+w->next_insn next_insn259,4091
+P 260,4122
+goto enter_predicate;261,4131
+goto w_lastcall_8;272,4334
+t1 275,4384
+goto w_lastcall_7;281,4491
+t1 284,4541
+goto w_lastcall_6;290,4648
+t1 293,4698
+goto w_lastcall_5;299,4805
+t1 302,4855
+goto w_lastcall_4;308,4962
+t1 311,5012
+goto w_lastcall_3;317,5119
+t1 320,5169
+goto w_lastcall_2;326,5276
+t1 329,5326
+goto w_lastcall_1;335,5433
+t1 338,5483
+goto w_lastcall;344,5590
+DEALLOCATE;347,5634
+goto w_execute;348,5646
+P 351,5687
+goto enter_predicate;352,5696
+P 354,5733
+goto enter_predicate;355,5742
+ComputeE;378,6187
+goto w_put_y_variable;379,6197
+t0 382,6259
+ComputeE;387,6347
+goto w_put_yvar_yvar;388,6357
+t0 391,6416
+t0 393,6450
+DISPATCH_W(2+BPTP)BPTP398,6532
+DISPATCH_W(1+BPTP)BPTP401,6584
+StoreH;407,6683
+LoadH;409,6723
+StoreH;413,6789
+LoadH;415,6829
+DISPATCH_W(2+BPTP)BPTP421,6942
+DISPATCH_W(1+BPTP)BPTP426,7036
+StoreH;458,7721
+goto r_get_x_value;459,7729
+StoreH;461,7773
+goto r_get_y_first_value;462,7781
+StoreH;464,7825
+goto r_get_y_value;465,7833
+goto w_get_constant;468,7878
+StoreH;471,7934
+goto r_get_constant;472,7942
+goto w_get_large;475,7985
+StoreH;478,8032
+goto r_get_large;479,8040
+goto w_get_structure;482,8084
+StoreH;485,8143
+goto r_get_structure;486,8151
+StoreH;488,8187
+goto r_get_nil;489,8195
+StoreH;491,8226
+goto r_get_list;492,8234
+goto w_get_constant_neck_proceed;495,8289
+StoreH;498,8384
+goto r_get_constant_neck_proceed;499,8392
+StoreH;501,8453
+goto r_get_nil_neck_proceed;502,8461
+StoreH;504,8503
+goto r_cutb_x;505,8511
+StoreH;507,8544
+goto r_cutb_x_neck;508,8552
+StoreH;510,8588
+goto r_cutb_neck;511,8596
+StoreH;513,8640
+goto r_cutb_x_neck_proceed;514,8648
+StoreH;516,8700
+goto r_cutb_neck_proceed;517,8708
+StoreH;519,8747
+goto r_cute_x;520,8755
+StoreH;522,8788
+goto r_cute_x_neck;523,8796
+StoreH;525,8832
+goto r_cute_neck;526,8840
+StoreH;528,8869
+goto r_cutf;529,8877
+StoreH;531,8903
+goto r_cutf_x;532,8911
+StoreH;534,8938
+goto r_cut_y;535,8946
+ComputeE;540,9042
+goto w_choice_y;541,9052
+for(i=0; i<Func->arity;arity549,9234
+DEALLOCATE;550,9278
+goto enter_predicate;551,9290
+StoreH;553,9324
+goto r_leave;554,9332
+StoreH;556,9366
+goto r_exit_toplevel;557,9374
+StoreH;559,9411
+goto r_retry_cq;560,9419
+StoreH;562,9450
+goto r_retry_c;563,9458
+goto w_get_structure_x0;566,9503
+t1 569,9571
+DISPATCH_W(0+BPTP)BPTP577,9715
+goto w_get_large_x0;580,9760
+StoreH;583,9816
+t1 584,9824
+LoadH;585,9852
+goto w_get_constant_x0;595,10028
+DISPATCH_W(0+BPTP)BPTP604,10204
+t1 614,10403
+ComputeE;630,10695
+goto w_get_y_variable;631,10705
+ComputeE;637,10820
+goto w_get_yvar_yvar;638,10830
+P 645,10951
+StoreH;648,10995
+goto r_function_1q;649,11003
+StoreH;651,11040
+goto r_function_1;652,11048
+StoreH;654,11085
+goto r_function_2q;655,11093
+StoreH;657,11130
+goto r_function_2;658,11138
+StoreH;660,11174
+goto r_builtin_1q;661,11182
+StoreH;663,11217
+goto r_builtin_1;664,11225
+StoreH;666,11260
+goto r_builtin_2q;667,11268
+StoreH;669,11303
+goto r_builtin_2;670,11311
+StoreH;672,11346
+goto r_builtin_3q;673,11354
+StoreH;675,11389
+goto r_builtin_3;676,11397
+StoreH;679,11469
+goto r_retry_instance;680,11477
+t1 683,11539
+      {BindCVA(t2,t1); Wake;687,11622
+      {BindCVA(t2,t1); Wake;689,11689
+goto w_unify_void_4;693,11794
+goto w_unify_void_3;697,11864
+goto w_unify_void_2;701,11934
+goto w_unify_void_1;705,12004
+ComputeE;720,12278
+goto w_unify_y_variable;721,12288
+DISPATCH_W(1+BPTP)BPTP737,12588
+DISPATCH_W(0+BPTP)BPTP740,12645
+goto w_unify_large;743,12689
+w->global_top global_top746,12742
+*H H747,12775
+DISPATCH_W(1+BPTP)BPTP752,12910
+DISPATCH_W(0+BPTP)BPTP756,13006
+goto w_neck_proceed;765,13200
+goto w_neck_proceed;768,13271
+goto w_neck_proceed;771,13343
+ComputeE;777,13449
+goto w_u2_void_yvar;778,13459
+ComputeE;813,14041
+goto w_u2_xvar_yvar;814,14051
+ComputeE;841,14498
+goto w_u2_yvar_void;842,14508
+ComputeE;849,14630
+goto w_u2_yvar_xvar;850,14640
+ComputeE;857,14761
+goto w_u2_yvar_yvar;858,14771
+ComputeE;865,14892
+goto w_u2_yvar_xval;866,14902
+ComputeE;873,15024
+goto w_u2_yvar_xlval;874,15034
+ComputeE;881,15159
+goto w_u2_yvar_yval;882,15169
+ComputeE;889,15291
+goto w_u2_yvar_ylval;890,15301
+ComputeE;941,16157
+goto w_u2_xval_yvar;942,16167
+ComputeE;949,16289
+goto w_u2_xlval_yvar;950,16299
+goto w_bump_counter;1062,18145
+  INCR_COUNTER(*(ENG_INT **)P)1066,18211
+goto w_counted_neck;1071,18292
+CODE_COUNTED_NECK;1074,18348
+goto w_neck;1076,18375
+goto fail;1078,18399
+goto w_heapmargin_call;1081,18438
+DISPATCH_W(1+BPL)BPL1090,18648
+CODE_NECK;1093,18686
+goto w_neck_proceed;1106,18961
+CODE_NECK_PROCEED;1109,19017
+CODE_PROCEED;1112,19061
+
+wamsupport_defs.h,0
+
+wamfunction_defs.h,0
+
+wamfunction.h,0
+
+wambuiltin_defs.h,0
+
+wambuiltin.h,0
+
+wam_defs.h,0
+
+unix_utils_defs.h,0
+
+timing_defs.h~,0
+
+timing_defs.h,0
+
+term_support_defs.h,0
+
+tasks_defs.h,0
+
+support_defs.h,0
+
+streams_defs.h,0
+
+startgoal_defs.h,0
+
+start_defs.h,0
+
+stacks_defs.h,0
+
+qinsert_defs.h,0
+
+qget_defs.h,0
+
+prolog_tasks_defs.h,0
+
+profile_defs.h,0
+
+objareas_defs.h,0
+
+misc_defs.h,0
+
+metaengine.pl,0
+
+main_defs.h,0
+
+locks_defs.h,0
+
+interrupt_defs.h,0
+
+inout_defs.h,0
+
+initial_defs.h,0
+
+indexing_defs.h,0
+
+heapgc_defs.h,0
+
+gauge_defs.h,0
+
+format_defs.h,0
+
+dynlink_defs.h,0
+
+common_headers.h,0
+
+ciaoengine.pl,0
+
+builtin_defs.h,0
+
+bignum_defs.h,0
+
+attr_defs.h,0
+
+alloc_defs.h,0
+
+addmodules.c,0
+
+README,0
+
+ENG_defs.h,0

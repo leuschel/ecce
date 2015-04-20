@@ -1,0 +1,23 @@
+set term_socket [socket $prolog_host $prolog_port]
+set event_socket [socket $prolog_host $event_port]
+[fconfigure event_socket -blocking false]
+proc prolog_term {term} {
+     global term_socket 
+     puts  $term_socket $term.  
+     flush $term_socket } 
+
+proc prolog {agoal} { 
+     prolog_term $agoal } 
+
+proc prolog_cmd {command} { 
+     global term_socket   
+     set result [uplevel $command]   
+     puts  $term_socket \"$result\".   
+     flush $term_socket   return $result} 
+
+proc prolog_one_event {a_term} { 
+     global event_socket   
+     puts  $event_socket $a_term.   
+     flush $event_socket}
+
+

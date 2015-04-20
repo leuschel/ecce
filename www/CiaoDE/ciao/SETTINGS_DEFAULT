@@ -1,0 +1,17 @@
+# -*- mode: Makefile; -*-
+#Minimal settings file for compile the engine the first time
+
+# Note: is hightly recommended to use $(PWD) instead of $(shell pwd)
+# because it solves the soft links and that behavior is undesirable
+# for our goals.
+
+INSTYPE=src
+SYSAVAIL=user
+USE_THREADS=yes
+USE_POSIX_LOCKS=no
+OPTIM_LEVEL=optimized
+COMPRESS_LIBS=no
+EXECMODE=775
+DATAMODE=664
+DEBUG_LEVEL=nodebug
+INSTALLGROUP=$(shell groups | cut -f 1 -d ' ')

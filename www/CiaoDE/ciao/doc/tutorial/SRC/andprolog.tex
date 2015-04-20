@@ -1,0 +1,164 @@
+
+\section{\&-Prolog: Independent And-Parallelism}
+
+Parallel execution is a way to speed up programs. In Prolog there are
+several possible sources for parallelism. One of them is to execute in
+parallel goals (another one will execute clauses in paralell, and
+there are other possibilities). This is known as {\bf and-parallelism}.
+
+In \&-Prolog goals which are independent may be executed in parallel.
+Goals which are not independent should not be executed in parallel: if
+they are, the results are unpredictable. One way to ensure that
+parallel goals are independent is to parallelize the program
+automatically. This can be done with the Ciao preproccessor: CiaoPP.
+
+\&-Prolog style of parallelism is enabled with the package
+\verb+andprolog+, which allows the use of two special constructs for
+parallelism. One is the the \verb+&+ and the other the \verb+=>+.
+
+The \verb+&+ is used instead of commas to separate goals which are to
+be run in and-parallel. For example, in:
+\begin{quote}
+\begin{verbatim}
+:- use_package(andprolog).
+
+... :- ..., possible(proj) & worth(proj), ...
+\end{verbatim}
+\end{quote}
+%
+both goals will be run in parallel. This means that they will be run
+by independent Prolog engines, and, if there are available processors,
+by different proccesors. Conceptually, two (independent) processes are
+``forked'', one for each goal.
+
+The main execution thread, i.e., the clause in which the goals appear,
+will be stopped, waiting for completion of the parallel goals. When
+these ones finish, their solutions (if they have variables) are
+``joined'' together with the main thread, and this one continues
+execution. 
+
+The \verb+&+ construction represents, thus, {\em fork-and-join}
+parallel expressions. The join is performed without provisions for
+solutions given for the same variables by the parallel processes that
+may be incompatible. This is the reason for imposing that the goals be
+independent. For example:
+\begin{quote}
+\begin{verbatim}
+:- use_package(andprolog).
+
+... :- ..., possible(X) & worth(X), ...
+\end{verbatim}
+\end{quote}
+%
+where the goals succeed with \verb+possible(proj)+ and
+\verb+worth(any)+ will not work, since the join does not provide means
+to deal with the common bindings \verb+X=proj+ and \verb+X=any+.
+
+\subsection{Variable Independence}
+
+Goal independence can be defined from the independence of the terms to
+which the arguments of the goals are bound. In turn, this can be
+defined in terms of the (program) variables in the goal arguments.
+
+In the above example, the two goals will be independent if they cannot
+bind the same variable; since they have variable \verb+X+ in common
+(i.e., they {\em share} it), this is only possible if that variable
+cannot be bound, i.e., if it is already bound to a term which has no
+variables, i.e., if it is already ground (which is what happens in the
+first example above). Now consider:
+\begin{quote}
+\begin{verbatim}
+... :- ..., possible(X) & worth(Y), ...
+\end{verbatim}
+\end{quote}
+
+These two goals will be independent if the terms to which \verb+X+ and
+\verb+Y+ are bound do not share any variable. I.e., if the two
+variables, in turn, are independent.
+
+To guarantee independence of parallel goals, checks on their argument
+variables can be used, as suggested above. These checks are:
+\verb+ground/1+ for groundness, \verb+indep/2+ for independence of two
+terms (they do not share any variable), and \verb+indep/1+ for the
+independence of a list of pairs of terms (the terms in each pair are
+independent of each other). 
+
+These checks are available through the use of the \verb+andprolog+
+package. Thus, you can write the example above as:
+\begin{quote}
+\begin{verbatim}
+... :- ..., ( indep(X,Y) -> possible(X) & worth(Y)
+                          ; possible(X), worth(Y) ), ...
+\end{verbatim}
+\end{quote}
+%
+to be sure that parallel execution takes place only if it is safe.
+
+As syntactic sugar for the above conditional expression, the package
+also provides the CGE (Conditional Graph Expression) construct, via
+the operator \verb+=>+. Thus, you can write the above as:
+\begin{quote}
+\begin{verbatim}
+... :- ..., ( indep(X,Y) => possible(X) & worth(Y) ), ...
+\end{verbatim}
+\end{quote}
+%
+where the two goals will be run in parallel if the condition holds,
+otherwise they will run sequentially.
+
+The safety condition for parallel execution of any number of goals can
+be defined from the conditions on each two goals in turn. That is to
+say, a parallel expression with a given number of goals is independent
+iff the goals are pairwise independent. E.g., in:
+\begin{quote}
+\begin{verbatim}
+... :- ..., possible(X) & worth(Y) & beneficial(Z) & good(X), ...
+\end{verbatim}
+\end{quote}
+%
+the condition will be:
+\begin{quote}
+\begin{verbatim}
+    indep(X,Y), indep(X,Z), indep(X,X), indep(Y,Z)
+\end{verbatim}
+\end{quote}
+
+Of course, variable independence is commutative, so checks like
+\verb+indep(Y,X)+ have not been included. Also, \verb+indep(X,X)+ is
+equivalent to \verb+ground(X)+. And this one, in turn, implies the
+independence of \verb+X+ from any other term. Thus, the above
+condition can be simplified to:
+\begin{quote}
+\begin{verbatim}
+    ground(X), indep(Y,Z)
+\end{verbatim}
+\end{quote}
+
+The rule of thumb is: any variables shared between any two (or more)
+goals have to be ground. All variables not shared between the goals
+have to be pairwise independent. 
+
+To check this, you can use a list of the shared variables, and a list
+of (all) pairs of non-shared variables. For example, for:
+\begin{quote}
+\begin{verbatim}
+... :- ..., exp(S,P) & cge(S,C) & worth(C) & useful(S,U,F), ...
+\end{verbatim}
+\end{quote}
+%
+a minimal condition is:
+\begin{quote}
+\begin{verbatim}
+    ground([S,C]), indep([[P,U],[P,F]])
+\end{verbatim}
+\end{quote}
+
+
+\subsection{Constraint Independence}
+
+When running parallel goals in a constraint domain, things get a
+little bit more complicated. First, the conditions on the argument
+variables are not that simple. Second, for more than two goals, the
+condition cannot be defined in terms of pairwise independence.
+
+\comment{Incomplete}

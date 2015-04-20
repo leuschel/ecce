@@ -1,0 +1,16 @@
+#VRML V2.0 utf8
+
+
+Viewpoint {
+    position  44 28 30 
+}
+
+Viewpoint {
+    position  44 28 30 
+}
+
+Viewpoint {
+    fieldOfView  3
+    position  44 28 30 
+}
+

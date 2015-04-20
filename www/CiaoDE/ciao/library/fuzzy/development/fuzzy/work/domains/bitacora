@@ -1,0 +1,8 @@
+debemos exigir en int poner los límites minimos y maximos (hacer la
+prueba de que es necesario)
+
+pregunta, es necesario distinguir entre numéricos y no numéricos. es
+decir en los numéricos debemos interpolar valores y en los otros no?
+¿o nunca interpolar valores? En los continuos lo estamos haciendo.
+
+Describir sintaxis de cada caso para poder implementar.

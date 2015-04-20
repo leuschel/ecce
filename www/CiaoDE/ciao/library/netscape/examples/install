@@ -1,0 +1,44 @@
+#!/bin/sh
+exec ciao-shell $0 "$@" # -*- mode: ciao; -*-
+
+:- use_module(library(netscape)).
+:- use_module(library(system),[pause/1]).
+
+main(_) :-
+	Ciao = image("http://www.clip.dia.fi.upm.es/images/ciao_s.gif",
+	             [alt="CIAO",align="bottom" ]),
+	nsc_header([ Ciao, "system installation:"]),
+
+	nsc_message("Setting up installation..."),     
+	nsc_message("Installing engine..."), 
+	nsc_message("Installing libraries..."),      
+	nsc_message(em("Done!")), 
+
+	nsc_header([ Ciao, "system uninstallation:"]),
+	nsc_message("Uninstalling libraries..."), 
+	nsc_message("Unistalling engine..."),      
+	nsc_message("Finishing uninstallation..."),     
+	nsc_message(em("Done!")).
+	
+nsc_header(M) :-
+  Symbols = image("http://www.clip.dia.fi.upm.es/images/symbols1.gif",
+                  [ width="100%" ]),
+  netscape_message(
+  [ 
+    start,
+    title(M),
+    body( [ Symbols,
+            h1(M),
+	    Symbols ]
+	)
+  ]).
+
+nsc_message(M) :-
+	simple_message(M,Terms),
+	netscape_append_message(Terms),
+	pause(1).
+
+simple_message(Message, [ center( b(Message) ), -- ]).
+
+
+

@@ -1,0 +1,8 @@
+Ciao allows @em{annotating} the program code with
+@em{assertions}. Such assertions include @concept{type} and
+@concept{instantiation mode} declarations, but also more general
+properties as well as comments in the style of the @em{literate
+programming}. These assertions document predicates (and modules and
+whole applications) and can be used by the Ciao preprocessor/compiler
+while debugging and optimizing the program or library, and by the Ciao
+documenter to build the program or library reference manual.

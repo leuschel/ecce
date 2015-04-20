@@ -1,0 +1,4 @@
+ComponentName=ciao
+ComponentPack=Ciao
+ComponentType=basic
+RelativeSourceAliasPath=.=ciaosrc

@@ -1,0 +1,1938 @@
+This is persdbrt_sql.info, produced by Makeinfo version 3.12h from
+persdbrt_sql.texi.
+
+   This library implements the SQL-based version of the generic of
+concept _persistent predicates_. As introduced in the filebased
+version documentation (the `persdb' library), a persistent predicate
+is a relation such that any updates made to it from a program remain
+after the execution of that program terminates. In this case,
+persistence is achieved by saving the definition and state of the
+predicates in a _relational database_. This way, a very natural and
+high-level interface is provided for accessing SQL database relations
+from a Prolog program. Facilities are also provided for reflecting
+more complex _views_ of the database relations as Prolog predicates.
+Such views can be constructed as conjunctions, disjunctions,
+projections, etc. of database relations, and may include SQL-like
+aggregation operations.
+
+
+   This documentation corresponds to version 1.7 (2000/7/12, 19:1:20
+CEST).
+
+   Copyright (C) 1996-98 The CLIP Group
+
+   This document may be freely read, stored, reproduced,
+disseminated, translated or quoted by any means and on any medium
+provided the following conditions are met:
+
+  1. Every reader or user of this document acknowledges that is aware
+     that no guarantee is given regarding its contents, on any
+     account, and specifically concerning veracity, accuracy and
+     fitness for any purpose.
+
+  2. No modification is made other than cosmetic, change of
+     representation format, translation, correction of obvious
+     syntactic errors, or as permitted by the clauses below.
+
+  3. Comments and other additions may be inserted, provided they
+     clearly appear as such; translations or fragments must clearly
+     refer to an original complete version, preferably one that is
+     easily accessed whenever possible.
+
+  4. Translations, comments and other additions or modifications must
+     be dated and their author(s) must be identifiable (possibly via
+     an alias).
+
+  5. This licence is preserved and applies to the whole document with
+     modifications and additions (except for brief quotes),
+     independently of the representation format.
+
+  6. Any reference to the "official version", "original version" or
+     "how to obtain original versions" of the document is preserved
+     verbatim. Any copyright notice in the document is preserved
+     verbatim. Also, the title and author(s) of the original document
+     should be clearly mentioned as such.
+
+  7. In the case of translations, verbatim sentences mentioned in
+     (6.) are preserved in the language of the original document
+     accompanied by verbatim translations to the language of the
+     traslated document. All translations state clearly that the
+     author is not responsible for the translated work. This license
+     is included, at least in the language in which it is referenced
+     in the original version.
+
+  8. Whatever the mode of storage, reproduction or dissemination,
+     anyone able to access a digitized version of this document must
+     be able to make a digitized copy in a format directly usable,
+     and if possible editable, according to accepted, and publicly
+     documented, public standards.
+
+  9. Redistributing this document to a third party requires
+     simultaneous redistribution of this licence, without
+     modification, and in particular without any further condition or
+     restriction, expressed or implied, related or not to this
+     redistribution. In particular, in case of inclusion in a
+     database or collection, the owner or the manager of the database
+     or the collection renounces any right related to this inclusion
+     and concerning the possible uses of the document after
+     extraction from the database or the collection, whether alone or
+     in relation with other documents.
+
+
+   Any incompatibility of the above clauses with legal, contractual
+or judiciary decisions or constraints implies a corresponding
+limitation of reading, usage, or redistribution rights for this
+document, verbatim or modified.
+
+
+File: persdbrt_sql.info,  Node: Top,  Next: Summary,  Prev: (dir),  Up: (dir)
+
+SQL persistent database interface
+*********************************
+
+
+   This documentation corresponds to version 1.7 (2000/7/12, 19:1:20
+CEST).
+
+* Menu:
+
+* Summary::
+* Introduction::
+* Low-level socket interface to SQL/ODBC databases::
+* Prolog to SQL translator::
+* References::
+* Predicate/Method Definition Index::
+* Concept Definition Index::
+
+
+File: persdbrt_sql.info,  Node: Summary,  Next: Introduction,  Prev: Top,  Up: Top
+
+Summary
+*******
+
+   This library implements the SQL-based version of the generic of
+concept _persistent predicates_. As introduced in the filebased
+version documentation (the `persdb' library), a persistent predicate
+is a relation such that any updates made to it from a program remain
+after the execution of that program terminates. In this case,
+persistence is achieved by saving the definition and state of the
+predicates in a _relational database_. This way, a very natural and
+high-level interface is provided for accessing SQL database relations
+from a Prolog program. Facilities are also provided for reflecting
+more complex _views_ of the database relations as Prolog predicates.
+Such views can be constructed as conjunctions, disjunctions,
+projections, etc. of database relations, and may include SQL-like
+aggregation operations.
+
+
+File: persdbrt_sql.info,  Node: Introduction,  Next: Low-level socket interface to SQL/ODBC databases,  Prev: Summary,  Up: Top
+
+Introduction
+************
+
+   The purpose of this library is to implement an instance of the
+generic concept of persistent predicates, where external relational
+databases are used for storage (see the documentation of the `persdb'
+library and [CHGT98,Par97] for details). To this end, this library
+exports SQL persistent versions of the `assertz_fact/1',
+`retract_fact/1' and `retractall_fact/1' builtin predicates.
+Persistent predicates also allow concurrent updates from several
+programs, since each update is atomic.
+
+   The notion of persistence provides a very natural and transparent
+way to access database relations from a Prolog program. Stub
+definitions are provided for such predicates which access the
+database when the predicate is called (using the `db_client'
+library). A Prolog to SQL translator is used to generate the required
+SQL code dynamically (see library `pl2sql').
+
+   This library also provides facilities for reflecting more complex
+views of the database relations as Prolog predicates. Such views can
+be constructed as conjunctions, disjunctions, projections, etc. of
+database relations. Also, SQL-like aggregation operations are
+supported.
+
+* Menu:
+
+* Implementation of the Database Interface::
+* Example(s)::
+* Usage and interface (persdbrt_sql)::
+* Documentation on exports (persdbrt_sql)::
+* Documentation on multifiles (persdbrt_sql)::
+* Documentation on internals (persdbrt_sql)::
+
+
+File: persdbrt_sql.info,  Node: Implementation of the Database Interface,  Next: Example(s),  Prev: Introduction,  Up: Introduction
+
+Implementation of the Database Interface
+========================================
+
+   The architecture of the low-level implementation of the database
+interface was defined with two goals in mind:
+
+   * to simplify the communication between the Prolog system and the
+     relational database engines as much as possible, and
+
+   * to give as much flexibility as possible to the overall system.
+     This includes simultaneous access to several databases, allowing
+     both the databases and clients to reside on the same physical
+     machine or different machines, and allowing the clients to
+     reside in Win95/NT or Unix machines.
+
+   In order to allow the flexibility mentioned above, a client-sever
+architecture was chosen. The following figure depicts the overall
+architecture of the system:
+
+
+[Image file: autofigarchitecture.eps]
+
+   At the server side, a "database mediator server" connects on one
+side to the databases using the ODBC interface (this interface is
+available for the databases of the RadioWeb project, as well as for
+the majority of the databases running in the Win95/NT operating
+systems) and on the other it is connected to the network by TCP/IP
+using a fixed socket number / service (currently fixed to socket
+number 2020).
+
+   The mediator server must run on the Windows (NT/95) operating
+system, on the machine where the databases are also running. The
+(Prolog) clients which connect to it can be run locally at the server
+machine. In addition, remote clients running on different machines
+can also connect to the mediator server by connecting to its socket
+number (service). Such clients can run on either Unix or Windows
+systems.
+
+   After the connection is established a client can send commands to
+the mediator server which will pass them to the corresponding
+database server, and then the data will traverse in the opposite
+direction. These messages include logging on and off from the
+database, sending SQL queries, and receiving the responses.
+
+   The low level implementation of the current library is
+accomplished by providing several abstraction levels over the socket
+interface library of the Prolog engine. These layers of abstraction
+implement the persistent predicate view, build the appropriate
+commands for the database using a translator of Prolog goals to SQL
+commands, issue such commands using the mediator send/receive
+procedures, parse the responses, and present such responses to the
+Prolog engine via backtracking.
+
+
+File: persdbrt_sql.info,  Node: Example(s),  Next: Usage and interface (persdbrt_sql),  Prev: Implementation of the Database Interface,  Up: Introduction
+
+Example(s)
+==========
+
+     :- include(library('persdb_sql/persdb_sql')).
+     :- use_module(library(format)).
+     
+     %% ------------------------------------------------- %%
+     %% First sample database : 'SA 6.0 Sample' %%
+     %% ------------------------------------------------- %%
+     
+     %% Declare product/4 a persistent predicate, storage in 'radiowebdb':
+     :- sql_persistent(product( int,    int, string, string ),
+                   product( quantity,   id,      name,   size   ),
+                   sampledb).
+     sql_persistent_location(sampledb, %% The 'sampledb' descriptor:
+              db('ASA 6.0 Sample','dba', 'sql','r2d5.dia.fi.upm.es':2020)).
+     
+     main0 :-
+     %% Prints the contents of the relation 'product/4' by backtracking over it:
+              format("Printing table:\n",[]),
+              product(Quantity, Id, Name, Size),
+              format("Tuple: ~w \t ~w \t ~w \t ~w \n",
+                     [Quantity, Id, Name, Size]),
+              fail.
+     main0 :-
+              format("Done.\n",[]).
+     
+     %% Generalizing table printing:
+     %% Prints the contents of Pred by backtracking over it
+     print_predicate(Pred):-
+             format("Printing relation:\n",[]),
+             Pred, %% predicate call
+             Pred=..[_|Args],
+             format("\t Tuple: ~w \n",[Args]),
+             fail.
+     print_predicate(_Pred):-
+             format("Done.~n",[]).
+     
+     main1 :- %% similar to main0:
+     %% Prints the contents of the relation 'product/4' by backtracking over it:
+             print_predicate(product(_Quantity,_Id,_Name,_Size)).
+     
+     main2 :- %% Issues a complex query inside a db_findall:
+              dbfindall(sampledb,
+                        foo(Quantity, Id, Name, Size, Bar),
+                        ( product(Quantity, Id, Name, Size),
+                          I^N^S^(Bar is avg(Q,product(Q, I, N, S)))
+                        ),
+                        Results),
+              format("Results = ~w~n",[Results]).
+     main21 :- %% Using db_call
+              dbcall(sampledb,
+                  (product(Quantity, Id, Name, Size),
+                   product(Quantity, Id1, _Name1, _Size1),Id1>Id)),
+     %%       product(Quantity, Id, Name, Size),
+     %%          product(Quantity, Id1, Name1, Size1),
+     %%          Id1>Id,
+              format("Tuple: ~w \t ~w \t ~w \t ~w \n",
+                     [Quantity, Id, Name, Size]).
+     
+     main22 :-  % get the set of tables from a database
+             sql_get_tables(sampledb,TablesList),
+             display(TablesList).
+     
+     main23 :- % get table attributes and its types
+             sql_table_types(sampledb, 'Customer', AttList),
+             display(AttList).
+     
+     %% ------------------------------------------------- %%
+     %% Second sample database : 'Literature'             %%
+     %% ------------------------------------------------- %%
+     
+     :- sql_persistent(authors(string,string,int),
+                    authors(firstName,lastName,id), %% 'id' is the primary key
+                    literature_db).
+     sql_persistent_location(literature_db,
+             db('Literature','dba','sql','r2d5.dia.fi.upm.es':2020)).
+     
+     main3:- %% Prints the contents of authors
+              print_predicate(authors(_FirstName,_LastName,_Id)) .
+     
+     main4:- %% assert a persistent fact
+              dbassertz_fact(authors('Pedro','Calderon de la Barca',17)).
+     
+     main6:- %% retract a persistent fact
+              dbretract_fact(authors('Pedro','Calderon de la Barca',17)).
+     
+     
+     main9:- %% checking if a persistent fact is a current fact
+             dbcurrent_fact(authors(_X,_Y,_Z)).
+
+
+File: persdbrt_sql.info,  Node: Usage and interface (persdbrt_sql),  Next: Documentation on exports (persdbrt_sql),  Prev: Example(s),  Up: Introduction
+
+Usage and interface (`persdbrt_sql')
+====================================
+
+   * *Library usage:*
+
+     Typically, this library is used including the 'persdb_sql'
+     package into the package list of the module, or using the
+     `use_package/1' declaration:
+    In a module:
+               	:- module(bar, [main/1], [persdb_sql]).
+          or
+                       :- module(bar, [main/1]).
+                       :- include(library(persdb_sql)).
+
+    In a _user_ file:
+               	:- use_package([persdb_sql]).
+          or
+                       :- include(library(persdb_sql)).
+          This loads the run-time and compile-time versions of the
+     library (`persdbtr_sql.pl' and `persdbrt_sql.pl') and includes
+     some needed declarations.
+
+   * *Exports:*
+        - _Predicates:_
+
+          `init_sql_persdb/0', `dbassertz_fact/1', `dbretract_fact/1',
+          `dbcurrent_fact/1', `dbretractall_fact/1',
+          `make_sql_persistent/3', `dbfindall/4', `dbcall/2',
+          `sql_query/3', `sql_get_tables/2', `sql_table_types/3'.
+
+        - _Multifiles:_
+
+          `sql_persistent_location/2'.
+
+
+   * *Other modules used:*
+        - _System library modules:_
+
+          `persdb_sql/db_client', `persdb_sql/pl2sql',
+          `persdb_sql/sqltypes', `dynamic', `terms', `metaterms',
+          `messages', `lists', `aggregates',
+          `persdb_sql/insert_compiler/pl2sqlinsert'.
+
+        - _Internal (engine) modules:_
+
+          `internals', `arithmetic', `atomic_basic', `attributes',
+          `basic_props', `basiccontrol', `data_facts', `exceptions',
+          `io_aux', `io_basic', `prolog_flags', `streams_basic',
+          `system_info', `term_basic', `term_compare', `term_typing'.
+
+
+
+
+File: persdbrt_sql.info,  Node: Documentation on exports (persdbrt_sql),  Next: Documentation on multifiles (persdbrt_sql),  Prev: Usage and interface (persdbrt_sql),  Up: Introduction
+
+Documentation on exports (`persdbrt_sql')
+=========================================
+
+ - PREDICATE: init_sql_persdb/0:
+     *Usage:*
+        - _Description:_ Internal predicate, used to transform
+          predicates statically declared as persistent (see
+          `sql_persistent/3') into real persistent predicates.
+
+
+
+ - PREDICATE: sql_persistent/3:
+     No further documentation available for this predicate.
+
+
+
+
+ - PREDICATE: dbassertz_fact/1:
+     *Usage:* `dbassertz_fact(+Fact)'
+        - _Description:_ Persistent extension of `assertz_fact/1':
+          the current instance of `Fact' is interpreted as a fact
+          (i.e., a relation tuple) and is added to the end of the
+          definition of the corresponding predicate. If any integrity
+          constraint violation is done (database stored predicates),
+          an error will be displayed. The predicate concerned must be
+          statically (`sql_persistent/3') or dinamically
+          (`make_sql_persistent/3') declared. Any uninstantiated
+          variables in the `Fact' will be replaced by new, private
+          variables. *Note:* _assertion of facts with uninstantiated
+          variables not implemented at this time._
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+Fact' is a fact (a term whose main functor is not
+          `':-'/2').   (`fact/1')
+
+
+
+ - PREDICATE: dbretract_fact/1:
+     *Usage:* `dbretract_fact(+Fact)'
+        - _Description:_ Persistent extension of `retract_fact/1':
+          deletes on backtracking all the facts which unify with
+          `Fact'. The predicate concerned must be statically
+          (`sql_persistent/3') or dinamically
+          (`make_sql_persistent/3') declared.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+Fact' is a fact (a term whose main functor is not
+          `':-'/2').   (`fact/1')
+
+
+
+ - PREDICATE: dbcurrent_fact/1:
+     *Usage:* `dbcurrent_fact(+Fact)'
+        - _Description:_ Persistent extension of `current_fact/1':
+          the fact `Fact' exists in the current database. The
+          predicate concerned must be declared `sql_persistent/3'.
+          Provides on backtracking all the facts (tuples) which unify
+          with `Fact'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+Fact' is a fact (a term whose main functor is not
+          `':-'/2').   (`fact/1')
+
+
+
+ - PREDICATE: dbretractall_fact/1:
+     *Usage:* `dbretractall_fact(+Fact)'
+        - _Description:_ Persistent extension of `retractall_fact/1':
+          when called deletes all the facts which unify with `Fact'.
+          The predicate concerned must be statically
+          (`sql_persistent/3') or dinamically
+          (`make_sql_persistent/3') declared.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+Fact' is a fact (a term whose main functor is not
+          `':-'/2').   (`fact/1')
+
+
+
+ - PREDICATE: make_sql_persistent/3:
+     _Meta-predicate_ with arguments:
+     `make_sql_persistent(addmodule,?,?)'.
+
+     *Usage:*
+     `make_sql_persistent(PrologPredTypes,TableAttributes,Keyword)'
+        - _Description:_ Dynamic version of the `sql_persistent/3'
+          declaration.
+
+        - _The following properties should hold upon exit:_
+
+          `PrologPredTypes' is a structure describing a Prolog
+          predicate name with its types.   (`prologPredTypes/1')
+
+          `TableAttributes' is a structure describing a table name
+          and some attributes.   (`tableAttributes/1')
+
+          `Keyword' is the name of a persistent storage location.
+          (`persLocId/1')
+
+
+
+ - PREDICATE: dbfindall/4:
+     *Usage:* `dbfindall(+DBId,+Pattern,+ComplexGoal,-Results)'
+        - _Description:_ Similar to `findall/3', but `Goal' is
+          executed in database `DBId'. Certain restrictions and
+          extensions apply to both `Pattern' and `ComplexGoal'
+          stemming from the Prolog to SQL translation involved (see
+          the corresponding type definitions for details).
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DBId' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `+Pattern' is a database projection term.   (`projterm/1')
+
+          `+ComplexGoal' is a database query goal.   (`querybody/1')
+
+          `-Results' is a list.   (`list/1')
+
+
+
+ - PREDICATE: dbcall/2:
+     *Usage:* `dbcall(+DBId,+ComplexGoal)'
+        - _Description:_ Internal predicate, used by the transformed
+          versions of the persistent predicates. Not meant to be
+          called directly by users. It is exported by the library so
+          that it can be used by the transformed versions of the
+          persistent predicates in the modules in which they reside.
+          Sends `ComplexGoal' to database `DBId' for evaluation.
+          `ComplexGoal' must be a call to a persistent predicate
+          which resides in database `DBId'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DBId' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `+ComplexGoal' is a database query goal.   (`querybody/1')
+
+
+
+ - PREDICATE: sql_query/3:
+     *Usage:* `sql_query(+DBId,+SQLString,AnswerTableTerm)'
+        - _Description:_ `ResultTerm' is the response from database
+          `DBId' to the SQL query in `SQLString' to database `DBId'.
+          `AnswerTableTerm' can express a set of tuples, an error
+          answer or a 'ok' response (see `answertableterm/1' for
+          details). At the moment, `sql_query/3' log in and out for
+          each query. This should be changed to log in only the first
+          time and log out on exit and/or via a timer in the standard
+          way.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DBId' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `+SQLString' is a string containing SQL code.
+          (`sqlstring/1')
+
+          `AnswerTableTerm' is a response from the ODBC database
+          interface.   (`answertableterm/1')
+
+
+
+ - PREDICATE: sql_get_tables/2:
+     *Usage 1:* `sql_get_tables(+Location,-Tables)'
+        - _Description:_ `Tables' contains the tables available in
+          `Location'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `persLocation(+Location)'  (`persLocation/1')
+
+          `-Tables' is a list of `atm's.   (`list/2')
+
+     *Usage 2:* `sql_get_tables(+DbConnection,-Tables)'
+        - _Description:_ `Tables' contains the tables available in
+          `DbConnection'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DbConnection' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `-Tables' is a list of `atm's.   (`list/2')
+
+
+
+ - PREDICATE: sql_table_types/3:
+     *Usage 1:* `sql_table_types(+Location,+Table,-AttrTypes)'
+        - _Description:_ `AttrTypes' are the attributes and types of
+          `Table' in `Location'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `persLocation(+Location)'  (`persLocation/1')
+
+          `+Table' is an atom.   (`atm/1')
+
+          `-AttrTypes' is a list.   (`list/1')
+
+     *Usage 2:* `sql_table_types(+DbConnection,+Table,-AttrTypes)'
+        - _Description:_ `AttrTypes' are the attributes and types of
+          `Table' in `DbConnection'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DbConnection' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `+Table' is an atom.   (`atm/1')
+
+          `-AttrTypes' is a list.   (`list/1')
+
+
+
+ - REGTYPE: socketname/1:
+     *Usage:* `socketname(IPP)'
+        - _Description:_ `IPP' is a structure describing a complete
+          TCP/IP port address.
+
+
+
+ - REGTYPE: dbname/1:
+     *Usage:* `dbname(DBId)'
+        - _Description:_ `DBId' is the identifier of an ODBC database.
+
+
+
+ - REGTYPE: user/1:
+     *Usage:* `user(User)'
+        - _Description:_ `User' is a user name in the ODBC database.
+
+
+
+ - REGTYPE: passwd/1:
+     *Usage:* `passwd(Passwd)'
+        - _Description:_ `Passwd' is the password for the user name
+          in the ODBC database.
+
+
+
+ - REGTYPE: projterm/1:
+     *Usage:* `projterm(DBProjTerm)'
+        - _Description:_ `DBProjTerm' is a database projection term.
+
+
+
+ - REGTYPE: querybody/1:
+     *Usage:* `querybody(DBGoal)'
+        - _Description:_ `DBGoal' is a database query goal.
+
+
+
+ - (: UNDOC_REEXPORT) sqltype/1:
+     Imported from `sqltypes' (see the corresponding documentation
+     for details).
+
+
+
+
+
+File: persdbrt_sql.info,  Node: Documentation on multifiles (persdbrt_sql),  Next: Documentation on internals (persdbrt_sql),  Prev: Documentation on exports (persdbrt_sql),  Up: Introduction
+
+Documentation on multifiles (`persdbrt_sql')
+============================================
+
+ - PREDICATE: sql_persistent_location/2:
+     Relates names of locations (the `Keyword's) with descriptions of
+     such locations (`Location's).
+
+     The predicate is _multifile_.
+
+     The predicate is of type _data_.
+
+     *Usage 1:* `sql_persistent_location(Keyword,Location)'
+        - _Description:_ `Keyword' is an identifier for the
+          persistent data location `Location'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `Keyword' is the name of a persistent storage location.
+          (`persLocId/1')
+
+          `persLocation(Location)'  (`persLocation/1')
+
+     *Usage 2:* `sql_persistent_location(Keyword,DBLocation)'
+        - _Description:_ In this usage, `DBLocation' is a _relational
+          database_, in which case the predicate is stored as tuples
+          in the database.
+
+        - _The following properties should hold upon exit:_
+
+          `Keyword' is the name of a persistent storage location.
+          (`persLocId/1')
+
+          `DBLocation' is a structure describing a database.
+          (`database_desc/1')
+
+
+
+
+File: persdbrt_sql.info,  Node: Documentation on internals (persdbrt_sql),  Prev: Documentation on multifiles (persdbrt_sql),  Up: Introduction
+
+Documentation on internals (`persdbrt_sql')
+===========================================
+
+ - PREDICATE: db_query/4:
+     *Usage:* `db_query(+DBId,+ProjTerm,+Goal,ResultTerm)'
+        - _Description:_ `ResultTerm' contains all the tuples which
+          are the response from database `DBId' to the Prolog query
+          `Goal', projected onto `ProjTerm'. Uses `pl2sqlstring/3'
+          for the Prolog to SQL translation and `sql_query/3' for
+          posing the actual query.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DBId' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `+ProjTerm' is a database projection term.   (`projterm/1')
+
+          `+Goal' is a database query goal.   (`querybody/1')
+
+          `ResultTerm' is a tuple of values from the ODBC database
+          interface.   (`tuple/1')
+
+
+
+ - PREDICATE: db_query_one_tuple/4:
+     *Usage:* `db_query_one_tuple(+DBId,+ProjTerm,+Goal,ResultTerm)'
+        - _Description:_ `ResultTerm' is one of the tuples which are
+          the response from database `DBId' to the Prolog query
+          `Goal', projected onto `ProjTerm'. Uses `pl2sqlstring/3'
+          for the Prolog to SQL translation and
+          `sql_query_one_tuple/3' for posing the actual query. After
+          last tuple has been reached, a null tuple is unified with
+          ResultTerm, and the connection to the database finishes.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DBId' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `+ProjTerm' is a database projection term.   (`projterm/1')
+
+          `+Goal' is a database query goal.   (`querybody/1')
+
+          `ResultTerm' is a predicate containing a tuple.
+          (`answertupleterm/1')
+
+
+
+ - PREDICATE: sql_query_one_tuple/3:
+     *Usage:* `sql_query_one_tuple(+DBId,+SQLString,ResultTuple)'
+        - _Description:_ `ResultTuple' contains an element from the
+          set of tuples which represents the response in `DBId' to the
+          SQL query `SQLString'. If the connection is kept, succesive
+          calls return consecutive tuples, until the last tuple is
+          reached. Then a null tuple is unified with `ResultTuple'
+          and the connection is finished (calls to `db_logoff/1' and
+          `odbc_disconnect/1').
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DBId' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `+SQLString' is a string containing SQL code.
+          (`sqlstring/1')
+
+          `ResultTuple' is a tuple of values from the ODBC database
+          interface.   (`tuple/1')
+
+
+
+ - REGTYPE: dbconnection/1:
+     *Usage:* `dbconnection(H)'
+        - _Description:_ `H' a unique identifier of a database
+          session connection.
+
+
+
+ - REGTYPE: tuple/1:
+     *Usage:* `tuple(T)'
+        - _Description:_ `T' is a tuple of values from the ODBC
+          database interface.
+
+
+
+
+File: persdbrt_sql.info,  Node: Low-level socket interface to SQL/ODBC databases,  Next: Prolog to SQL translator,  Prev: Introduction,  Up: Top
+
+Low-level socket interface to SQL/ODBC databases
+************************************************
+
+   *Author(s):* D. Cabeza, M. Carro, I. Caballero, and M.
+Hermenegildo..
+
+   *Version:* 1.7 (2000/7/12, 19:1:20 CEST)
+
+   *Version of last change:* 1.3#53 (1999/9/15, 23:37:55 MEST)
+
+   This library provides a socket-based interface to SQL Databases,
+using the database mediator server ODBC interface developed by C.
+Taboch and I. Caballero. The interface currently works for databases
+running in Win95/NT machines via ODBC. This low-level interface was
+defined with two goals in mind:
+
+   * To simplify the communication between the Prolog system and the
+     relational database engines as much as possible.
+
+   * To give as much flexibility to the overall system. This includes
+     supporting simultaneous access to several databases, and also
+     allowing both the databases and clients to reside on the same or
+     different physical Win95/NT machines. The clients can reside
+     also in Unix/Linux machines. It is also possible to access
+     database selections in either tuple at a time or set at a time
+     fashion, as needed.
+
+
+   In order to allow the flexibility mentioned above, a socket
+(TCP/IP) client-server architecture was chosen. The interface has two
+main components:
+
+   * At the server side, a _database mediator server_ connects on one
+     side to the databases using the ODBC interface and on the other
+     to a fixed port number (service), on which the mediator server
+     listens for requests. The source code (and executables) for this
+     server (slightly modified versions of C. Taboch original code)
+     are in the same directory as this library. This executable must
+     be running on the Windows (NT/95) machine where the databas(es)
+     is(are) also running.(1)
+
+   * At the client side a Prolog client can connect to the database
+     by loading this library and calling the appropriate predicates.
+     The Prolog client can run on either Windows or Unix/Linux
+     systems, locally at the server machine or remotely in different
+     machines. The mediator server port number (service) used is
+     currently fixed to 2020. After the connection is established a
+     client can send commands to the mediator server which will pass
+     them to the corresponding database server, and then the response
+     data will return in the opposite direction. These messages
+     include login on and off from the database, sending SQL queries,
+     and receiving the responses.
+
+
+   *Example:*
+     :- use_module(library('persdb_sql/db_client')).
+     :- use_module(library(format)).
+     :- use_module(library(lists)).
+     
+     :- multifile issue_debug_messages/1.
+     :- data issue_debug_messages/1.
+     issue_debug_messages('db_client').
+     
+     main0:- %% getting the tables existing in a database
+             odbc_connect('r2d5.dia.fi.upm.es':2020,Stream),
+             db_login(Stream,'DaletDemo',dalet_admin,dalet_admin,
+     %%        db_login(Stream,'ASA 6.0 Sample',dba,sql,
+                      dbconnection(Stream,DbHandle)),
+     %%        db_get_tables(dbconnection(Stream,DbHandle),TablesList),
+             db_table_types(dbconnection(Stream,DbHandle),'Titles',AttList),
+             db_logoff(dbconnection(Stream,DbHandle)),
+             odbc_disconnect(Stream),
+             format("Results: ~w \n",AttList).
+     
+     
+     main1 :- %% accessing the whole table in one go
+             odbc_connect('r2d5.dia.fi.upm.es':2020,Stream),
+             db_login(Stream,'ASA 6.0 Sample',dba,sql,Conn),
+             db_eval_sql(Conn,"SELECT fname,lname,address from ""DBA"".customer
+                        WHERE ((Id>100) AND (Id<105))",Term),
+             write(Term), nl,nl,nl,nl,nl,nl,nl,nl,nl,nl,nl,nl,nl,nl,nl,
+             functor(Term,X,_Y),
+             write(X),nl,
+             Term=..[_|L],
+             write('That is L'),nl,
+             write(L),nl,L=[M],length(M,N),write(N),
+     %        db_eval_sql(Conn,"SELECT id,name,description,color from
+     %                    ""DBA"".product WHERE size='One size fits all'
+     %                    OR size='Large'",Term2),
+     %        write(Term2), nl,
+             db_logoff(Conn),
+             odbc_disconnect(Stream).
+     
+     main2:- %% accessing tuples one by one
+             odbc_connect('r2d5.dia.fi.upm.es':2020,Stream),
+             db_login(Stream,'ASA 6.0 Sample',dba,sql,Conn),
+             db_stmt_handle(Conn,
+                   "SELECT fname,lname,address from ""DBA"".customer
+                    WHERE ((Id>100) AND (Id<105))",QueryConn),
+             db_one_tuple(QueryConn,Answer),
+             format("First Tuple: ~w \n",Answer),
+             db_one_tuple(QueryConn,Answer2),
+             format("Second Tuple: ~w \n",Answer2),
+             db_logoff(Conn),
+             odbc_disconnect(Stream).
+     
+     main3:- %% bringing tuples (one to one) from Literature Database
+             %% TO SEE : check it
+             odbc_connect('r2d5.dia.fi.upm.es':2020,Stream),
+             db_login(Stream,'Literature',dba,sql,Conn),
+             db_stmt_handle(Conn,"SELECT * FROM AUTHORS ORDER BY ID",QueryConn),
+             print_all_one_by_one(QueryConn),
+             db_logoff(Conn),
+             odbc_disconnect(Stream).
+     
+     print_all_one_by_one(QueryConn):-
+             db_one_tuple(QueryConn,Answer),
+             Answer\=[],
+             !,
+             format(" ~w \n",Answer),
+             print_all_one_by_one(QueryConn).
+     print_all_one_by_one(_QueryConn):-
+             write(' Finished fetching query statement.'),
+             nl.
+     
+     main4:- %% inserting a tuple into the Literature database
+             odbc_connect('r2d5.dia.fi.upm.es':2020,Stream),
+             db_login(Stream,'Literature',dba,sql,Conn),
+             db_stmt_handle(Conn,
+                    "INSERT INTO AUTHORS values ('Martin Gaite',
+                     'Carmen',10,'1910-7-10 00:00:00:000')",_QueryConn),
+             db_logoff(Conn),
+             odbc_disconnect(Stream).
+     
+     main5:- %% creating a view
+             odbc_connect('r2d5.dia.fi.upm.es':2020,Stream),
+             db_login(Stream,'Literature',dba,sql,Conn),
+             db_stmt_handle(Conn,
+                    "CREATE VIEW AntoniosDateOfBirth AS SELECT
+                     LastName,Date_of_birth FROM
+                     AUTHORS where FirstName='Antonio';",_QueryConn),
+             db_logoff(Conn),
+             odbc_disconnect(Stream).
+     
+     main6:- %% printing the view
+             odbc_connect('r2d5.dia.fi.upm.es':2020,Stream),
+             db_login(Stream,'Literature',dba,sql,Conn),
+             db_eval_sql(Conn,"select * from AntoniosDateOfBirth",Term),
+             write(Term),
+             db_logoff(Conn),
+             odbc_disconnect(Stream).
+     
+     main7:- %% dropping a view
+             odbc_connect('r2d5.dia.fi.upm.es':2020,Stream),
+             db_login(Stream,'Literature',dba,sql,Conn),
+             db_eval_sql(Conn,"DROP VIEW AntoniosDateOfBirth",Term),
+             write(Term),
+             db_logoff(Conn),
+             odbc_disconnect(Stream).
+
+* Menu:
+
+* Usage and interface (db_client)::
+* Documentation on exports (db_client)::
+* Documentation on internals (db_client)::
+
+   ---------- Footnotes ----------
+
+   (1) The server can be downloaded from the same site(s) as the Ciao
+system. The downloaded package contains complete installation
+instructions for the server. Before trying to run the Ciao Prolog
+side of things, make sure that the server is correctly installed and
+running, and that it can be accessed from the small sample client
+that comes with the server distribution. Once this is achieved,
+connection from Ciao should not pose problems.
+
+
+File: persdbrt_sql.info,  Node: Usage and interface (db_client),  Next: Documentation on exports (db_client),  Prev: Low-level socket interface to SQL/ODBC databases,  Up: Low-level socket interface to SQL/ODBC databases
+
+Usage and interface (`db_client')
+=================================
+
+   * *Library usage:*
+
+     `:- use_module(library(db_client)).'
+
+   * *Exports:*
+        - _Predicates:_
+
+          `odbc_connect/2', `db_login/5', `db_eval_sql/3',
+          `db_stmt_handle/3', `db_one_tuple/2', `db_get_tables/2',
+          `db_table_types/3', `db_logoff/1', `odbc_disconnect/1',
+          `match_string/3'.
+
+        - _Regular Types:_
+
+          `socketname/1', `dbname/1', `user/1', `passwd/1',
+          `dbconnection/1', `answertableterm/1', `tuple/1',
+          `dbqueryconnection/1', `answertupleterm/1'.
+
+
+   * *Other modules used:*
+        - _System library modules:_
+
+          `sockets/sockets', `write', `strings', `lists',
+          `persdb_sql/string2term', `messages'.
+
+        - _Internal (engine) modules:_
+
+          `arithmetic', `atomic_basic', `attributes', `basic_props',
+          `basiccontrol', `data_facts', `exceptions', `io_aux',
+          `io_basic', `prolog_flags', `streams_basic', `system_info',
+          `term_basic', `term_compare', `term_typing'.
+
+
+
+
+File: persdbrt_sql.info,  Node: Documentation on exports (db_client),  Next: Documentation on internals (db_client),  Prev: Usage and interface (db_client),  Up: Low-level socket interface to SQL/ODBC databases
+
+Documentation on exports (`db_client')
+======================================
+
+ - PREDICATE: odbc_connect/2:
+     *Usage:* `odbc_connect(+DbAddress,-Stream)'
+        - _Description:_ Opens a socket connection to port
+          `DbAddress', which should be the address of a database
+          mediator server. `Stream' is the identifier of the
+          corresponding Prolog stream. It is simply a call to
+          `connect_to_socket/3'
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DbAddress' is a structure describing a complete TCP/IP
+          port address.   (`socketname/1')
+
+          `-Stream' is an open stream.   (`stream/1')
+
+
+
+ - PREDICATE: db_login/5:
+     *Usage:* `db_login(+Stream,+DbName,+User,+Passwd,-DbConnection)'
+        - _Description:_ Logs on to the database `DbName' with user
+          `User' and password `Passwd' via connection `Stream'.
+          `DbConnection' contains the identifier of the session, to
+          be used in the calls to other predicates defining the
+          interface. It fails and display an error message if the
+          login is not succesfully completed.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+Stream' is an open stream.   (`stream/1')
+
+          `+DbName' is the identifier of an ODBC database.
+          (`dbname/1')
+
+          `+User' is a user name in the ODBC database.   (`user/1')
+
+          `+Passwd' is the password for the user name in the ODBC
+          database.   (`passwd/1')
+
+          `-DbConnection' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+
+
+ - REGTYPE: socketname/1:
+          socketname(IPAddress:PortNumber) :-
+                  atm(IPAddress),
+                  int(PortNumber).
+
+     *Usage:* `socketname(IPP)'
+        - _Description:_ `IPP' is a structure describing a complete
+          TCP/IP port address.
+
+
+
+ - REGTYPE: dbname/1:
+          dbname(DBId) :-
+                  atm(DBId).
+
+     *Usage:* `dbname(DBId)'
+        - _Description:_ `DBId' is the identifier of an ODBC database.
+
+
+
+ - REGTYPE: user/1:
+          user(User) :-
+                  atm(User).
+
+     *Usage:* `user(User)'
+        - _Description:_ `User' is a user name in the ODBC database.
+
+
+
+ - REGTYPE: passwd/1:
+          passwd(Passwd) :-
+                  atm(Passwd).
+
+     *Usage:* `passwd(Passwd)'
+        - _Description:_ `Passwd' is the password for the user name
+          in the ODBC database.
+
+
+
+ - REGTYPE: dbconnection/1:
+          dbconnection(dbconnection(DbStream,DbHandle)) :-
+                  stream(DbStream),
+                  dbhandle(DbHandle).
+
+     *Usage:* `dbconnection(H)'
+        - _Description:_ `H' a unique identifier of a database
+          session connection.
+
+
+
+ - PREDICATE: db_eval_sql/3:
+     *Usage:* `db_eval_sql(+DbConnection,+Sentence,-AnswerTableTerm)'
+        - _Description:_ Evaluates the SQL code in `Sentence' in
+          database session `DbConnection'. `AnswerTableTerm' is the
+          response. If a wrong answer is obtained, `AnswerTableTerm'
+          will indicate the error (see `answertableterm' for details).
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DbConnection' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `+Sentence' is a string of SQL code.   (`sqlstring/1')
+
+          `-AnswerTableTerm' is a response from the ODBC database
+          interface.   (`answertableterm/1')
+
+
+
+ - REGTYPE: answertableterm/1:
+     Represents the types of responses that will be returned from the
+     ODBC database interface. These can be a set of answer tuples, or
+     the atom `ok' in case of a successful addition or deletion.
+
+     *Usage:* `answertableterm(AT)'
+        - _Description:_ `AT' is a response from the ODBC database
+          interface.
+
+
+
+ - REGTYPE: tuple/1:
+          tuple(T) :-
+                  list(T,atm).
+
+     *Usage:* `tuple(T)'
+        - _Description:_ `T' is a tuple of values from the ODBC
+          database interface.
+
+
+
+ - PREDICATE: db_stmt_handle/3:
+     *Usage:*
+     `db_stmt_handle(+DbConnection,+Sentence,-DbQueryConnection)'
+        - _Description:_ Evaluates the SQL code in `Sentence' in
+          database session `DbConnection'. If `Sentence' is a
+          succesfull selection, `DbQueryConnection' is a _handle_ to
+          the set of tuples produced by this selection. The
+          individual members of this set can then be accessed via
+          `DbQueryConnection' using the `db_one_tuple/2' predicate.
+          If `Sentence' is not succesfull or is not a selection,
+          `DbQueryConnection' will contain the answer received.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DbConnection' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `+Sentence' is a string of SQL code.   (`sqlstring/1')
+
+          `-DbQueryConnection' is a unique identifier of a query
+          answer in a database session connection.
+          (`dbqueryconnection/1')
+
+
+
+ - REGTYPE: dbqueryconnection/1:
+          dbqueryconnection(dbqueryconnection(DbStream,DbHandle,StmtHandle)) :-
+                  stream(DbStream),
+                  dbhandle(DbHandle),
+                  stmthandle(StmtHandle).
+
+     *Usage:* `dbqueryconnection(H)'
+        - _Description:_ `H' is a unique identifier of a query answer
+          in a database session connection.
+
+
+
+ - PREDICATE: db_one_tuple/2:
+     *Usage:* `db_one_tuple(+DbQueryConnection,-TupleTerm)'
+        - _Description:_ `TupleTerm' represents the last tuple read
+          from handle `DbQueryConnection'. Will be an empty list if
+          all the answers have already been read. It displays an
+          error if any unformatted string is fetched.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DbQueryConnection' is a unique identifier of a query
+          answer in a database session connection.
+          (`dbqueryconnection/1')
+
+          `-TupleTerm' is a predicate containing a tuple.
+          (`answertupleterm/1')
+
+
+
+ - REGTYPE: answertupleterm/1:
+          answertupleterm([]).
+          answertupleterm(tup(T)) :-
+                  tuple(T).
+
+     *Usage:* `answertupleterm(X)'
+        - _Description:_ `X' is a predicate containing a tuple.
+
+
+
+ - PREDICATE: db_get_tables/2:
+     *Usage:* `db_get_tables(+DbConnection,-Tables)'
+        - _Description:_ `Tables' contains the tables available in
+          `DbConnection'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DbConnection' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `-Tables' is a list of `atm's.   (`list/2')
+
+
+
+ - PREDICATE: db_table_types/3:
+     *Usage:* `db_table_types(+DbConnection,+Table,-AttrTypes)'
+        - _Description:_ `AttrTypes' are the attributes and types of
+          `Table' in `DbConnection'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DbConnection' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+          `+Table' is an atom.   (`atm/1')
+
+          `-AttrTypes' is a list.   (`list/1')
+
+
+
+ - PREDICATE: db_logoff/1:
+     *Usage:* `db_logoff(+DbConnection)'
+        - _Description:_ Logs off from the database identified by
+          `DbConnection'. It fails and display an error message if
+          the login is not succesfully completed.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+DbConnection' a unique identifier of a database session
+          connection.   (`dbconnection/1')
+
+
+
+ - PREDICATE: odbc_disconnect/1:
+     *Usage:* `odbc_disconnect(+Stream)'
+        - _Description:_ Closes the socket connection to `Stream'. It
+          is simply a call to `close/1'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+Stream' is an open stream.   (`stream/1')
+
+
+
+ - PREDICATE: match_string/3:
+     No further documentation available for this predicate.
+
+
+
+
+
+File: persdbrt_sql.info,  Node: Documentation on internals (db_client),  Prev: Documentation on exports (db_client),  Up: Low-level socket interface to SQL/ODBC databases
+
+Documentation on internals (`db_client')
+========================================
+
+ - REGTYPE: dbhandle/1:
+          dbhandle(H) :-
+                  string(H).
+
+     *Usage:* `dbhandle(H)'
+        - _Description:_ `H' is the internal database identifier
+          (handle) of a database session.
+
+
+
+ - REGTYPE: stmthandle/1:
+          stmthandle(H) :-
+                  string(H).
+
+     *Usage:* `stmthandle(H)'
+        - _Description:_ `H' is the internal statement identifier
+          (handle) of a query answer in a database session connection.
+
+
+
+
+File: persdbrt_sql.info,  Node: Prolog to SQL translator,  Next: References,  Prev: Low-level socket interface to SQL/ODBC databases,  Up: Top
+
+Prolog to SQL translator
+************************
+
+   *Author(s):* C. Draxler. Adapted by M. Hermenegildo and I.
+Caballero.
+
+   *Version:* 1.7 (2000/7/12, 19:1:20 CEST)
+
+   *Version of last change:* 0.9#96 (1999/5/21, 19:53:48 MEST)
+
+   This library performs translation of Prolog queries into SQL. The
+code is an adaptation for Ciao of the Prolog to SQL compiler written
+by Christoph Draxler, CIS Centre for Information and Speech
+Processing, Ludwig-Maximilians-University Munich,
+`draxler@cis.uni-muenchen.de', Version 1.1. Many thanks to Christoph
+for allowing us to include this adaptation of his code with Ciao.
+
+   The translator needs to know the correspondence between Prolog
+predicates and the SQL tables in the database. To this end this
+module exports two multifile predicates, `relation/3' and
+`attribute/4'. See the description of these predicates for details on
+how such correspondance is specified.
+
+   The main entry points to the translator are `pl2sqlstring/3' and
+`pl2sqlterm/3'. Details on the types of queries allowed can be found
+in the description of these predicates.
+
+   *Example:* the following program would print out a term
+representing the SQL query corresponding to the given Prolog query:
+
+     :- use_module(library('persdb_sql/pl2sql')).
+     :- use_module(library(strings)).
+     
+     :- multifile [relation/3,attribute/4].
+     :- data [relation/3,attribute/4].
+     
+     relation(product,3,'PRODUCT').
+     attribute(1,'PRODUCT','ID',int).
+     attribute(2,'PRODUCT','QUANTITY',int).
+     attribute(3,'PRODUCT','NAME',string).
+     
+     main :-
+          pl2sqlstring( f(L,K),
+               ((product(L,N,a); product(L,N,b)),
+                \+ product(2,3,b),
+                L + 2 > avg(Y, Z^product(Z,Y,a)),
+                K is N + max(X, product(X,2,b))
+                ), T),
+          write_string(T).
+     
+     %%     printqueries(T).
+
+   *Note:* while the translator can be used directly in programs, it
+is more convenient to use a higher-level abstraction: persistent
+predicates (implemented in the `persdb' library). The notion of
+persistent predicates provides a completely transparent interface
+between Prolog and relational databases. When using this library, the
+Prolog to SQL translation is called automatically as needed.
+
+* Menu:
+
+* Usage and interface (pl2sql)::
+* Documentation on exports (pl2sql)::
+* Documentation on multifiles (pl2sql)::
+* Documentation on internals (pl2sql)::
+
+
+File: persdbrt_sql.info,  Node: Usage and interface (pl2sql),  Next: Documentation on exports (pl2sql),  Prev: Prolog to SQL translator,  Up: Prolog to SQL translator
+
+Usage and interface (`pl2sql')
+==============================
+
+   * *Library usage:*
+
+     `:- use_module(library(pl2sql)).'
+
+   * *Exports:*
+        - _Predicates:_
+
+          `pl2sqlstring/3', `pl2sqlterm/3', `printqueries/1',
+          `sqlterm2string/2'.
+
+        - _Regular Types:_
+
+          `querybody/1', `projterm/1', `sqlstring/1'.
+
+        - _Multifiles:_
+
+          `relation/3', `attribute/4'.
+
+
+   * *Other modules used:*
+        - _System library modules:_
+
+          `persdb_sql/sqltypes', `write', `read', `dec10_io',
+          `system', `iso_misc', `lists', `aggregates', `messages'.
+
+        - _Internal (engine) modules:_
+
+          `arithmetic', `atomic_basic', `attributes', `basic_props',
+          `basiccontrol', `data_facts', `exceptions', `io_aux',
+          `io_basic', `prolog_flags', `streams_basic', `system_info',
+          `term_basic', `term_compare', `term_typing'.
+
+
+
+
+File: persdbrt_sql.info,  Node: Documentation on exports (pl2sql),  Next: Documentation on multifiles (pl2sql),  Prev: Usage and interface (pl2sql),  Up: Prolog to SQL translator
+
+Documentation on exports (`pl2sql')
+===================================
+
+ - PREDICATE: pl2sqlstring/3:
+     *Usage:*
+     `pl2sqlstring(+ProjectionTerm,+DatabaseGoal,-SQLQueryString)'
+        - _Description:_ This is the top level predicate which
+          translates complex Prolog goals into the corresponding SQL
+          code.
+
+          The query code is prepared in such a way that the result is
+          projected onto the term `ProjectionTerm' (also in a similar
+          way to the first argument of `setof/3')). See the predicate
+          `translate_projection/3' for restrictions on this term.
+
+          `SQLQueryString' contains the code of the SQL query, ready
+          to be sent to an SQL server.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+ProjectionTerm' is a database projection term.
+          (`projterm/1')
+
+          `+DatabaseGoal' is a database query goal.   (`querybody/1')
+
+          `-SQLQueryString' is a string containing SQL code.
+          (`sqlstring/1')
+
+
+
+ - REGTYPE: querybody/1:
+     `DBGoal' is a goal meant to be executed in the external
+     database. It can be a complex term containing conjunctions,
+     disjunctions, and negations, of:
+
+        * Atomic goals, which must have been defined via `relation/3'
+          and `attribute/4' and reside in the (same) database. Their
+          arguments must be either ground or free variables. If they
+          are ground, they must be bound to constants of the type
+          declared for that argument. If an argument is a free
+          variable, it may _share_ with (i.e., be the same variable
+          as) other free variables in other goal arguments.
+
+        * Database comparison goals, whose main functor must be a
+          database comparison operator (see `pl2sql':`comparison/2')
+          and whose arguments must be _database arithmetic
+          expressions_.
+
+        * Database calls to is/2. The left side of such a call may be
+          either unbound, in which case it is bound to the result of
+          evaluating the right side, or bound in which case an
+          equality condition is tested. The right side must be a
+          _database arithmetic expression_.
+
+
+     The binding of variables follows Prolog rules:
+
+        * variables are bound by positive base goals and on the left
+          side of the `is/2' predicate.
+
+        * Comparison operations, negated goals, and right sides of
+          the `is/2' predicate do not return variable bindings and
+          may even require all arguments to be bound for a safe
+          evaluation.
+
+
+     Database arithmetic expressions may contain:
+
+        * Numeric constants (i.e., integers, reals, etc.).
+
+        * Bound variables, i.e., variables which will be bound during
+          execution through occurrence within a positive database
+          goal, or by a preceding arithmetic function.
+
+        * Database arithmetic functions, which are a subset of those
+          typically accepted within `is/2' (see
+          `pl2sql':`arithmetic_functor/2').
+
+        * Database aggregation functions, each of which has two
+          arguments: a variable indicating the argument over which
+          the function is to be computed, and a goal argument which
+          must contain in at least one argument position the variable
+          (e.g. `avg(Seats,plane(Type,Seats))'). The goal argument
+          may only be a conjunction of (positive or negative) base
+          goals. See `pl2sql':`aggregate_functor/2' for the
+          admissible aggregate functions.
+
+
+     In addition, variables can be existentially quantified using
+     `^/2' (in a similar way to how it is done in `setof/3').
+
+     Note that it is assumed that the arithmetic operators in Prolog
+     and SQL are the same, i.e., `+' is addition in Prolog and in
+     SQL, etc.
+
+     *Usage:* `querybody(DBGoal)'
+        - _Description:_ `DBGoal' is a database query goal.
+
+
+
+ - REGTYPE: projterm/1:
+     `DBProjTerm' is a term onto which the result of a database query
+     code is (in a similar way to the first argument of `setof/3')).
+
+     A `ProjectionTerm' must meet the following restrictions:
+
+        * The functor of `ProjectionTerm' may not be one of the
+          built-in predicates, i.e. ',', ';', etc. are not allowed.
+
+        * Only variables and constants are allowed as arguments,
+          i.e., no structured terms may appear.
+
+
+     *Usage:* `projterm(DBProjTerm)'
+        - _Description:_ `DBProjTerm' is a database projection term.
+
+
+
+ - REGTYPE: sqlstring/1:
+          sqlstring(S) :-
+                  string(S).
+
+     *Usage:* `sqlstring(S)'
+        - _Description:_ `S' is a string containing SQL code.
+
+
+
+ - PREDICATE: pl2sqlterm/3:
+     *Usage:*
+     `pl2sqlterm(+ProjectionTerm,+DatabaseGoal,-SQLQueryTerm)'
+        - _Description:_ Similar to `pl2sqlstring/3' except that
+          `SQLQueryTerm' is a representation of the SQL query as a
+          Prolog term.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+ProjectionTerm' is a database projection term.
+          (`projterm/1')
+
+          `+DatabaseGoal' is a database query goal.   (`querybody/1')
+
+          `-SQLQueryTerm' is a list of `sqlterm's.   (`list/2')
+
+
+
+ - PREDICATE: printqueries/1:
+     *Usage:* `printqueries(SQLTermList)'
+        - _Description:_ Print to standard output in SQL the list of
+          SQL term `SQLTermList'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `SQLTermList' is a list of `sqlterm's.   (`list/2')
+
+
+
+ - PREDICATE: sqlterm2string/2:
+     *Usage:* `sqlterm2string(+Queries,-QueryString)'
+        - _Description:_ `QueryString' is a string representation of
+          the list of queries in Prolog-term format in `Queries'.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `+Queries' is a list of `sqlterm's.   (`list/2')
+
+          `-QueryString' is a string containing SQL code.
+          (`sqlstring/1')
+
+
+
+ - (: UNDOC_REEXPORT) sqltype/1:
+     Imported from `sqltypes' (see the corresponding documentation
+     for details).
+
+
+
+
+
+File: persdbrt_sql.info,  Node: Documentation on multifiles (pl2sql),  Next: Documentation on internals (pl2sql),  Prev: Documentation on exports (pl2sql),  Up: Prolog to SQL translator
+
+Documentation on multifiles (`pl2sql')
+======================================
+
+ - PREDICATE: relation/3:
+     The predicate is _multifile_.
+
+     The predicate is of type _data_.
+
+     *Usage:* `relation(PredName,Arity,TableName)'
+        - _Description:_ This predicate, together with `attribute/4',
+          defines the correspondence between Prolog predicates and the
+          SQL tables in the database. These two relations constitute
+          an extensible meta-database which maps Prolog predicate
+          names to SQL table names, and Prolog predicate argument
+          positions to SQL attributes.
+
+          `PredName' is the chosen Prolog name for an SQL table.
+          `Arity' is the number of arguments of the predicate.
+          `TableName' is the name of the SQL table in the Database
+          Management System.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `PredName' is an atom.   (`atm/1')
+
+          `Arity' is an integer.   (`int/1')
+
+          `TableName' is an atom.   (`atm/1')
+
+
+
+ - PREDICATE: attribute/4:
+     The predicate is _multifile_.
+
+     The predicate is of type _data_.
+
+     *Usage:* `attribute(ANumber,TblName,AName,AType)'
+        - _Description:_ This predicate maps the argument positions
+          of a Prolog predicate to the SQL attributes of its
+          corresponding table. The types of the arguments need to be
+          specified, and this information is used for consistency
+          checking during the translation and for output formatting.
+          A minimal type system is provided to this end. The
+          allowable types are given by `sqltype/1'.
+
+          `ANumber' is the argument number in the Prolog relation.
+          `TblName' is the name of the SQL table in the Database
+          Management System. `AName' is the name of the corresponding
+          attribute in the table. `AType' is the (translator) data
+          type of the attribute.
+
+        - _Call and exit should be _compatible_ with:_
+
+          `ANumber' is an integer.   (`int/1')
+
+          `TblName' is an atom.   (`atm/1')
+
+          `AName' is an atom.   (`atm/1')
+
+          `AType' is an SQL data type supported by the translator.
+          (`sqltype/1')
+
+
+
+
+File: persdbrt_sql.info,  Node: Documentation on internals (pl2sql),  Prev: Documentation on multifiles (pl2sql),  Up: Prolog to SQL translator
+
+Documentation on internals (`pl2sql')
+=====================================
+
+ - PREDICATE: query_generation/3:
+     *Usage:*
+     `query_generation(+ListOfConjunctions,+ProjectionTerm,-ListOfQueries)'
+        - _Description:_ For each Conjunction in
+          `ListOfConjunctions', translate the pair
+          `(ProjectionTerm,Conjunction)' to an SQL query and connect
+          each such query through a UNION-operator to result in the
+          `ListOfQueries'.
+
+          A Conjunction consists of positive or negative subgoals.
+          Each subgoal is translated as follows:
+
+             * the functor of a goal that is not a comparison
+               operation is translated to a relation name with a
+               range variable,
+
+             * negated goals are translated to NOT EXISTS-subqueries
+               with * projection,
+
+             * comparison operations are translated to comparison
+               operations in the WHERE-clause,
+
+             * aggregate function terms are translated to aggregate
+               function (sub)queries.
+
+
+          The arguments of a goal are translated as follows:
+
+             * `variables of a goal' are translated to qualified
+               attributes,
+
+             * variables occurring in several goals are translated to
+               equality comparisons (equi join) in the WHERE-clause,
+
+             * constant arguments are translated to equality
+               comparisons in the WHERE-clause.
+
+
+          Arithmetic functions are treated specially
+          (`translate_arithmetic_function/5'). See also `querybody/1'
+          for details on the syntax accepted and restrictions.
+
+
+
+
+ - PREDICATE: translate_conjunction/5:
+     *Usage:*
+     `translate_conjunction(Conjunction,SQLFrom,SQLWhere,Dict,NewDict)'
+        - _Description:_ Translates a conjunction of goals
+          (represented as a list of goals preceeded by existentially
+          quantified variables) to FROM-clauses and WHERE-clauses of
+          an SQL query. A dictionary containing the associated SQL
+          table and attribute names is built up as an accumulator
+          pair (arguments `Dict' and `NewDict').
+
+
+
+ - PREDICATE: translate_goal/5:
+     *Usage:* `translate_goal(Goal,SQLFrom,SQLWhere,Dict,NewDict)'
+        - _Description:_ Translates:
+
+             * a positive database goal to the associated FROM- and
+               WHERE clause of an SQL query,
+
+             * a negated database goal to a negated existential
+               subquery,
+
+             * an arithmetic goal to an arithmetic expression or an
+               aggregate function query,
+
+             * a comparison goal to a comparison expression, and
+
+             * a negated comparison goal to a comparison expression
+               with the opposite comparison operator.
+
+
+
+
+
+ - PREDICATE: translate_arithmetic_function/5:
+     *Usage:*
+     `translate_arithmetic_function(Result,Expression,SQLWhere,Dict,NewDict)'
+        - _Description:_ Arithmetic functions (left side of is/2
+          operator is bound to value of expression on right side) may
+          be called with either:
+
+             * `Result' unbound: then `Result' is bound to the value
+               of the evaluation of `Expression',
+
+             * `Result' bound: then an equality condition is returned
+               between the value of `Result' and the value of the
+               evaluation of `Expression'.
+
+               Only the equality test shows up in the WHERE clause of
+               an SQLquery.
+
+
+
+
+ - PREDICATE: translate_comparison/5:
+     *Usage:*
+     `translate_comparison(LeftArg,RightArg,CompOp,Dict,SQLComparison)'
+        - _Description:_ Translates the left and right arguments of a
+          comparison term into the appropriate comparison operation
+          in SQL. The result type of each argument expression is
+          checked for type compatibility.
+
+
+
+ - PREDICATE: aggregate_function/3:
+     *Usage:*
+     `aggregate_function(AggregateFunctionTerm,Dict,AggregateFunctionQuery)'
+        - _Description:_ Supports the Prolog aggregate function terms
+          listed in `aggregate_functor/2' within arithmetic
+          expressions. Aggregate functions are translated to the
+          corresponding SQL built-in aggregate functions.
+
+
+
+ - PREDICATE: comparison/2:
+     *Usage:* `comparison(PrologOperator,SQLOperator)'
+        - _Description:_ Defines the mapping between Prolog operators
+          and SQL operators:
+               comparison(=,=).
+               comparison(<,<).
+               comparison(>,>).
+               comparison(@<,<).
+               comparison(@>,>).
+
+        - _Call and exit should be _compatible_ with:_
+
+          `PrologOperator' is an atom.   (`atm/1')
+
+          `SQLOperator' is an atom.   (`atm/1')
+
+
+
+ - PREDICATE: negated_comparison/2:
+     *Usage:* `negated_comparison(PrologOperator,SQLOperator)'
+        - _Description:_ Defines the mapping between Prolog operators
+          and the complementary SQL operators:
+               negated_comparison(=,<>).
+               negated_comparison(\==,=).
+               negated_comparison(>,=<).
+               negated_comparison(=<,>).
+               negated_comparison(<,>=).
+               negated_comparison(>=,<).
+
+        - _Call and exit should be _compatible_ with:_
+
+          `PrologOperator' is an atom.   (`atm/1')
+
+          `SQLOperator' is an atom.   (`atm/1')
+
+
+
+ - PREDICATE: arithmetic_functor/2:
+     *Usage:* `arithmetic_functor(PrologFunctor,SQLFunction)'
+        - _Description:_ Defines the admissible arithmetic functions
+          on the Prolog side and their correspondence on the SQL side:
+               arithmetic_functor(+,+).
+               arithmetic_functor(-,-).
+               arithmetic_functor(*,*).
+               arithmetic_functor(/,/).
+
+        - _Call and exit should be _compatible_ with:_
+
+          `PrologFunctor' is an atom.   (`atm/1')
+
+          `SQLFunction' is an atom.   (`atm/1')
+
+
+
+ - PREDICATE: aggregate_functor/2:
+     *Usage:* `aggregate_functor(PrologFunctor,SQLFunction)'
+        - _Description:_ Defines the admissible aggregate functions
+          on the Prolog side and their correspondence on the SQL side:
+               aggregate_functor(avg,'AVG').
+               aggregate_functor(min,'MIN').
+               aggregate_functor(max,'MAX').
+               aggregate_functor(sum,'SUM').
+               aggregate_functor(count,'COUNT').
+
+        - _Call and exit should be _compatible_ with:_
+
+          `PrologFunctor' is an atom.   (`atm/1')
+
+          `SQLFunction' is an atom.   (`atm/1')
+
+
+
+
+File: persdbrt_sql.info,  Node: References,  Next: Predicate/Method Definition Index,  Prev: Prolog to SQL translator,  Up: Top
+
+References
+**********
+
+*[CHGT98]*
+     D. Cabeza, M. Hermenegildo, S. Genaim, and C. Taboch.
+     Design of a Generic, Homogeneous Interface to Relational
+     Databases.
+     Technical Report D3.1.M1-A1, CLIP7/98.0, RADIOWEB Project,
+     September   1998.
+
+*[Par97]*
+     The RADIOWEB~Project Partners.
+     RADIOWEB EP25562: Automatic Generation of Web Sites for the
+     Radio Brodcasting Industry - Project Description / Technical
+     Annex.
+     Technical Report, RADIOWEB Project, July 1997.
+
+
+File: persdbrt_sql.info,  Node: Predicate/Method Definition Index,  Next: Concept Definition Index,  Prev: References,  Up: Top
+
+Predicate/Method Definition Index
+*********************************
+
+* Menu:
+
+* aggregate_function/3:                  Documentation on internals (pl2sql).
+* aggregate_functor/2:                   Documentation on internals (pl2sql).
+* arithmetic_functor/2:                  Documentation on internals (pl2sql).
+* attribute/4:                           Documentation on multifiles (pl2sql).
+* comparison/2:                          Documentation on internals (pl2sql).
+* dbassertz_fact/1:                      Documentation on exports (persdbrt_sql).
+* dbcall/2:                              Documentation on exports (persdbrt_sql).
+* dbcurrent_fact/1:                      Documentation on exports (persdbrt_sql).
+* db_eval_sql/3:                         Documentation on exports (db_client).
+* dbfindall/4:                           Documentation on exports (persdbrt_sql).
+* db_get_tables/2:                       Documentation on exports (db_client).
+* db_login/5:                            Documentation on exports (db_client).
+* db_logoff/1:                           Documentation on exports (db_client).
+* db_one_tuple/2:                        Documentation on exports (db_client).
+* db_query/4:                            Documentation on internals (persdbrt_sql).
+* db_query_one_tuple/4:                  Documentation on internals (persdbrt_sql).
+* dbretractall_fact/1:                   Documentation on exports (persdbrt_sql).
+* dbretract_fact/1:                      Documentation on exports (persdbrt_sql).
+* db_stmt_handle/3:                      Documentation on exports (db_client).
+* db_table_types/3:                      Documentation on exports (db_client).
+* init_sql_persdb/0:                     Documentation on exports (persdbrt_sql).
+* make_sql_persistent/3:                 Documentation on exports (persdbrt_sql).
+* match_string/3:                        Documentation on exports (db_client).
+* negated_comparison/2:                  Documentation on internals (pl2sql).
+* odbc_connect/2:                        Documentation on exports (db_client).
+* odbc_disconnect/1:                     Documentation on exports (db_client).
+* pl2sqlstring/3:                        Documentation on exports (pl2sql).
+* pl2sqlterm/3:                          Documentation on exports (pl2sql).
+* printqueries/1:                        Documentation on exports (pl2sql).
+* query_generation/3:                    Documentation on internals (pl2sql).
+* relation/3:                            Documentation on multifiles (pl2sql).
+* sql_get_tables/2:                      Documentation on exports (persdbrt_sql).
+* sql_persistent/3:                      Documentation on exports (persdbrt_sql).
+* sql_persistent_location/2:             Documentation on multifiles (persdbrt_sql).
+* sql_query/3:                           Documentation on exports (persdbrt_sql).
+* sql_query_one_tuple/3:                 Documentation on internals (persdbrt_sql).
+* sql_table_types/3:                     Documentation on exports (persdbrt_sql).
+* sqlterm2string/2:                      Documentation on exports (pl2sql).
+* translate_arithmetic_function/5:       Documentation on internals (pl2sql).
+* translate_comparison/5:                Documentation on internals (pl2sql).
+* translate_conjunction/5:               Documentation on internals (pl2sql).
+* translate_goal/5:                      Documentation on internals (pl2sql).
+
+
+File: persdbrt_sql.info,  Node: Concept Definition Index,  Prev: Predicate/Method Definition Index,  Up: Top
+
+Concept Definition Index
+************************
+
+* Menu:
+
+* equi join in the WHERE-clause:         Documentation on internals (pl2sql).
+* existential quantification:            Documentation on exports (pl2sql).
+
+
+
+Tag Table:
+Node: Top4086
+Node: Summary4517
+Node: Introduction5443
+Node: Implementation of the Database Interface6989
+Node: Example(s)9596
+Node: Usage and interface (persdbrt_sql)13445
+Node: Documentation on exports (persdbrt_sql)15314
+Node: Documentation on multifiles (persdbrt_sql)24101
+Node: Documentation on internals (persdbrt_sql)25459
+Node: Low-level socket interface to SQL/ODBC databases28625
+Ref: Low-level socket interface to SQL/ODBC databases-Footnote-136049
+Node: Usage and interface (db_client)36494
+Node: Documentation on exports (db_client)37791
+Node: Documentation on internals (db_client)45998
+Node: Prolog to SQL translator46725
+Node: Usage and interface (pl2sql)49315
+Node: Documentation on exports (pl2sql)50389
+Node: Documentation on multifiles (pl2sql)56657
+Node: Documentation on internals (pl2sql)59074
+Node: References65808
+Node: Predicate/Method Definition Index66441
+Node: Concept Definition Index70004
+
+End Tag Table

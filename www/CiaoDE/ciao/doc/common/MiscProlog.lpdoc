@@ -1,0 +1,10 @@
+This part documents several Ciao libraries which provide different
+useful additional functionalities. Such functionalities include
+performing operating system calls, gathering statistics from the
+Prolog engine, file and file name manipulation, error and exception
+handling, fast reading and writing of terms (@concept{marshalling} and
+@concept{unmarshalling}), file locking, program reporting messages,
+pretty-printing programs and assertions, a browser of the system
+libraries, additional expansion utilities, concurrent aggregates,
+graph visualization, etc.
+

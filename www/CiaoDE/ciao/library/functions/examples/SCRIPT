@@ -1,0 +1,23 @@
+- factf.pl
+- append.pl
+- factf_assrt.pl
+- revf.pl
+  use_package(functions).
+  [3,2,1] = ~nrev(X).
+- ?- use_package(hiord).
+  ?- P = >(0), P(3).
+  ?- P = member([1,2]), P(X).
+- pred abstractions
+  ?- P = ( _(X,Y):- Y is X+10 ), P(2,R).
+- source:/home/herme/MySVN/Systems/CiaoDE/ciao/library/hiordlib.pl
+  ?- use_module(library(hiordlib)).
+  ?- map([1,3,2], arg(f(a,b,c,d)), R).
+- combination:
+  write(~map([1,3,2], arg(f(a,b,c,d)))).
+- lazyex: combine all...
+- revf_assrt
+- do debugging
+
+
+
+

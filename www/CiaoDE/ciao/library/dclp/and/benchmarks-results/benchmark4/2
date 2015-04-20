@@ -1,0 +1,108 @@
+in(2,[2])
+[[0|5]]
+local_store(2,[x(2,_175,_175)])
+sent(msg(3,2,ok?(a([x(2,_175,_175)]))))
+ackleft(1)
+do_agent(2)
+received(msg(2,1,marker(0)))
+not_source
+store(2,[])
+highers([1])
+presumed_view([])
+quiescent
+sending(msg(1,2,marker(0)))
+sent_message
+do_agent(2)
+received(msg(2,1,marker(1)))
+not_source
+store(2,[])
+highers([1])
+presumed_view([])
+quiescent
+sending(msg(1,2,marker(1)))
+sent_message
+do_agent(2)
+received(msg(2,3,ack([x(3,10,10),x(2,4,4),x(1,5,5)])))
+ack(a(1))
+[[4|4]]
+
+unified
+2
+told
+added_propagation([x(3,10,10),x(2,4,4),x(1,5,5)],2,[x(2,4,4)],3)
+newackleft(0)
+store(2,[])
+highers([1])
+presumed_view([])
+received(msg(2,1,begin_labeling))
+do_agent(2)
+received(msg(2,3,prop_ended))
+[waiting_for_labs(2,3)]
+No remaining prop_ended
+in(2,[2])
+[x(2,4,4)]
+sending(msg(3,2,ok?(a([x(2,4,4)]))))
+sent_message
+do_agent(2)
+received(msg(2,1,marker(1)))
+not_source
+store(2,[])
+highers([1])
+presumed_view([])
+quiescent
+sending(msg(1,2,marker(1)))
+sent_message
+do_agent(2)
+received(msg(2,1,show_stats))
+
+***************************************************
+STATISTICS OF AGENT 2
+*****************OK (propagation)**********************
+ok? messages received during propagation: 0
+
+******************ACK (propagation)********************
+2: ack from 3
+ack messages received during propagation: 1
+
+****************NO GOOD (propagation)******************
+no_good messages received during propagation (none, I hope): 0
+
+************NEGLECTED NO GOOD (propagation)************
+no_good messages neglected during propagation (none, I hope): 0
+
+************BEGIN LABELING (propagation)***************
+2: begin_labeling from 1
+begin_labeling messages received during propagation (one, I hope): 1
+
+***********PROPAGATION ENDED (propagation)*************
+2: prop_ended from 3
+End of propagation messages received: 1
+
+**********TERMINATION DETECTION (propagation)**********
+2: marker from 1
+2: marker from 1
+Termination detection messages (markers) received during propagation: 2
+
+********************OK (labeling)**********************
+ok? messages received during labeling: 0
+
+*******************ACK (labeling)**********************
+ack messages received during labeling: 0
+
+******************NO GOOD (labeling)*******************
+no_good messages received during labeling: 0
+
+************NEGLECTED NO GOOD (labeling)************
+no_good messages neglected during labeling: 0
+
+**************BEGIN LABELING (labeling)****************
+begin_labeling messages received during labeling (none, I hope): 0
+
+*************PROPAGATION ENDED (labeling)**************
+End of propagation messages received during labeling (none, I hope): 0
+
+************TERMINATION DETECTION (labeling)***********
+2: marker from 1
+Termination detection messages (markers) received during labeling: 1
+
+do_agent(2)

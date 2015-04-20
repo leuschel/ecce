@@ -1,0 +1,11 @@
+* Deal with MSB and LSB architectures
+* Password encryption
+
+* check EmptyQueryResponse answers
+* check always ErrorResponse, NoticeResponse, NotificationResponse
+
+
+* FunctionCall, FunctionResultResponse, FunctionVoidResponse
+
+* Copy InResponse, CopyOutResponse, CopyDataRows
+* Terminate

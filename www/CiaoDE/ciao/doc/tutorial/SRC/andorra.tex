@@ -1,0 +1,15 @@
+
+\section{Andorra Prolog: The Determinate-first Principle}
+
+In Prolog there is an advice known as the first-fail principle:
+provide for goals which are more likely to fail to be executed
+first. This is because the sooner they fail more useless work is
+saved, if they are going to fail anyway.
+
+In Andorra Prolog this is generalized to the determinate-first
+principle: execute first goals which have less alternatives (which are
+determinate). A goal is said to be {\bf determinate} if there is only
+one clause that matches it. Note that such a goal is more ``close'' to
+failing than other goals that may have more alternatives. In any case,
+such goals save backtracking. They are thus executed first, regardless
+of their position in the program.

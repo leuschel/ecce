@@ -1,0 +1,398 @@
+===========================================================================
+
+Producing a new a Ciao version
+------------------------------
+
+Special Note: Since 25-11-2004, due to the use of the lpmake utility,
+this document has changed.  In particular, have in mind that several
+Makefile and SETTINGS files has been migrated to their equivalents in
+lpdoc 2.0 and lpmake.
+
+
+The general plan is usually: work on the current version until we
+correct all problems we decided to solve, make test distributions and
+try them, make a fresh copy of de development sources, increment the
+version number, freeze it, post it on the web, and send a message to
+ciao-users.
+
+For producing a proper new version we should in addition at least
+worry about the following:
+
+  * That everything really works. This typically requires completely
+    freezing the development version for some days in which we try
+    everything that we can think of in all platforms.
+    It is also necessary to try out all the examples in all the libraries.
+
+  * That we have the even version (1.8, 2.0, 2.2, ...) comment in 
+    /home/clip/Systems/ciao/doc/common/ciao.pl
+    properly updated in a user-friendly manner, summing up all the changes.
+
+  * That we do not distribute libraries that do not work.
+
+  * That libraries which are half cooked are marked as such if they
+    are included (e.g., the active module/remote stuff, the &-Prolog
+    stuff, ...).
+
+  * We need to have a new announcement message and a new brochure.
+
+
+Continuous testing & updates
+----------------------------
+
+After you make any changes, especially the last ones, please check
+thoroughly that nothing has stopped working.  Specifically,
+
+    * Make sure the files you touched compile and that the documenter
+      works on them.
+
+    * Make sure that all Ciao compiles - look for warnings!
+
+    * Make sure that you update all references to the predicates,
+      etc. you've updated -- search through the entire Ciao
+      Prolog source code tree ('M-x igrep' is a good way to do it).
+
+    * Run the tests in the test directory (in 'local' mode).  While
+      this does not go through all of Ciao capabilities it does try a
+      bunch of things. Testing is currently made with:
+
+      $ cd <ciao-this_version>/tests
+      $ make distclean
+      $ make test-local       (uses development version -- good for a
+                               quick test when changing things)
+
+    * Ideally one should add a test for every solved bug in order to
+      make sure that it does not appear again.  Please do it if at all
+      possible. 
+
+      [N.B. I know that we have not really decided a policy to
+      distribute examples/tests among a central directory and the
+      library directories; however having a new bug catcher at least
+      in one place, even if not the definitive one, is better than not
+      having it at all.] 
+
+
+We should also test bigger programs which we knew worked OK.  bibutils
+and lpdoc are good candidates (because we use them often, and they are
+not trivial).  However there is not means to execute them
+automatically at the moment.
+
+
+Solve the problems
+------------------
+
+Try to solve the glitches you find, but do not spend too much time on
+them: send a brief report if you get stuck.  If you have found a new
+bug, write down how to reproduce it along with the expected results in
+$(CIAOSRC)/bugs/Pending.  There is even a file to write textual
+descriptions (without code).  When fixed, move the bug description to
+$(CIAOSRC)/bugs/Fixed.  $(CIAOSRC)/bugs/Unclassified contains bug
+descriptions for which I (MCL) could not determine whether they have
+been solved or not.  If you recognize any of them, please classify it.
+
+
+Making a (Test) Distribution
+----------------------------
+
+After making sure that (most of) the pending bugs are solved, it is
+time to make a test distribution and try it in several architectures.
+_We should not post publicly any version without testing it_.  In order
+to test a distribution, we typically post it in the alpha or beta
+sites. The procedure of posting a version itself can be tested by
+posting in Test. These WWW locations are at:
+
+  http://clip.dia.fi.upm.es/Software/Test/  
+  http://clip.dia.fi.upm.es/Software/Alpha/  
+  http://clip.dia.fi.upm.es/Software/Beta/  
+
+  (the Local user and password work)
+
+To generate a distribution there, uncomment the appropriate option in
+the DISTSETTINGS.pl file in the Ciao dist directory:
+
+  % disttype:=''.
+  % disttype:='Beta/'.
+  % disttype:='Alpha/'.
+  % disttype:='Test/'.
+
+New test distributions are added generated with the command 
+
+  $ lpmake installdistonly
+
+in the 'dist' directory.
+
+The main thing that we should make sure of when posting publicly
+(outside Beta or Alpha) a version is that it installs properly in all
+platforms, including the manuals, etc.. Also, we should make sure that
+there is no weird stuff (libraries that normally work but that have
+been left in an intermediary state and don't work, files with comments
+in Spanish, directories with libraries that don't work at all, etc.,
+etc.).  Again, this needs both visual inspection _and_ running tests,
+both automatic and manual. Even when we post the first public version,
+it should be clear that it may have unsolved and unexpected bugs, and
+hope that a few brave souls will find them and that we should correct
+them.
+
+
+What goes in a distribution
+---------------------------
+
+Not everything in the Ciao sources go into the distributions:
+directories with the file NODISTRIBUTE do not make it into the
+distribution; directories named .bak or .new or .old (and files also)
+are automatically removed.  However, making sure that the whole
+development system compiles correctly will help us to have a cleaner
+system to continue with, and have more chances that the distribution
+also compiles and runs correctly.  Please delete outdated and
+intermediate files, and store backup files (which may contain
+interesting ideas) in separate directories.  Document the existence of
+these files and ideas (a comment in the code of the 'live' modules is
+probably appropriate).
+
+
+Changelog
+---------
+
+The world receives the announcement of a new version of software with
+a highlight of its new/improved features.  In our case, this means
+going through /home/clip/Systems/ciao-<version>/version/ChangeLog (C-c
+C-n does that) and grouping all the changes in a way similar to what
+appears in /home/clip/Systems/ciao-<version>/doc/common/ciao.pl for
+versions 1.8 and 1.6.  A similar changelog file will go into the
+brochure for the new version (see, e.g.,
+/home/clip/Systems/ciao-1.9/doc/brochure).
+
+
+Documentation
+-------------
+
+The documentation should be as complete and correct as possible.
+Please check that every change you do can be documented (introducing
+syntactic errors is easy).  In order to generate the documentation:
+
+    1. Go to /home/clip/Systems/ciao-<version>/doc , do 'lpmake
+    realclean' and 'lpmake'.  Make sure that there are no
+    errors/warnings, and correct them if they appear.
+
+    2. Verify that the documentation has been generated correctly.  It
+    should appear under /home/clip/Systems/ciao-<version>/doc/reference in
+    .info, .pdf, and HTML formats.  Have a look at it, verify that the
+    links (in info and HTML formats) are not dead.  Check that your
+    environment variables are right.  In particular, when generating
+    pdf files, is very important to set: 
+      
+    GS_OPTIONS=-sPAPERSIZE=a4
+
+    This let us to use the righ options with GS.
+ 
+    3. Check that every library in the distribution has a well-formed
+    manual page. This means that every module in the distribution
+    should appear explicitly in the documentation paths. Directories
+    to look for are stated in the variable SYSTEMPATHS in file
+    /home/clip/Systems/ciao-<version>/doc/common/LPDOCCOMMON.pl , and
+    the particular modules to document make up the variable
+    component/1 in
+    /home/clip/Systems/ciao-<version>/doc/reference/LPSETTINGS.pl. This
+    variable is split in several pieces. Add the necessary _file_
+    names there to component/1 and directory names to systempath/1. A
+    component should appear here iff it goes into the distribution;
+    otherwise the documentation will be out of sync with respect to
+    the distribution. If a component has several modules, usually only
+    those intended for the user should appear in the documentation.
+
+We only need to make sure that the documentation is generated
+correctly in Linux, as it is produced in several formats and it is
+distributed ready to consult.  
+
+
+Compiling and installing a distribution
+---------------------------------------
+
+Download a distribution for the architecture you are testing, and
+compile it if needed (I will assume that this is the case).
+Distributions should be installed and tested in clean environments.
+Ideally, this means using a machine with no Ciao installed.
+Otherwise, you should clear your environment variables of any trace of
+paths and environment variables pointing to Ciao stuff.  'which ciao'
+will point to executables -- remove from PATH the corresponding paths.
+Any environment variable starting by CIAO ('env | grep CIAO') should
+also be removed prior to compilation.
+
+We _must_ compile and test in all supported architectures (at least:
+LINUX i86, LINUX Sparc, Solaris Sparc, Solaris i86, Windows i86,
+Darwin PPC).
+
+Perform the installation _exactly_ as it is stated in the INSTALLATION
+file.  Adapt the variables in SETTINGS to some sensible directory (can
+even be something as /tmp/my_ciao).  Compile and install under a user
+and test with another user, in order to make sure that everything gets
+compiled and needed.  You can make the installation as root and the
+testing as yourself.  Make sure every step of the installation works.
+
+
+Testing the installation
+------------------------
+
+Testing is partially done while compiling; in order to test that
+things work in architectures other than the one we are developing in,
+one can retrieve the tests directory (see above) and use it in the
+distribution directories.  This minimal testing must be done for every
+architecture.
+
+The installed version ought to behave as the development one.  We have
+to check that the necessary files are reachable / in place, possibly
+after adjusting shell paths (read: change .cshrc/.bashrc) to point to
+our installation.
+
+General tests
+-------------
+
+Should be done for every UN*X target architecture
+
+    * ciao, ciaosh, ciaoc must be reachable and they must belong to
+      the distribution we have installed.
+
+    * The initialization files (DOTprofile / DOTcshrc) must be in
+      place (these are consulted from the shell initialization files).
+
+    * Emacs Info / WWW / .pdf / man files must also be in place.  Open
+      them with a WWW browser.  Make 'info ciao' to verify that the
+      environment variables point to the right place.
+
+    * 'man ciao' should bring up the manual page.
+
+    * Compile and run the tests, and check that everything works.
+
+
+Emacs mode tests
+----------------
+
+    * Verify (C-h i) that the Ciao info files _for the version you
+      installed_ are visible.
+
+    * Load /home/clip/Systems/ciao-<version>/examples/hw.pl , check
+      that buffer coloring works (substitute the Ciao path by the
+      directory where the sources you dowloaded are).
+
+    * Check that the Ciao menu options appear on top of Emacs window. In
+      Linux Emacsen, check that button bar also appears.
+
+    * C-c l to load the file into Ciao top-level and call main/1
+      to check basic top-level functionality.
+
+    * Put the cursor over write/1 and hit C-c tab to go to the Ciao
+      documentation (in info format). 
+
+    * Load hw.pl in debug mode (C-c d), run main/1, go through the
+      execution until its end.
+
+    * Move the cursor to last line of main/0, and do C-c S b to
+      check breakpoints. Run main/2 again, and press 'l' to check that
+      the execution stops at the correct program point. 
+
+
+Windows-specific tests
+----------------------
+
+    * From the file explorer of Windows: check right-button menus
+      - Load hw.pl into the shell.
+      - Make an executable from it (must generate hw.bat and hw.cpx
+        files).  These should start up when double-clicking on it.
+      - Generate also an executable from 
+
+        /home/clip/Systems/ciao-<version>/examples/misc/suite.pl
+
+        and run it.
+
+    * 'cd' to 'tests/WindowsSpecific' directory, and run windows.pl,
+      to check path management in windows. 
+
+    * If you want to mount the //clip/clip shared folder in windows,
+      remember that is necessary to enable windows to transmit plain
+      text passwords, just following the next steps:
+
+      Windows XP:
+
+      Go to Start > Control Panel > Administrative Tools > Local
+      Security Policy > Local Policies > Security Options and enable
+      Microsoft Network Client: Send unencrypted password to
+      third-party SMB servers.
+
+      Windows 98:
+
+      Start regedit.exe, and add the following key with a DWORD value
+      of 1: My Computer\ HKEY Local Machine\ System\
+      CurrentControlSet\ Services\ VxD\ VNETSUP\
+      EnablePlainTextPassword (elimanate the extra spaces; they're
+      just for line wrapping)
+
+Document and propagate the changes
+----------------------------------
+
+All updates should be integrated into the main Ciao repository, with
+the appropriate comment. Please do not forget to do that.  Also, if we
+are patching a version which is not the latest one, propagate the
+changes and their documentation to the more modern one.
+
+
+Short instructions to make a new distribution
+---------------------------------------------
+
+    * Check that your environment variables are right.  In particular,
+      When generating pdf files, is very important to set:
+      
+      GS_OPTIONS=-sPAPERSIZE=a4
+
+      This let us to use the righ options with GS.
+
+    * Go to a Linux box, clean everything ('make distclean') [that
+      could be skipped if we were completely sure that all .po are OK,
+      but since we have been having problems lately, it seems better
+      to start from scratch; these .po go into the Windows
+      distribution].
+
+    * Recompile the distribution in Linux: 'make'
+
+    * Recompile engine in Windows: 'make engine'.
+
+    * Go to the 'dist' directory, make sure disttype is set to, e.g.,
+      "Test" (this selects which subdirectory the distribution will be
+      left in --- it is VERY important to set it to Test, or some
+      other subdirectory, before making a final distribution), make
+      sure GEN_WIN32PREC is set to 'yes'.
+
+    * Type 'make install'.  Make sure the documentation and the tar
+      and zip files are being built correctly.
+
+    * Download the just made distribution, test it (compile _at least_
+      in a Linux box, run some examples, download an install in a
+      clean [no Ciao] Windows machine, run some examples).  If
+      everything goes OK, proceed.  Otherwise, try to correct the
+      errors, notify about them, step back and repeat.
+
+    * If everything went smooth: go to the 'dist' directory, make sure
+      disttype is set to nothing ('disttype='), type:
+
+        - 'make installdistonly' if the distribution is a snapshot,
+          i.e., not a new main distribution, with some bugs corrected,
+          etc.
+
+        - 'make install' if we are releasing a new distribution with a
+          lot of new features, etc.
+
+
+Special notes when testing / installing new versions for ASAP project
+---------------------------------------------------------------------
+
+In adition to the test above, is necessary to do the folowwing:
+
+1- uninstall ciao in the asapdemo account
+2- install the new ciao version
+3- uninstall lpdoc in the asapdemo account
+4- install the new lpdoc version
+5- remove the old sources for ciao and lpdoc
+6- test that ciaopp lpmake works fine in asapdemo
+7- uninstall ciao in /usr/local
+8- remove ciao from /usr/local/src
+9- install ciao in /usr/local
+10- check that the crontab entries for ciao/ciaopp compilation works
+    well.

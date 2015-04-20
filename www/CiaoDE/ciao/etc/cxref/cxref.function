@@ -1,0 +1,484 @@
+wamsupport.c def_retry_c 2 checkalloc
+wamsupport.c evaluate 2 incore_gethash
+wamsupport.c get_null_alt 1 checkalloc
+wamsupport.c init_bootcode 2 %def_retry_c
+wamsupport.c init_contcode 2 %get_null_alt
+wamsupport.c init_startgoalcode 2 %def_retry_c
+wamsupport.c init_startgoalcode_cont 2
+wamsupport.c p2_offset 2
+wamfunction.c fu1_abs 2 bn_call bn_positive evaluate failc get_float make_float_check make_integer_check &bn_minus
+wamfunction.c fu1_add1 2 bn_call evaluate failc get_float make_float_check make_integer_check &bn_incr
+wamfunction.c fu1_atan 2 atan evaluate failc get_float make_float_check
+wamfunction.c fu1_ceil 2 bn_call ceil evaluate failc get_float make_float_check &bn_from_float &bn_plus
+wamfunction.c fu1_cos 2 cos evaluate failc get_float make_float_check
+wamfunction.c fu1_exp 2 evaluate exp failc get_float make_float_check
+wamfunction.c fu1_float 2 evaluate failc get_float make_float_check
+wamfunction.c fu1_floor 2 bn_call evaluate failc floor get_float make_float_check &bn_from_float &bn_plus
+wamfunction.c fu1_fractpart 2 ceil evaluate failc floor get_float make_float_check
+wamfunction.c fu1_integer 2 bn_call evaluate failc &bn_from_float &bn_plus
+wamfunction.c fu1_intpart 2 ceil evaluate failc floor get_float make_float_check
+wamfunction.c fu1_log 2 evaluate failc get_float log make_float_check
+wamfunction.c fu1_minus 2 bn_call evaluate failc get_float make_float_check make_integer_check &bn_minus
+wamfunction.c fu1_not 2 bn_call evaluate failc &bn_not
+wamfunction.c fu1_plus 2 bn_call evaluate failc get_float make_float_check &bn_plus
+wamfunction.c fu1_round 2 bn_call evaluate failc floor get_float make_float_check &bn_from_float &bn_plus
+wamfunction.c fu1_sign 2 bn_positive evaluate failc get_float make_float_check
+wamfunction.c fu1_sin 2 evaluate failc get_float make_float_check sin
+wamfunction.c fu1_sqrt 2 evaluate failc get_float make_float_check sqrt
+wamfunction.c fu1_sub1 2 bn_call evaluate failc get_float make_float_check make_integer_check &bn_decr
+wamfunction.c fu2_and 2 bn_call evaluate failc &bn_and
+wamfunction.c fu2_fdivide 2 evaluate failc get_float make_float_check
+wamfunction.c fu2_gcd 2 bn_call bn_positive evaluate failc make_integer_check &bn_minus &bn_quotient_remainder_quot_not_wanted
+wamfunction.c fu2_idivide 2 bn_call evaluate failc make_integer_check &bn_quotient_remainder_quot_wanted
+wamfunction.c fu2_lsh 2 evaluate failc get_integer %lsh_internal %rsh_internal
+wamfunction.c fu2_minus 2 bn_call evaluate failc get_float make_float_check make_integer_check &bn_subtract
+wamfunction.c fu2_mod 2 bn_call bn_positive evaluate failc %fu2_plus &bn_add &bn_quotient_remainder_quot_not_wanted
+wamfunction.c fu2_or 2 bn_call evaluate failc &bn_or
+wamfunction.c fu2_plus 2 bn_call evaluate failc get_float make_float_check make_integer_check &bn_add
+wamfunction.c fu2_pow 2 evaluate failc get_float make_float_check pow
+wamfunction.c fu2_rem 2 bn_call evaluate failc &bn_quotient_remainder_quot_not_wanted
+wamfunction.c fu2_rsh 2 evaluate failc get_integer %lsh_internal %rsh_internal
+wamfunction.c fu2_times 2 bn_call evaluate failc get_float make_float_check &bn_multiply
+wamfunction.c fu2_xor 2 bn_call evaluate failc &bn_xor
+wamfunction.c lsh_internal 1 bn_call make_integer &bn_lshift
+wamfunction.c rsh_internal 1 bn_call make_integer &bn_rshift
+wambuiltin.c bu1_atom 2
+wambuiltin.c bu1_atomic 2
+wambuiltin.c bu1_float 2
+wambuiltin.c bu1_if 2
+wambuiltin.c bu1_integer 2
+wambuiltin.c bu1_nonvar 2
+wambuiltin.c bu1_number 2
+wambuiltin.c bu1_var 2
+wambuiltin.c bu2_lexeq 2 compare_help
+wambuiltin.c bu2_lexge 2 compare_help
+wambuiltin.c bu2_lexgt 2 compare_help
+wambuiltin.c bu2_lexle 2 compare_help
+wambuiltin.c bu2_lexlt 2 compare_help
+wambuiltin.c bu2_lexne 2 compare_help
+wambuiltin.c bu2_numeq 2 bn_compare evaluate failc get_float
+wambuiltin.c bu2_numge 2 bn_compare bn_positive evaluate failc get_float
+wambuiltin.c bu2_numgt 2 bn_compare bn_positive evaluate failc get_float
+wambuiltin.c bu2_numle 2 bn_compare bn_positive evaluate failc get_float
+wambuiltin.c bu2_numlt 2 bn_compare bn_positive evaluate failc get_float
+wambuiltin.c bu2_numne 2 bn_compare evaluate failc get_float
+wambuiltin.c bu2_univ 2 cunify failc
+wambuiltin.c bu3_functor 2 cunify make_structure
+wambuiltin.c fu2_arg 2
+wambuiltin.c fu2_compare 2 compare_help
+wam.c wam 2 choice_overflow clock_overflow collect_goals_from_trail collect_one_pending_unification compile_term control_c_normal cunify cunify_args current_instance explicit_heap_overflow failc find_definition foreign_ci_inarg foreign_ci_outarg foreign_ci_retval heap_overflow make_large next_instance next_instance_conc prolog_dif remove_link_chains siglongjmp stack_overflow
+unix_utils.c compute_cwd 2 %fix_path getcwd
+unix_utils.c expand_file_name 2 failc getenv getpwnam strcpy strlen
+unix_utils.c fix_path 2 strcat strcpy
+unix_utils.c prolog_current_host 2 cunify failc gethostbyname gethostname init_atom_check siglongjmp strchr strcpy
+unix_utils.c prolog_directory_files 2 ENG_perror closedir cunify %expand_file_name explicit_heap_overflow init_atom_check opendir readdir
+unix_utils.c prolog_exec 2 at_exit close cunify dup execl failc fdopen fflush fork new_stream pipe ptr_to_stream siglongjmp
+unix_utils.c prolog_file_properties 2 %expand_file_name init_atom_check make_integer readlink stat
+unix_utils.c prolog_find_file 2 access %expand_file_name %fix_path init_atom_check stat strcat strcmp strcpy strlen
+unix_utils.c prolog_getarch 2 cunify init_atom_check
+unix_utils.c prolog_getenvstr 2 cunify explicit_heap_overflow getenv strlen
+unix_utils.c prolog_getos 2 cunify init_atom_check
+unix_utils.c prolog_getpid 2 cunify getpid
+unix_utils.c prolog_pause 2 sleep
+unix_utils.c prolog_unix_access 2 access %expand_file_name
+unix_utils.c prolog_unix_argv 2 cunify init_atom_check
+unix_utils.c prolog_unix_cd 2 ENG_perror chdir %compute_cwd %expand_file_name init_atom_check
+unix_utils.c prolog_unix_chmod 2 ENG_perror chmod %expand_file_name
+unix_utils.c prolog_unix_delete 2 ENG_perror %expand_file_name unlink
+unix_utils.c prolog_unix_mktemp 2 cunify init_atom_check mktemp strcpy
+unix_utils.c prolog_unix_shell0 2 getenv strcat strcpy system
+unix_utils.c prolog_unix_shell2 2 cunify getenv strcat strcpy strlen system
+unix_utils.c prolog_unix_system2 2 cunify system
+unix_utils.c prolog_unix_umask 2 cunify umask
+timing.c prolog_runtime 2 cunify make_integer %usertime
+timing.c prolog_time 2 cunify make_integer time
+timing.c prolog_walltime 2 cunify make_integer %walltime
+timing.c usertime 2 getrusage
+timing.c walltime 2 gettimeofday
+threads.c prolog_exit_thread 2
+threads.c prolog_start_thread 2 init_atom_check printf
+term_support.c c_term 1 %c_term %c_term_trail_push compile_large %emit_unify_void failc siglongjmp
+term_support.c c_term_size 1 %c_term_size %c_term_trail_push
+term_support.c c_term_trail_push 1 choice_overflow
+term_support.c compile_term 2 %compile_term_aux
+term_support.c compile_term_aux 2 %c_term %c_term_size checkalloc checkdealloc checkrealloc failc siglongjmp
+term_support.c copy_it 1 choice_overflow %copy_it heap_overflow
+term_support.c cross_copy_term 2 %prolog_copy_term
+term_support.c emit_unify_void 1
+term_support.c number_to_string 2 bn_to_string
+term_support.c prolog_atom_codes 2 %prolog_constant_codes
+term_support.c prolog_atom_concat 2 checkrealloc cunify init_atom_check nd_atom_concat push_choicept strcmp strcpy strlen strncpy
+term_support.c prolog_atom_length 2 cunify strlen
+term_support.c prolog_constant_codes 1 atof bn_from_string checkrealloc cunify explicit_heap_overflow failc init_atom_check make_float %number_to_string siglongjmp strlen
+term_support.c prolog_copy_term 2 %copy_it cunify pop_choicept pop_frame push_choicept push_frame
+term_support.c prolog_init_radix 2
+term_support.c prolog_name 2 %prolog_constant_codes
+term_support.c prolog_number_codes 2 %prolog_constant_codes
+term_support.c prolog_sub_atom 2 checkrealloc cunify get_integer init_atom_check strlen strncpy
+tasks.c allow_thread_cancellation 2 pthread_setcancelstate pthread_setcanceltype
+tasks.c attach_me_to_wrb_state_list 2 %create_wrb_state
+tasks.c create_wrb_state 1 checkalloc
+tasks.c disallow_thread_cancellation 2 pthread_setcancelstate pthread_setcanceltype
+tasks.c get_my_task_block 1 pthread_self
+tasks.c get_my_worker 2 failc %get_my_task_block siglongjmp
+tasks.c init_wrb_state_list 2
+tasks.c kill_thread 2 pthread_cancel
+tasks.c look_for_a_free_worker 2 local_init_each_time
+tasks.c make_worker_free 2
+tasks.c print_task_status 2 fprintf
+support.c add_definition 2 %expand_sw_on_key
+support.c atom_gethash 1 strcmp
+support.c bn_call 2 %bn_call bn_plus explicit_heap_overflow %failc %numstack_overflow siglongjmp &bn_from_float
+support.c cunify 2 %cunify_aux
+support.c cunify_args 2 %cunify_args_aux %cunify_aux
+support.c cunify_args_aux 1 choice_overflow %cunify_aux
+support.c cunify_aux 1 %cunify_args_aux
+support.c expand_sw_on_key 2 checkdealloc incore_gethash leave_to_gc new_switch_on_key
+support.c failc 2 at_exit print_string printf sprintf
+support.c file_is_tty 1 fileno isatty
+support.c find_definition 2 %insert_definition
+support.c find_subdef_chain 1 checkalloc
+support.c get_float 2
+support.c get_integer 2 %get_float
+support.c init_atom_check 2 %atom_gethash checkdealloc checkrealloc %failc new_atom_check new_switch_on_key siglongjmp
+support.c insert_definition 2 %add_definition incore_gethash %new_functor
+support.c make_float 2
+support.c make_float_check 2 explicit_heap_overflow %numstack_overflow
+support.c make_integer 2
+support.c make_integer_check 2 explicit_heap_overflow %numstack_overflow
+support.c make_large 2
+support.c make_structure 2
+support.c new_functor 2 checkalloc
+support.c new_stream 2 checkalloc %update_stream
+support.c numstack_init 2 checkalloc
+support.c numstack_overflow 1 checkalloc checkdealloc
+support.c parse_1_definition 1 %find_subdef_chain %insert_definition %new_functor %parse_definition
+support.c parse_definition 2 %parse_1_definition
+support.c ptr_to_stream 2
+support.c stream_to_ptr 2
+support.c stream_to_ptr_check 2
+support.c update_std_streams 2 fclose %update_stream
+support.c update_stream 2 %file_is_tty fileno
+streams.c ENG_perror 2 __errno_location print_string sprintf
+streams.c character_count 2 cunify make_integer stream_to_ptr_check
+streams.c line_count 2 cunify make_integer stream_to_ptr_check
+streams.c line_position 2 cunify make_integer stream_to_ptr_check
+streams.c prolog_bootversion 2 print_string
+streams.c prolog_close 2 checkdealloc close fclose get_integer stream_to_ptr
+streams.c prolog_current_input 2 cunify ptr_to_stream
+streams.c prolog_current_output 2 cunify ptr_to_stream
+streams.c prolog_open 2 __errno_location cunify fclose fdopen fileno fopen fstat new_stream ptr_to_stream
+streams.c prolog_set_input 2 stream_to_ptr_check
+streams.c prolog_set_output 2 stream_to_ptr_check
+streams.c prolog_stream_code 2 cunify fileno ptr_to_stream stream_to_ptr_check
+streams.c prolog_unix_popen 2 cunify new_stream popen ptr_to_stream
+startgoal.c firstgoal 2 __sigsetjmp at_exit flush_output init_atom_check init_each_time prolog_kill_other_threads reinitialize wam
+startgoal.c gimme_a_new_worker 2 attach_me_to_wrb_state_list create_and_init_wam look_for_a_free_worker
+startgoal.c startgoal 2 allow_thread_cancellation cross_copy_term disallow_thread_cancellation flush_output %gimme_a_new_worker make_worker_entry_free wam
+stacks.c calculate_segment_node 1
+stacks.c choice_overflow 2 %calculate_segment_node checkrealloc compressTrail %trail_gc usertime
+stacks.c choice_usage 2 cunify make_integer
+stacks.c collect_goals_from_trail 2 failc siglongjmp
+stacks.c envstack_usage 2 cunify make_integer
+stacks.c explicit_heap_overflow 2 %choice_overflow %heap_overflow
+stacks.c gc_start 2 %heap_overflow
+stacks.c heap_overflow 2 GarbageCollect %calculate_segment_node checkrealloc usertime
+stacks.c stack_overflow 2 checkrealloc usertime
+stacks.c stack_shift_usage 2 cunify make_integer
+stacks.c termheap_usage 2 cunify make_integer
+stacks.c trail_gc 2
+stacks.c trail_usage 2 cunify make_integer
+qread.c expand_qload 2 checkrealloc
+qread.c is_a_script 2 _IO_getc ungetc
+qread.c load_dbnode 1 checkalloc getbytecode
+qread.c pop_qlinfo 2 checkdealloc
+qread.c prolog_qread 2 cunify %is_a_script %qread1 %skip_to_ctrl_l stream_to_ptr
+qread.c push_qlinfo 2 checkalloc
+qread.c qread1 2 _IO_getc %expand_qload explicit_heap_overflow getdouble getlarge getlong getshort getstring init_atom_check %load_dbnode make_float %reloc_counter %reloc_emul_entry %reloc_pointer
+qread.c reloc_counter 2
+qread.c reloc_emul_entry 2 parse_definition
+qread.c reloc_pointer 2
+qread.c skip_to_ctrl_l 2 _IO_getc
+qinsert.c ql_getc 1
+qinsert.c ql_load_dbnode 1 checkalloc %qlgetbytecode
+qinsert.c qlgetbytecode 2 atof atoi atol bn_from_string checkrealloc %ql_getc
+qinsert.c qlgetdouble 1 atof %ql_getc
+qinsert.c qlgetlarge 1 bn_from_string checkrealloc failc %ql_getc siglongjmp
+qinsert.c qlgetlong 1 atol %ql_getc
+qinsert.c qlgetshort 1 atoi %ql_getc
+qinsert.c qlgetstring 1 %ql_getc
+qinsert.c qlinsert 2 expand_qload explicit_heap_overflow init_atom_check make_float %ql_getc %ql_load_dbnode %qlgetdouble %qlgetlarge %qlgetlong %qlgetshort %qlgetstring reloc_counter reloc_emul_entry reloc_pointer
+qget.c getbytecode 2 _IO_getc atof atoi atol bn_from_string checkrealloc
+qget.c getdouble 2 _IO_getc atof
+qget.c getlarge 2 _IO_getc bn_from_string checkrealloc failc siglongjmp
+qget.c getlong 2 _IO_getc atol
+qget.c getshort 2 _IO_getc atoi
+qget.c getstring 2 _IO_getc
+prolog_tasks.c get_new_goal_id 2
+prolog_tasks.c init_first_worker_entry 2 gimme_a_new_worker pthread_self
+prolog_tasks.c init_worker_entry_table 2
+prolog_tasks.c make_worker_entry_free 2 make_worker_free remove_link_chains
+prolog_tasks.c prolog_backtrack_goal 2 failc get_integer %make_worker_entry_free wam
+prolog_tasks.c prolog_join_goal 2 pthread_join
+prolog_tasks.c prolog_kill_other_threads 2 kill_thread pthread_self
+prolog_tasks.c prolog_kill_thread 2 failc kill_thread %make_worker_entry_free
+prolog_tasks.c prolog_launch_goal_plus 2 cunify %get_new_goal_id make_integer pthread_create &startgoal
+prolog_tasks.c prolog_release_goal 2 failc get_integer %make_worker_entry_free
+prolog_tasks.c prolog_tasks_status 2 print_task_status
+prolog_tasks.c prolog_thread_self 2 cunify pthread_self %worker_from_thread
+prolog_tasks.c worker_from_thread 1 failc
+own_malloc_linear.c create_new_block 1 %insert_block %insert_free_block malloc
+own_malloc_linear.c dealloc_block 1 %insert_free_block %remove_free_block
+own_malloc_linear.c insert_block 1
+own_malloc_linear.c insert_free_block 1
+own_malloc_linear.c locate_block 1
+own_malloc_linear.c own_free 2 %dealloc_block
+own_malloc_linear.c own_malloc 2 %create_new_block %locate_block %reserve_block
+own_malloc_linear.c own_realloc 2 %create_new_block %locate_block memcpy %own_free %own_malloc %reserve_block
+own_malloc_linear.c remove_free_block 1
+own_malloc_linear.c reserve_block 1 %insert_block %remove_free_block
+own_malloc_bin.c add_block_to_node 2
+own_malloc_bin.c change_free_block 2 %insert_free_block %remove_free_block
+own_malloc_bin.c create_new_block 1 %insert_block %insert_free_block malloc
+own_malloc_bin.c create_new_node 2 malloc
+own_malloc_bin.c dealloc_block 1 %change_free_block %insert_free_block %remove_free_block
+own_malloc_bin.c find_mem_block 1
+own_malloc_bin.c insert_block 1
+own_malloc_bin.c insert_free_block 1 %add_block_to_node %create_new_node
+own_malloc_bin.c own_free 2 %dealloc_block %find_mem_block
+own_malloc_bin.c own_malloc 2 %create_new_block %reserve_block %search_free_block
+own_malloc_bin.c own_realloc 2 %create_new_block %find_mem_block memcpy %own_free %own_malloc %reserve_block %search_free_block
+own_malloc_bin.c remove_block_from_node 2
+own_malloc_bin.c remove_free_block 1 %remove_block_from_node
+own_malloc_bin.c reserve_block 1 %change_free_block %insert_block %remove_free_block
+own_malloc_bin.c search_free_block 1
+objareas.c active_instance 2 %expunge_instance
+objareas.c clock_overflow 2 explicit_heap_overflow relocate_gcdef_clocks %relocate_table_clocks
+objareas.c compile_large 2
+objareas.c expunge_instance 2 checkdealloc incore_gethash
+objareas.c inserta 2 dyn_puthash failc move_queue siglongjmp
+objareas.c insertz 2 dyn_puthash failc move_queue siglongjmp
+objareas.c make_bytecode_object 2 checkalloc %compile_large failc get_integer parse_definition
+objareas.c prolog_erase 2 %active_instance %expunge_instance jump_to_next_instance move_queue
+objareas.c prolog_ptr_ref 2 cunify
+objareas.c prolog_purge 2 %expunge_instance
+objareas.c relocate_clocks 2 %expunge_instance
+objareas.c relocate_table_clocks 1 %relocate_clocks
+misc.c compare_args_aux 1 choice_overflow %compare_aux
+misc.c compare_aux 1 bn_compare bn_positive %compare_args_aux get_float
+misc.c compare_help 2 %compare_aux
+misc.c compiling 2
+misc.c constraint_list 2 cunify explicit_heap_overflow %find_constraints
+misc.c current_clauses_aux 2 find_definition
+misc.c debugger_mode 2
+misc.c debugger_state 2 cunify
+misc.c defrost 2
+misc.c ferror_flag 2
+misc.c find_constraints 2
+misc.c frozen 2 cunify
+misc.c insertz_aux 2 dyn_puthash failc siglongjmp
+misc.c large_data 2 cunify make_integer
+misc.c metachoice 2
+misc.c metacut 2
+misc.c prolog_current_executable 2 cunify init_atom_check
+misc.c prolog_dif 2 choice_overflow cunify
+misc.c prolog_eq 2
+misc.c prolog_interpreted_clause 2 compile_term_aux %current_clauses_aux failc %insertz_aux
+misc.c prolog_radix 2 prolog_init_radix
+misc.c prompt 2
+misc.c quiet_flag 2
+misc.c retry_cut 2
+misc.c setarg 2 choice_overflow
+misc.c spypoint 2 find_definition
+misc.c undo 2 choice_overflow
+misc.c unknown 2
+makecase.c main 2 _IO_getc exit printf scanf
+makecase.c print_within_parenthesis 2 _IO_putc
+main_exec.c ENG_init 2 at_exit checkasserts compute_cwd fclose fopen fprintf getenv init_alloc init_atom_check init_each_time init_kanji init_latin1 init_once pop_qlinfo push_qlinfo qread1 run_determ_c startwam strcmp
+main_exec.c ENG_kick_start 2 at_exit init_atom_check startwam
+main_exec.c ENG_load_internal_ql 2 pop_qlinfo push_qlinfo qlinsert run_determ_c
+main_exec.c ENG_start_user_ql 2 context_switch
+main.c at_exit 2 exit
+main.c create_and_init_wam 2 create_wam_areas create_wam_storage local_init_each_time numstack_init
+main.c find_emulator 1 access %at_exit checkalloc checkdealloc checkrealloc expand_file_name fprintf getenv strcat strcmp strcpy strlen
+main.c load_ql_files 2 is_a_script pop_qlinfo push_qlinfo qread1 run_determ_c skip_to_ctrl_l
+main.c main 2 %at_exit checkasserts compute_cwd expand_file_name fclose %find_emulator firstgoal fopen fprintf getenv glb_init_each_time init_alloc init_first_worker_entry init_kanji init_latin1 init_locks init_once init_wrb_state_list %load_ql_files strcmp
+locks.c create_dynamic_lock 2 %new_lock_block
+locks.c init_dynamic_locks 2 %new_lock_block
+locks.c new_lock_block 1 checkalloc
+locks.c prolog_lock_atom 2
+locks.c prolog_lock_atom_state 2 cunify
+locks.c prolog_unlock_atom 2
+locks.c prolog_unlock_predicate 2
+kernel_con.c main 2 exit printf
+interrupt.c abortmsg 1 failc siglongjmp sprintf
+interrupt.c control_c_normal 2 signal %&interrupt_h
+interrupt.c enable_conditions 2 signal %&abortmsg
+interrupt.c interrupt_h 1 at_exit get_my_worker siglongjmp
+inout.c code_class 2 cunify
+inout.c display_term 1 %display_term %print_atom %print_number %print_string %print_variable %writechar
+inout.c flush_output 2 ENG_perror fflush
+inout.c flush_output1 2 ENG_perror fflush stream_to_ptr_check
+inout.c get 2 cunify %readchar
+inout.c get1 2 cunify %readchar
+inout.c get12 2 cunify %readchar stream_to_ptr_check
+inout.c get2 2 cunify %readchar stream_to_ptr_check
+inout.c getct 2 cunify %readchar
+inout.c getct1 2 cunify %readchar
+inout.c nl 2 %writechar
+inout.c nl1 2 stream_to_ptr_check %writechar
+inout.c peek 2 cunify %readchar
+inout.c peek2 2 cunify %readchar stream_to_ptr_check
+inout.c print_atom 2 %print_string
+inout.c print_number 2 number_to_string %print_string
+inout.c print_string 2 _IO_putc get_integer write
+inout.c print_variable 2 make_integer number_to_string %print_string
+inout.c prolog_clearerr 2 clearerr stream_to_ptr_check
+inout.c prolog_display 2 %display_term
+inout.c prolog_display2 2 %display_term stream_to_ptr_check
+inout.c prolog_displayq 2 %display_term
+inout.c prolog_displayq2 2 %display_term stream_to_ptr_check
+inout.c put 2 %writechar
+inout.c put2 2 stream_to_ptr_check %writechar
+inout.c readchar 1 _IO_getc clearerr failc feof fflush fileno get_integer get_my_worker perror %print_string read siglongjmp
+inout.c skip 2 %readchar
+inout.c skip2 2 %readchar stream_to_ptr_check
+inout.c tab 2 get_integer %writechar
+inout.c tab2 2 get_integer stream_to_ptr_check %writechar
+inout.c writechar 1 _IO_putc get_integer write
+initial.c classify_atom 1
+initial.c deffunction 1 %deffunctor incore_gethash
+initial.c deffunction_nobtin 1 %deffunctor incore_gethash
+initial.c deffunctor 1 init_atom_check
+initial.c define_builtin 1 init_atom_check insert_definition
+initial.c define_c_mod_predicate 2 add_definition failc incore_gethash init_atom_check new_functor strcat strcpy strlen
+initial.c define_c_predicate 2 init_atom_check insert_definition
+initial.c define_functions 1 %deffunction %deffunction_nobtin new_switch_on_key &fu1_abs &fu1_add1 &fu1_atan &fu1_ceil &fu1_cos &fu1_exp &fu1_float &fu1_floor &fu1_fractpart &fu1_integer &fu1_intpart &fu1_log &fu1_minus &fu1_not &fu1_plus &fu1_round &fu1_sign &fu1_sin &fu1_sqrt &fu1_sub1 &fu2_and &fu2_arg &fu2_compare &fu2_fdivide &fu2_gcd &fu2_idivide &fu2_lsh &fu2_minus &fu2_mod &fu2_or &fu2_plus &fu2_pow &fu2_rem &fu2_rsh &fu2_times &fu2_xor
+initial.c glb_init_each_time 2 compute_cwd enable_conditions init_atom_check prolog_init_radix
+initial.c init_each_time 2 %glb_init_each_time %local_init_each_time
+initial.c init_kanji 2
+initial.c init_latin1 2 %init_kanji
+initial.c init_locks 2 init_dynamic_locks
+initial.c init_once 2 atoi checkalloc %deffunctor %define_builtin %define_functions getenv init_atom_check %init_streams init_worker_entry_table %initialize_intrinsics new_switch_on_key pthread_attr_init pthread_attr_setdetachstate pthread_attr_setscope usertime walltime &bu1_atom &bu1_atomic &bu1_detach_attribute &bu1_float &bu1_if &bu1_integer &bu1_nonvar &bu1_number &bu1_var &bu2_attach_attribute &bu2_lexeq &bu2_lexge &bu2_lexgt &bu2_lexle &bu2_lexlt &bu2_lexne &bu2_numeq &bu2_numge &bu2_numgt &bu2_numle &bu2_numlt &bu2_numne &bu2_univ &bu2_update_attribute &bu3_functor &fu1_get_attribute &fu1_type
+initial.c init_streams 2 checkalloc new_stream
+initial.c init_streams_each_time 2
+initial.c initialize_intrinsics 1 def_retry_c %define_c_mod_predicate %define_c_predicate &abolish &character_count &choice_usage &clause_number &close_predicate &code_class &compiled_clause &compiling &constraint_list &current_atom &current_clauses &current_predicate &current_stream &debugger_mode &debugger_state &define_predicate &defrost &empty_gcdef_bin &envstack_usage &erase_clause &ferror_flag &first_instance &flush_output &flush_output1 &frozen &gc_margin &gc_mode &gc_start &gc_trace &gc_usage &get &get1 &get12 &get2 &getct &getct1 &inserta &insertz &internal_symbol_usage &large_data &line_count &line_position &make_bytecode_object &metachoice &metacut &nd_atom_concat &nd_current_atom &nd_current_predicate &nd_current_stream &nd_predicate_property &nd_repeat &nl &nl1 &open_predicate &peek &peek2 &pop_qlinfo &predicate_property &program_usage &prolog_atom_codes &prolog_atom_concat &prolog_atom_length %&prolog_atom_mode &prolog_backtrack_goal &prolog_bootversion %&prolog_ciaolibdir &prolog_clearerr &prolog_close &prolog_copy_term &prolog_current_executable &prolog_current_host &prolog_current_input &prolog_current_output &prolog_directory_files &prolog_display &prolog_display2 &prolog_displayq &prolog_displayq2 &prolog_dynlink &prolog_eq &prolog_erase &prolog_exec &prolog_file_properties &prolog_find_file &prolog_foreign_base &prolog_format_print_float &prolog_format_print_integer &prolog_getarch &prolog_getenvstr &prolog_getos &prolog_getpid &prolog_interpreted_clause &prolog_join_goal &prolog_kill_other_threads &prolog_kill_thread &prolog_launch_goal_plus &prolog_load_foreign_files &prolog_lock_atom &prolog_lock_atom_state &prolog_name &prolog_number_codes &prolog_open &prolog_pause &prolog_prepare_foreign_files &prolog_ptr_ref &prolog_purge &prolog_qread &prolog_radix &prolog_release_goal &prolog_repeat &prolog_runtime &prolog_set_input &prolog_set_output &prolog_stream_code &prolog_sub_atom &prolog_tasks_status &prolog_thread_self &prolog_time &prolog_unix_access &prolog_unix_argv &prolog_unix_cd &prolog_unix_chmod &prolog_unix_delete &prolog_unix_mktemp &prolog_unix_popen &prolog_unix_shell0 &prolog_unix_shell2 &prolog_unix_system2 &prolog_unix_umask &prolog_unlock_atom &prolog_unlock_predicate &prolog_walltime &prompt &push_qlinfo &put &put2 &quiet_flag &retry_cut &set_predtrace &set_property &setarg &skip &skip2 &spypoint &stack_shift_usage &statistics &tab &tab2 &termheap_usage &total_usage &trail_usage &undo &unknown
+initial.c local_init_each_time 2 control_c_normal %init_streams_each_time
+initial.c new_atom_check 2 checkalloc %classify_atom create_dynamic_lock strcpy strlen
+initial.c prolog_atom_mode 1
+initial.c prolog_ciaolibdir 1 cunify
+initial.c reclassify_atoms 2 %classify_atom
+initial.c reinitialize 2 atoi checkrealloc empty_gcdef_bin fflush getenv
+indexing.c abolish 2 find_definition %make_undefined
+indexing.c clause_number 2 failc parse_definition
+indexing.c compiled_clause 2 checkdealloc failc %incore_copy %incore_insert %incore_puthash %new_switch_on_key parse_definition
+indexing.c define_predicate 2 checkalloc failc %init_interpreted %make_undefined parse_definition
+indexing.c dyn_puthash 2 expand_sw_on_key %incore_gethash
+indexing.c empty_gcdef_bin 2 %free_info
+indexing.c erase_clause 2 %free_emulinfo
+indexing.c free_emulinfo 1 checkdealloc %free_info
+indexing.c free_incoreinfo 1 checkdealloc %free_emulinfo
+indexing.c free_info 1 checkdealloc %free_emulinfo %free_incoreinfo %free_sw_on_key %free_try
+indexing.c free_sw_on_key 1 checkdealloc %free_try
+indexing.c free_try 1 checkdealloc
+indexing.c incore_copy 1 checkalloc
+indexing.c incore_gethash 2
+indexing.c incore_insert 1 checkalloc p2_offset %set_nondet
+indexing.c incore_puthash 1 expand_sw_on_key %incore_copy %incore_gethash %incore_insert
+indexing.c init_interpreted 1 checkalloc create_dynamic_lock %new_switch_on_key
+indexing.c leave_to_gc 2 checkalloc checkrealloc
+indexing.c make_undefined 1 active_instance expunge_instance %leave_to_gc
+indexing.c new_switch_on_key 2 checkalloc
+indexing.c relocate_gcdef_clocks 2 relocate_clocks
+indexing.c set_nondet 1 p2_offset
+indexing.c set_property 2 find_definition %free_incoreinfo %init_interpreted
+heapgc.c GarbageCollect 2 %compressHeap %compressTrail fflush %markChoicepoints %markTrail print_string %shuntVariables sprintf %sweepChoicepoints %sweepTrail trail_gc usertime
+heapgc.c compressHeap 1 %updateRelocationChain
+heapgc.c compressTrail 2
+heapgc.c gc_margin 2
+heapgc.c gc_mode 2
+heapgc.c gc_trace 2
+heapgc.c gc_usage 2 cunify make_integer
+heapgc.c markChoicepoints 1 %markFrames %markVariable
+heapgc.c markFrames 1 %markVariable
+heapgc.c markTrail 1 %markVariable
+heapgc.c markVariable 1 failc siglongjmp
+heapgc.c shuntVariables 1
+heapgc.c sweepChoicepoints 1 %sweepFrames
+heapgc.c sweepFrames 1
+heapgc.c sweepTrail 1
+heapgc.c updateRelocationChain 1
+format.c prolog_format_print_float 2 get_float get_integer print_string sprintf
+format.c prolog_format_print_integer 2 checkrealloc fu1_integer get_integer number_to_string print_string strlen
+foreign.c ENG_atom_from_padded_string 2 fprintf
+foreign.c ENG_atom_from_string 2 init_atom_check
+foreign.c ENG_padded_string_from_atom 2 strlen strncpy
+foreign.c ENG_string_from_atom 2
+foreign.c add_symbol_table 1 checkalloc strcpy strlen
+foreign.c address_align 2
+foreign.c foreign_ci_inarg 2 get_float get_integer strncpy
+foreign.c foreign_ci_outarg 2
+foreign.c foreign_ci_retval 2 cunify init_atom_check make_float make_integer strncpy
+foreign.c internal_load_foreign_files 1 fprintf
+foreign.c list_to_ext_file 1 fclose fopen fprintf getenv sprintf strcat strlen system %write_glue_functions
+foreign.c list_to_string 1 checkalloc strcpy strlen
+foreign.c prolog_foreign_base 2
+foreign.c prolog_load_foreign_files 2 checkalloc checkdealloc checkrealloc %internal_load_foreign_files strcmp
+foreign.c prolog_prepare_foreign_files 2 fclose fopen fprintf %write_glue_functions
+foreign.c write_glue_functions 1 fprintf
+dynlink.c add_to_loaded_objects 2 checkalloc strcpy strlen
+dynlink.c prolog_dynlink 2 %add_to_loaded_objects dlerror dlopen dlsym failc sprintf strcat strcpy strlen %unload_if_present
+dynlink.c unload_if_present 2 checkdealloc dlclose strcmp strlen
+configure.c handler 2 longjmp
+configure.c main 2 access exit printf signal %turn_point %&handler
+configure.c turn_point 2 free malloc
+ciao.c ENG_predicate 2 fprintf
+ciao.c ENG_put_string 2 fprintf
+ciao.c ENG_query_cut_fail 2 fprintf
+builtin.c checkasserts 2 __assert_fail
+builtin.c run_determ_c 2 find_definition wam
+builtin.c set_predtrace 2
+builtin.c wr_functor 2 _IO_putc printf %wr_functor_1
+builtin.c wr_functor_1 2 printf
+bignum.c bn_add 2 %bn_canonize
+bignum.c bn_and 2 %bn_canonize
+bignum.c bn_canonize 1
+bignum.c bn_compare 2
+bignum.c bn_decr 2 %bn_canonize
+bignum.c bn_div_mod_quot_not_wanted 1
+bignum.c bn_div_mod_quot_wanted 1
+bignum.c bn_from_float 2 %bn_canonize %bn_negate
+bignum.c bn_from_string 2 %bn_canonize %bn_negate
+bignum.c bn_incr 2 %bn_canonize
+bignum.c bn_lshift 2 %bn_canonize
+bignum.c bn_minus 2 %bn_canonize %bn_negate
+bignum.c bn_mult_knuth 1
+bignum.c bn_multiply 2 %bn_canonize %bn_mult_knuth %bn_negate
+bignum.c bn_negate 1
+bignum.c bn_not 2
+bignum.c bn_or 2 %bn_canonize
+bignum.c bn_plus 2
+bignum.c bn_positive 2
+bignum.c bn_quotient_remainder_quot_not_wanted 2 %bn_canonize %bn_div_mod_quot_not_wanted %bn_negate
+bignum.c bn_quotient_remainder_quot_wanted 2 %bn_canonize %bn_div_mod_quot_wanted %bn_negate
+bignum.c bn_rshift 2 %bn_canonize
+bignum.c bn_subtract 2 %bn_canonize
+bignum.c bn_to_string 2 checkrealloc
+bignum.c bn_xor 2 %bn_canonize
+attr.c bu1_detach_attribute 2 failc
+attr.c bu2_attach_attribute 2 choice_overflow failc
+attr.c bu2_update_attribute 2 failc
+attr.c collect_one_pending_unification 2 failc siglongjmp
+attr.c fu1_get_attribute 2
+attr.c fu1_type 2
+alloc.c checkalloc 2 ENG_perror failc %get_tiny_blocks own_malloc siglongjmp
+alloc.c checkdealloc 2 own_free
+alloc.c checkrealloc 2 ENG_perror failc %get_tiny_blocks memcpy own_malloc own_realloc siglongjmp
+alloc.c create_wam_areas 2 atoi %checkalloc getenv
+alloc.c create_wam_storage 2 %checkalloc
+alloc.c get_tiny_blocks 1 ENG_perror failc own_malloc siglongjmp
+alloc.c init_alloc 2 %checkalloc init_bootcode init_contcode init_startgoalcode init_startgoalcode_cont
+alloc.c internal_symbol_usage 2 cunify make_integer
+alloc.c program_usage 2 cunify make_integer
+alloc.c statistics 2 print_string sprintf usertime walltime
+alloc.c total_usage 2 cunify make_integer

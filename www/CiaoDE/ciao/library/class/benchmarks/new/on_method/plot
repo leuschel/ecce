@@ -1,0 +1,11 @@
+set data style linespoints
+
+set ylabel "Execution time (ms)"
+set xlabel "Number of methods"
+set title  "new/1 performance versus number of methods"
+set pointsize 3
+
+plot "bench" index 0:1 title "" pt 2
+
+pause -1 "Hit Enter to continue"
+

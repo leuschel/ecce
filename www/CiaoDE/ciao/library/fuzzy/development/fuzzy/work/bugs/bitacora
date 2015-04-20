@@ -1,0 +1,9 @@
+provocar los bugs para evaluar la corrección.
+
+1) predicados de otros módulos no saben que son fuzzy, por lo tanto se
+fuzzifican obteniendo valor 1
+            no es posible invertir la sematica de las llaves.
+         
+      prueba ¿porque no funciona cargar en compilación un módulo dinámicamente?
+      Discutir esto con Daniel, quizas haya que generalizar la
+	información que queda en los itfs

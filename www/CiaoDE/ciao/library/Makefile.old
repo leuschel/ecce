@@ -1,0 +1,143 @@
+#------- You should not change ANYTHING in this file ----------------
+#------- All customizable options are in the file ../SETTINGS -------
+#------- CAUTION: any change in this directory should be also made in the
+#------- twin Makefile in ../lib
+include ../SETTINGS
+include ../SHARED
+#---------------------------------------------------------------------------
+STDLIBDIR = $(REALLIBDIR)/library
+ALLFILES = *
+
+
+#---------------------------------------------------------------------------
+# Local compilation of all libraries: since the CIAO compiler takes
+# care of dependencies, an easy way is to compile a fake program which
+# includes all loadable modules.  The library directory must be
+# patched (hence -C -L) to point to the not-yet-installed libraries.
+# We also make it to use the locally installed engine, since
+# installation has not been made yet.
+#---------------------------------------------------------------------------
+
+alldyn:  message ciao_so_libs clp_libs autolibs ciao_special_libs
+
+allstat: message              clp_libs autolibs ciao_special_libs
+
+message:
+	@echo "*** ---------------------------------------------------------"
+	@echo "*** Building $(BASEMAIN) 'library' libraries..."
+	@echo "*** (this may take a while and is silent; please be patient)"
+	@echo "*** ---------------------------------------------------------"
+
+ciao_so_libs:
+#	cd distribution; $(MAKE)      # Check it out!
+#	cd file_locks; $(MAKE)
+#	cd math; $(MAKE)
+	cd sockets && $(MAKE) all
+	cd random && $(MAKE) all
+
+# CLP{Q,R} needs some special consideration, as it generates
+# internal links in order to share common sources.
+# clp_libs:
+# 	-rm -f clpq/Makefile clpr/Makefile
+# 	-ln -sf ../clpqr-common/Makefile-common clpq/Makefile && \
+# 		cd clpq && $(MAKE) compile
+# 	-ln -sf ../clpqr-common/Makefile-common clpr/Makefile && \
+# 		cd clpr && $(MAKE) compile
+
+ciao_special_libs:
+# The user might not have (a decent) java
+ifeq ($(WITH_JAVA_INTERFACE),yes)
+	cd javall && $(MAKE) all
+endif
+#	cd distribution; $(MAKE)      # Check it out!
+	cd pillow && $(MAKE)
+
+MYSQL_DIRECTORY=persdb_mysql
+MYSQL_DIRECTORY_OP=persdb_mysql_op
+
+autolibs: mysqllibs
+#	cd .. && $(SETLOCALCIAO) $(LPMAKECMD) alllibrary
+
+mysqllibs:
+# This is so that if someone does not need the MySQL library, or has
+# it installed in some weird place, the compilation still goes
+# smoothly.
+# WARNING!!!!! In a future only a version of MySQL interface should exist!!!!
+# MCL: in the meantime WE ARE NOT DISTRIBUTING persdb_mysql_op; and we check
+# whether it exists or not before attempting its compilation.
+ifeq ($(WITH_MYSQL),yes)
+	-@rm -f $(MYSQL_DIRECTORY)/NOCOMPILE 
+	../etc/substitute_string \
+		where_mysql_client_lives \
+		$(MYSQL_CLIENT_DIRECTORY) \
+		$(MYSQL_DIRECTORY)/linker_option_template.pl \
+		$(MYSQL_DIRECTORY)/linker_opts.pl
+	$(RELSETLOCALCIAO) $(CIAOC) -x $(SRCLIB)/library/$(MYSQL_DIRECTORY)/mysql_use_client
+	if [ -d $(MYSQL_DIRECTORY_OP) ] ; then \
+	../etc/substitute_string \
+		where_mysql_client_lives \
+		$(MYSQL_CLIENT_DIRECTORY) \
+		$(MYSQL_DIRECTORY_OP)/linker_option_template.pl \
+		$(MYSQL_DIRECTORY_OP)/linker_opts.pl ; \
+	$(RELSETLOCALCIAO) $(CIAOC) -x $(SRCLIB)/library/$(MYSQL_DIRECTORY_OP)/mysql_use_client ; \
+	rm -f $(SRCLIB)/library/$(MYSQL_DIRECTORY)/mysql_use_client ; \
+	fi
+else
+	touch $(MYSQL_DIRECTORY)/NOCOMPILE
+	if [ -d $(MYSQL_DIRECTORY_OP) ] ; then \
+	touch $(MYSQL_DIRECTORY_OP)/NOCOMPILE ; \
+	fi
+endif
+
+# 	'rm' -f all_modules all_module_messages
+# # This is so that if installation is aborted, the permissions are left
+# # set properly and *another user* can reinstall
+# 	-touch all_modules all_module_messages
+# 	-chmod $(DATAMODE) all_modules all_module_messages
+# 	echo "set_prolog_flag(compress_lib," $(COMPRESS_LIBS) ")." >> all_modules
+# 	$(CIAOSRC)/etc/collect_modules all_modules
+# 	$(RELSETLOCALCIAO) $(CIAOSHELL) < all_modules > all_module_messages
+# 	'rm' -f all_module_messages
+
+# .pos, etc, not made now; they are copied from the distribution
+# 	$(SETLOCALCIAO); $(CIAOC) all_modules
+# 	/bin/rm -f all_modules.itf all_modules.po all_modules.dep all_modules
+
+# May copy far more than what is needed
+# install:
+# 	@echo "*** ---------------------------------------------------------"
+# 	@echo "*** Installing $(BASEMAIN) 'library' libraries..."
+# 	@echo "*** (in $(STDLIBDIR))"
+# 	@echo "*** ---------------------------------------------------------"
+# 	mkdir -p $(STDLIBDIR)
+# 	-chmod $(EXECMODE) $(STDLIBDIR)
+# #	-cp -pR $(ALLFILES) $(STDLIBDIR) # R gives problems in Darwin
+# 	-cp -pr $(ALLFILES) $(STDLIBDIR)
+# 	-cd pillow && $(MAKE) install
+# 	-(cd $(STDLIBDIR) && find . -type d -exec chmod $(EXECMODE) {} \; )
+# 	-(cd $(STDLIBDIR) && find . ! -type d -exec chmod $(DATAMODE) {} \; )
+# 	-(cd $(STDLIBDIR) && find . -name '*~' -exec 'rm' -f {} \; )
+
+# uninstall:
+# 	@echo "*** ---------------------------------------------------------"
+# 	@echo "*** Uninstalling $(BASEMAIN) 'library' libraries..."
+# 	@echo "*** (deleting $(STDLIBDIR))"
+# 	@echo "*** ---------------------------------------------------------"
+# 	-rm -rf $(STDLIBDIR)
+
+# *.itf *.po *.asr are eliminated recursively so that no Makefiles
+# underneath are needed for cleaning up prolog-only libraries. MH.
+distclean:
+	@echo "*** ---------------------------------------------------------"
+	@echo "*** Cleaning $(STDLIBDIR)/library..."
+	@echo "*** ---------------------------------------------------------"
+	find . -name '*.itf' -exec 'rm' -f {} \;
+	find . -name '*.po'  -exec 'rm' -f {} \;
+	find . -name '*.o' -exec 'rm' -f {} \;
+	find . -name '*.so' -exec 'rm' -f {} \;
+	find . -name '*.dll' -exec 'rm' -f {} \;
+	find . -name '*_glue.c' -exec 'rm' -f {} \;
+	find . -name '*.asr' -exec 'rm' -f {} \;
+	find . -name '*.ass' -exec 'rm' -f {} \;
+	find . -name '*.ast' -exec 'rm' -f {} \;
+	'rm' -f all_modules all_module_messages

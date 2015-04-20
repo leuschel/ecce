@@ -1,0 +1,46 @@
+entering
+read(,(class(stack),,([104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],5)))
+loaded
+connected
+responded(3524)
+request(new(_66088,stack))
+WARNING: Module qualification of new/2 ignored, module strapper does not import the predicate from module stack
+recalling_objects(:(stack,new(_66088,stack)))
+solution(new(stack(tS9lmfFFFFFFF),stack))
+request(class$call(stack(tS9lmfFFFFFFF),push(a),use_stack_module))
+WARNING: Module qualification of class$call/3 ignored, module strapper does not import the predicate from module stack
+recalling_objects(:(stack,class$call(stack(tS9lmfFFFFFFF),push(a),use_stack_module)))
+WARNING: Module qualification of class$call/3 ignored, module strapper does not import the predicate from module objects_rt
+recalling_multifile(:(stack,class$call(stack(tS9lmfFFFFFFF),push(a),use_stack_module)))
+ERROR: multifile(class$call(stack(tS9lmfFFFFFFF),push(a),use_stack_module))
+solution(class$call(stack(tS9lmfFFFFFFF),push(a),use_stack_module))
+request(class$call(stack(tS9lmfFFFFFFF),push(b),use_stack_module))
+WARNING: Module qualification of class$call/3 ignored, module strapper does not import the predicate from module stack
+recalling_objects(:(stack,class$call(stack(tS9lmfFFFFFFF),push(b),use_stack_module)))
+WARNING: Module qualification of class$call/3 ignored, module strapper does not import the predicate from module objects_rt
+recalling_multifile(:(stack,class$call(stack(tS9lmfFFFFFFF),push(b),use_stack_module)))
+ERROR: multifile(class$call(stack(tS9lmfFFFFFFF),push(b),use_stack_module))
+solution(class$call(stack(tS9lmfFFFFFFF),push(b),use_stack_module))
+request(class$call(stack(tS9lmfFFFFFFF),pop(_67352),use_stack_module))
+WARNING: Module qualification of class$call/3 ignored, module strapper does not import the predicate from module stack
+recalling_objects(:(stack,class$call(stack(tS9lmfFFFFFFF),pop(_67352),use_stack_module)))
+WARNING: Module qualification of class$call/3 ignored, module strapper does not import the predicate from module objects_rt
+recalling_multifile(:(stack,class$call(stack(tS9lmfFFFFFFF),pop(_67352),use_stack_module)))
+ERROR: multifile(class$call(stack(tS9lmfFFFFFFF),pop(_67352),use_stack_module))
+solution(class$call(stack(tS9lmfFFFFFFF),pop(b),use_stack_module))
+request(class$call(stack(tS9lmfFFFFFFF),pop(_67823),use_stack_module))
+WARNING: Module qualification of class$call/3 ignored, module strapper does not import the predicate from module stack
+recalling_objects(:(stack,class$call(stack(tS9lmfFFFFFFF),pop(_67823),use_stack_module)))
+WARNING: Module qualification of class$call/3 ignored, module strapper does not import the predicate from module objects_rt
+recalling_multifile(:(stack,class$call(stack(tS9lmfFFFFFFF),pop(_67823),use_stack_module)))
+ERROR: multifile(class$call(stack(tS9lmfFFFFFFF),pop(_67823),use_stack_module))
+solution(class$call(stack(tS9lmfFFFFFFF),pop(a),use_stack_module))
+request(class$call(stack(tS9lmfFFFFFFF),is_empty,use_stack_module))
+WARNING: Module qualification of class$call/3 ignored, module strapper does not import the predicate from module stack
+recalling_objects(:(stack,class$call(stack(tS9lmfFFFFFFF),is_empty,use_stack_module)))
+WARNING: Module qualification of class$call/3 ignored, module strapper does not import the predicate from module objects_rt
+recalling_multifile(:(stack,class$call(stack(tS9lmfFFFFFFF),is_empty,use_stack_module)))
+ERROR: multifile(class$call(stack(tS9lmfFFFFFFF),is_empty,use_stack_module))
+solution(class$call(stack(tS9lmfFFFFFFF),is_empty,use_stack_module))
+request(end_of_file)
+request(1)

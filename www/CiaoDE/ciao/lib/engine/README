@@ -1,0 +1,36 @@
+%%%%%%%%%%%%%%%%%%%%%%%
+% EVAL ASSERTIONS 
+%%%%%%%%%%%%%%%%%%%%%%%
+
+ADDED TO
+
+arithmetic.pl
+atomic_basic.pl
+basic_props.pl
+basiccontrol.pl
+term_basic.pl 
+term_typing.pl
+term_compare.pl
+
+STILL INCOMPLETE
+
+
+MISSING FOR
+
+attributes.pl
+builtin_directives.pl
+data_facts.pl
+debugger_support.pl
+exceptions.pl
+hiord_rt.pl
+internals.pl
+io_aux.pl
+io_basic.pl
+loading_code.pl
+mattr_global.pl
+mexpand.pl
+modules.pl
+prolog_flags.pl
+streams_basic.pl
+syntax_extensions.pl
+system_info.pl

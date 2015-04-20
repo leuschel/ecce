@@ -1,0 +1,12 @@
+
+set terminal postscript portrait
+set size 0.7,0.3
+set output "./destroy.ps"
+
+set data style boxes
+
+set ylabel "Execution time (ms)"
+set xlabel "Number of created instances (x 1000)"
+set pointsize 3
+
+plot "bench" index 0:1 title "" 

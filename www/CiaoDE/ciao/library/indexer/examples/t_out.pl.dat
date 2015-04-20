@@ -1,0 +1,44 @@
+:- module(_t,[foo/4],ciaopp).
+
+:- op(1150,fx,index).
+
+:- new_declaration(index/1,off).
+
+:- discontiguous '** foo/4 index 1 **'/2.
+
+:- discontiguous '** foo/4 index 2 **'/2.
+
+:- discontiguous '** foo/4 **'/5.
+
+foo(_1,_2,_3,_4) :-
+        ( integer(_4),
+	  ground(_3),
+	  nonvar(_1), -> 
+	  hash_term(_3,_5),
+	  functor(_1,_6,_7),
+	  hash_term(_6,_8),
+	  _9 is\(_4,\(_5,_8)),
+	  '** foo/4 index 1 **'(_9,_10)
+	; integer(_4) ->
+	  '** foo/4 index 2 **'(_4,_10)
+	; true
+	),
+        '** foo/4 **'(_10,_1,_2,_3,_4).
+
+
+'** foo/4 **'(0,a,b,c(d),9).
+'** foo/4 **'(1,e,f,g(h),11) :-
+        foo(a,b,c(d),9).
+'** foo/4 **'(2,_1,z,_2,_3) :-
+        baz.
+
+'** foo/4 index 1 **'(175,0).
+'** foo/4 index 1 **'(161,1).
+'** foo/4 index 1 **'(_1,2).
+
+'** foo/4 index 2 **'(9,0).
+'** foo/4 index 2 **'(11,1).
+'** foo/4 index 2 **'(_1,2).
+
+baz.
+

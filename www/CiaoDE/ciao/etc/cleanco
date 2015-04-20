@@ -1,0 +1,8 @@
+#!/bin/csh
+#
+# A small shell script which cleans compiler output files
+#
+'rm' *.itf
+'rm' *.po
+'rm' *.dep
+

@@ -1,0 +1,125 @@
+#!/bin/bash
+
+if test $# -lt 2 -o $# -gt 5; then  
+    echo "Usage: $0 base_directory dest_directory [execmode datamode]"
+    echo "       "
+    echo "       (e.g., $0 /home/clip/Systems/ciao /tmp)"
+    echo "       "
+    echo "       Replicates a directory tree, skipping those directories"
+    echo "       which have a .nodistribute or a NODISTRIBUTE or a "
+    echo "       .NODISTRIBUTE file in them."
+    echo "       "
+    echo "       If any file being copied is a link, a warning is issued"
+    echo "       the file pointed to by the link is copied if possible,"
+    echo "       except if the directory has a .keeplinks KEEPLINKS file "
+    echo "       in it, in which case a link is made (but the link must of "
+    echo "       course be *relative* an point inside the set of directories "
+    echo "       being copied."
+    echo "       "
+    echo "       Permissions in the copied directory are set to execmode "
+    echo "       (for executables/directories) and datamode (normal files)."
+else
+
+myself=$0
+basedir=$1
+parentdest=$2
+
+if test -f $basedir/.keeplinks -o -f $basedir/KEEPLINKS ; then
+    copylinks="no"
+else
+    copylinks="yes"
+fi
+
+if test $# -le 3; then  
+    execmode=775
+    datamode=664
+else
+    execmode=$3
+    datamode=$4
+fi    
+
+dirmode=$execmode
+dirname=${basedir##/*/}
+
+
+if test -f $basedir/.nodistribute \
+     -o -f $basedir/NODISTRIBUTE  \
+     -o -f $basedir/.NODISTRIBUTE  \
+     -o -f $basedir/NODISTRIBUTE.gz \
+     -o -z "${dirname##*\.bak}" \
+     -o -z "${dirname##*\.old}" \
+     -o -z "${dirname##*\.BAK}" \
+     -o -z "${dirname##*\.OLD}" \
+     -o    $dirname = "old" \
+     -o    $dirname = "Old" \
+     -o    $dirname = "OLD" \
+     -o    $dirname = "bak" \
+     -o    $dirname = "Bak" \
+     -o    $dirname = "BAK" ; then
+    echo "** Skipping directory $basedir"
+else
+    basename=${basedir##/*/}
+    destdir=$parentdest/$basename
+    /bin/mkdir -p $destdir
+    /bin/chmod $dirmode $destdir
+    if test -f $basedir/NOCOMPILE ; then
+        /bin/cp -p $basedir/NOCOMPILE $destdir
+    fi
+    if test -f $basedir/.nocompile ; then
+        /bin/cp -p $basedir/.nocompile $destdir
+    fi
+    for f in $basedir/* ; do   
+        new_name=${f##/*/}               # Get file name
+        if test -d $f ; then             # Recurse
+            $myself $f $destdir $execmode $datamode
+        else
+            if test    -z "${f##*\.bak}" \
+		    -o -z "${f##*\.Tmp}" \
+		    -o -z "${f##*\.tmp}" \
+  		    -o -z "${f##*\.ORIG}" \
+  		    -o -z "${f##*\.Orig}" \
+  		    -o -z "${f##*\.TMP}" \
+  		    -o -z "${f##*\.orig}" \
+  		    -o -z "${f##*_opt.pl}" \
+  		    -o -z "${f##*tmpciao*}" \
+                    -o -z "${f##*\.BAK}" \
+                    -o -z "${f##*\.Bak}" \
+                    -o -z "${f##*\.NEW}" \
+                    -o -z "${f##*\.New}" \
+                    -o -z "${f##*\.OLD}" \
+                    -o -z "${f##*\.Old}" \
+                    -o -z "${f##*\.aux}" \
+                    -o -z "${f##*\.tar.gz}"  \
+                    -o -z "${f##*\.tgz}"  \
+                    -o -z "${f##*\.log}" \
+                    -o -z "${f##*\.new}" \
+                    -o -z "${f##*\.old}" \
+                    -o -z "${f##*\.tar}" \
+                    -o -z "${f##*~}" \
+                    -o -z ${f##*#};    then
+                echo "** Skipping file $f"
+            else
+                if test -h $f ; then
+                    if test $copylinks = "yes" ; then
+                        echo "** Copying symlink $f"
+                        /bin/cp -p $f $destdir/$new_name
+		    else
+			echo "** Linking symlink $f"
+			(cd $basedir; \
+                         tar cf  -  $new_name) | \
+                         (cd $destdir; tar xpf - $new_name)
+		    fi
+		else
+		    /bin/cp -p $f $destdir/$new_name
+                fi
+                if test -x $f ; then
+                    /bin/chmod $execmode $destdir/$new_name
+                else
+                    /bin/chmod $datamode $destdir/$new_name
+                fi
+            fi
+        fi
+    done
+fi
+fi
+

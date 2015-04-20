@@ -1,0 +1,42 @@
+#VRML V2.0 utf8
+
+
+PROTO NurbsSurface [ field SFBool   debug              FALSE
+                     field SFInt32  uSegments         20
+                     field SFInt32  vSegments         20
+                     field MFFloat  uKnotSequence      0
+                     field MFFloat  vKnotSequence      0
+                     field SFInt32  numUControlPoints  0
+                     field SFInt32  numVControlPoints  0
+                     field MFFloat  controlPoints      0
+                     field SFBool   ccw                TRUE
+                     field SFFloat  creaseAngle        0.5
+                     field SFBool   solid              FALSE ] {
+
+    DEF IFS IndexedFaceSet {
+      coord
+          Coordinate { }
+      coordIndex []
+      ccw         IS ccw
+      convex      TRUE
+      creaseAngle IS creaseAngle
+      solid       IS solid
+    }
+    DEF surface Script {
+      field    SFBool   debug              IS debug
+      field    SFInt32  uSegments          IS uSegments
+      field    SFInt32  vSegments          IS vSegments
+      field    MFFloat  uKnotSequence      IS uKnotSequence
+      field    MFFloat  vKnotSequence      IS vKnotSequence
+      field    SFInt32  numUControlPoints  IS numUControlPoints
+      field    SFInt32  numVControlPoints  IS numVControlPoints
+      field    MFFloat  controlPoints      IS controlPoints
+      eventOut SFNode   coord_changed
+      eventOut MFInt32  coordIndex_changed
+
+      url "NurbsSurface.class"
+    }
+
+    ROUTE surface.coord_changed       TO  IFS.set_coord
+    ROUTE surface.coordIndex_changed  TO  IFS.set_coordIndex
+}

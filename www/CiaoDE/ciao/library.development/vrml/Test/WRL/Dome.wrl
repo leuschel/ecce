@@ -1,0 +1,75 @@
+#VRML V2.0 utf8
+
+
+EXTERNPROTO NurbsRevolve [ field SFBool   debug
+                           field SFInt32  uSegments
+                           field SFInt32  vSegments
+                           field MFFloat  uKnotSequence
+                           field MFFloat  vKnotSequence
+                           field SFInt32  numUControlPoints
+                           field SFInt32  numVControlPoints
+                           field MFFloat  controlPoints
+                           field SFBool   ccw
+                           field SFFloat  creaseAngle
+                           field SFBool   solid                ]
+"http://www.ocnus.com/nurbs/NurbsSurface.wrl"
+
+
+
+Viewpoint {
+  position       0 0 5
+  orientation    0 0 1  0
+  fieldOfView    0.785398
+  description    "NURBS Dome"
+}
+
+Shape {
+  appearance
+      Appearance {
+        material
+           Material { diffuseColor 1 1 0 }
+      }
+  geometry
+      NurbsRevolve {           # Dome
+        debug                  FALSE
+        uSegments              20
+        vSegments              20
+        numUControlPoints       5
+        numVControlPoints       5
+        uKnotSequence  [ 0.0, 0.0, 0.0,
+                         0.5, 0.5,
+                         1.0, 1.0, 1.0 ]
+        vKnotSequence  [ 0.0, 0.0, 0.0,
+                         0.5, 0.5,
+                         1.0, 1.0, 1.0 ]
+        controlPoints  [ 1         0         0         1,
+                         0.707107  0        -0.707107  0.707107,
+                         0         0        -1         1,
+                        -0.707107  0        -0.707107  0.707107,
+                        -1         0         0         1,
+
+                         1         0         0         1,
+                         0.707107  0.60     -0.60      0.707107,
+                         0         0.707107 -0.707107  0.707107,
+                        -0.707107  0.60     -0.60      0.707107,
+                        -1         0         0         1,
+
+                         1         0         0         1,
+                         0.707107  0.707107  0         0.707107,
+                         0         1         0         1,
+                        -0.707107  0.707107  0         0.707107,
+                        -1         0         0         1,
+
+                         1         0         0         1,
+                         0.707107  0.60      0.60      0.707107,
+                         0         0.707107  0.707107  0.707107,
+                        -0.707107  0.60      0.60      0.707107,
+                        -1         0         0         1,
+
+                         1         0         0         1,
+                         0.707107  0         0.707107  0.707107,
+                         0         0         1         1,
+                        -0.707107  0         0.707107  0.707107,
+                        -1         0         0         1,        ]
+      }
+}

@@ -1,0 +1,135 @@
+\initial {A}
+\entry {\code {aggregates}}{5, 7, 9, 11, 13, 17, 19, 25, 27, 29, 33}
+\entry {\code {arithmetic}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {atomic_basic}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {attributes}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\initial {B}
+\entry {\code {basic_props}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 33, 35}
+\entry {\code {basiccontrol}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {basicprops}}{5, 7, 9, 19, 21, 25, 27, 29, 33, 35}
+\entry {\code {bound/1}}{21}
+\entry {\code {bound_double/1}}{21}
+\entry {\code {boundary}}{17, 27}
+\entry {\code {boundary_check/3}}{5}
+\entry {\code {boundary_rotation_first/2}}{5}
+\entry {\code {boundary_rotation_last/2}}{5, 6}
+\initial {C}
+\entry {\code {children_nodes/1}}{5, 6}
+\entry {\code {concurrency}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {continue/3}}{31}
+\entry {\code {convert_atoms_to_string/2}}{25}
+\entry {\code {create_dictionaries/1}}{9}
+\entry {\code {create_proto_element/3}}{27}
+\initial {D}
+\entry {\code {data_facts}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {dictionary}}{27}
+\entry {\code {dictionary/1}}{21, 22}
+\entry {\code {dictionary/6}}{7}
+\entry {\code {dictionary_insert/5}}{9, 10}
+\entry {\code {dictionary_lookup/5}}{9, 10}
+\entry {\code {dictionary_tree}}{27}
+\entry {\code {dynamic}}{5, 7, 9, 11, 13, 17, 19, 25, 27, 29, 33}
+\initial {E}
+\entry {\code {environment/1}}{21, 22}
+\entry {\code {error}}{5, 15, 19, 27, 29, 33}
+\entry {\code {error_vrml/1}}{11}
+\entry {\code {exceptions}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\initial {F}
+\entry {\code {field_type}}{27}
+\entry {\code {field_value}}{29}
+\entry {\code {field_value_check}}{27}
+\entry {\code {fieldType/1}}{13}
+\entry {\code {fieldValue/6}}{15}
+\entry {\code {fieldValue_check/8}}{17}
+\entry {\code {format}}{25}
+\initial {G}
+\entry {\code {generator}}{17, 35}
+\entry {\code {generator/2}}{19}
+\entry {\code {generator_util}}{17, 19, 27}
+\entry {\code {get_definition_dictionary/2}}{9}
+\entry {\code {get_prototype_definition/2}}{27}
+\entry {\code {get_prototype_dictionary/2}}{9, 10}
+\entry {\code {get_prototype_interface/2}}{27}
+\initial {I}
+\entry {\code {internal_types}}{5, 7, 9}
+\entry {\code {io}}{17, 19, 27, 35}
+\entry {\code {io_aux}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {io_basic}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {is_dictionaries/1}}{9}
+\entry {\code {iso_byte_char}}{5, 7, 9, 11, 13, 17, 19, 25, 27, 29, 33}
+\entry {\code {iso_incomplete}}{5, 7, 9, 11, 13, 17, 19, 25, 27, 29, 33}
+\entry {\code {iso_misc}}{5, 7, 9, 11, 13, 17, 19, 25, 27, 29, 33}
+\initial {K}
+\entry {\code {koll/0}}{33}
+\entry {\code {koll2/0}}{33}
+\initial {L}
+\entry {\code {lists}}{7, 9, 15, 17, 25, 27, 29, 31, 33}
+\entry {\code {lookup}}{19, 29}
+\entry {\code {lookup_check_field/6}}{27}
+\entry {\code {lookup_check_interface_fieldValue/8}}{27}
+\entry {\code {lookup_check_node/4}}{27}
+\entry {\code {lookup_field/4}}{27}
+\entry {\code {lookup_field_access/4}}{27}
+\entry {\code {lookup_fieldTypeId/1}}{27}
+\entry {\code {lookup_get_fieldType/4}}{27}
+\entry {\code {lookup_route/5}}{27}
+\entry {\code {lookup_set_def/3}}{27}
+\entry {\code {lookup_set_extern_prototype/4}}{27}
+\entry {\code {lookup_set_prototype/4}}{27}
+\initial {M}
+\entry {\code {merge_tree/2}}{9}
+\entry {\code {mfstringValue/5}}{15}
+\entry {\code {mfstringValue/7}}{17}
+\initial {N}
+\entry {\code {nodeDeclaration/4}}{19, 29}
+\initial {O}
+\entry {\code {operators}}{5, 7, 9, 11, 13, 17, 19, 25, 27, 29, 33}
+\entry {\code {out/1}}{25}
+\entry {\code {out/3}}{25}
+\entry {\code {output_error/1}}{11}
+\initial {P}
+\entry {\code {parse/1}}{21, 22}
+\entry {\code {parser}}{15, 35}
+\entry {\code {parser/2}}{29}
+\entry {\code {parser_util}}{15, 17, 19, 27, 29}
+\entry {\code {pillow/html}}{35}
+\entry {\code {pillow/http}}{35}
+\entry {\code {possible}}{29}
+\entry {\code {prolog_flags}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {ProVRML}}{1}
+\initial {R}
+\entry {\code {read}}{5, 7, 9, 11, 13, 17, 19, 25, 27, 29, 33}
+\entry {\code {read_page/2}}{37}
+\entry {\code {read_terms_file/2}}{25}
+\entry {\code {read_vrml_file/2}}{25, 26}
+\entry {\code {regtypes/regtypes_rt}}{5, 7, 9, 19, 21, 25, 29, 35}
+\entry {\code {reserved_words/1}}{5, 6}
+\initial {S}
+\entry {\code {streams}}{5, 7, 9, 11, 13, 17, 19, 25, 27, 29, 33}
+\entry {\code {streams_basic}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {system_info}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\initial {T}
+\entry {\code {term_basic}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {term_compare}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {term_typing}}{5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 27, 29, 31, 33, 35}
+\entry {\code {terms_file_to_vrml/2}}{35, 36}
+\entry {\code {terms_file_to_vrml_file/2}}{35, 36}
+\entry {\code {terms_to_vrml/2}}{35, 36}
+\entry {\code {terms_to_vrml_file/2}}{35, 36}
+\entry {\code {token_read/3}}{33}
+\entry {\code {tokeniser}}{17, 29}
+\entry {\code {tokeniser/2}}{33}
+\entry {\code {tree/1}}{21, 22}
+\initial {V}
+\entry {\code {vrml_file_to_terms/2}}{35}
+\entry {\code {vrml_file_to_terms_file/2}}{35}
+\entry {\code {vrml_http_access/2}}{35, 37}
+\entry {\code {vrml_in_out/2}}{35, 37}
+\entry {\code {vrml_to_terms/2}}{35, 37}
+\entry {\code {vrml_web_to_terms/2}}{35}
+\entry {\code {vrml_web_to_terms_file/2}}{35, 36}
+\initial {W}
+\entry {\code {whitespace/1}}{21, 23}
+\entry {\code {write}}{5, 7, 9, 11, 13, 17, 19, 25, 27, 29, 33}
+\entry {\code {write_terms_file/2}}{25, 26}
+\entry {\code {write_vrml_file/2}}{25, 26}

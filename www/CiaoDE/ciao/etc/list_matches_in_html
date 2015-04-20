@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if test $# -ne 1; then  
+    echo "Usage: $0 <pattern>"
+    echo "       "
+    echo "       (e.g., $0 ciao-*.*p*.tar)"
+    echo "       "
+    echo "       Outputs a bullet list in html of the files"
+    echo "       that match <pattern>"
+else
+
+echo "<UL>"
+
+for f in $1 ; do
+    echo "<LI><A HREF=$f>$f</A>"
+done
+
+echo "</UL>"
+
+fi
+

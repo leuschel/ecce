@@ -1,0 +1,66 @@
+
+# Regarding handling of CR/LF in win32:
+# 
+# This is an instance of the very old text vs. binary issue.  Under
+# UNIX, all text files follow the convention of ending their lines with
+# a Newline character ('\n', coded as the LF character everywhere I've
+# ever checked).  But under DOS and derivatives, the convention for text
+# files is to end their lines with a CR followed with a LF.  So, to
+# allow UNIX- developed programs to work with minimum changes under
+# DOS/Win/NT, either the C libraries or the underlying UNIX simulation
+# layer (cygwin32 in our case) silently translate the CR/LF pair into
+# the single '\n' character when they read the file (and silently
+# translate '\n' into CR/LF when they write).
+# 
+# This, of course, wreaks havoc with seek/fseek, since the number of
+# bytes you read or write are different from the number of bytes
+# actually in the file (the file stores a CR and an LF, but you saw only
+# a single '\n').
+# 
+# Usually you _do_ want this behind-the-scenes translation: otherwise
+# perfectly good UNIX-developed programs will break.  But sometimes it
+# bites you.
+# 
+# To give the developer some control on the issue, all C libraries
+# designed to work under DOS/Win/NT allow opening a file in "binary"
+# mode (something that has no meaning in UNIX).  When a file is opened
+# in binary mode, the library or underlying UNIX simulation layer
+# refrains from doing any translation on the bytes, either read or
+# written.
+# 
+# To specify binary mode, you add a "b" to the fopen mode string: "rb"
+# means read in binary mode, for example.  If you're using open, add the
+# O_BINARY or O_TEXT (defined in <fcntl.h>) as appropriate, to the mode
+# flags.
+# 
+# But what to do when the souce isn't available?  That's where the mount
+# command comes in.  When no specific binary or text mode is indicated
+# in the open or fopen calls (as is always the case for pristine
+# UNIX-developed code), the file is opened in a mode obtained with the
+# following procedure: starting with the directory containing the file
+# and proceeding up the tree until the root is reached, each directory
+# is looked up in the mount table and, if found, the default text or
+# binary mode is taken from the mount entry.
+# 
+# If the scan fails to locate a mount point (an impossibility under
+# UNIX, but perfectly possible in DOS-derived filesystems that have as
+# many "roots" as drive letters), the default open mode depends on the
+# setting of the CYGWIN32 environment variable: if it contains the
+# "binmode" string then the default is binary mode, otherwise it is text
+# mode.  (I believe you require the cygwinb19.dll file from Sergei's
+# site at http://www.lexa.ru/sos for this to work).
+# 
+# I hope this sheds some light on the latest incarnation of a problem
+# that has been around since the first C compilers ran under DOS so many
+# years ago.
+
+
+
+
+  The problem did not appear yet in Ciao: since we have been working
+with copies of files, tar abd friends have been taking care of that.
+It is easy to determine in the engine C code if a text file or a
+binary file is being opened, but the startup code (the application
+itself) is quite different, because it has a buncho of .po plus text
+file at the beginning!
+

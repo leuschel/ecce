@@ -1,0 +1,517 @@
+
+\section{Modular Programs}
+
+Ciao Prolog is a modular language. A program can be split into modules, so
+that these can be developed separately. The compiler will then put all
+modules together in order to create the program executable. Each
+module must be defined in a single file (except some special modules,
+which are explained below), and each file defines only one module.
+
+The program is identified with a {\bf main file}. This file defines a
+predicate \verb+main/0+ or \verb+main/1+, which is the starting point
+of the whole program. If \verb+main/1+ is used, its argument will be a
+list with the parameters with which the program executable has been
+called for execution. This is the file that you compile in order to
+create the program executable.
+
+The Ciao compiler reconstructs the set of modules of the program from
+its main file. This is done by recognizing the modules used by this
+file, and then the modules used by the former modules, and so on.
+The set of all such relationships of use between modules is called the
+{\bf module interface} of the program.
+
+A module provides encapsulation for the predicates defined in it. This
+means that predicates defined in a module can only be called by a
+predicate defined in another module if they are visible to the latter
+module. A predicate is {\bf visible} to a module if it is defined in
+the module or it is {\em imported} by the module from the module that
+defines it and this module {\em exports} it. The module interface thus
+identifies which predicates are imported by which modules and from
+which other modules. 
+
+A module is defined by starting the file that contains its code with
+a module declaration for the module name and the predicates exported
+by the module. The module declaration must be the first line of code
+in the file. It must also be unique in the file.
+
+The module name identifies the module. It must be an atom equal to the
+name of the file (without the optional ``.pl'' extension). It can be a
+variable (which is then unified with the name of the file). Each
+module in a program must have a unique name.
+
+Modules names must be unique in a program, because the module code is
+unique in the memory image of the program. This is to say, the Ciao
+module system is {\em flat}: no hierarchy of modules can be defined,
+in which some modules occur within other modules.
+
+The {\bf exported predicates} are given in a list of predicate
+specs. Only the exported predicates can be imported (and thus, called)
+by other modules. For example: 
+\begin{quote}
+\begin{verbatim}
+:- module(length,[length/2]).
+
+length(L,N):- var(L), !, create_list(N,0,L).
+length(L,N):- calculate_length(L,N).
+\end{verbatim}
+\end{quote}
+%
+declares a module named \verb+length+ (in a file named
+\verb+length.pl+, most probably), and exports the predicate
+\verb+length/2+. The predicates \verb+create_list/3+ and
+\verb+calculate_length/2+, defined also in the module, cannot be
+called from other modules. They are {\bf local predicates} of
+the module. Local predicates of a module are always visible to that
+module, and never to other modules.
+
+A module declares predicates imported from other modules with the
+use-module directive, giving a list of the specs of the {\bf imported
+  predicates} 
+and the name of the module that (supposedly) exports them. For
+example: 
+\begin{quote}
+\begin{verbatim}
+:- use_module(lists,[list/1,append/3]).
+\end{verbatim}
+\end{quote}
+%
+declares predicates \verb+list/1+ and \verb+append/3+ as imported from
+module \verb+lists+.
+
+The predicates declared as imported must also be exported (by the
+given module). If this is the case, they are made visible to the
+importing module. Otherwise, compilation is aborted.
+
+Also, the second argument of \verb+use_module+ can be omitted. In
+this case, all predicates exported by the named module are imported
+and visible to the importing module.
+
+A module importing a predicate can also re-export it.
+A {\bf re-exported predicate} is at the same time also imported.
+For example:
+\begin{quote}
+\begin{verbatim}
+:- module(lists,[append/3,...,list/1,...]).
+:- reexport(length,[length/2]).
+\end{verbatim}
+\end{quote}
+%
+defines a module \verb+lists+ that imports predicate \verb+length/2+
+from module \verb+length+ and, at the same time, exports it. Thus, it
+can be imported by other modules from \verb+lists+ instead of
+\verb+length+. 
+
+Predicates with the same spec cannot be exported and re-exported at the
+same time by a module. However, in a module there can be exported or local
+predicates with the same name that imported predicates. In this case,
+a {\bf name clash} occurs in the goals for such predicates, since
+the compiler is not able to know which of the two predicates is
+called. The compiler assumes in this case that the goal is for the
+predicate defined in the module, and not for the predicate
+imported. Thus, in:
+\begin{quote}
+\begin{verbatim}
+:- module(numlists,...).
+:- use_module(lists,[append/3]).
+
+... :- ..., append(L1,L2,L), ...
+
+append([],X,X).
+...
+\end{verbatim}
+\end{quote}
+%
+the predicate \verb+append/3+ defined in \verb+numlists+ will be
+called, instead of the one imported from \verb+lists+.
+
+If you want to call the imported predicate, instead, then you have to
+qualify the goal. Module {\bf qualification} consists in prepending
+to the goal the name of the module from which the predicate is
+imported. Thus, in: 
+\begin{quote}
+\begin{verbatim}
+:- module(numlists,...).
+:- use_module(lists,[append/3]).
+
+... :- ..., lists:append(L1,L2,L), ...
+
+append([],X,X).
+...
+\end{verbatim}
+\end{quote}
+%
+the predicate \verb+append/3+ imported from \verb+lists+ will be
+called, instead of the one locally defined.
+
+Different imported predicates may also have the same spec. In this
+case, the compiler assumes that unqualified goals correspond to the
+last imported predicate (however, a warning message is issued,
+suggesting the convenience of qualifying the goals). For example, in:
+\begin{quote}
+\begin{verbatim}
+:- module(matrices,...).
+:- use_module(lists,[append/3]).
+:- use_module(numlists,[append/3]).
+
+... :- ..., lists:append(L1,L2,L), ..., append(L,L3,LL), ...
+\end{verbatim}
+\end{quote}
+%
+the first append goal is to the predicate defined in module
+\verb+lists+ and the second one to the predicate defined in module
+\verb+numlists+ (imported the last).
+
+Only goals of predicates imported from a module can be qualified by
+the name of that module. The qualifying name must be an atom
+identifying the module name. However, it can also be a variable,
+provided that it is instantiated at run-time to a module name. Thus:
+\begin{quote}
+\begin{verbatim}
+... :- ..., callapp(lists,L1,L2,L), ..., callapp(numlists,L,L3,LL), ...
+
+callapp(M,L1,L2,L3) :- M:append(L1,L2,L3).
+\end{verbatim}
+\end{quote}
+%
+has the same effect as the code above.
+
+%% Nested qualifications have no effect, i.e., the following two atoms
+%% are equivalent:
+%% \begin{quote}
+%% \tt\var{name1}:\var{name2}:\var{module}:\var{atom}
+%% \hspace{0.3\textwidth}
+%% \var{module}:\var{atom}
+%% \end{quote}
+
+
+\subsection{Meta-predicates and the call-back problem}
+\label{sec:callback}
+
+The library predicate \verb+call/1+ allows to turn a term into a goal
+and call it. Predicates which use \verb+call/1+ are called 
+{\bf meta-predicates}. The argument that carries the term called is
+known as a meta-argument. The call issued via \verb+call/1+ is known
+as a meta-call. (See Section~\ref{sec:ho} for a more complete description of
+meta-calls.)
+
+For example, the following meta-predicate \verb+map/3+ calls a given
+predicate for all elements of two lists (which must have the same
+length). The elements in the first list are mapped to the first
+argument of a call to the predicate in the second argument of
+\verb+map/3+ (the meta-argument), and the elements in
+the second list are mapped to the second argument of such call:
+\begin{quote}
+\begin{verbatim}
+map([],_F,[]).
+map([X|Xs],F,[Y|Ys]) :- Goal =.. [F,X,Y], call(Goal), map(Xs,F,Ys).
+\end{verbatim}
+\end{quote}
+
+Meta-calls behave with respect to the module system much the same as other
+calls. At execution time, if the call is qualified, the predicate in
+the qualifying module will be called, provided that it is visible to
+the module that issues the call. If it is not qualified, and there is
+a local predicate which matches the goal, this predicate is called. If
+there is no local predicate, but there is an imported predicate of the
+same name, this one is called. If there is a name clash, the same
+rules mentioned above apply.
+
+Given the above, if the meta-predicate is defined in a module, and you
+want to use it with local predicates of another module, the latter
+predicates should be exported. For example, in:
+\begin{quote}
+\begin{verbatim}
+:- module(vectors,...).
+:- use_module(map,[map/3]).
+
+squared(Vs,V2s) :- map(Vs,pow2,V2s).
+
+pow2(X,Y):- Y is X^2.
+\end{verbatim}
+\end{quote}
+%
+the predicate \verb+pow2/2+ should be exported, in order for module
+\verb+map+ to be able to (meta-)call it. Module \verb+map+ should also
+import it from module \verb+vectors+.
+
+This is not very convenient in some cases. For example, if the
+\verb+map+ module was intended as a library module. In such a case,
+the possible future uses of the library are unknown, and thus it is
+not possible to import all predicates that could (in the future) be
+meta-called. 
+
+The solution in this case is to declare the meta-predicate as such, by
+using:
+\begin{quote}
+\begin{verbatim}
+:- module(map,[map/3]).
+:- meta_predicate map(?,pred(2),?).
+\end{verbatim}
+\end{quote}
+
+The meta-predicate declaration declares the meta-arguments of the
+meta-predicate. Each meta-argument must have its type declared. 
+Arguments which are not meta-arguments are declared \verb+?+. The
+possible types for meta-arguments are listed in the reference
+manual.
+
+In the above example, the declaration specifies that the second
+argument of \verb+map/3+ is a meta-argument and is such that will be
+bound upon calling \verb+map/3+ to a term to which two extra arguments
+will be added in order to meta-call it.
+
+Because you are now using explicit meta-arguments, its manipulation
+needs be done with the \verb+call/n+ family of predicates. In the
+example, since two arguments are to be added to the meta-call, this
+has to be done as follows:
+\begin{quote}
+\begin{verbatim}
+:- module(map,[map/3],[hiord]).
+
+:- meta_predicate map(?,pred(2),?).
+
+map([],_F,[]).
+map([X|Xs],F,[Y|Ys]) :- call(F,X,Y), map(Xs,F,Ys).
+\end{verbatim}
+\end{quote}
+%
+where \verb+call/3+ is used to add the arguments. This predicate is
+part of the higher order features of Ciao (see Section~\ref{sec:ho}),
+and its use is declared by including the ``package'' \verb+hiord+
+(packages are explained in Section~\ref{sec:lib}).
+
+When the meta-terms are passed on from one predicate to another until
+it is finally meta-called, there is no need to declare the
+corresponding arguments of all the predicates involved as
+meta-arguments. Only exported meta-predicates need be declared. For
+example: 
+\begin{quote}
+\begin{verbatim}
+:- module(map,[map/3]).
+
+:- meta_predicate map(?,pred(2),?).
+
+map(L1,F,L2):- map_0(L1,F,L2).
+
+map_0([],_F,[]).
+map_0([X|Xs],F,[Y|Ys]) :- call(F,X,Y), map_0(Xs,F,Ys).
+\end{verbatim}
+\end{quote}
+%
+will suffice. There is no need to declare \verb+map_0/3+ as
+meta-predicate. 
+
+
+\subsection{Dynamic Predicates}
+
+When a module exports a dynamic predicate (see
+Section~\ref{sec:dynamic} for an explanation of dynamic predicates),
+it is not only granting rights to other modules to call it, but also
+to dynamically modify its code. For example:
+\begin{quote}
+\begin{verbatim}
+:- module(database,[count/1,...]).
+
+:- data count/1.
+
+:- module(usingdata,...).
+:- use_module(database,[count/1]).
+
+... :- ..., asserta(count(X)), ...
+\end{verbatim}
+\end{quote}
+%
+is legal. However, it would be illegal if \verb+count/1+ was not
+exported. 
+
+This is possible because \verb+asserta/1+, \verb+assertz/1+ (and the
+like) are library predicates which are declared as meta-predicates.
+
+
+\subsection{The User Module}
+
+The predicates defined in files which are not declared as modules
+belong to a special module named \verb+user+. This is the only module
+that can be defined in several files. All the code defined in files
+with no module declaration will belong to this module, and all
+predicates defined in it are considered as exported by the module.
+
+The \verb+user+ module behaves as any other module. Therefore, it has
+to import all predicates that it may call and are defined in other
+modules. Other modules have to import from \verb+user+ the predicates
+defined in it that they may call.
+
+There is a slight difference, though. The import declarations in user
+files have the scope of the file in which they appear. Therefore, in a
+program including the following two \verb+user+ files:
+\begin{quote}
+\begin{verbatim}
+a.pl                                b.pl
+
+    :- use_module(m,[p/1]).                 
+
+    ... :- ..., m:p(X), ...             ... :- ..., m:p(X), ...
+\end{verbatim}
+\end{quote}
+%
+compilation of \verb+b.pl+ will give an error because \verb+p/1+ is not
+imported from \verb+m+ in \verb+b.pl+.
+
+Also, since the \verb+user+ module may be defined in several files,
+the compile-time checking of the module interface performed by the
+compiler is less strict than for other modules. For example, the
+compiler can not check that predicates imported from \verb+user+ are
+indeed exported by it. 
+
+Note that, although several files can define code for the \verb+user+
+module, they cannot define the same predicate. This is an error.
+
+
+\subsection{Multifile Predicates}
+
+A multifile predicate is a predicate defined in several files. This is
+relevant not only for the \verb+user+ module, but also for other
+modules (see below). In fact, such predicates are part of another
+special (internal) module, called \verb+multifile+.
+
+Multifile predicates must be explicitly declared, and this has to be
+done in all files that define code for them. For example:
+\begin{quote}
+\begin{verbatim}
+a.pl                                b.pl
+
+    :- multifile p/1.                   :- multifile p/1.
+
+    p(X):- ...                          p(X):- ...
+\end{verbatim}
+\end{quote}
+%
+is legal, and will be compiled as a single predicate \verb+p/1+
+defined in module \verb+multifile+ by two clauses, one from each
+file. This predicate can be called from the \verb+user+ module (where
+it was originally defined).
+
+When multifile predicates are defined across modules other than
+\verb+user+, the visibility of goals is somehow altered. In this case,
+the clauses in each of the modules have the visibility of the module
+where they appear. However, all the clauses together define a single
+predicate, and this predicate can be called from each of the modules.
+For example:
+\begin{quote}
+\begin{verbatim}
+:- module(a,[]).                    :- module(b,[]).
+
+:- multifile p/1.                   :- multifile p/1.
+
+p(X):- ..., q(X), ...               p(X):- ..., q(X), ...
+
+... :- ..., p(X), ...               ... :- ..., p(X), ...
+\end{verbatim}
+\end{quote}
+%
+defines a single predicate \verb+p/1+ with two clauses (one from each
+module). Both calls to \verb+p(X)+ will call this predicate. However,
+the clause in module \verb+a+ will call predicate \verb+a:q/1+, while
+the clause in module \verb+b+ will call predicate \verb+b:q/1+. These
+two predicates are different, since they are local to each of the
+modules. 
+
+In general, every declaration for a multifile predicate must be
+repeated in all the files that define clauses for the predicate. In
+particular, this is important if the multifile predicate is dynamic:
+the dynamic declaration must {\em also} be repeated in every file.
+
+Exporting a multifile predicate in a module is ignored by the compiler.
+
+
+\subsection{The Shell Module}
+
+The prompt at the Ciao interpreter (\verb+ciaosh+) shell behaves in
+some respects as another special module. Predicates need be imported
+into the shell in order to be called. However, predicates defined in
+the \verb+user+ module are automatically imported when the
+corresponding file is loaded into the interpreter.
+
+Files are loaded into the shell with the shell command
+\verb+ensure_loaded/1+. If the files are of the \verb+user+ module,
+their predicates can be called straightforwardly. However, modules
+need be imported into the shell with the \verb+use_module/1+ shell
+command. Thus:
+\begin{quote}
+\begin{verbatim}
+?- use_module(lists).
+
+yes
+?- append([a],[b],L).
+
+L = [a,b] ? 
+
+yes
+\end{verbatim}
+\end{quote}
+%
+but:
+\begin{quote}
+\begin{verbatim}
+?- ensure_loaded(lists).
+
+yes
+?- append([a],[b],L).
+{ERROR: user:append/3 - undefined predicate}
+\end{verbatim}
+\end{quote}
+%
+because in the latter case, although module \verb+lists+ is compiled
+into the shell, its predicates are not imported by the shell.
+
+
+\subsection{Dynamic Loading of Modules}
+
+It is possible to use in a program the \verb+compiler:use_module/1+
+library predicate in a similar way as the command of the same name is
+used in the shell. Its effect is to dynamically load the named module,
+and import all its exported predicates. For example:
+\begin{quote}
+\begin{verbatim}
+:- module(a,...).
+:- use_module(library(compiler),[use_module/1]).
+
+... :- ..., use_module(lists), ...
+\end{verbatim}
+\end{quote}
+%
+dynamically loads module \verb+lists+ into the executable and imports 
+into module \verb+a+ all the predicates exported by \verb+lists+.
+
+Thus, the predicates exported by \verb+lists+ can be called from the
+predicates defined in \verb+a+, but only after the call to 
+\verb+compiler:use_module/1+ has been executed.
+
+It is also possible to use the \verb+compiler:use_module/2+ library
+predicate. Its second argument will declare the list of predicate
+specs for the predicates that must be imported.
+
+The above example will work provided that in \verb+a+ there are no
+goals for the predicates exported by \verb+lists+. If there are, then
+compilation will be aborted, since the compiler cannot identify a
+declaration importing the predicates from \verb+lists+. This means
+that these predicates could only be called through meta-calls.
+
+However, it is possible to use goals for such predicates, and still
+load the \verb+lists+ module dynamically, not statically. This is done
+as follows:
+\begin{quote}
+\begin{verbatim}
+:- module(a,...).
+:- use_module(library(compiler),[use_module/1]).
+:- import(lists,[append/3]).
+
+... :- ..., use_module(lists), ...
+\end{verbatim}
+\end{quote}
+
+The compiler trusts that goals to \verb+append/3+ are to the predicate
+imported from \verb+lists+. However, the \verb+lists+ module is not
+included in the program executable, since there is no use-module
+declaration. Instead, it will be loaded dynamically. Therefore, calls
+to \verb+append/3+ can only be performed after \verb+lists+ is loaded.

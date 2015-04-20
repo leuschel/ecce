@@ -1,0 +1,34 @@
+#VRML V2.0 utf8
+
+
+EXTERNPROTO NurbsCurve [ field SFBool   debug
+                         field SFInt32  segments
+                         field MFFloat  knotSequence
+                         field MFFloat  controlPoints ]
+"http://www.ocnus.com/nurbs/NurbsCurve.wrl"
+
+
+
+Viewpoint {
+  position       0 0 5
+  orientation    0 0 1  0
+  fieldOfView    0.785398
+  description    "NURBS Cubic Curve"
+}
+
+Shape {
+  appearance
+      Appearance {
+        material
+           Material { diffuseColor 1 1 0 }
+      }
+  geometry
+      NurbsCurve {       # Cubic Curve
+        segments         100
+        knotSequence  [  0, 0, 0, 0, 1, 1, 1, 1, ]
+        controlPoints [ -3  -1.5  0  1,
+                        -1   1.5  0  1,
+                         1  -1.5  0  1,
+                         3   1.5  0  1, ]
+      }
+}

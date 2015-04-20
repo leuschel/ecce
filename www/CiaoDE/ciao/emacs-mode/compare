@@ -1,0 +1,2 @@
+#!/bin/sh
+diff $1 ~/emacs-mode-1.9-new/$1

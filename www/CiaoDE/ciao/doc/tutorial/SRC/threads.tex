@@ -1,0 +1,19 @@
+
+\section{Concurrent Programming}
+
+Parallel execution allows for several execution threads to be executed
+simultaneously. Thus, there might be several concurrent executions at
+a given time. However, execution might or might be not trully
+concurrent, depending on the available processors. Also, and-parallel
+execution requires that such threads be independent w.r.t.\ their
+bindings, and executes only parallel fork-and-join constructions:
+the solutions of parallel goals are synchronized right after they
+finish. 
+
+Concurrent programming superseeds the restrictions of the
+and-parallel execution in several ways. It allows mapping execution
+threads to real threads of the processor. It also allows for
+programming the concurrent execution of any number of threads,
+independent or not. And it also leaves synchronization of those
+threads in the hands of the programmer. It is more flexible, but also
+more complex. 

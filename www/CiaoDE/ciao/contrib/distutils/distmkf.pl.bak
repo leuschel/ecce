@@ -1,0 +1,627 @@
+% Note: this file now is obsolete, only is present to compare with new 
+% distribution method.
+
+:- module(_,_,[make,functions,assertions]).
+
+:- function(arith(false)).
+
+:- comment(author, "Edison Mera").
+
+:- comment(module, "Provides the common actions that are used when
+   generating new distributions.").
+
+:- use_module(library('make/system_extra'), [
+	cat_append/2,
+	convert_permissions/4,
+	copy_file/4,
+	datime_string/1,
+	datime_string/2,
+	del_file_nofail/1,(-)/1,
+	do/2,
+	ls/3,
+	set_perms/2,
+	readf/2,
+	writef/2,
+	writef/3,
+	writef_list/2]).
+:- use_module(library(format)).
+:- use_module(library(system)).
+:- use_module(library(compiler),[use_module/1]).
+:- use_module(library(distutils),[make_subdir/5, make_subdirs/5,
+	delete_dir_rec/1, copy_src_distribution/2, copy_raw_distribution/2]).
+:- use_module(library(lists),[list_concat/2,reverse/2]).
+%:- use_module(library(terms)).
+:- use_module(library(ciaoconfig)).
+
+target_comment(clean,      "Delete compilation auxiliary files", []).
+target_comment(realclean,  "Delete all unnecesary files", []).
+target_comment(distclean,  "Delete all files which can be easily "||
+	"generated automatically", []).
+target_comment(braveclean, "Delete absolutely all files that can be "||
+	"generated automatically", []).
+
+register_config_file(FileName) :-
+%	use_module(FileName),
+	dyn_load_cfg_module_into_make(FileName).
+
+distsrc := ~atom_concat([~get_value(distdir), '/', ~get_value(vpmain)]).
+distsrcwin32 := ~atom_concat([~get_value(distdir), '/', ~get_value(win32vpmain)]).
+basedir := ~atom_concat([~get_value(distdir), '/', ~get_value(basemain)]).
+copying := ~atom_concat(~get_value(distdir), '/COPYING').
+install_basemain := ~atom_concat([~get_value(distdir), '/INSTALLATION.',
+	~get_value(basemain)]).
+installwin32_basemain := ~atom_concat([~get_value(distdir), '/INSTALLATION-Win32.',
+	~get_value(basemain)]).
+
+dist_htmlindex := ~atom_concat(~basedir, '_dist.htmlindex').
+za_htmlindex := ~atom_concat(~basedir, '_za.htmlindex').
+zb_htmlindex := ~atom_concat(~basedir, '_zb.htmlindex').
+%zc_htmlindex := ~atom_concat(~basedir, '_zc.htmlindex').
+zm_htmlindex := ~atom_concat(~basedir, '_zm.htmlindex').
+zn_htmlindex := ~atom_concat(~basedir, '_zn.htmlindex').
+
+default <- :-
+	bold_message("Please specify the target. To obtain more information "||
+	    "use lpmake -h").
+
+showdate <- :- showdate.
+showdate :- bold_message("Current time is `~s\'", ~datime_string).
+
+install <- [showdate, environment,
+%checkinstalled,
+%makedistdir,
+	installsrc, installtarindex, installwebdescr, cleanunused, setperms] #
+            "Install the `~w\' distribution." :-
+	showdate,
+	bold_message("~w distribution done", ~get_value(vpmain)).
+
+target_comment(uninstall, "Delete the ~w distribution", [~get_value(main)]).
+uninstall <- [environment, uninstallsrc, uninstalltarindex, uninstallwebdescr,
+	uninstalldistdir] :-
+	true.
+
+target_comment(installdistonly, "Install only distribution for current "||
+	"version", []).
+installdistonly <- [installsrc, updatedistsite, cleanunused, setperms] :- true.
+
+target_comment(uninstalldistdir, "Delete the `~w\' directory",
+	[~get_value(distsrc)]).
+uninstalldistdir <- :-
+	delete_dir_rec(~distsrc),
+	bold_message("~w distribution deleted", ~get_value(vpmain)).
+
+target_comment(installwebdescr,
+	"Installs the banner and manuals that are posted on the distribution site.", []).
+installwebdescr <- :-
+	% Delete the html file to force the htmlindex creation.
+	del_file_nofail(~atom_concat([~get_value(docsrc), '/', ~get_value(main), '.htmlindex'])),
+	% Delete the html file to force the html creation.
+	del_file_nofail(~atom_concat([~get_value(docsrc), '/', ~get_value(main), '.html'])),
+	make_subdir(~get_value(lpmake), ~get_value(lpdoc2), ~get_value(docsrc), ~setlocalciao,
+	~atom_concat(['-f ', ~get_value(docset), ' all htmlindex install'])).
+
+target_comment(installwebdescrnomanuals,
+	"Same as installwebdescr, but does not recreate the manuals", []).
+installwebdescrnomanuals <- :-
+	del_file_nofail(~atom_concat([~get_value(docsrc), '/', ~get_value(main), '.htmlindex'])),
+	make_subdir(~get_value(lpmake), ~get_value(lpdoc2), ~get_value(docsrc), ~setlocalciao,
+	~atom_concat(['-f ', ~get_value(docset), ' htmlindex install'])).
+
+target_comment(uninstallwebdescr, "Uninstalls the banner and manuals that "||
+	"are posted on the distribution site.", []).
+uninstallwebdescr <- :-
+	del_file_nofail(~atom_concat([~get_value(docsrc), '/', ~get_value(main), '.htmlindex'])),
+	make_subdir(~get_value(lpmake), ~get_value(lpdoc2), ~get_value(docsrc), ~setlocalciao,
+	~atom_concat(['-f ', ~get_value(docset), ' htmlindex uninstall'])).
+
+target_comment(updatedistsite, "Update the distribution site", []).
+updatedistsite <- [updateavailableversions] :-
+	make_subdir(~get_value(lpmake), ~get_value(lpdoc2), ~get_value(docsrc), ~setlocalciao,
+	~atom_concat(['-f ', ~get_value(docset), ' htmlindex updatehtmlindex'])).
+
+target_comment(updatedistsite, "Build necessary things to init "||
+	"distribution.", []).
+environment <- :-
+	make_subdir(~get_value(lpmake), ~get_value(lpmake), '..', ~setlocalciao, 'environment').
+
+target_comment(installtarindex, "Install distribution banner page and "||
+	"pointers to tar files and docs", []).
+installtarindex <- [
+	~copying,
+	~install_basemain,
+	~dist_htmlindex,
+	~za_htmlindex,
+	~zb_htmlindex,
+%	~zc_htmlindex,
+	~zm_htmlindex,
+	~zn_htmlindex] :-
+	get_value(gen_win32prec, yes) ->
+	make(~installwin32_basemain)
+ ;
+	true.
+
+target_comment(uninstalltarindex, "Delete ~w index in distribution area",
+	[~get_value(vpmain)]).
+uninstalltarindex <- :-
+	del_file_nofail(~dist_htmlindex),
+	del_file_nofail(~za_htmlindex),
+	del_file_nofail(~zb_htmlindex),
+%	del_file_nofail(~zc_htmlindex),
+	del_file_nofail(~zm_htmlindex),
+	del_file_nofail(~zn_htmlindex),
+	del_file_nofail(~install_basemain),
+	del_file_nofail(~installwin32_basemain),
+	del_file_nofail(~copying).
+
+updateavailableversions <- [
+	~za_htmlindex,
+	~zb_htmlindex,
+%	~zc_htmlindex,
+	~zm_htmlindex,
+	~zn_htmlindex] :- true.
+
+install_basemain <- [~install_basemain] :- true.
+~install_basemain <- ['../INSTALLATION'] :: F :-
+	copy_file('INSTALLATION', '..', F, yes),
+	-set_perms(F, ~get_value(datamode)).
+
+installwin32_basemain <- [~installwin32_basemain] :- true.
+~installwin32_basemain <- ['../INSTALLATION-Win32'] :: F :-
+	copy_file('INSTALLATION-Win32', '..', F, yes),
+	-set_perms(F, ~get_value(datamode)).
+
+copying <- [~copying] :- true.
+~copying <- ['../COPYING'] :: F :-
+	-copy_file('COPYING', '..', F, yes),
+	-set_perms(F, ~get_value(datamode)).
+
+dist_htmlindex <- [~dist_htmlindex] :- true.
+~dist_htmlindex <- [~tardist] :: File :-
+	get_value(vpmain, Vpmain),
+	atom_codes(Vpmain, VpmainS),
+	writef(~list_concat(["<UL><LI><A HREF=\"",
+	~atom_codes(~get_value(download)), "?url=", ~atom_codes(~get_value(distdirurl)),
+	"/", VpmainS, ".tar.gz&list=", ~atom_codes(~get_value(maillist)), "\"> ",
+	"<B class=applname>", VpmainS, ".tar.gz</B></A>:"]), File),
+	cat_append('TarSrcText.html', File),
+	(   get_value(gen_win32prec, yes) ->
+	    get_value(win32vpmain, Win32vpmain),
+	    atom_codes(Win32vpmain, Win32vpmainS),
+	    writef(~list_concat(["<LI><A HREF=\"",
+	    ~atom_codes(~get_value(download)), "?url=", ~atom_codes(~get_value(distdirurl)),
+	    "/", Win32vpmainS, ".zip&list=", ~atom_codes(~get_value(maillist)), "\"> ",
+	    "<B class=applname>", Win32vpmainS, ".zip</B></A>:"]), append, File),
+	    cat_append('ZipWinBinText.html', File)
+	;
+	    true
+	),
+	writef("</UL>", append, File),
+	list_file_html([~atom_concat(Vpmain,'.tar.gz')],
+	~get_value(download), ~get_value(distdir), ~get_value(distdirurl), ~get_value(maillist), DL),
+	writef(~list_concat(DL), append, File),
+	-set_perms(File, ~get_value(datamode)).
+
+% file_html(F, Download, Distdirurl, Maillist, A) :-
+% 	atom_concat(['<LI><A HREF=\"',Download, '?url=', Distdirurl, '/', F,
+% 	'&list=', Maillist, '\">', F, '</A>
+% '], A).
+
+za_htmlindex <- [~za_htmlindex] :- true.
+~za_htmlindex <- [~tardist] :: F :-
+	atom_codes(~get_value(basemain), BaseMain),
+	writef_list([
+	    "<h2>Latest distributed version for <tt>"||
+	    BaseMain, "</tt>:</h2>\n"||
+	    "This version is the latest available for\n"||
+	    "<tt>"||BaseMain,
+	    "</tt>. It usually contains more features than the\n"||
+	    "<b>current version</b> above, and some bug fixes.\n"||
+	    "It is a snapshot of the development version, and some\n"||
+	    "features can still be in an unstable state.  Anyway, it\n"||
+	    "should be an improvement over the current stable version.\n"],
+	    F),
+	-set_perms(F, ~get_value(datamode)).
+
+zb_htmlindex <- [~zb_htmlindex] :- true.
+~zb_htmlindex <- [~tardist] :: F :-
+	list_file_html(~ls(~get_value(distdir), ~atom_concat(~get_value(vpmain), '.tar.gz')),
+	    ~get_value(download), ~get_value(distdir), ~get_value(distdirurl), ~get_value(maillist), DB),
+	writef(~list_concat(DB), F),
+	-set_perms(F, ~get_value(datamode)).
+
+zm_htmlindex <- [~zm_htmlindex] :- true.
+~zm_htmlindex <- [~tardist] :: F :-
+	atom_codes(~get_value(basemain), BaseMain),
+	atom_codes(~get_value(main), Main),
+	writef_list([
+	"<H2>List of all available versions for <tt>"||
+	BaseMain, "</tt>:</H2> "||
+	"<b>Note:</b> from 0.8 on, 'even' versions (e.g., 1.0, 1.4, "||
+	"...) are stable distributions, whereas odd versions (e.g., "||
+	"1.1, 1.5, ...) are versions under testing. These "||
+	"'odd'-numbered versions typically are meant for people "||
+	"collaborating in "|| Main, " development or people who would "||
+	"like to try out new functionality and help us with testing "||
+	"of upcoming versions. "], F),
+	-set_perms(F, ~get_value(datamode)).
+
+zn_htmlindex <- [~zn_htmlindex] :- true.
+~zn_htmlindex <- [~tardist] :: F :-
+	display(F),nl,
+	list_file_html(~reverse(~ls(~get_value(distdir), ~atom_concat(~get_value(basemain),
+	    '-*.*p*.tar.gz'))),
+	~get_value(download), ~get_value(distdir), ~get_value(distdirurl), ~get_value(maillist), DL),
+	writef(~list_concat(DL), F),
+	-set_perms(F, ~get_value(datamode)).
+
+short_date(Time,String) :-
+	datime(Time,Year,Month,Day,_Hour,_Min,_Sec,_WeekDay,_YearDay),
+	sformat(String,"~w-~w-~w",[Year,Month,Day]).
+
+gen_xdelta_html(DownloadS, Distdir, DistdirurlS, MaillistS,
+	    Base, MainVersion, MinorVersion, Patch, A1, A2) :-
+	get_value(gen_xdelta, yes) ->
+	list_concat([Base,"-",MainVersion,".",MinorVersion,"p*-",Patch, 
+	    ".xdelta"],XDeltaPatternS),
+	atom_codes(XDeltaPattern,XDeltaPatternS),
+	(
+	    ls(Distdir,XDeltaPattern,[BXD]) ->
+	    atom_concat([Distdir,'/',BXD], XD),
+	    file_properties(XD, _, _, _TimeX, _, SizeX),
+	    number_codes(SizeX, SizeXS),
+	    atom_codes(BXD,BXDS),
+	    list_concat([Base,"-"||MainVersion,"."||MinorVersion,
+	        "p"||PrevXD,"-"||Patch,".xdelta"],BXDS),
+	    A1 = ["<td>&nbsp</td><td><A HREF=\""|| DownloadS,
+	        "?url="|| DistdirurlS, "/"|| BXDS, "&list="|| MaillistS,
+		"\">"|| PrevXD,"-"|| Patch,"</A></td>\n"||
+		 "<td align=center>"|| SizeXS,"</td>\n"|A2]
+	;
+	    A1 = ["<td>&nbsp</td><td align=center> - </td>"||
+		"<td align=center> - </td>\n"|A2]
+	)
+ ;
+	A1 = A2.
+
+gen_diff_html(DownloadS, Distdir, DistdirurlS, MaillistS,
+	    Base, MainVersion, MinorVersion, Patch, A2, A3) :-
+	get_value(gen_diff, yes) ->
+	list_concat([Base, "-"||MainVersion, "."||MinorVersion,
+	"p*-"||Patch, ".diff.gz"], DiffPatternS),
+	atom_codes(DiffPattern,DiffPatternS),
+	(
+	    ls(Distdir,DiffPattern,[BD]) ->
+	    atom_concat([Distdir,'/',BD], D),
+	    file_properties(D, _, _, _TimeD, _, SizeD),
+	    number_codes(SizeD, SizeDS),
+	    atom_codes(BD,BDS),
+	    list_concat([Base, "-"||MainVersion, "."||MinorVersion,
+	    "p"||PrevD, "-"||Patch, ".diff.gz"],BDS),
+	    A2 = ["<td>&nbsp</td><td><A HREF=\""|| DownloadS, "?url="|| DistdirurlS,
+	    "/"|| BDS, "&list="|| MaillistS, "\">"|| PrevD,"-"|| Patch,"</A></td>\n"||
+		 "<td align=center>"|| SizeDS,"</td>\n"|A3]
+	;
+	    A2 = ["<td>&nbsp</td><td align=center> - </td>"||
+		"<td align=center> - </td>\n"|A3]
+	)
+ ;
+	A2 = A3.
+
+gen_win32prec_html(DownloadS, Distdir, DistdirurlS, MaillistS,
+	    Base, MainVersion, MinorVersion, Patch, A3, A4) :-
+	get_value(gen_win32prec, yes) ->
+	list_concat([Base, "-"|| MainVersion, "."|| MinorVersion,
+	    "p"|| Patch, "Win32.zip"], ZipWinS),
+	atom_codes(ZipWin, ZipWinS),
+	atom_concat([Distdir,'/',ZipWin], AZipWin),
+	(
+	    file_exists(AZipWin) ->
+	    file_properties(AZipWin,_,_, _TimeW, _, SizeW),
+	    number_codes(SizeW,SizeWS),
+	    A3 = [
+		"<td>&nbsp</td><td><A HREF=\""|| DownloadS, "?url="|| DistdirurlS,
+		"/"|| ZipWinS, "&list="|| MaillistS, "\">"|| ZipWinS, "</A></td>\n"||
+		"<td align=right>"|| SizeWS,"</td>"|A4]
+	;
+	    A3 = ["<td>&nbsp</td><td align=center> - </td>"||
+		"<td align=center> - </td>"|A4]
+	)
+ ;
+	A3 = A4.
+
+file_html(F, Download, Distdir, Distdirurl, Maillist, A, As) :-
+	atom_codes(F,FS),
+	atom_concat([Distdir,'/',F], AF),
+	file_properties(AF, _, _, Time, _, Size),
+	number_codes(Size,SizeS),
+	short_date(Time, TimeS),
+	atom_codes(Download, DownloadS),
+	atom_codes(Distdirurl, DistdirurlS),
+	atom_codes(Maillist, MaillistS),
+	A = ["<tr><td align=center>"|| TimeS,"</td>\n"||
+	"<td><A HREF=\""|| DownloadS, "?url="|| DistdirurlS, "/"||
+	FS, "&list="|| MaillistS, "\">"|| FS, "</A></td>\n"||
+	"<td align=right>"|| SizeS,"</td>\n"|A1],
+	list_concat([Base, "-", MainVersion, ".", MinorVersion, "p", Patch,
+	    ".tar.gz"],FS),
+	gen_xdelta_html(DownloadS, Distdir, DistdirurlS, MaillistS,
+	    Base, MainVersion, MinorVersion, Patch, A1, A2),
+	gen_diff_html(DownloadS, Distdir, DistdirurlS, MaillistS,
+	    Base, MainVersion, MinorVersion, Patch, A2, A3),
+	gen_win32prec_html(DownloadS, Distdir, DistdirurlS, MaillistS,
+	    Base, MainVersion, MinorVersion, Patch, A3, A4),
+	A4 = ["</tr>\n"|As].
+
+list_file_html(Files, Download, Distdir, Distdirurl, Maillist, A) :-
+	A = ["<ul><table border=1>\n<tr align=center>\n",
+	"<td>Date</td><td>Complete Source</td><td>Size</td>\n"|A1],
+	(   get_value(gen_xdelta, yes) ->
+	    A1 = ["<td>&nbsp</td><td>XDelta</td><td>Size</td>\n"|A2]
+	;   A1 = A2
+	),
+	(   get_value(gen_diff, yes) ->
+	    A2 = ["<td>&nbsp</td><td>Diff</td><td>Size</td>\n"|A3]
+	;   A2 = A3
+	),
+	(   get_value(gen_win32prec, yes) ->
+	    A3 = ["<td>&nbsp</td><td>Windows Precompiled</td><td>Size</td></tr>\n"|A4]
+	;   A3 = ["</tr>\n"|A4]
+	),
+	list_file_html_(Files, Download, Distdir, Distdirurl, Maillist,
+	    ["</table></ul>"], A4).
+
+list_file_html_([], _Download, _Distdir, _Distdirurl, _Maillist, Tail, Tail).
+list_file_html_([F|Fs], Download, Distdir, Distdirurl, Maillist, Tail, A) :-
+	file_html(F, Download, Distdir, Distdirurl, Maillist, A, As),
+	list_file_html_(Fs, Download, Distdir, Distdirurl, Maillist, Tail, As).
+
+target_comment(installaccess, "install user/passwd access for ~w",
+	[~get_value(distdir)]).
+
+installaccess <- [~htaccess, ~get_value(htpasswd)] :- true.
+
+htaccess := ~atom_concat(~get_value(distdir), '/.htaccess').
+htpasswdfile := ~atom_concat(~get_value(distdir), '/.htpasswd').
+
+~htaccess <- :-
+	get_value(distdiruser, D) ->
+	writef_list(["AuthUserFile ", ~atom_codes(~htpasswdfile), "\n",
+	"AuthGroupFile /dev/null\n",
+	"AuthName ByPassword\n",
+	"AuthType Basic\n",
+	"<Limit GET>\n",
+	"require user ",~atom_codes(D),"</Limit>\n"], ~htaccess),
+	do(['chmod ug+rw ',  ~htaccess], nofail),
+	do(['chmod o+r ',    ~htaccess], nofail)
+ ;
+	del_file_nofail(~htaccess).
+
+~htpasswdfile <- :-
+	get_value(distdiruser, D) ->
+	do([~get_value(htpasswd), ' -c ', ~htpasswdfile, ' ', D], nofail),
+	do(['chmod ug+rw ',    ~htpasswdfile], nofail),
+	do(['chmod o+r ',      ~htpasswdfile], nofail)
+ ;
+	del_file_nofail(~htpasswdfile).
+
+target_comment(uninstallaccess, "Uninstall user/passwd access for ~w",
+	[~get_value(distdir)]).
+uninstallaccess <- :-
+	del_file_nofail(~htaccess),
+	del_file_nofail(~htpasswdfile).
+
+% note: now rawdist don't have sense (there are not executable), but may have
+% in the future.
+target_comment(rawdist, "Build ~w.tar.gz binary tar file",
+	[~get_value(rawtarfile)]).
+rawdist <- :-
+	%do(['cd .. && ', ~get_value(lpmake)], nofail),
+	make_subdir(~get_value(lpmake), ~get_value(lpmake), '..', ~setlocalciao, 'docs'),
+        do('mkdir distfiles', nofail),
+	%do(['cp ../bin/* distfiles'], nofail),
+	do(['mv ../doc/', ~get_value(main), '.ps distfiles/', ~get_value(main), '.ps'], nofail),
+	do(['cd distfiles; tar cf ../', ~get_value(rawtarfile), '.tar *'], nofail),
+	do(['gzip --best ', ~get_value(rawtarfile), '.tar'], nofail),
+	do(['rm -rf distfiles'], nofail).
+
+target_comment(installsrc,"Build distribution source", []).
+installsrc <- [distdoc, install_unix_src] :-
+	get_value(gen_win32prec, yes) ->
+	make(install_win32_src)
+ ;
+	true.
+
+target_comment(uninstallsrc, "Delete ~w ../~w source in distribution area",
+	[~distsrc, ~get_value(win32vpmain)]).
+uninstallsrc <- :-
+	del_file_nofail(~tardist),
+	delete_dir_rec(~distsrc),
+	(   get_value(gen_win32prec, yes) ->
+	    del_file_nofail(~atom_concat([~get_value(distdir), '/', ~get_value(win32vpmain),
+	    '.zip'])),
+	    delete_dir_rec(~atom_concat([~get_value(distdir), '/', ~get_value(win32vpmain)]))
+	;
+	    true
+	).
+
+target_comment(distdoc,"Build ~w documentation for distribution (not web)",
+	[~distsrc]).
+distdoc <- [customdistdoc] :-
+	%making documentation & ASCII readme's
+	del_file_nofail(~atom_concat([~get_value(docsrc), '/', ~get_value(main),
+	'.htmlindex'])),
+	make_subdir(~get_value(lpmake), ~get_value(lpdoc2), ~get_value(docsrc), ~setlocalciao,
+	~atom_concat(['-f ',~get_value(distlpdocset),' all'])),
+	%make sure readmes are really up to date
+	make_subdir(~get_value(lpmake), ~get_value(lpmake), ~get_value(readmesrc), ~setlocalciao,
+	'-l distutils/readmemkf -m RSETTINGS force').
+%	del_file_nofail(~atom_concat([~get_value(docsrc), ~basemain, '.texi'])).
+
+mkdistsrc(DistSrc) :-
+	make_dirpath(DistSrc),
+	-set_perms(DistSrc, ~get_value(execmode)),
+	copy_src_distribution('..', DistSrc),
+	del_file_nofail(~atom_concat(DistSrc,'/lib/compiler/header')).
+
+mkdistraw(DistRaw) :-
+	make_dirpath(DistRaw),
+	-set_perms(DistRaw, ~get_value(execmode)),
+	copy_raw_distribution('..', DistRaw),
+	del_file_nofail(~atom_concat(DistRaw,'/lib/compiler/header')).	
+
+cleanunused <- :-
+	% Once the distribution has been generated, we can safely
+	% delete the unnecesary files:
+	(-delete_dir_rec(~distsrc)),
+	(   get_value(gen_win32prec, yes) ->
+	    (-delete_dir_rec(~distsrcwin32))
+	;
+	    true
+	).
+
+install_unix_src <- :-
+	distsrc(D),
+	% Force the recreation of distsrc
+	-delete_dir_rec(D),
+	make(distsrc),
+	bold_message("Building compressed packages... (unix)"),
+	make([tardist,update_distversion,xdelta,diff]).
+
+install_win32_src <- :-
+	distsrcwin32(D),
+	bold_message("Building ~w distribution tree... (Win32)", D),
+	writef("",~get_value(win32nodist)),
+	set_perms(~get_value(win32nodist), ~get_value(datamode)),
+	del_file_nofail(~get_value(unixnodist)),
+	-delete_dir_rec(D),
+	mkdistraw(D),
+	bold_message("Created a raw distribution in ~w", D),
+	make(distwin32clean),
+	bold_message("Building compressed packages... (Win32)"),
+	make(zipdistwin32).
+
+distsrc  <- [~distsrc] :- true.
+~distsrc <- [] :: D :-
+	bold_message("Building ~w distribution tree... (unix)", D),
+	(   get_value(unixnodist,U) ->
+	    writef("",U),
+	    -set_perms(U, ~get_value(datamode))
+	;   true
+	),
+	(   get_value(gen_win32prec, yes) ->
+	    (   get_value(win32nodist,W) ->
+		del_file_nofail(W)
+	    ;	true
+	    )
+	;   true
+	),
+	bold_message("Creating a distribution in ~w", D),
+	mkdistsrc(D),
+	make(distclean).
+
+distclean <- :-	distclean(~distsrc).
+
+distclean(D) :- make_subdir(~get_value(lpmake), ~get_value(lpmake), D, ~setlocalciao,
+	'distclean').
+
+docs <- [] :- make_subdir(~get_value(lpmake), ~get_value(lpmake), ~distsrc, ~setlocalciao,
+	'environment docs').
+
+tardist := ~atom_concat(~distsrc, '.tar.gz').
+tardist  <- [~tardist] :- true.
+~tardist <- [~distsrc] :: Tardist :-
+	do(['cd ', ~get_value(distdir), ' ; tar cf - ', ~get_value(vpmain),
+	' --owner=root --group=root | gzip --best -c > ',
+	Tardist], nofail),
+	-set_perms(Tardist, ~get_value(datamode)).
+
+curr_distversion := ~atom_concat([~get_value(distdir), '/', ~get_value(versionmain),
+	'.curr']).
+prev_distversion := ~atom_concat([~get_value(distdir), '/', ~get_value(versionmain),
+	'.prev']).
+
+update_distversion <- :-
+	update_distversion.
+
+update_distversion :-
+	curr_distversion(C),
+	atom_codes(~get_value(patch), CA),
+	(   file_exists(C) ->
+	    readf(C, CS),
+	    (   CS==CA ->
+		true
+	    ;	writef(CS, ~prev_distversion),
+		writef(CA, C)
+	    )
+	;   writef(CA, C)
+	).
+
+prevpatch(O) :-
+	prev_distversion(P),
+	(
+	    file_exists(P) ->
+	    readf(P, N),
+	    atom_codes(O, N)
+	;
+	    fail
+	).
+
+prevvpmain := ~atom_concat([~get_value(versionmain),'p', ~prevpatch]).
+prevtardist := ~atom_concat([~get_value(distdir), '/', ~prevvpmain, '.tar.gz']).
+
+basexdelta := ~atom_concat([~get_value(versionmain), 'p', ~prevpatch, '-',
+	~get_value(patch), '.xdelta']).
+xdelta := ~atom_concat([~get_value(distdir), '/', ~basexdelta]).
+basediff := ~atom_concat([~get_value(versionmain), 'p', ~prevpatch, '-',
+	~get_value(patch), '.diff.gz']).
+diff := ~atom_concat([~get_value(distdir), '/', ~basediff]).
+
+% viewxdelta <- :-
+% 	display(~xdelta),nl.
+
+xdelta <- [~xdelta] :- true.
+~xdelta <- [~tardist] :: Xdelta :-
+	prevtardist(P) ->
+	do(['cd ', ~get_value(distdir), ' ; xdelta delta ', P, ' ', ~tardist, ' ',
+	    Xdelta], nofail),
+	-set_perms(Xdelta, ~get_value(datamode))
+ ;
+	true.
+
+diff <- [~diff] :- true.
+~diff <- [~tardist] :: Diff :-
+	prevtardist(P) ->
+	(   file_exists(~distsrc) ->
+	    true
+	;   do(['cd ', ~get_value(distdir), ' ; tar -zxf ', ~tardist], nofail)
+	),
+	do(['cd ', ~get_value(distdir), ' ; tar -zxf ', P, ' ; diff -ru ',
+	~prevvpmain, ' ', ~get_value(vpmain),' | gzip --best -c > ', Diff], nofail),
+	-delete_dir_rec(~atom_concat([~get_value(distdir), '/', ~prevvpmain])),
+	-set_perms(Diff, ~get_value(datamode))
+ ;
+	true.
+
+zipdistwin32 := ~atom_concat([~get_value(distdir),'/', ~get_value(win32vpmain), '.zip']).
+zipdistwin32 <- [~zipdistwin32] :- true.
+~zipdistwin32 <- [~distsrcwin32] :: F :-
+	del_file_nofail(F),
+	do(['cd ', ~get_value(distdir), ' ; zip -qr9 ', ~get_value(win32vpmain), '.zip ',
+	~get_value(win32vpmain)], nofail),
+	-set_perms(F, ~get_value(datamode)).
+
+win32dist <- :-
+	do(['cd ../..; zip -r ', ~get_value(distdir), '/', ~get_value(win32vpmain), '.zip ',
+	~get_value(actualdir), '/ciaoc ', ~get_value(actualdir), '/shell ', ~get_value(actualdir),
+	'/lib ',~get_value(actualdir), '/library ', ~get_value(actualdir), '/contrib ',
+	~get_value(actualdir), '/Win32 ', ~get_value(actualdir), '/examples'], nofail).
+
+setperms <- [setgroup, setmode] # "Fix the permissions for all the distribution site":- true.
+
+setmode <- [] # "Fix the mode for all the distribution site" :-
+	-do(['chmod -R -f ', ~get_value(datamodemask), ' ', ~get_value(distdir)], nofail).
+
+target_comment(setgroup, "Fix the group for all the distribution site", []).
+setgroup <- [] :-
+	-do(['chgrp -R -f ', ~get_value(defaultgroup), ' ', ~get_value(distdir)], nofail).
+

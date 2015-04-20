@@ -1,0 +1,208 @@
+%
+% Brochure for Ciao1.4 publication
+%
+\documentclass{article}
+
+\usepackage{a4wide}
+\usepackage{twocolumn}
+\usepackage{html}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FORMAT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{a4wide}
+
+\topmargin-0.5cm
+%% For Apple Laserwriter:
+%%\topmargin-3cm
+%%\evensidemargin0cm
+%%\oddsidemargin0cm
+%\textwidth15cm
+%\textheight22cm
+%%\footskip0.9cm
+%% For Duplex in HP Laserwriter:
+%\oddsidemargin7mm
+%\evensidemargin0mm
+
+\tolerance=10000
+
+\makeatletter
+\def\section{\@startsection {section}{1}{\z@}{+1.5ex plus +1.5ex minus 
++1.5ex}{1.5ex}{\Large\bf}}
+%\def\subsection{\@startsection{subsection}{2}{\z@}{-1.0ex plus -1ex minus 
+%-.2ex}{0.7ex plus .2ex}{\normalsize\bf}}
+%\def\subsubsection{\@startsection{subsubsection}{3}{\parindent}{3.25ex plus 
+% 1ex minus  .2ex}{-1em minus -.25em}{\normalsize\sc}}
+\makeatother
+%%% \parskip 6pt
+%\parskip 0pt
+
+\def\longrule{\noindent \hrule width \textwidth}
+
+\renewcommand{\baselinestretch}{1.05}
+\renewcommand{\topfraction}{0.90}
+\renewcommand{\textfraction}{0.10}
+\renewcommand{\floatpagefraction}{0.90}
+
+\input{psfig}
+\input{/home/clip/Papers/clip_description/logo.tex}
+%% Laserprep prologues
+%% \newcommand{\psfigpath}{/usr/local/lib//inputs}
+%% \newcommand{\lprepold}{\psfigpath/mac.pro}
+%% \newcommand{\lprepnew}{\psfigpath/lprep68.pro}
+
+\newcommand{\headline}[1]{\centerline{\underline{\LARGE\bf #1}}}
+\newcommand{\head}[1]{\centerline{{\Large\bf #1}}}
+\newcommand{\parund}[1]{\paragraph{\underline{#1}}}
+
+\newcommand{\myitems}{
+\parsep 0pt
+\itemsep 0pt
+\topsep 0pt
+}
+
+\newcommand{\inbf}[1]{{\bf #1}}
+\newcommand{\enfat}[1]{{\em #1}}
+\newcommand{\apl}[1]{{\bf #1}}
+\newcommand{\concept}[1]{{\em #1}}
+
+
+\newcommand{\ciao}{\psfig{figure=ciao_s.ps}}
+
+\newcommand{\ciaologo}{
+ \vbox{\ciao
+  \parbox{4cm}{ {\small \ \\ [-2.4cm]
+                   {\bf CLIP} \\ [+0cm]
+                   Clip's \\ [-0.2cm]
+                   Implementation \\ [-0.2cm]
+                   And Other friends \\ [-0.2cm]
+                   programming environment}}
+  }
+}
+
+\begin{document}
+
+\pagestyle{empty}
+
+
+%% Logos:
+\twocolumn[
+\ \rule{\textwidth}{.04 in}\\
+% Header
+\hspace*{0.04\textwidth}
+\hbox{
+      \vbox{\vspace{12pt}\hbox{\engcliplogo}}
+      \hspace*{+0.25\textwidth}
+      \vbox{\ciao}
+}\\
+% Horizontal line
+\ \rule{\textwidth}{.04 in}\\ %.01
+
+\begin{center}
+\begin{LARGE}
+\underline{{\bf Ciao Prolog 1.4 is now available}}\\ % [4mm]
+\end{LARGE}
+\begin{Large}
+{\tt ciao@clip.dia.fi.upm.es}\\
+{\tt http://www.clip.dia.fi.upm.es/Software/Ciao}\\ % [2mm]
+\end{Large}
+\end{center}
+]
+
+\noindent{\large\bf Ciao\ldots}
+
+ is a \index{public domain} programming environment which
+supports the development and efficient compilation of \enfat{next
+  generation} logic programs.
+
+ has been designed from the ground up to be highly extensible (in a
+ modular way) and to allow modular program development.
+
+ includes standard \inbf{ISO-Prolog} as a sublanguage, but supports
+also logic programming extensions such as 
+functional logic programs and object-oriented logic programs. 
+
+ offers support for \enfat{programming in the large} with
+      a robust module/object system, module-based automatic
+      incremental compilation (with no need for makefiles), an
+      assertion language for declaring (\enfat{optional}) program
+      properties (including types and modes), automatic static
+      inference and static/dynamic checking of such assertions, etc.
+
+ also offers support for \enfat{programming in the small}
+      producing small executables (including only those builtins used
+      by the program) and support for writing scripts in Prolog.
+
+ includes a compiler which generates several forms of
+      architecture-independent and stand-alone executables.  Program
+      modules can be compiled into compact bytecode 
+      and linked statically, dynamically, or autoloaded.
+
+ supports concurrency (threads), distributed execution (agents),
+      and parallel execution.
+
+ programming environment includes a large number of
+      \enfat{libraries} providing a wide range of additional
+      functionality, from WWW programming to support for several
+      control rules.
+
+ programming environment also includes:
+      \apl{lpdoc} (distributed separately), a tool for generating
+      documentation automatically 
+      for Prolog programs adorned with (\inbf{Ciao}) assertions and
+      special, machine-readable comments;
+      \apl{ciaopp} (the \inbf{Ciao preprocessor}, distributed separately),
+      a tool for global program analysis and static debugging and
+      optimization via source to source program transformation, including
+      automatic parallelization;
+      a rich \apl{emacs} interface, and a number of execution
+      visualization tools. 
+
+\vfill
+\noindent{\large\bf \ldots 1.4\ldots}
+
+ has a much more improved documentation.
+
+ supports automatic compilation of foreign files.
+
+ provides new concurrency primitives and recovers \&Prolog-like 
+ multiengine capability. 
+
+ includes a new version of O'Ciao object-oriented library, with
+ improved performance. 
+
+ provides support for {\em predicate abstractions}.
+
+ supports reexportation through reexport declarations, precedence of
+ importations has changed: last one is now higher. 
+ Modules can now implicitly export all predicates.
+
+\vfill
+\noindent{\large\bf \ldots and beyond\ldots}
+
+ plans include providing compilation to C source files, support for
+constraint logic programming (CLP),
+
+\vfill
+
+%% \inbf{Ciao} is distributed under the \concept{GNU General Public
+%% License}, version 2.
+%%  as published by the Free Software Foundation,
+%% Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+\vfill
+
+\noindent
+{\bf Contact info:}
+\ \\
+%% \begin{itemize}
+%% \item Postal address is: \\
+%%     \ \\
+    \htmladdnormallink{\texttt{http://www.clip.dia.fi.upm.es}}{http://www.clip.dia.fi.upm.es}\\ 
+    \htmladdnormallink{\texttt{clip@clip.dia.fi.upm.es}}{mailto:clip@clip.dia.fi.upm.es}\\ 
+    Manuel Hermenegildo\\
+    Facultad de Inform\'{a}tica -- UPM\\
+    E-28660 Boadilla del Monte, Madrid, SPAIN
+
+\end{document}

@@ -1,0 +1,45 @@
+#VRML V2.0 utf8
+
+
+EXTERNPROTO NurbsRevolve [ field SFBool   debug
+                           field SFInt32  segments
+                           field SFFloat  minAngle
+                           field SFFloat  maxAngle
+                           field SFInt32  profileSegments
+                           field MFFloat  profileKnotSequence
+                           field MFFloat  profileControlPoints
+                           field SFBool   ccw
+                           field SFFloat  creaseAngle
+                           field SFBool   solid                ]
+"http://www.ocnus.com/NURBS/NurbsRevolve.wrl"
+
+
+
+Viewpoint {
+  position       0 0 5
+  orientation    0 0 1  0
+  fieldOfView    0.785398
+  description    "NURBS Sphere"
+}
+
+Shape {
+  appearance
+      Appearance {
+        material
+           Material { diffuseColor 1 1 0 }
+      }
+  geometry
+      NurbsRevolve {           # Sphere
+        debug                  FALSE
+        segments               20
+        profileSegments        20
+        profileKnotSequence  [ 0.0, 0.0, 0.0,
+                               0.5, 0.5,
+                               1.0, 1.0, 1.0 ]
+        profileControlPoints [ 0        -1         0  1,
+                               0.707107 -0.707107  0  0.707107,
+                               1         0         0  1,
+                               0.707107  0.707107  0  0.707107,
+                               0         1         0  1,        ]
+      }
+}

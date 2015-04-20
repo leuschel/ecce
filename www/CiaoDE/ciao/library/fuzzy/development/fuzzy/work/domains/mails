@@ -1,0 +1,943 @@
+From VM Thu Nov  1 21:02:57 2001
+X-VM-v5-Data: ([nil nil nil nil t nil nil nil nil]
+	["2266" "Wednesday" "31" "October" "2001" "19:21:17" "+0100" "Francisco Bueno Carrillo" "bueno@clip.dia.fi.upm.es" "<200110311821.TAA04191@clip.dia.fi.upm.es>" "81" "fuzzy" "^Resent-date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Return-Path: <claudio@clip.dia.fi.upm.es>
+Received: from tsmtp6.mail.isp ([10.10.21.19]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GM4E7303.B2G for <vaucheret@terra.es>; Thu, 1 Nov 2001
+          12:49:51 +0100 
+Received: from goofy.fi.upm.es ([138.100.8.23]) by
+          tsmtp6.mail.isp (Netscape Messaging Server 4.15 tsmtp6 Jul 26
+          2001 13:10:38) with ESMTP id GM4E9P01.RHZ for
+          <vaucheret@terra.es>; Thu, 1 Nov 2001 12:51:25 +0100 
+Received: from conversion.relay.fi.upm.es by relay.fi.upm.es
+ (PMDF V6.0-025 #39635) id <01KA6V1KMXXS0002O9@relay.fi.upm.es> for
+ vaucheret@terra.es; Thu, 01 Nov 2001 12:50:22 +0100 (MET)
+Received: from clip.dia.fi.upm.es (clip.dia.fi.upm.es [138.100.11.74])
+ by relay.fi.upm.es (PMDF V6.0-025 #39635)
+ with ESMTP id <01KA6V1KJBYU0002U7@relay.fi.upm.es> for vaucheret@terra.es;
+ Thu, 01 Nov 2001 12:50:21 +0100 (MET)
+Received: by clip.dia.fi.upm.es (8.9.3/FI-4.2) Thu, 1 Nov 2001 12:50:21 +0100
+Message-id: <200110311821.TAA04191@clip.dia.fi.upm.es>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
+Resent-date: Thu, 01 Nov 2001 12:50:21 +0100 (CET)
+Resent-from: claudio@clip.dia.fi.upm.es (Claudio Vaucheret)
+Resent-to: vaucheret@terra.es
+Resent-message-id: <15329.14077.774896.537311@clip.dia.fi.upm.es>
+From: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+To: claudio@clip.dia.fi.upm.es
+Subject: fuzzy
+Date: Wed, 31 Oct 2001 19:21:17 +0100
+
+
+Claudio,
+
+Veras que te he retocado el fuzzy.tex del tutorial de Ciao. De paso se
+me han ocurrido algunas cosillas. Te comento:
+
+Se podria incluir un operador de agregacion al estilo de findall y
+cia. pero que agrega sobre los valores de verdad, no sobre las
+soluciones. Algo que permitiera escribir los programas "disyuntivos"
+de forma mas sencilla. Por ejemplo, el programa de los dados se podria
+escribir:  
+
+sum(S,M) :~ max
+            all ( two_dice(X,Y,M1), S .=. X+Y ).
+
+que es totalmente generico.
+
+El operador de agregacion all/2 haria algo asi:
+
+        findall(M1, ( two_dice(X,Y,M1), S.=. X+Y ), All),
+        maxim(All,M).
+
+Se podria implementar mediante la expansion o bien como un
+(meta-)predicado de libreria.
+
+Se me ocurre tambien annadir las versiones fuzzy de findall y
+cia., pero no tengo nada claro en que consistirian...
+
+Otra ocurrencia: los predicados small y large del ejemplo de los dados
+son en realidad de dominio finito: solo estan definidos para los
+valores [1,2,3,4,5,6]. Se podria annadir un operador de este tipo, de
+manera que se escribiera:
+
+small :# fd_fuzzy_predicate([(1,1),(2,1),(3,0.7),(4,0.3),(5,0),(6,0)]). 
+
+que se puede traducir directamente a una tabla:
+
+small(1,1).
+small(2,1).
+small(3,0.7).
+small(4,0.3).
+small(5,0).
+small(6,0).
+
+Humm..., quizas no una tabla, porque eso obliga a poner los valores de
+verdad para todos los valores del dominio finito. Quiero decir que
+ahora se puede poner:
+
+small :# fuzzy_predicate([(1,1),(2,1),(3,0.7),(4,0.3),(5,0)]). 
+
+donde he quitado (6,0), y es equivalente al anterior, ?no?
+
+Para dominios muy grandes seria un pennazo tener que repetir valores
+que son iguales. Por ejemplo, domino 1-200 y valores de verdad 0.5
+para 1 y 200 y 0.8 para todos los demas... Uff!
+
+Se me ocurre algo asi:
+
+small :# fd_fuzzy_predicate([1,200],[(1,0.5),(2,0.8),(199,0.8),(200,0.5)]). 
+
+que se convertiria en algo asi:
+
+small(X,M):-
+   small0(X,M),
+   X.>=.1,
+   X.=<.200,
+   int(X).
+
+con
+
+small0 :# fuzzy_predicate([1,200],[(1,0.5),(2,0.8),(199,0.8),(200,0.5)]). 
+
+Hay algunos problemillas con el int(X) de mas arriba que habria que
+pensar en como solucionar, pero...
+
+Se podria entonces conservar fd_fuzzy_predicate/1 y /2, haciendo la
+transformacion de una o de la otra forma.
+
+?Que te parece?
+
+Paco
+
+From VM Thu Nov  1 21:03:30 2001
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["349" "Wednesday" "31" "October" "2001" "20:30:10" "+0100" "Francisco Bueno Carrillo" "bueno@clip.dia.fi.upm.es" nil "11" "Re: fuzzy" "^Resent-date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Return-Path: <claudio@clip.dia.fi.upm.es>
+Received: from tsmtp8.mail.isp ([10.10.21.36]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GM4EGU03.I4E for <vaucheret@terra.es>; Thu, 1 Nov 2001
+          12:55:42 +0100 
+Received: from goofy.fi.upm.es ([138.100.8.23]) by
+          tsmtp8.mail.isp (Netscape Messaging Server 4.15 tsmtp8 Jul 26
+          2001 13:10:38) with ESMTP id GM4EGU01.27Q for
+          <vaucheret@terra.es>; Thu, 1 Nov 2001 12:55:42 +0100 
+Received: from conversion.relay.fi.upm.es by relay.fi.upm.es
+ (PMDF V6.0-025 #39635) id <01KA6VA07ZJK0002O9@relay.fi.upm.es> for
+ vaucheret@terra.es; Thu, 01 Nov 2001 12:57:09 +0100 (MET)
+Received: from clip.dia.fi.upm.es (clip.dia.fi.upm.es [138.100.11.74])
+ by relay.fi.upm.es (PMDF V6.0-025 #39635)
+ with ESMTP id <01KA6V9ZZ72U0002U7@relay.fi.upm.es> for vaucheret@terra.es;
+ Thu, 01 Nov 2001 12:57:09 +0100 (MET)
+Received: by clip.dia.fi.upm.es (8.9.3/FI-4.2) Thu, 1 Nov 2001 12:57:09 +0100
+In-reply-to: <200110311821.TAA04191@clip.dia.fi.upm.es>
+Message-id: <200110311930.UAA06124@clip.dia.fi.upm.es>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
+References: <200110311821.TAA04191@clip.dia.fi.upm.es>
+Resent-date: Thu, 01 Nov 2001 12:57:09 +0100 (CET)
+Resent-from: claudio@clip.dia.fi.upm.es (Claudio Vaucheret)
+Resent-to: vaucheret@terra.es
+Resent-message-id: <15329.14485.528860.299848@clip.dia.fi.upm.es>
+From: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+To: bueno@clip.dia.fi.upm.es
+Cc: claudio@clip.dia.fi.upm.es
+Subject: Re: fuzzy
+Date: Wed, 31 Oct 2001 20:30:10 +0100
+
+
+Claudio,
+
+Una duda que me ha surgido. En el ejemplo de very_good_credit_customer,
+?la segunda clausula es necesaria? ?Es para que devuelva 0 en lugar de
+fallar? ?Pueden fallar los predicados fuzzy?
+
+Y otra pregunta: ?Se pueden mezclar clausulas fuzzy y no fuzzy en un
+mismo predicado? He puesto que no se debe, pero ahora me surge la duda...
+
+Paco
+
+From VM Thu Nov  1 21:03:58 2001
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["203" "Wednesday" "31" "October" "2001" "21:27:28" "+0100" "Francisco Bueno Carrillo" "bueno@clip.dia.fi.upm.es" nil "8" "Re: fuzzy" "^Resent-date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Return-Path: <claudio@clip.dia.fi.upm.es>
+Received: from tsmtp10.mail.isp ([10.10.21.38]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GM4EIW00.C4X for <vaucheret@terra.es>; Thu, 1 Nov 2001
+          12:56:56 +0100 
+Received: from goofy.fi.upm.es ([138.100.8.23]) by
+          tsmtp10.mail.isp (Netscape Messaging Server 4.15 tsmtp10 Jul 26
+          2001 13:10:38) with ESMTP id GM4EIW00.Z26 for
+          <vaucheret@terra.es>; Thu, 1 Nov 2001 12:56:56 +0100 
+Received: from conversion.relay.fi.upm.es by relay.fi.upm.es
+ (PMDF V6.0-025 #39635) id <01KA6VAE2S340002O9@relay.fi.upm.es> for
+ vaucheret@terra.es; Thu, 01 Nov 2001 12:57:28 +0100 (MET)
+Received: from clip.dia.fi.upm.es (clip.dia.fi.upm.es [138.100.11.74])
+ by relay.fi.upm.es (PMDF V6.0-025 #39635)
+ with ESMTP id <01KA6VADUTRQ0002TB@relay.fi.upm.es> for vaucheret@terra.es;
+ Thu, 01 Nov 2001 12:57:28 +0100 (MET)
+Received: by clip.dia.fi.upm.es (8.9.3/FI-4.2) Thu, 1 Nov 2001 12:57:28 +0100
+In-reply-to: <200110311930.UAA06124@clip.dia.fi.upm.es>
+Message-id: <200110312027.VAA06397@clip.dia.fi.upm.es>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
+References: <200110311821.TAA04191@clip.dia.fi.upm.es>
+ <200110311930.UAA06124@clip.dia.fi.upm.es>
+Resent-date: Thu, 01 Nov 2001 12:57:28 +0100 (CET)
+Resent-from: claudio@clip.dia.fi.upm.es (Claudio Vaucheret)
+Resent-to: vaucheret@terra.es
+Resent-message-id: <15329.14504.179072.705655@clip.dia.fi.upm.es>
+From: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+To: bueno@clip.dia.fi.upm.es
+Cc: claudio@clip.dia.fi.upm.es
+Subject: Re: fuzzy
+Date: Wed, 31 Oct 2001 21:27:28 +0100
+
+
+Otra duda, ahora con el paquete id (por cierto, buen trabajo en ambos
+casos!). 
+
+?Porque hace falta que se importen todos los predicados para preservar
+el comportamiento entre dos modulos con id?
+
+Paco
+
+From VM Fri Nov  2 13:00:37 2001
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4472" "Friday" "2" "November" "2001" "13:00:23" "+0100" "claudio vaucheret" "vaucheret@terra.es" nil "110" "Re: fuzzy" "^From:" nil nil "11" nil nil nil nil nil]
+	nil)
+Return-Path: <vaucheret@terra.es>
+Received: from tsmtp8.mail.isp ([10.10.21.36]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GM69C502.QMJ for <vaucheret@terra.es>; Fri, 2 Nov 2001
+          13:00:05 +0100 
+Received: from rosas.dia.fi.upm.es ([213.4.36.166]) by
+          tsmtp8.mail.isp (Netscape Messaging Server 4.15 tsmtp8 Jul 26
+          2001 13:10:38) with ESMTP id GM69C300.OYC; Fri, 2 Nov 2001
+          13:00:03 +0100 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Message-ID: <15330.35543.17510.350154@rosas.dia.fi.upm.es>
+In-Reply-To: <200110311821.TAA04191@clip.dia.fi.upm.es>
+References: <200110311821.TAA04191@clip.dia.fi.upm.es>
+X-Mailer: VM 6.75 under Emacs 20.7.1
+From: claudio vaucheret <vaucheret@terra.es>
+To: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+Subject: Re: fuzzy
+Date: Fri, 2 Nov 2001 13:00:23 +0100 (CET)
+
+
+Paco,
+
+lo del findall es fant=E1stico!!, el hecho de tener que poner cada una =
+de
+las alternativas en sum(5,M), tambien le hab=EDa molestado a uno de los=
+
+revisores del articulo y habiamos pensado en posibles soluciones, pero
+la que tu propones es lo mas simple y general. Yo creo que debe
+implementarse como un meta predicado en la libreria. En realidad ya
+tenemos un metapredicado que es la implicaci=F3n fuzzy, que la usamos e=
+n
+los ejemplos del comienzo. Podr=EDamos agregar tambien 'all' que podria=
+
+tener tres argumentos, en el ejemplo ser=EDa
+
+      all(max,(two_dice(X,Y,M1), S .=3D. X+Y),M).
+
+que devolver=EDa el valor de verdad M como la agregaci=F3n con la funci=
+=F3n
+max de todas las alternativas del segundo argumento. Y puede aparecer
+en el cuerpo de una clausula fuzzy como un predicado fuzzy mas.
+
+>> Una duda que me ha surgido. En el ejemplo de very_good_credit_custom=
+er,
+>> ?la segunda clausula es necesaria? ?Es para que devuelva 0 en lugar
+>> de fallar? ?Pueden fallar los predicados fuzzy?
+
+Con respecto a esto, hemos propuesto que los predicados fuzzy fallen
+solo cuando el elemento no esta en el dominio del predicado. En el
+ejemplo si decidimos que mary no esta en el dominio de
+very_good_credit_customer entonces debe fallar pero si est=E1 debe tene=
+r
+exito con valor de verdad 0. Yo creo que esta es la mejor manera de
+generalizar prolog a fuzzy prolog. De hecho en prolog, que un consulta
+falla significa relmente que el sistema "no sabe" que es verdadero, no
+que es falso, pues que sea falso no lo tiene explicito en el programa
+(decidimos que es falso por CWA). Ahora en fuzzy prolog se puede poner
+explicitamente que es falso asignandole el valor 0 de verdad y se
+mantiene la falla para cuando no tiene informaci=F3n al respecto. Esto
+no es ninguna limitaci=F3n, pues si dentro de un programa prolog se
+llama a un predicado fuzzy, con la variable de verdad de ese predicado
+se puede decidir luego si falla o no pero ya en prolog.
+Cuando fuzzificamos un predicado (es decir lo utilizamos en el
+ambiente fuzzy) respetamos el CWA de los predicados
+prolog y le asignamos 0 cuando falla. Creimos que esta era la mejor
+manera de combinar crisp y fuzzy predicados y al mismo tiempo que lo
+fuzzy sea una extensi=F3n limpia de prolog. Pero, por supuesto no
+sabemos si es la mejor decisi=F3n.
+
+Otra aclaraci=F3n, si dentro de una clausula fuzzy, se coloca el
+predicado fail, entonces el resultado es un valor de verdad 0, en
+cambio si se pone {fail}, entonces el predicado falla y quiere decir
+que para esos valores el predicado no esta definido.
+
+>> ahora se puede poner:
+>>=3D20
+>> small :# fuzzy_predicate([(1,1),(2,1),(3,0.7),(4,0.3),(5,0)]).=3D20
+>>=3D20
+>> donde he quitado (6,0), y es equivalente al anterior, ?no?
+
+no, por lo que te explique arriba si se quita (6,0) entonces para 6 va
+a fallar en lugar de dar 0. Al definir con :# fuzzy_predicate asumimos
+que el dominio del predicado esta limitado por el primer y ultimo
+valor de la lista. Aunque creo que deber=EDa poder definirse por ejempl=
+o
+que los mayores de 5 den siempre 0. Es decir poder poner
+...(5,0),(inf,0)]).
+
+Con respecto a fd_fuzzy_predicate/1, el predicado deber=EDa fallar para=
+
+valores no enteros =BFverdad?. No se como representar rectas discretas,=
+
+es decir si son tramos de funci=F3n constante es facil, pero no se como=
+
+en otros casos. El problema es que hasta ahora fuzzy_predicate/1 es
+reversible. Bueno, esto me lo pienso un poco y despues te pregunto.
+
+
+>> Y otra pregunta: ?Se pueden mezclar clausulas fuzzy y no fuzzy en un=
+
+>> mismo predicado? He puesto que no se debe, pero ahora me surge la du=
+da...
+
+Esto no lo habiamos previsto, supongo que por flexibilidad deber=EDa
+permitirse, ahora no es posible porque la expansi=F3n deja sin modifica=
+r
+los predicados prolog y agrega al final los nuevos fuzzy por lo cual
+quedan separadas las cl=E1usulas. Pero esto podr=EDamos cambiarlo.
+
+
+>> ?Porque hace falta que se importen todos los predicados para preserv=
+ar
+>> el comportamiento entre dos modulos con id?
+
+Ah, esto es porque el m=F3dulo debe importar tambien los predicados
+creados por la expansi=F3n id que contienen los argumentos que llevan l=
+a
+profundidad y el corte. Es decir para el predicado p/1 , la expansi=F3n=
+
+exporta tambien '$$p'/5, pero no puedo hacer que un predicado que
+importe p/1, importe tambien '$$p'/5. =BFO podr=EDa hacerlo la
+expansi=F3n misma?.
+
+
+--=20
+Claudio Vaucheret
+claudio@clip.dia.fi.upm.es
+vaucheret@terra.es
+
+
+From VM Fri Nov  2 20:30:52 2001
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5099" "Friday" "2" "November" "2001" "15:01:16" "+0100" "Francisco Bueno Carrillo" "bueno@clip.dia.fi.upm.es" nil "123" "Re: fuzzy" "^From:" nil nil "11" nil nil nil nil nil]
+	nil)
+Return-Path: <bueno@clip.dia.fi.upm.es>
+Received: from tsmtp4.mail.isp ([10.10.21.15]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GM6EXA02.4OV for <vaucheret@terra.es>; Fri, 2 Nov 2001
+          15:00:46 +0100 
+Received: from goofy.fi.upm.es ([138.100.8.23]) by
+          tsmtp4.mail.isp (Netscape Messaging Server 4.15 tsmtp4 Jul 26
+          2001 13:10:38) with ESMTP id GM6EXJ01.4BE for
+          <vaucheret@terra.es>; Fri, 2 Nov 2001 15:00:55 +0100 
+Received: from conversion.relay.fi.upm.es by relay.fi.upm.es
+ (PMDF V6.0-025 #39635) id <01KA8DW8DICW00035V@relay.fi.upm.es> for
+ vaucheret@terra.es; Fri, 02 Nov 2001 15:01:16 +0100 (MET)
+Received: from clip.dia.fi.upm.es (clip.dia.fi.upm.es [138.100.11.74])
+ by relay.fi.upm.es (PMDF V6.0-025 #39635)
+ with ESMTP id <01KA8DW884C40003DX@relay.fi.upm.es> for vaucheret@terra.es;
+ Fri, 02 Nov 2001 15:01:16 +0100 (MET)
+Received: by clip.dia.fi.upm.es (8.9.3/FI-4.2) Fri, 2 Nov 2001 15:01:16 +0100
+In-reply-to: <15330.35543.17510.350154@rosas.dia.fi.upm.es>
+Message-id: <200111021401.PAA23827@clip.dia.fi.upm.es>
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; CHARSET=iso-8859-1
+Content-transfer-encoding: 8BIT
+References: <200110311821.TAA04191@clip.dia.fi.upm.es>
+ <15330.35543.17510.350154@rosas.dia.fi.upm.es>
+From: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+To: vaucheret@terra.es, claudio@clip.dia.fi.upm.es
+Subject: Re: fuzzy
+Date: Fri, 02 Nov 2001 15:01:16 +0100
+
+
+>>       all(max,(two_dice(X,Y,M1), S .=. X+Y),M).
+>> 
+>> que devolvería el valor de verdad M como la agregación con la función
+>> max de todas las alternativas del segundo argumento. Y puede aparecer
+>> en el cuerpo de una clausula fuzzy como un predicado fuzzy mas.
+
+Hay que pensarlo bien. Le estoy dando vueltas a que sentido pueden
+tener los meta-predicados en fuzzy. Por ejemplo, call(small(X,M)),
+?deberia ser equivalente a call_f(small(X,M),Truth), con:
+
+call_f(G,T):- G, functor(G,_,N), arg(N,G,T).
+?
+
+Es decir, que devuelva el mismo valor M de small(X,M).
+
+?Que significado tiene \+ en fuzzy? ?Y findall?
+
+Tal como lo teneis ahora, todos estos son crisp, asi que se fuzzyfican
+al aparecer en clausulas fuzzy, pero entonces el resultado de 
+call(small(X,M)) es extranno: 1 si small(X,M) tiene exito, 0 si falla,
+en lugar de tener el mismo valor de verdad M. No carece de sentido,
+pero hay que pensarlo... 
+
+Lo digo porque all/3 es casi un findall, pero no devuelve las
+soluciones: ?Que pasa con X e Y? Esto se puede arreglar viendolo como
+la version fuzzy de findall, una especie de findall_f, con un
+argumento mas para el valor de verdad. Algo asi:
+
+findall_f(Spec,Goal,Sol,Truth):-
+   functor(Goal,_,N), arg(N,Goal,T),
+   functor(Spec,Aggr,1), arg(1,Spec,Spec0),
+   findall(Spec0^T,Goal,All),
+   collect_truth_vals(All,Sol,Vals), % separa soluciones y valores
+   inject(Vals,Aggr,Truth).          % acumula los valores segun Aggr
+
+de forma que en lugar de all se puede usar el mas general:
+
+findall_f(max((X,Y)),(two_dice(X,Y,M1), S .=. X+Y),XYes,M).
+
+y si no interesan las soluciones, entonces:
+
+findall_f(max,(two_dice(X,Y,M1), S .=. X+Y),_,M).
+
+(en este caso hay que cambiar un poco la definicion de findall_f).
+
+>> Con respecto a esto, hemos propuesto que los predicados fuzzy fallen
+>> solo cuando el elemento no esta en el dominio del predicado. En el
+
+Si, ya habia sacado yo esa conclusion. Desde luego, parece lo mas
+limpio. Pero entonces los predicados fuzzy tambien "adolecen" de CWA:
+vease el ejemplo de good_credit_customer, su dominio es de tres
+personas, ?y las demas?
+
+Esto me sugiere dos cosas. Una, que en efecto call/1 debe seguir
+crisp: no debe ser equivalente a call_f/1, como decia antes. Lo que se
+quiere con call(small(X,M)) es "reflejar" el posible fallo de
+small(X,M): es como una comprobacion de que X esta en su dominio. Pero
+entonces es casi equivalente a { small(X,M) ; M=0 }, con lo que me
+sigo preguntando que sentido puede tener call/1 en cuerpos fuzzy...
+
+La otra cosa que se me ocurre es que la solucion para fuzzyficar los
+crisp no es demasiado consistente. Hacer que el fallo se identifique
+con un valor 0 cuando los propios fuzzy pueden fallar en lugar de
+devolver 0 no parece consistente. Resulta que entonces los
+"autenticamente fuzzy" son los crisp, que nunca fallan!!
+
+Por ejemplo, yo encontraria natural definir lo siguiente:
+
+good_credit_customer(john,0.8):~ .
+good_credit_customer(mary,0.5):~ .
+good_credit_customer(alan,0.9):~ .
+
+good_credit_customer(X):- good_credit_customer(X,_).
+
+como versiones fuzzy y crisp de un predicado. Pero resulta que el
+primero falla con "paco" y el segundo en cambio devuelve 0!!!
+
+No digo que este mal, incluso puede que annada una cierta potencia al
+lenguaje. De hecho, empiezo a creer que tiene mucho sentido: el
+primero dice algo de john, mary y alan, y no se sabe nada para los
+demas. El segundo (considerado como fuzzy) esta diciendo que para los
+demas es falso. Vaya!! No habia caido en esto...
+
+>> Aunque creo que debería poder definirse por ejemplo
+>> que los mayores de 5 den siempre 0. Es decir poder poner
+>> ...(5,0),(inf,0)]).
+
+Si. Entonces no haria falta poner explicitamente el dominio, como yo
+sugeria. Tambien seria necesario admitir [(inf,0),...
+Por cierto, en lugar de inf se puede usar simplemente una variable:
+([(_,0),(a-1,0),(a,0.3),...,(n,0.5),(a+1,0),(_,0)] especifica 0 para
+todo valor por debajo de a y por encima de n.
+
+A la vista de lo anterior, se me ocurre admitir dominios no
+numericos... Entonces si seria necesario especificar el dominio. Se me
+esta ocurriendo una forma, la pienso un poco y te lo cuento...
+
+Otra cosa son los predicados de mas de una variable. ?No seria posible
+hacer algo asi:
+
+two_small :# fuzzy_predicate([(1,1,1),(1,2,1),(1,3,0.9),...
+                              (2,1,1),...
+                              ...
+?
+
+Creo que es posible en el caso discreto, pero ?tiene sentido en el caso
+continuo? Me parece que es equivalente al problema de reconstruir una
+funcion continua de dos dimensiones a partir de sus dos proyecciones
+en una sola dimension. Habria que ver si esto es posible...
+
+>> Con respecto a fd_fuzzy_predicate/1, el predicado debería fallar para
+>> valores no enteros ¿verdad?. 
+
+Si. El fallo lo provoca la llamada int(X) en el codigo que te
+mande. Tiene un problema: en lugar de fallar puede quedarse en
+backtracing perpetuo, pero creo que se puede arreglar.
+
+De hecho, si en lugar de int(X) se deja abierto a usar cualquier tipo
+(regular type, me refiero), entonces tendremos dominios no numericos!!
+Ahora me lo pienso un poco mas...
+
+Paco
+
+From VM Fri Nov  2 20:30:58 2001
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1754" "Friday" "2" "November" "2001" "18:02:08" "+0100" "Francisco Bueno Carrillo" "bueno@clip.dia.fi.upm.es" nil "77" "Re: fuzzy" "^From:" nil nil "11" nil nil nil nil nil]
+	nil)
+Return-Path: <bueno@clip.dia.fi.upm.es>
+Received: from tsmtp9.mail.isp ([10.10.21.37]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GM6NAM02.3RQ for <vaucheret@terra.es>; Fri, 2 Nov 2001
+          18:01:34 +0100 
+Received: from goofy.fi.upm.es ([138.100.8.23]) by
+          tsmtp9.mail.isp (Netscape Messaging Server 4.15 tsmtp9 Jul 26
+          2001 13:10:38) with ESMTP id GM6NAM00.RO1 for
+          <vaucheret@terra.es>; Fri, 2 Nov 2001 18:01:34 +0100 
+Received: from conversion.relay.fi.upm.es by relay.fi.upm.es
+ (PMDF V6.0-025 #39635) id <01KA8K8GMFCG00035U@relay.fi.upm.es> for
+ vaucheret@terra.es; Fri, 02 Nov 2001 18:02:09 +0100 (MET)
+Received: from clip.dia.fi.upm.es (clip.dia.fi.upm.es [138.100.11.74])
+ by relay.fi.upm.es (PMDF V6.0-025 #39635)
+ with ESMTP id <01KA8K8GIUBG0003FJ@relay.fi.upm.es> for vaucheret@terra.es;
+ Fri, 02 Nov 2001 18:02:08 +0100 (MET)
+Received: by clip.dia.fi.upm.es (8.9.3/FI-4.2) Fri, 2 Nov 2001 18:02:08 +0100
+In-reply-to: <200111021401.PAA23827@clip.dia.fi.upm.es>
+Message-id: <200111021702.SAA25773@clip.dia.fi.upm.es>
+References: <200110311821.TAA04191@clip.dia.fi.upm.es>
+ <15330.35543.17510.350154@rosas.dia.fi.upm.es>
+ <200111021401.PAA23827@clip.dia.fi.upm.es>
+From: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+To: bueno@clip.dia.fi.upm.es
+Cc: vaucheret@terra.es, claudio@clip.dia.fi.upm.es
+Subject: Re: fuzzy
+Date: Fri, 02 Nov 2001 18:02:08 +0100
+
+
+>> De hecho, si en lugar de int(X) se deja abierto a usar cualquier tipo
+>> (regular type, me refiero), entonces tendremos dominios no numericos!!
+>> Ahora me lo pienso un poco mas...
+
+La idea es la siguiente: se especifica el dominio con un tipo, y los
+valores con fuzzy_predicate, que en este caso podria tener dos
+argumentos. Por ejemplo:
+
+good_credit_customer :#
+     fuzzy_predicate(customer,[(john,0.8),(mary,0.5),(alan,0.9)]).
+
+:- regtype customer/1.
+
+customer(john).
+customer(mary).
+customer(alan).
+customer(paco).
+
+es equivalente a la definicion del ejemplo, pero adicionalmente
+especifica 0 para "paco". Todos los demas fallarian...
+
+Para dominios finitos se podria poner:
+
+small :# fuzzy_predicate(dice,[(1,1),(2,1),(3,0.7),(4,0.3),(5,0)]). 
+
+:- regtype dice/1.
+
+dice(1).
+dice(2).
+dice(3).
+dice(4).
+dice(5).
+dice(6).
+
+(no hace falta poner el (6,0))
+
+y para intervalos, se especifica como subdominio:
+
+middle :# fuzzy_predicate(int([1,200]),[(22,0.8),(102,0.8)]). 
+
+donde para [1,21] y [103,200] seria 0, para todos los demas falla.
+
+En el caso continuo (reales), se podria poner simplemente [1,200].
+
+Las trasnformaciones serian semejantes. Respectivamente:
+
+good_credit_customer(X,T):-
+    customer(X),
+    good_credit_customer0(X,T).
+
+con good_credit_customer0 como hasta ahora:
+
+good_credit_customer0 :# fuzzy_predicate([(john,0.8),(mary,0.5),(alan,0.9)]).
+
+Tambien:
+
+small(X,T):-
+   dice(X),
+   small0(X,T).
+
+small0 :# fuzzy_predicate([(1,1),(2,1),(3,0.7),(4,0.3),(5,0)]). 
+
+y lo mismo:
+
+middle(X,T):-
+   int(X),
+   X.>=.1,
+   X.=<.200,
+   middle0(X,T).
+
+middle0 :# fuzzy_predicate([(22,0.8),(102,0.8)]). 
+
+Son los predicados de tipo (customer,dice,int) los que hacen que el
+predicado falle si el argumento no esta en el dominio...
+
+Paco
+
+From VM Mon Nov  5 00:16:42 2001
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2581" "Monday" "5" "November" "2001" "00:16:20" "+0100" "claudio vaucheret" "vaucheret@terra.es" nil "103" "Re: fuzzy" "^From:" nil nil "11" nil nil nil nil nil]
+	nil)
+Return-Path: <vaucheret@terra.es>
+Received: from tsmtp6.mail.isp ([10.10.21.19]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GMATYR00.BLI for <vaucheret@terra.es>; Mon, 5 Nov 2001
+          00:16:03 +0100 
+Received: from rosas.dia.fi.upm.es ([193.153.80.208]) by
+          tsmtp6.mail.isp (Netscape Messaging Server 4.15 tsmtp6 Jul 26
+          2001 13:10:38) with ESMTP id GMAU1N00.K1F; Mon, 5 Nov 2001
+          00:17:47 +0100 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Message-ID: <15333.52292.474904.455921@rosas.dia.fi.upm.es>
+In-Reply-To: <200111021401.PAA23827@clip.dia.fi.upm.es>
+References: <200110311821.TAA04191@clip.dia.fi.upm.es>
+	<15330.35543.17510.350154@rosas.dia.fi.upm.es>
+	<200111021401.PAA23827@clip.dia.fi.upm.es>
+X-Mailer: VM 6.75 under Emacs 20.7.1
+From: claudio vaucheret <vaucheret@terra.es>
+To: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+Subject: Re: fuzzy
+Date: Mon, 5 Nov 2001 00:16:20 +0100 (CET)
+
+Francisco Bueno Carrillo writes:
+
+
+>> limpio. Pero entonces los predicados fuzzy tambien "adolecen" de CWA=
+:
+>> vease el ejemplo de good_credit_customer, su dominio es de tres
+>> personas, ?y las demas?
+>>=20
+
+claro, lo que ocurre es que decimos que los predicados fuzzy no
+utilizan CWA porque no se asumen como falso los que fallan, dado que
+son "falsos" cuando tienen valor de verdad 0. Si falla es que el
+elemento no pertenece al conjunto universal.
+Cuando se fuzzifica un predicado crisp se le asigna 0 cuando fallaba
+porque se respeta que ese era el significado intentado dado que con
+los crisp se asume CWA.
+Esta distinci=F3n hace tambien que la negaci=F3n fuzzy de 1 - M, sea
+tambien mas "l=F3gica" que la negaci=F3n por falla. Dado que se aplica
+solo a aquellos que tienen =E9xito y falla en los no definidos. Es deci=
+r
+la negaci=F3n se aplica a los elementos del dominio, no a todos los ter=
+minos.
+Por el ejemplo, el t=EDpico ejemplo de negaci=F3n:
+
+:- module(neg,_,[assertions,regtypes,fuzzy]).
+
+:- regtype restaurant/1.
+
+restaurant(a).
+restaurant(b).
+
+expensive(b).
+
+reasonable(X):- \+ expensive(X),restaurant(X).
+
+si bien=20
+
+?- reasonable(a).
+yes
+
+cuando se llama a=20
+
+?- reasonable(X).
+no
+
+que resulta inconsistente debido a la llamada sin instanciar de \+
+expensive(X).
+
+en cambio con
+
+f_expensive(a,0):~ .
+f_expensive(b,1):~ .
+
+f_reasonable :# fnot f_expensive/2.
+
+obtenemos
+
+?- f_reasonable(X,M).
+
+X =3D a,
+.=3D.(M,1.0) ? ;
+
+X =3D b,
+.=3D.(M,0.0) ? ;
+no
+
+si la version crisp la definimos asi
+
+c_reasonable(X) :- f_reasonable(X,M), M .=3D. 1.
+
+entonces=20
+
+?- c_reasonable(X).
+
+X =3D a ? ;
+
+no
+
+Es decir que la existencia del dominio permite una negaci=F3n
+mas constructiva. Lo malo es que cuando es falso debe ser dicho
+expl=EDcitamente, pero al utilizar los dominios como dices tu, en
+realidad se podr=EDa expresar asi!
+
+f_expensive :# fuzzy_predicate(restaurant,[b,1]).=20
+
+>> Espero que te parezcan bien los cambios...
+
+Pero, Paco, me parecen fabulosos, esto de las expansiones nunca me va
+a dejar de sorprender. Estoy viendo como implementar los
+dominios, pero veo que hay que distinguir los casos continuos de los
+discretos porque en los primeros se interpolaban los valores definiendo=
+
+rectas y estaba hecho para que sea reversible por si los predicados se
+llamaban solo instanciando el valor de verdad.=20
+En los discretos si los definimos con tablas no hay problemas,
+pero hay que proveer el valor para todos los del dominio.=20
+Es decir, no se como definir rectas discretas.=20
+
+--=20
+Claudio Vaucheret
+claudio@clip.dia.fi.upm.es
+vaucheret@terra.es
+
+
+From VM Tue Nov  6 11:42:47 2001
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1623" "Monday" "5" "November" "2001" "22:04:57" "+0100" "Francisco Bueno Carrillo" "bueno@clip.dia.fi.upm.es" nil "67" "Re: fuzzy" "^From:" nil nil "11" nil nil nil nil nil]
+	nil)
+Return-Path: <bueno@clip.dia.fi.upm.es>
+Received: from tsmtp1.mail.isp ([10.10.21.10]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GMCIJ402.55K for <vaucheret@terra.es>; Mon, 5 Nov 2001
+          22:04:16 +0100 
+Received: from goofy.fi.upm.es ([138.100.8.23]) by
+          tsmtp1.mail.isp (Netscape Messaging Server 4.15 tsmtp1 Jul 26
+          2001 13:10:38) with ESMTP id GMCIJ401.QYA for
+          <vaucheret@terra.es>; Mon, 5 Nov 2001 22:04:16 +0100 
+Received: from conversion.relay.fi.upm.es by relay.fi.upm.es
+ (PMDF V6.0-025 #39635) id <01KACZKKF1CW0000F7@relay.fi.upm.es> for
+ vaucheret@terra.es; Mon, 05 Nov 2001 22:04:57 +0100 (MET)
+Received: from clip.dia.fi.upm.es (clip.dia.fi.upm.es [138.100.11.74])
+ by relay.fi.upm.es (PMDF V6.0-025 #39635)
+ with ESMTP id <01KACZKKBEGA00012K@relay.fi.upm.es> for vaucheret@terra.es;
+ Mon, 05 Nov 2001 22:04:57 +0100 (MET)
+Received: (from bueno@localhost)	by clip.dia.fi.upm.es (8.11.2/8.8.7)
+ id fA5L4vO14705; Mon, 05 Nov 2001 22:04:57 +0100
+In-reply-to: <15333.52292.474904.455921@rosas.dia.fi.upm.es>
+Message-id: <200111052104.fA5L4vO14705@clip.dia.fi.upm.es>
+References: <200110311821.TAA04191@clip.dia.fi.upm.es>
+ <15330.35543.17510.350154@rosas.dia.fi.upm.es>
+ <200111021401.PAA23827@clip.dia.fi.upm.es>
+ <15333.52292.474904.455921@rosas.dia.fi.upm.es>
+From: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+To: vaucheret@terra.es
+Subject: Re: fuzzy
+Date: Mon, 05 Nov 2001 22:04:57 +0100
+
+
+>> En los discretos si los definimos con tablas no hay problemas,
+>> pero hay que proveer el valor para todos los del dominio. 
+>> Es decir, no se como definir rectas discretas. 
+
+No se si ya lo has dilucidado. Te cuento. 
+
+El tipo funciona como enumerador, asi que da valores discretos y
+ademas es reversible. Por ejemplo:
+
+middle :# fuzzy_predicate(int,[(21,0),(22,0.8),(102,0.8),(103,0)]). 
+
+(asumimos que los valores que faltan son la continuacion de los dados,
+es decir, p.ej., 0 para -11 y 0.8 para 25)
+
+quedaria:
+
+middle(X,T):-
+   int(X),
+   middle0(X,T).
+
+middle0(X,0):- X.<=.21.
+middle0(X,0.8):- X.>=.22, X.=<.102
+middle0(X,0):- X.>=.103.
+
+El que obliga los valores discretos es int(X), que va enumerando los
+enteros por backtracking...
+
+El problema esta en los subintervalos:
+
+middle :# fuzzy_predicate(int([1,200]),[(21,0),(22,0.8),(102,0.8),(103,0)]). 
+
+tendria que enumerar solo del 1 al 200, pero con:
+
+middle(X,T):-
+   int(X),
+   X.>=.1,
+   X.=<.200,
+   middle0(X,T).
+
+el int(X) puede empennarse en seguir enumerando de 200 en adelante y
+no vuelve nunca...
+
+Habria que hacer un enumerador particularizado. Algo asi:
+
+middle(X,T):-
+   posint(X,1,200),
+   middle0(X,T).
+
+posint(N,N,_).
+posint(N,I,D) :- I1 is I+1, I1=<D, posint(N,I1,D).
+
+Para intervalos con negativos y positivos se complica un poco, pero
+seguramente tambien se puede, separandolo en dos. Por ejemplo, para
+int([-7,14]) se podria hacer:
+
+middle(X,T):-
+   negint(X,-7,-1),
+   middle0(X,T).
+middle(X,T):-
+   nnegint(X,0,14),
+   middle0(X,T).
+
+Los tipos int, posint, negint, nnegint estan en engine(basic_props),
+cortesia de Daniel... ;-)
+
+Paco
+
+From VM Thu Nov 15 19:31:19 2001
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["690" "Thursday" "15" "November" "2001" "19:30:44" "+0100" "claudio vaucheret" "vaucheret@terra.es" nil "28" "Re: clp en ciao" "^From:" nil nil "11" nil nil nil nil nil]
+	nil)
+Return-Path: <vaucheret@terra.es>
+Received: from tsmtp8.mail.isp ([10.10.21.36]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GMUU2Q01.DG1 for <vaucheret@terra.es>; Thu, 15 Nov 2001
+          19:30:26 +0100 
+Received: from rosas.dia.fi.upm.es ([213.99.182.133]) by
+          tsmtp8.mail.isp (Netscape Messaging Server 4.15 tsmtp8 Jul 26
+          2001 13:10:38) with ESMTP id GMUU2P01.XZE; Thu, 15 Nov 2001
+          19:30:25 +0100 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+Message-ID: <15348.2516.932985.897931@rosas.dia.fi.upm.es>
+In-Reply-To: <200111131122.fADBMhw04329@clip.dia.fi.upm.es>
+References: <200111131122.fADBMhw04329@clip.dia.fi.upm.es>
+X-Mailer: VM 6.97 under Emacs 20.7.1
+From: claudio vaucheret <vaucheret@terra.es>
+To: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+Subject: Re: clp en ciao
+Date: Thu, 15 Nov 2001 19:30:44 +0100
+
+Francisco Bueno Carrillo writes:
+>>=20
+>> Claudio (y Sergio),
+>>=20
+>> Creo que he conseguido que se pueda obtener el dominio de una variab=
+le
+>> CLP en Ciao. El predicado es dom/2 en la libreria attrdump/clp_props=
+.
+>>=20
+>> Paco
+
+Fantastico, ahora podemos implementar la implicaci=F3n,
+
+una pregunta el formato del dominio es este no?
+
+clpdom((M<X)<N):- bound(M), var(X), bound(N).
+clpdom((M<X)=3D<N):- bound(M), var(X), bound(N).
+clpdom((M=3D<X)<N):- bound(M), var(X), bound(N).
+clpdom((M=3D<X)=3D<N):- bound(M), var(X), bound(N).
+clpdom(N):- number(N).
+
+Si N es infinito o M -infinito queda como variable libre?
+
+--=20
+Claudio Vaucheret
+claudio@clip.dia.fi.upm.es
+vaucheret@terra.es
+
+
+From VM Fri Nov 16 11:39:39 2001
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["137" "Thursday" "15" "November" "2001" "19:50:54" "+0100" "Francisco Bueno Carrillo" "bueno@clip.dia.fi.upm.es" nil "10" "Re: clp en ciao" "^From:" nil nil "11" nil nil nil nil nil]
+	nil)
+Return-Path: <bueno@clip.dia.fi.upm.es>
+Received: from tsmtp2.mail.isp ([10.10.21.11]) by mb31.terra.es
+          (Netscape Messaging Server 4.15 mb31 Jun 21 2001 23:53:48) with
+          ESMTP id GMUUZ301.EG8 for <vaucheret@terra.es>; Thu, 15 Nov 2001
+          19:49:51 +0100 
+Received: from goofy.fi.upm.es ([138.100.8.23]) by
+          tsmtp2.mail.isp (Netscape Messaging Server 4.15 tsmtp2 Jul 26
+          2001 13:10:38) with ESMTP id GMUUZ200.S58 for
+          <vaucheret@terra.es>; Thu, 15 Nov 2001 19:49:50 +0100 
+Received: from conversion.relay.fi.upm.es by relay.fi.upm.es
+ (PMDF V6.0-025 #39635) id <01KAQTSU1N8W0000F7@relay.fi.upm.es> for
+ vaucheret@terra.es; Thu, 15 Nov 2001 19:50:55 +0100 (MET)
+Received: from clip.dia.fi.upm.es (clip.dia.fi.upm.es [138.100.11.74])
+ by relay.fi.upm.es (PMDF V6.0-025 #39635)
+ with ESMTP id <01KAQTSTSHM6000182@relay.fi.upm.es> for vaucheret@terra.es;
+ Thu, 15 Nov 2001 19:50:55 +0100 (MET)
+Received: (from bueno@localhost)	by clip.dia.fi.upm.es (8.11.2/8.8.7)
+ id fAFIosJ28507; Thu, 15 Nov 2001 19:50:54 +0100
+In-reply-to: <15348.2516.932985.897931@rosas.dia.fi.upm.es>
+Message-id: <200111151850.fAFIosJ28507@clip.dia.fi.upm.es>
+References: <200111131122.fADBMhw04329@clip.dia.fi.upm.es>
+ <15348.2516.932985.897931@rosas.dia.fi.upm.es>
+From: Francisco Bueno Carrillo <bueno@clip.dia.fi.upm.es>
+To: vaucheret@terra.es
+Subject: Re: clp en ciao
+Date: Thu, 15 Nov 2001 19:50:54 +0100
+
+
+>> una pregunta el formato del dominio es este no?
+
+Si.
+
+>> Si N es infinito o M -infinito queda como variable libre?
+
+En efecto.
+
+Paco
+

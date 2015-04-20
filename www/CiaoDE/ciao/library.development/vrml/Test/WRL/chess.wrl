@@ -1,0 +1,654 @@
+#VRML V2.0 utf8
+
+
+
+# A chess board and pieces
+
+
+
+# Created by Bernie Roehl, February 1997
+
+
+
+PROTO Piece [
+
+    field SFNode appearance NULL
+
+    field SFNode geometry NULL
+
+    exposedField SFVec3f initialLocation 0 0 0
+
+    eventIn SFVec3f set_location
+
+    eventOut SFVec3f location_changed
+
+    eventOut SFBool isActive
+
+]
+
+{
+
+    Transform {
+
+        rotation 1 0 0 1.5708
+
+        translation IS initialLocation
+
+        children [
+
+            DEF T Transform {
+
+                scale 0.03 0.10 0.03
+
+                rotation 1 0 0 -1.5708
+
+                set_translation IS set_location
+
+                translation_changed IS location_changed
+
+                children Shape {
+
+                    appearance IS appearance
+
+                    geometry IS geometry
+
+                }
+
+            }
+
+            DEF PS PlaneSensor { isActive IS isActive }
+
+        ]
+
+    }
+
+ROUTE PS.translation_changed TO T.set_translation
+
+}
+
+
+
+# The pieces:
+
+
+
+DEF WhitePawn1 Piece {
+
+    appearance DEF White Appearance {
+
+        material Material { diffuseColor 1 1 1 }
+
+    }
+
+    geometry DEF PawnShape
+
+         Extrusion {
+
+             crossSection [
+
+                 1 0, 0.92388 -0.382683, 0.707107 -0.70107,
+
+                 0.38283 -0.92388, 0 -1,
+
+                 -0.38283 -0.92388, -0.707107 -0.70107,
+
+                 -0.92388 -0.382683, -1 0,
+
+                 -0.92388 0.382683, -0.707107 0.70107,
+
+                 -0.38283 0.92388, 0 1,
+
+                 0.38283 0.92388, 0.707107 0.70107,
+
+                 0.92388 0.382683, 1 0
+
+             ]
+
+             spine [
+
+                 0 0 0, 0 0.10 0, 0 0.10 0, 0 0.60 0,
+
+                 0 0.70 0, 0 0.80 0, 0 0.90 0, 0 1 0
+
+             ]
+
+             scale [
+
+                 1 1, 1 1, 0.85 0.85, 0.2 0.2,
+
+                 0.50 0.50, 0.90 0.90, 0.5 0.5, 0.1 0.1
+
+             ]
+
+         }
+
+    initialLocation -0.42 0 0.30
+
+}
+
+
+
+DEF WhitePawn2 Piece { appearance USE White geometry USE PawnShape initialLocation -0.30 0 0.30 }
+
+DEF WhitePawn3 Piece { appearance USE White geometry USE PawnShape initialLocation -0.18 0 0.30 }
+
+DEF WhitePawn4 Piece { appearance USE White geometry USE PawnShape initialLocation -0.06 0 0.30 }
+
+DEF WhitePawn5 Piece { appearance USE White geometry USE PawnShape initialLocation  0.06 0 0.30 }
+
+DEF WhitePawn6 Piece { appearance USE White geometry USE PawnShape initialLocation  0.18 0 0.30 }
+
+DEF WhitePawn7 Piece { appearance USE White geometry USE PawnShape initialLocation  0.30 0 0.30 }
+
+DEF WhitePawn8 Piece { appearance USE White geometry USE PawnShape initialLocation  0.42 0 0.30 }
+
+
+
+DEF WhiteRook1 Piece {
+
+    appearance USE White
+
+    geometry DEF RookShape
+
+         Extrusion {
+
+             crossSection [
+
+                 1 0, 0.92388 -0.382683, 0.707107 -0.70107,
+
+                 0.38283 -0.92388, 0 -1,
+
+                 -0.38283 -0.92388, -0.707107 -0.70107,
+
+                 -0.92388 -0.382683, -1 0,
+
+                 -0.92388 0.382683, -0.707107 0.70107,
+
+                 -0.38283 0.92388, 0 1,
+
+                 0.38283 0.92388, 0.707107 0.70107,
+
+                 0.92388 0.382683, 1 0
+
+             ]
+
+             spine [
+
+                 0 0 0, 0 0.25 0, 0 0.25 0, 0 0.85 0, 0 0.85 0, 0 1 0
+
+             ]
+
+             scale [
+
+                 1 1, 1 1, 0.75 0.75, 0.75 0.75, 1 1, 1 1
+
+             ]
+
+         }
+
+    initialLocation -0.42 0 0.42
+
+}
+
+
+
+DEF WhiteRook2 Piece { appearance USE White geometry USE RookShape initialLocation 0.42 0 0.42 }
+
+
+
+DEF WhiteKnight1 Piece {
+
+    appearance USE White
+
+    geometry DEF KnightShape
+
+         Extrusion {
+
+             crossSection [
+
+                 1 0, 0.92388 -0.382683, 0.707107 -0.70107,
+
+                 0.38283 -0.92388, 0 -1,
+
+                 -0.38283 -0.92388, -0.707107 -0.70107,
+
+                 -0.92388 -0.382683, -1 0,
+
+                 -0.92388 0.382683, -0.707107 0.70107,
+
+                 -0.38283 0.92388, 0 1,
+
+                 0.38283 0.92388, 0.707107 0.70107,
+
+                 0.92388 0.382683, 1 0
+
+             ]
+
+             spine [
+
+                  0 0    0,
+
+                  0 0.2  0,
+
+                  0 0.2  0,
+
+                  0 0.5  0,
+
+                  0 0.7  0.5,
+
+                  0 0.8  1,
+
+                  0 1.0  0.5,
+
+                  0 1.1  0,
+
+                  0 1.0 -0.5,
+
+                  0 0.8 -1
+
+             ]
+
+             scale [
+
+                 1 1,
+
+                 1 1,
+
+                 0.85 0.85,
+
+                 0.25 0.25,
+
+                 0.25 0.25,
+
+                 0.15 0.15,
+
+                 0.25 0.25,
+
+                 0.25 0.25,
+
+                 0.25 0.25,
+
+                 0.15 0.15
+
+             ]
+
+         }
+
+    initialLocation -0.30 0 0.42
+
+}
+
+
+
+DEF WhiteKnight2 Piece { appearance USE White geometry USE KnightShape initialLocation 0.30 0 0.42 }
+
+
+
+DEF WhiteBishop1 Piece {
+
+    appearance USE White
+
+    geometry DEF BishopShape
+
+         Extrusion {
+
+             crossSection [
+
+                 1 0, 0.92388 -0.382683, 0.707107 -0.70107,
+
+                 0.38283 -0.92388, 0 -1,
+
+                 -0.38283 -0.92388, -0.707107 -0.70107,
+
+                 -0.92388 -0.382683, -1 0,
+
+                 -0.92388 0.382683, -0.707107 0.70107,
+
+                 -0.38283 0.92388, 0 1,
+
+                 0.38283 0.92388, 0.707107 0.70107,
+
+                 0.92388 0.382683, 1 0
+
+             ]
+
+             spine [
+
+                 0 0 0, 0 0.10 0, 0 0.10 0, 0 0.75 0,
+
+                 0 0.95 0, 0 1.05 0, 0 1.25 0, 0 1.5 0
+
+             ]
+
+             scale [
+
+                 1 1, 1 1, 0.85 0.85, 0.2 0.2,
+
+                 0.50 0.50, 0.90 0.90, 0.5 0.5, 0.1 0.1
+
+             ]
+
+         }
+
+    initialLocation -0.18 0 0.42
+
+}
+
+
+
+DEF WhiteBishop2 Piece { appearance USE White geometry USE BishopShape initialLocation 0.18 0 0.42 }
+
+
+
+DEF WhiteKing Piece {
+
+    appearance USE White
+
+    geometry DEF KingShape
+
+         Extrusion {
+
+             crossSection [
+
+                 1 0, 0.92388 -0.382683, 0.707107 -0.70107,
+
+                 0.38283 -0.92388, 0 -1,
+
+                 -0.38283 -0.92388, -0.707107 -0.70107,
+
+                 -0.92388 -0.382683, -1 0,
+
+                 -0.92388 0.382683, -0.707107 0.70107,
+
+                 -0.38283 0.92388, 0 1,
+
+                 0.38283 0.92388, 0.707107 0.70107,
+
+                 0.92388 0.382683, 1 0
+
+             ]
+
+             spine [
+
+                 0 0 0, 0 0.2 0, 0 1.2 0, 0 1.40 0, 0 1.5 0,
+
+                 0 1.5 0, 0 1.75 0
+
+             ]
+
+             scale [
+
+                 1 1, 0.4 0.4, 0.4 0.4, 1 1, 1 1,
+
+                 0.2 0.2, 0.05 0.05
+
+             ]
+
+         }
+
+    initialLocation 0.06 0 0.42
+
+}
+
+
+
+
+
+DEF WhiteQueen Piece {
+
+    appearance USE White
+
+    geometry DEF QueenShape
+
+         Extrusion {
+
+             crossSection [
+
+                 1 0, 0.92388 -0.382683, 0.707107 -0.70107,
+
+                 0.38283 -0.92388, 0 -1,
+
+                 -0.38283 -0.92388, -0.707107 -0.70107,
+
+                 -0.92388 -0.382683, -1 0,
+
+                 -0.92388 0.382683, -0.707107 0.70107,
+
+                 -0.38283 0.92388, 0 1,
+
+                 0.38283 0.92388, 0.707107 0.70107,
+
+                 0.92388 0.382683, 1 0
+
+             ]
+
+             spine [
+
+                 0 0 0, 0 0.2 0, 0 1.0 0, 0 1.20 0, 0 1.3 0
+
+             ]
+
+             scale [
+
+                 1 1, 0.4 0.4, 0.4 0.4, 1 1, 1 1
+
+             ]
+
+         }
+
+    initialLocation -0.06 0 0.42
+
+}
+
+
+
+DEF BlackPawn1 Piece {
+
+    appearance DEF Black Appearance {
+
+        material Material { diffuseColor 0 0 1 }
+
+    }
+
+    geometry USE PawnShape
+
+    initialLocation -0.42 0 -0.30
+
+}
+
+
+
+DEF BlackPawn2 Piece { appearance USE Black geometry USE PawnShape initialLocation -0.30 0 -0.30 }
+
+DEF BlackPawn3 Piece { appearance USE Black geometry USE PawnShape initialLocation -0.18 0 -0.30 }
+
+DEF BlackPawn4 Piece { appearance USE Black geometry USE PawnShape initialLocation -0.06 0 -0.30 }
+
+DEF BlackPawn5 Piece { appearance USE Black geometry USE PawnShape initialLocation  0.06 0 -0.30 }
+
+DEF BlackPawn6 Piece { appearance USE Black geometry USE PawnShape initialLocation  0.18 0 -0.30 }
+
+DEF BlackPawn7 Piece { appearance USE Black geometry USE PawnShape initialLocation  0.30 0 -0.30 }
+
+DEF BlackPawn8 Piece { appearance USE Black geometry USE PawnShape initialLocation  0.42 0 -0.30 }
+
+
+
+DEF BlackRook1 Piece { appearance USE Black geometry USE RookShape initialLocation -0.42 0 -0.42 }
+
+DEF BlackRook2 Piece { appearance USE Black geometry USE RookShape initialLocation 0.42 0 -0.42 }
+
+DEF BlackBishop1 Piece { appearance USE Black geometry USE BishopShape initialLocation -0.18 0 -0.42 }
+
+DEF BlackBishop2 Piece { appearance USE Black geometry USE BishopShape initialLocation 0.18 0 -0.42 }
+
+DEF BlackQueen Piece { appearance USE Black geometry USE QueenShape initialLocation -0.06 0 -0.42 }
+
+DEF BlackKing Piece { appearance USE Black geometry USE KingShape initialLocation 0.06 0 -0.42 }
+
+
+
+DEF BlackKnight1 Piece {
+
+    appearance USE Black
+
+    geometry DEF KnightShape
+
+         Extrusion {
+
+             crossSection [
+
+                 1 0, 0.92388 -0.382683, 0.707107 -0.70107,
+
+                 0.38283 -0.92388, 0 -1,
+
+                 -0.38283 -0.92388, -0.707107 -0.70107,
+
+                 -0.92388 -0.382683, -1 0,
+
+                 -0.92388 0.382683, -0.707107 0.70107,
+
+                 -0.38283 0.92388, 0 1,
+
+                 0.38283 0.92388, 0.707107 0.70107,
+
+                 0.92388 0.382683, 1 0
+
+             ]
+
+             spine [
+
+                  0 0    0,
+
+                  0 0.2  0,
+
+                  0 0.2  0,
+
+                  0 0.5  0,
+
+                  0 0.7 -0.5,
+
+                  0 0.8 -1,
+
+                  0 1.0 -0.5,
+
+                  0 1.1  0,
+
+                  0 1.0  0.5,
+
+                  0 0.8  1
+
+             ]
+
+             scale [
+
+                 1 1,
+
+                 1 1,
+
+                 0.85 0.85,
+
+                 0.25 0.25,
+
+                 0.25 0.25,
+
+                 0.15 0.15,
+
+                 0.25 0.25,
+
+                 0.25 0.25,
+
+                 0.25 0.25,
+
+                 0.15 0.15
+
+             ]
+
+         }
+
+    initialLocation -0.30 0 -0.42
+
+}
+
+
+
+DEF BlackKnight2 Piece { appearance USE Black geometry USE KnightShape initialLocation 0.30 0 -0.42 }
+
+
+
+# The board:
+
+
+
+Shape {
+
+    appearance Appearance {
+
+        texture PixelTexture { image 2 2 1 0xFF 0x00 0x00 0xFF }
+
+#        texture ImageTexture { url "checks.gif" }
+
+    }
+
+    geometry IndexedFaceSet {
+
+        coord Coordinate {
+
+            point [ -0.48 0 -0.48, -0.48 0 0.48, 0.48 0 0.48, 0.48 0 -0.48 ]
+
+        }
+
+        texCoord TextureCoordinate { point [ 0 0, 0 4, 4 4, 4 0 ] }
+
+        coordIndex [ 0 1 2 3 -1 ]
+
+    }
+
+}
+
+
+
+NavigationInfo { type "EXAMINE" }
+
+
+
+# The viewpoints
+
+
+
+Viewpoint {
+
+    position 0 1 1
+
+    orientation 1 0 0 -0.7854
+
+    description "White's point of view"
+
+}
+
+
+
+Viewpoint {
+
+    position 0 1 -1
+
+    orientation 0 0.9238 0.3827 3.14159
+
+    description "Black's point of view"
+
+}
+
+
+
+Viewpoint {
+
+    position 0 1.5 0
+
+    orientation 1 0 0 -1.5708
+
+    description "Overhead view"
+
+}
+
+
+

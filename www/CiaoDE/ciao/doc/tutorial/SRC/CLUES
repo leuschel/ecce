@@ -1,0 +1,14 @@
+
+-- error handling:
+
+   By using in the main program file library(errhandle), and changing
+
+    main(Args) :- bla, bla, bla.
+
+   to
+
+    main(Args) :- error_protect(protected_main(Args)).
+
+    protected_main(Args) :- bla, bla, bla.
+
+   the same errors as appear in the Ciao shell will appear.

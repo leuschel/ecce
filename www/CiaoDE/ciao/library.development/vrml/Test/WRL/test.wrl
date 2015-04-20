@@ -1,0 +1,18 @@
+#VRML V2.0 utf8
+
+
+
+DEF root_node Group {}
+
+
+
+Script
+
+{
+
+	field SFNode root USE root_node
+
+	url "VrmlTest.class"
+
+}
+

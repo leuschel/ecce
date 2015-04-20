@@ -1,0 +1,97 @@
+#VRML V2.0 utf8
+#Example 11.9 - Default Mapping Test
+NavigationInfo {
+  type	"EXAMINE"
+}
+Viewpoint {
+  position      -8.263 5.702 14.947
+  orientation   -0.586 -0.798 -0.141  0.585
+  fieldOfView   0.785
+}
+Group {
+  children   [
+    DEF Wide_box Shape {
+      appearance    Appearance {
+        material    DEF base_color Material {
+          ambientIntensity 0.25
+          diffuseColor     0.8 0.8 0.8
+          shininess 0.2
+        }
+        texture     ImageTexture {
+          url       "mandrill.jpg"
+        }
+      }
+      geometry      IndexedFaceSet {
+        coord       Coordinate {
+          point    [ -9 1 1,
+                   -9 -2 1,
+                   -4 -2 1,
+                   -4 1 1,
+                   -9 1 -1,
+                   -9 -2 -1,
+                   -4 -2 -1,
+                   -4 1 -1 ]
+        }
+      coordIndex   [ 0, 1, 2, -1, 0, 2, 3, -1,
+                   7, 6, 5, -1, 7, 5, 4, -1,
+                   3, 2, 6, -1, 3, 6, 7, -1,
+                   4, 0, 3, -1, 4, 3, 7, -1,
+                   4, 5, 1, -1, 4, 1, 0, -1,
+                   1, 5, 6, -1, 1, 6, 2, -1 ]
+      }
+    }
+    DEF Tall_box Shape {
+      appearance    Appearance {
+        material    USE base_color
+        texture     ImageTexture {
+          url       "mandrill.jpg"
+        }
+      }
+      geometry      IndexedFaceSet {
+        coord       Coordinate {
+          point     [ -1.5 4.5 2.5,
+                    -1.5 -4.5 2.5,
+                    1.5 -4.5 2.5,
+                    1.5 4.5 2.5,
+                    -1.5 4.5 -2.5,
+                    -1.5 -4.5 -2.5,
+                    1.5 -4.5 -2.5,
+                    1.5 4.5 -2.5 ]
+        }
+        coordIndex  [ 0, 1, 2, -1, 0, 2, 3, -1,
+                    7, 6, 5, -1, 7, 5, 4, -1,
+                    3, 2, 6, -1, 3, 6, 7, -1,
+                    4, 0, 3, -1, 4, 3, 7, -1,
+                    4, 5, 1, -1, 4, 1, 0, -1,
+                    1, 5, 6, -1, 1, 6, 2, -1 ]
+      }
+    }
+    DEF Cube Shape {
+      appearance    Appearance {
+        material    USE base_color
+        texture     ImageTexture {
+          url       "mandrill.jpg"
+        }
+      }
+      geometry      IndexedFaceSet {
+        coord       Coordinate {
+          point     [ 4 2.5 2.5,
+                    4 -2.5 2.5,
+                    9 -2.5 2.5,
+                    9 2.5 2.5,
+                    4 2.5 -2.5,
+                    4 -2.5 -2.5,
+                    9 -2.5 -2.5,
+                    9 2.5 -2.5 ]
+        }
+        coordIndex  [ 0, 1, 2, -1, 0, 2, 3, -1,
+                    7, 6, 5, -1, 7, 5, 4, -1,
+                    3, 2, 6, -1, 3, 6, 7, -1,
+                    4, 0, 3, -1, 4, 3, 7, -1,
+                    4, 5, 1, -1, 4, 1, 0, -1,
+                    1, 5, 6, -1, 1, 6, 2, -1 ]
+      }
+    }
+  ]
+}
+#EOF

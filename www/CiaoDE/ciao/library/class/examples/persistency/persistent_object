@@ -1,0 +1,7 @@
+'$start_object$'(persistent_class_example(persistent_object)).
+':persistent_class_example::attr'(p).
+':persistent_class_example::attr'(q).
+':persistent_class_example::attr'(k).
+':persistent_class_example::attr'(l).
+':persistent_class_example::attr'(j).
+'$end_object$'(persistent_class_example(persistent_object)).

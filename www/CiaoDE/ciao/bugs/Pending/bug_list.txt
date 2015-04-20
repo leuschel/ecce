@@ -1,0 +1,95 @@
+
+---------------------------------------------------------------------   
+Source code    : sformat/inductive_ctcheck.pl
+Priority       : 2
+Description    : sformat hangs when it has to handle long messages.
+	         It uses a pipe-based implementation, and write 
+		 operations on the pipe are blocked when the pipe
+		 buffer (usually 4Kb) is full.
+Reporter       : pawel, jcorreas
+Reported on    : 23/06/2005
+Status         : solved (final implementation pending)
+Responsible    : mcarro
+Error number   : (format.pl#1)
+Fixed on       : 23/06/2005
+How was solved : For the time being, a file-based implementation is
+		 used, but it should be replaced by a more efficient
+		 solution.
+---------------------------------------------------------------------   
+---------------------------------------------------------------------   
+Source code    : arith_mem_error.pl
+Priority       : 2
+Description    : Error with some calls to predicate is/2.
+	         This problem appears when at some point, an operation is
+		 done over a 0.Inf or 0.Nan number. Then the system throw a
+		 memory allocation error.  This happen with some operators.
+Reporter       : (edison)
+Reported on    : 25/05/2005
+Status         : unnasigned,pending
+Responsible    : unnasigned
+Error number   : (arithmetic.pl#1)
+Fixed on       : 10/05/2005
+How was solved : 
+---------------------------------------------------------------------   
+---------------------------------------------------------------------------
+
+LAZY LOADING
+
+> Hmmm, perhaps it will be automatically solved in 1.11.  Initialization
+> directives are translated to multifile clauses, and it seems that in
+> 1.11 that multifile declarations are seen in the itf (JFran?).  Note
+> that files with multifile predicates are not lazy loaded.
+
+Yes, you are right... I didn't realize until I read your mail, but
+currently Ciao 1.11 does not create lazy modules (thanks!) since every
+module has internal multifile predicates that where 'hidden' in Ciao
+1.9. It will solve it, ignoring these internal predicates in the code
+that computes which modules can be lazyly loaded, with exception of
+those related to initialization.
+
+---------------------------------------------------------------------------
+
+EXECUTABLES UNDER ciao/lib
+
+Executables cannot be generated under ciao/lib/...
+
+---------------------------------------------------------------------------
+
+WARNING WITHOUT MODULE
+
+JFran: I did get a strange warning, though. Note that it does not say
+what module it is coming from! (that is a bug also, I guess):
+
+ > /herme@clip:/home/clip/Papers/clippubsbyyear
+ > [26]> gmake 
+ > cd /home/clip/bibtex/clip; /home/clip/Systems/bibutils/bib2pl clip.bib; \
+ >         mv -f clip_papers_auto.pl /home/clip/PlDbs
+ > WARNING: (lns 141-141) Unqualified predicate call to close/2 assumed to local version, calls to predicate imported from iso_incomplete must be qualified
+ > WARNING: (lns 176-176) Unqualified predicate call to close/2 assumed to local version, calls to predicate imported from iso_incomplete must be qualified
+ > [Processing [clip.bib] into clip_papers_auto.pl...]
+...
+
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+
+    * Pillow's '&' vs. '&amp;' entity should be dealt with (if not
+      already done).
+
+    * Some user could not install Ciao for Windows on his
+machine (probably due to his setup).  I have forwarded all the
+messages I have from him (probably already did with some of them -
+sorry about the repetition).
+
+    * Multifile & data in the shell bug (We had detected this time
+ago, see /home/clip/public_html/Local/ClipTasks/tasks/ciao.pl line
+1006, but it seemed that there was no easy workaround, and it appeared
+only in the shell, right?).
+
+    * Paulo Moura & Tony Beaumon report problems (segv) when compiling
+logtalk on ciao 1.8 for Solaris i86 & for Mac OS X.  We should check
+what happens with 1.9.
+
+    * There was an (apparently unanswered?) problem by Rob Abbott
+(rabbott@cs.unm.edu) - he was not able to compile the MySql examples
+(maybe due to permission errors?)

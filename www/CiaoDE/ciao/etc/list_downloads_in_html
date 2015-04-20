@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if test $# -lt 3; then  
+    echo "Usage: $0"
+    echo "       <pattern> <download script> <distdirurl> [<maillist>]"
+    echo "       "
+    echo "       (e.g., $0 ciao-*.*p*.tar download.cgi http://... ciao-users)"
+    echo "       "
+    echo "       Outputs a bullet list in html of the files"
+    echo "       that match <pattern> allowing download via a script"
+else
+
+echo "<UL>"
+
+if test $# -eq 4; then  
+
+for f in $1 ; do
+    echo "<LI><A HREF=$2?url=$3/$f&list=$4>$f</A>"
+done
+
+else
+
+for f in $1 ; do
+    echo "<LI><A HREF=$2?url=$3/$f>$f</A>"
+done
+
+fi
+
+echo "</UL>"
+
+fi
+

@@ -1,0 +1,91 @@
+Date: Fri, 23 Nov 2001 04:14:40 +0100
+To: ciao@clip.dia.fi.upm.es
+Subject: Version 1.8 announcement / changes to brochure
+From: herme@fi.upm.es
+Reply-to: herme@fi.upm.es
+
+
+How are we doing? It would be good to announce during ICLP. We also
+need to bring the brochure with us (Paco should take it with him,
+since he arrives first). I think the brochure which is already there
+(the one marked 1.8 in /home/clip/Systems/ciao/doc/brochure) is pretty
+good already, specially the text. The main thing that could be
+improved is the features. Perhaps we should:
+
+- Look if there are any features that we want to add (see below).
+- List separately the improvements of 1.8 over 1.6, to encourage
+  people to download again (related to my previous message).
+
+A few things that I have observed:
+
+- I think in the features part there is a repetition regarding the
+  delayed primitives. The two lines:
+
+  \item Delay predicates (when/2).
+  \item Delayed goals with freeze restored.
+
+  should be written better as:
+
+  \item Delay predicates (when/2, freeze/1, ...).
+
+- Mention persistent predicates (in addition to "relational database
+  interface".
+
+- In "foreign interfaces" say "bidirectional foreign interfaces". 
+
+- We should probably be more assertive about ISO compliance, which is
+  something people may be interested in (perhaps even mention that
+  Ciao was shown by independent sources to be the first Prolog to
+  compile all the test cases in the standard).
+
+- Mention not only that it is free, but also that it can be used for
+  commercial use? "GNU Lax(?) Library license, can be used in
+  commercial applications".
+
+- Mention "User-friendly installation procedure on all platforms".
+
+- Mention attributed variables, DCGs, backwards compatibility
+  libraries (DEC-10 IO, Quintus-like internal database, etc.), 
+
+- Mention assertion-based declaration of meta-predicates.
+
+- Provide list of platforms supported.
+
+- Talk about "Advanced program development environment" rather than
+  emacs mode (mention emacs only in passing). Perhaps: "Advanced,
+  emacs-based, program development environment with source-level
+  debugging...".
+
+- "Code expansion facilities (macros)" -> "Extensive, built in, and
+  modular code expansion facilities (macros)".
+
+- "Robust module system" -> "New generation, robust module system"?
+
+- Flexible customization of library paths and path aliases
+
+- Libraries of (commented) types, modes, and other properties to be
+  used in assertions (for debugging and documentation generation).
+
+- Fuzzy Prolog package.
+
+- In "Fast writing and reading of terms" put "Fast writing and reading
+  (marshalling and unmarshalling) of terms. 
+
+- Instead of "Complete documentation" -> "Extensive, up to date
+  documentation". 
+
+- Finally, we can probably use both sides of a piece of paper, and
+  even use the color printer. Using both sides allows having perhaps
+  the text in the front, with space for nice CLIP and Ciao logos, and
+  the features and version news in the back.
+
+Man
+
+-- 
+-----------------------------------------------------------------------------
+herme@fi.upm.es                      | Manuel Hermenegildo                 
++34-91-336-7435 (Work)               | Facultad de Informatica, UPM
++34-91-352-4819 or 336-7412 (FAX)    | Universidad Politecnica de Madrid   
+http://www.clip.dia.fi.upm.es/~herme | 28660-Boadilla del Monte, MADRID SPAIN
+-----------------------------------------------------------------------------
+

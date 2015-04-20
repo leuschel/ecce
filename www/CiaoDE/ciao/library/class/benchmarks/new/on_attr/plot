@@ -1,0 +1,11 @@
+set data style linespoints
+
+set ylabel "Execution time (ms)"
+set xlabel "Number of attributes"
+set title  "new/1 performance versus number of attributes"
+set pointsize 3
+set grid
+
+plot "bench" index 0:1 title "" pt 1
+
+pause -1 "Hit Enter to continue"

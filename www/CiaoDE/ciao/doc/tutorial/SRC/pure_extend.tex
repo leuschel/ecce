@@ -1,0 +1,236 @@
+\subsection{Input/Output}
+
+Input/output in Iso Prolog is based on streams. A {\em stream} is a
+communication channel of Prolog with the outside world. When a file is
+opened, it is associated with a stream. All subsequent operations are
+performed on the stream.
+
+The basic input/output operations are defined in the Ciao engine
+ library \verb+streams_basic+, including \verb+open/3+ and
+ \verb+close/1+. Basic stream input operations, like \verb+read/2+
+are in library \verb+read+, and output operations like \verb+write/2+
+ in library \verb+write+.
+
+A goal \verb+open(F,M,S)+ opens the file \verb+F+ in mode \verb+M+
+(either \verb+read+ or \verb+write+), associating the opened file with
+stream \verb+S+ (which must be a variable upon call); \verb+read(S,T)+
+reads from stream \verb+S+ a term that returns in \verb+T+;
+ \verb+write(S,T)+ writes on the stream \verb+S+ the term \verb+T+; 
+ \verb+close(S)+ closes the file associated to stream \verb+S+.
+
+{\em File names} are Prolog constants or structures of arity one. The
+constants are interpreted as absolute file system paths. The
+structures are interpreted as a relative file system path (the
+argument of the structure), which is relative to a base full path
+(associated to the structure name). For example, \verb+library(read)+
+refers to a file \verb+read+ in the directory that is associated to
+\verb+library+. Some suffixes of the file name, like \verb+.pl+, are
+implicit.
+
+The library predicates \verb+streams_basic:absolute_file_name/2-7+
+allow to convert file names into absolute path file names. See
+\verb+streams_basic:sourcename/1+ in the reference manual for a
+complete description of file names. See also Section~\ref{sec:paths}
+for an explanation on how to associate directories to structure
+names. 
+
+The library predicate \verb+symfnames:open/3+ allows the use of
+symbolic file names. A {\em symbolic file name} is not related to the
+file system naming convention for files: the symbolic name is
+associated with a file system path for the file in a dynamic way.
+The first argument to \verb+symfnames:open/3+ is a symbolic name, and
+the actual file name is obtained from a user predicate that is loaded
+dynamically into the executable or from the environment variables of
+the system shell. See the reference manual.
+
+There are four special stream names that are always opened:
+\verb+user_input+, \verb+user_output+, \verb+user_error+, and
+\verb+user+. The first one is associated to the standard input, the
+second one to the standard output, the third one to the standard
+error, and the fourth to the default input/output device (usually, the
+terminal screen). 
+
+The library \verb+io_alias_redirection+ allows for redirection of the
+streams, associating them to a external device different from the one
+it is already associated to. Also, library \verb+streams_basic+
+provides predicates to set default streams for the input/ouput
+operations. Predicates like \verb+read/1+ or \verb+write/1+ will
+operate on the default input or output stream, respectively.
+
+For example, a classical way to write code which is independent of the
+streams where it is reading or writing is by using the predicates
+\verb+read/1+ and \verb+write/1+, and then independently setting a
+default stream for these operations, like in:
+\begin{quote}
+\begin{verbatim}
+... :- ...,
+       current_input(OldS),
+       set_input(user_input),
+       some_read_operations,
+       set_input(OldS),
+       ...
+\end{verbatim}
+\end{quote}
+%
+which forces read operations during the execution of
+\verb+some_read_operations+ and which do not refer explicitely to a given
+stream to be performed on the standard input, then the previous current
+input is restored so that reading operations for the rest of the
+program perform on whichever stream was set before
+\verb+some_read_operations+. 
+
+Input/output in Prolog is oriented towards terms: on input, terms are
+read, and on output terms are written. Very basic output operations
+can be performed simply with \verb+streams_basic:display/1+, which
+writes a term to the default output stream. Also, the engine library
+\verb+io_aux+ provides predicates for writing simple messages.
+%
+The library predicate \verb+prompt:prompt_for/1-2+ simply reads a
+string of text from the input, up to a given character or end of line.
+
+There are other libraries that allow other forms of input/output. The
+library \verb+format+ provides a more sophisticated kind of output,
+where the output can be formatted to some extent. Library
+\verb+messages+ allows for more sophisticated messages than
+\verb+io_aux+. 
+
+The engine library \verb+io_basic+ provides predicates to perform
+input/output of characters. For example, \verb+get_code/1+
+returns the code of the character read, \verb+peek_code/1+
+checks that the character on the input has the code given, without
+actually reading it, \verb+skip_code/1+ skips characters
+until the one that has the code given, and \verb+put_code/1+ writes on
+output the character of the given code.
+
+Finally, library \verb+dec10_io+ provides DEC-10 Prolog-like
+predicates for input/ouput. Input files are opened with \verb+see/1+,
+which makes the associated stream the current input, and it is closed
+with \verb+seen/0+. For output you use \verb+tell/1+ and
+\verb+told/0+. 
+
+
+\subsection{Exceptions}
+
+Exceptions are handled in Prolog with the pair of engine library
+predicates \verb+exceptions:cath/3+ and \verb+exceptions:throw/1+. A
+goal \verb+throw(Ball)+ raises an 
+exception identified by the term to which \verb+Ball+ is bound at the
+time. A goal \verb+catch(Goal,Ball,Handler)+ is like
+\verb+call(Goal)+, but, if during execution of \verb+Goal+ an
+exception that unifies with \verb+Ball+ is raised, the goal
+\verb+Handler+ will be executed. This goal is called the {\em handler}
+of the exception.
+
+The handler goal is executed at the point in execution where the
+exception is raised. After execution of the handler, if it succeeds,
+execution continues after the \verb+catch/3+ goal. Thus, with:
+\begin{quote}
+\begin{verbatim}
+a :-
+        catch(goala,Exception,handler(Exception)),
+        write(execution_continues_after_the_handler_succeeded).
+
+goala :-
+        atom_codes(_,_),
+        this_one_is_not_executed_you_know_why(?).
+
+handler(AnyException):-
+        write(this_was_the_exception(AnyException)), nl.
+\end{verbatim}
+\end{quote}
+%
+execution of goal \verb+a+ will cause an exception thrown by
+\verb+atom_codes/2+. The output will be:
+\begin{quote}
+\begin{verbatim}
+    this_was_the_exception(error(instantiation_error,atom_codes/2-2))
+    execution_continues_after_the_handler_succeeded
+\end{verbatim}
+\end{quote}
+
+If the handler fails, then backtracking goes back to the corresponding
+\verb+catch/3+ goal, and execution continues backwards. For example,
+with: 
+\begin{quote}
+\begin{verbatim}
+b :-
+        catch(goalb,Exception,handler(Exception)),
+        this_one_is_not_executed_you_know_why(?).
+b :-
+        write(backtracking_because_the_handler_failed).
+
+goalb :-
+        throw(i_am_throwing_it_myself).
+
+handler(AnyException):-
+        write(this_was_the_exception(AnyException)), nl,
+        fail.
+\end{verbatim}
+\end{quote}
+%
+execution of goal \verb+b+ will give:
+\begin{quote}
+\begin{verbatim}
+    this_was_the_exception(i_am_throwing_it_myself)
+    backtracking_because_the_handler_failed
+\end{verbatim}
+\end{quote}
+
+Goal catching can be nested to any level. The catchers (i.e., the
+\verb+catch/3+ goals) are inspected in turn, from the closest in time
+to the farthest to the moment where the exception is raised, until one
+which unifies with the exception raised is found. The execution
+performed from that catcher to the time of the exception is undone.
+Thus, with:
+\begin{quote}
+\begin{verbatim}
+p(g(X)) :-
+        catch(q(X),my_own_exception,handler0),
+        write(X).
+
+q(f(a)) :-
+        catch(r,control_c,handler1).
+
+r :-
+        throw(my_own_exception),
+        this_one_is_not_executed_you_know_why(?).
+
+handler0.
+
+handler1.
+\end{verbatim}
+\end{quote}
+%
+execution of \verb+p(g(f(A)))+ will write \verb+f(A)+ and not
+\verb+f(a)+, because execution is undone until the first (outermost)
+catcher, which executes \verb+handler0+.
+
+However, if the key sequence \verb-Ctrl+C- is pressed during execution
+of \verb+r+ (which is not easy to achieve!), this sequence raises a
+\verb+control_c+ exception, which will be catched by the second
+(innermost) catcher, executing \verb+handler1+ and continuing
+execution. In this case, \verb+f(a)+ will be written.
+
+Another exception catcher predicate is \verb+intercept/3+. This
+predicate behaves the same as \verb+catch/3+, except that it continues
+the execution, after having executed the handler, from the point where
+the exception was raised. It does not undo the execution from this
+point backwards to the catcher. Thus, with:
+\begin{quote}
+\begin{verbatim}
+p(g(X)) :-
+        intercept(q(X),my_own_exception,handler0),
+        write(X).
+
+q(f(a)) :- 
+        throw(my_own_exception),
+        this_one_is_indeed_executed_you_know_why(?).
+\end{verbatim}
+\end{quote}
+%
+execution of \verb+p(g(f(A)))+ will write \verb+f(a)+ and not
+\verb+f(A)+, after having executed \verb+handler0+ and the goal after
+the \verb+throw+.
+
+Library \verb+errhandle+ provides some support for protection of the
+execution from exceptions and errors.

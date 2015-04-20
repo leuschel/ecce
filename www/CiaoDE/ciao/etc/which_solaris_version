@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# MCL -- Solaris Sparc 5.7 has some libraries located in
+# different places
+
+case "`/bin/uname -r`" in
+    5.[123456]* ) echo pre_7 ;;
+    5.* )        echo equal_post_7
+esac

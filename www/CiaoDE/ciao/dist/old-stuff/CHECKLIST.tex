@@ -1,0 +1,107 @@
+\documentclass[11pt]{article}
+
+\usepackage{html}
+\usepackage{a4wide}
+\usepackage[usenames]{color}
+\usepackage{graphicx}
+\usepackage{isolatin1}
+
+
+\newcommand{\link}[1]{\htmladdnormallink{\texttt{#1}}{#1}}
+
+\begin{document}
+
+\bodytext{bgcolor="#EFEFEF" text="#333399" link="#333399" vlink="#333399" alink="#CC0000"}
+
+
+\begin{center}
+  \bf{
+  { \Large Ciao distributions check list }
+    \\[2ex]
+  }
+\end{center}
+\begin{enumerate}
+\item Look at
+  \link{http://clip.dia.fi.upm.es/Local/ciao\_distributions/index.html}
+  for instructions about how to compile Ciao and generate a
+  distribution for every processor/OS.
+
+\item Install the new distribution in the target machine:
+  \begin{enumerate}
+  \item Check that the \texttt{INSTALL} file exists and contains
+    correct information.
+  \item Follow the instructions in \texttt{INSTALL} file and check
+    that every step works.
+  \end{enumerate}
+
+\item OS-specific basic accessibility tests:
+  \begin{itemize}
+  \item Windows:
+    \begin{itemize}
+    \item From windows file explorer: check left-button menus
+      \begin{enumerate}
+      \item \texttt{.pl} files: load \texttt{foo.pl} into top-level
+        shell and make executable (must generate \texttt{foo.bat} and
+        \texttt{foo.cpx} files)
+      \item \texttt{.bat} and \texttt{.cpx} generated files:
+        double-click on them and check that foo program works
+      \end{enumerate}
+    \end{itemize}
+  \item Linux/Un*x:
+      \begin{enumerate}
+      \item Check access to Ciao commands: \texttt{ciaosh},
+        \texttt{ciaoc}...
+      \item Check that the info file works well.  This can be done
+        executing \texttt{info} and verifying that an info entry for
+        Ciao has been placed, and also running \texttt{info ciao}.
+      \item Execute \texttt{man ciao} to check that the man page has
+        been configured successfully.
+      \item Execute ciaosh and do something like the next:
+        \begin{enumerate}
+        \item \texttt{X is 1.0,X is 2.0.}.  It must fail.
+        \item \texttt{X is 1..0}. It must generate Syntax error.
+          Verify that the reported line that generated the error is
+          ok.
+        \end{enumerate}
+      \item Run the tests.
+      \end{enumerate}
+  \item MacOSX:
+      \begin{enumerate}
+      \item Check access to Ciao commands: \texttt{ciaosh}, \texttt{ciaoc}...
+      \end{enumerate}
+  \end{itemize}
+
+\item Emacs tests:
+  \begin{enumerate}
+  \item Visit \texttt{foo.pl} to check that buffer colouring works
+  \item Check that menu options appear on top of Emacs window (In
+    Linux Emacses, check that button bar also appears)
+  \item C-c l to load the file into Ciao top-level and call main/0
+    to check basic top-level functionality
+  \item C-c tab to check Ciao info documentation also works
+  \item C-h i to check Ciao info docs also appear in info top page. 
+  \item C-c d to check debug mode in Ciao, and run foo:main in trace
+    mode. 
+  \item Move the cursor to last line of main/0, and do C-c S b to
+    check breakpoints. Run foo:main again, and press 'l' to check that
+    the execution stops at the correct program point. 
+  \end{enumerate}
+
+\item Running the tests:
+  \begin{enumerate}
+  \item Visit \texttt{settings.pl} to set OS and processor
+    configuration.
+  \item Compile and run the tests, and check that everything works.
+  \end{enumerate}
+
+  \begin{itemize}
+  \item Windows:
+    \begin{enumerate}
+    \item Move to \texttt{WindowsSpecific} directory, and run
+      \texttt{windows.pl}, to check specific characteristics of system
+      library in windows
+    \end{enumerate}
+  \end{itemize}
+
+\end{enumerate}
+\end{document}

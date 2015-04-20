@@ -1,0 +1,216 @@
+%
+% Brochure for Ciao 1.6 publication
+%
+\documentclass{article}
+
+\usepackage{a4wide}
+\usepackage{twocolumn}
+\usepackage{html}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FORMAT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{a4wide}
+
+\topmargin-0.5cm
+\tolerance=10000
+
+\makeatletter
+\def\section{\@startsection {section}{1}{\z@}{+1.5ex plus +1.5ex minus 
++1.5ex}{1.5ex}{\Large\bf}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{-1.0ex plus -1ex minus 
+ -.2ex}{0.7ex plus .2ex}{\normalsize\bf}}
+%\def\subsubsection{\@startsection{subsubsection}{3}{\parindent}{3.25ex plus 
+% 1ex minus  .2ex}{-1em minus -.25em}{\normalsize\sc}}
+\makeatother
+%\parskip 6pt
+%\parskip 0pt
+
+\def\longrule{\noindent \hrule width \textwidth}
+
+\renewcommand{\baselinestretch}{0.95}
+\renewcommand{\topfraction}{0.90}
+\renewcommand{\textfraction}{0.10}
+\renewcommand{\floatpagefraction}{0.90}
+
+\input{psfig}
+\input{/home/clip/Papers/clip_description/logo.tex}
+%% Laserprep prologues
+%% \newcommand{\psfigpath}{/usr/local/lib//inputs}
+%% \newcommand{\lprepold}{\psfigpath/mac.pro}
+%% \newcommand{\lprepnew}{\psfigpath/lprep68.pro}
+
+\newcommand{\headline}[1]{\centerline{\underline{\LARGE\bf #1}}}
+\newcommand{\head}[1]{\centerline{{\Large\bf #1}}}
+\newcommand{\parund}[1]{\paragraph{\underline{#1}}}
+
+\newcommand{\myitems}{
+\renewcommand{\baselinestretch}{0.5}
+\parsep 0pt
+\parindent 0pt
+\itemsep -4pt
+\topsep -3pt
+}
+
+\newcommand{\ciao}{\psfig{figure=ciao_s.ps}}
+
+\newcommand{\ciaologo}{
+ \vbox{\ciao
+  \parbox{4cm}{ {\small \ \\ [-2.4cm]
+                   {\bf CLIP} \\ [+0cm]
+                   Clip's \\ [-0.2cm]
+                   Implementation \\ [-0.2cm]
+                   And Other friends \\ [-0.2cm]
+                   programming environment}}
+  }
+}
+
+\begin{document}
+
+\pagestyle{empty}
+
+
+%% %% Logos:
+%% \twocolumn[
+%% \ \rule{\textwidth}{.04 in}\\
+%% % Header
+%% \hspace*{0.04\textwidth}
+%% \hbox{
+%%       \vbox{\vspace{12pt}\hbox{\engcliplogo}}
+%%       \hspace*{+0.25\textwidth}
+%%       \vbox{\ciao}
+%% }\\
+%% % Horizontal line
+%% \ \rule{\textwidth}{.04 in}\\ %.01
+%% 
+%% \begin{center}
+%% \begin{LARGE}
+%% \underline{{\bf Ciao Prolog 1.6 is now available}}\\ % [4mm]
+%% \end{LARGE}
+%% \begin{Large}
+%% {\tt ciao@clip.dia.fi.upm.es}\\
+%% {\tt http://www.clip.dia.fi.upm.es/Software/Ciao}\\ % [2mm]
+%% \end{Large}
+%% \end{center}
+%% %% ]
+
+\twocolumn[
+\begin{center}
+\begin{LARGE}
+\underline{{\bf Announcing Version 1.6 of the Ciao System}}\\ % [4mm]
+\end{LARGE}
+\end{center}
+\ \\
+]
+
+
+\subsection*{About Ciao:}
+
+Ciao is a \emph{public domain}, \emph{next generation} logic
+programming environment.
+
+Ciao is a complete Prolog system, supporting \emph{ISO-Prolog}, but
+its novel modular design allows both \emph{restricting} and
+\emph{extending} the language. As a result, it is possible to work
+with \emph{fully declarative subsets} of Prolog and also to
+\emph{extend} these subsets (or ISO-Prolog) both syntactically and
+semantically. Most importantly, these restrictions and extensions can
+be activated separately on each program module so that several
+extensions can coexist in the same application for different modules. 
+
+Ciao currently includes extensions for functional logic programming,
+feature terms (records), higher-order (with predicate abstractions),
+constraints, object-oriented programming, persistence, several control
+rules (breadth-first search, iterative deepening, ...), concurrency
+(threads/engines), distributed execution (agents), concurrent built-in
+database, and parallel execution.  Libraries also support WWW
+programming, sockets, external interfaces (C, Java, TclTk, relational
+databases, etc.), etc.
+
+\emph{Programming in the large} is supported thanks to the robust
+module/object system, module-based automatic incremental compilation
+(with no need for makefiles), an assertion language for declaring
+(\emph{optional}) program properties (including types, modes,
+determinacy, non-failure, cost, ...), automatic static inference and
+static/dynamic checking of such assertions, program optimization and
+parallelization, and powerful automatic documentation generation (the
+latter tasks performed by the \emph{CiaoPP preprocessor} and the
+\emph{LPdoc autodocumenter}).  It is the novel modular design of Ciao
+which enables modular program development, effective global program
+analysis, and static debugging and optimization via source to source
+program transformation.
+
+\emph{Programming in the small} is supported by having reduced size
+executables which only include those builtins and libraries used by
+the program and by supporting \emph{scripts} written in Prolog.
+
+The compiler generates several forms of architecture-independent and
+stand-alone executables. Program modules can be compiled into compact
+bytecode and linked statically, dynamically, or autoloaded. The
+executables generated are very competitive in both performance and
+size with all current commercial and academic Prolog systems.
+
+The programming environment also offers a rich \texttt{emacs}
+interface (with direct acccess to top-level/debugger, preprocessor,
+and autodocumenter), embeddable source-level debugger with
+breakpoints, and some execution visualization tools. 
+
+\subsection*{1.4$\rightarrow$1.6 improvements:}
+
+\begin{itemize}
+\myitems
+\item Source-level debugger in emacs, breakpts.
+\item Debugger embeddable in executables.
+\item Greatly improved emacs interface.
+\item Menu-based documenter interface.
+\item Threads now available in Win32.
+\item Many improvements to threads.
+\item Modular clp(R) / clp(Q).
+\item Improved syntax for pred.~abstractions.
+\item Library of higher order list predicates.
+\item Better code expansion facilities (macros).
+\item Compressed object code/executables. %% (.po).
+\item The size of atoms is now unbound.
+\item Fast creation of new unique atoms.
+\item \#~of clauses/pred.~essentially unbound.
+\item Delayed goals with freeze restored.
+\item Faster compilation and execution.
+%% \item Libraries not recompiled in user mode.
+\item Much faster fast write/read. %% graphs
+\item Improved documentation.
+\item Other new libraries. %% graphs tcltk(new version) xmrefs davinci
+\item Improved installation/deinstallation.
+\item Many improvements to autodocumenter.
+\item Many bug fixes.
+%% \item Contrib stuff?
+\end{itemize}
+
+\subsection*{1.0$\rightarrow$1.4 improvements:}
+
+\begin{itemize}
+\myitems
+\item Automatic (re)compilation of foreign files.
+\item New version of O'Ciao objects, 
+      with improved performance. 
+\item New  (\&Prolog-like) concurrency / multiengine primitives. 
+\item Support for {\em predicate abstractions}.
+\item Reexportation of predicates. % (reexport declarations).
+\item Precedence of importations changed: last one is now higher. 
+\item Modules can implicitly export all preds.
+\item Improved documentation.
+\end{itemize}
+
+\subsection*{Contact / download info:}
+
+\htmladdnormallink{
+ \texttt{http://www.clip.dia.fi.upm.es}}{http://www.clip.dia.fi.upm.es}\\ 
+\htmladdnormallink{
+ \texttt{http://www.clip.dia.fi.upm.es/Software}}{http://www.clip.dia.fi.upm.es/Software}\\ 
+\htmladdnormallink{
+ \texttt{clip@clip.dia.fi.upm.es}}{mailto:clip@clip.dia.fi.upm.es}\\ 
+ Manuel Hermenegildo\\
+ Facultad de Inform\'{a}tica -- UPM\\
+ E-28660 Boadilla del Monte, Madrid, SPAIN
+
+\end{document}

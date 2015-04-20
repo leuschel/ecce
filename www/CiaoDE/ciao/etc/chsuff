@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if test $# -lt 3 -o $# -gt 4 ; then
+   echo
+   echo Usage: $0 directory_name old_suffix new_suffix [just_test]
+   echo
+   echo Change recursively all the files ending in .old_suffix to end in .new_suffix
+   echo If just_test is present, then the files are not renamed, but just
+   echo written to the output.
+   echo
+   echo "Example: $0 c cc           Change all .c files to be .cc"
+   echo "         $0 c CC test      Write which files would be changed"
+else
+
+initdir=$1
+old_suffix=$2
+new_suffix=$3
+just_test=$4
+
+for file in $initdir/* ; do
+    if test -d $file ; then
+       $0 $file $old_suffix $new_suffix $just_test
+    else
+        if test -z "${file##*\.$old_suffix}" ; then
+           basename="${file%*\.$old_suffix}"
+           newname=${basename}.$new_suffix
+           if test -n "$just_test" ; then
+              echo $file would be moved to ${newname}
+           else
+              echo Moving $file to ${newname}
+              /bin/mv $file ${newname}
+           fi
+        fi
+    fi
+done
+
+fi

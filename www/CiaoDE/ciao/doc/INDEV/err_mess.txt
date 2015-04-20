@@ -1,0 +1,58 @@
+existence_error(procedure, P/N)
+error(Error_term, Impl_def)
+
+Error_term :
+
+domain_error(Domain,Term)
+existence_error(stream|source_sink,Term)
+instantiation_error
+permission_error(access,private_procedure,Term)
+permission_error(access,static_procedure,Term)
+permission_error(create, operator, Term)
+permission_error(input,stream,Term))
+permission_error(input,past_end_of_stream,Term))
+permission_error(modify, flag, Term)
+permission_error(modify, operator, ',')
+permission_error(modify,static_procedure,Term)
+permission_error(open,source_sink,Term)
+permission_error(output,stream,Term)
+permission_error(reposition,stream,Term)
+syntax_error(Imp_def_atom)
+system_error
+type_error(Type,Term)
+
+evaluation_error(int_overflow|float_overflow|underflow|zero_divisor|undefined)
+representation_error(max_arity|max_integer|min_integer|character_code|character|in_character_code)
+resource_error(Resource)
+
+
+Domain:
+
+character_code_list
+close_option
+flag_value
+io_mode
+non_empty_list
+not_less_than_sero
+operator_priority
+operator_specifier
+prolog_flag
+read_option
+write_option
+source_sink
+stream
+stream_option
+stream_or_alias
+stream_position
+stream_property
+
+Type:
+
+atom
+...
+
+---------------------------------------
+
+... catch(start, X, errmsg(X)).
+
+

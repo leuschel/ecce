@@ -1,0 +1,212 @@
+#!/bin/sh
+#
+# pvmgetarch.sh
+#
+# Generate PVM architecture string.
+#
+# This is a heuristic thing that may need to be tuned from time
+# to time.  I don't know of a real solution to determining the
+# machine type.  Claims to pick one of:
+#   AFX8, ALPHA, ALPHAMP, BFLY, BSD386, CM2, CM5, CNVX, CNVXN,
+#   CRAY, CRAY2, CRAYSMP, CSPP, DGAV, E88K, HP300, HPPA, I860, KSR1, LINUX,
+#   MASPAR, MIPS, NEXT, PGON, PMAX, POWER4, RS6K, RT, SGI, SGI5, SGIMP,
+#   SUN2, SUN3, SUN4, SUN4SOL2, SUNMP, SX3, SYMM, TITN, UVAX, VAX,
+#   UNKNOWN
+# Need to do:
+#   BAL, IPSC2, VCM2
+#
+# Notes:
+#   1. Local people mess with things.
+#   2. It's good to try a few things for robustness.
+#   3. Don't use test -x
+#
+# 08 Apr 1993  Robert Manchek  manchek@CS.UTK.EDU.
+# 24 Aug 1994  last revision
+#
+# 10 Mar 1998 
+#
+
+########################################
+# All the comments should go in ciao_get_arch.pl !!!!!!!!
+########################################
+
+# begin section that may need to be tuned.
+
+CIAOARCH=UNKNOWN
+
+if [ -f /bin/uname -o -f /usr/bin/uname ]; then
+	if [ -f /bin/uname ]; then
+		os="`/bin/uname -s`"
+		ht="`/bin/uname -m`"
+	else
+		os="`/usr/bin/uname -s`"
+		ht="`/usr/bin/uname -m`"
+	fi
+
+	case "$os,$ht" in
+        *BSD,i[3456]86 )        CIAOARCH=BSDi86 ;;
+	SunOS,sun3* )           CIAOARCH=SUN3 ;;
+	SunOS,sun4* )           CIAOARCH=SunOS4Sparc ;;
+	SunOS,i86pc )           CIAOARCH=Solarisi86 ;; # MCL
+	Linux,i[3456]86 )       CIAOARCH=LINUXi86 ;;
+	Linux,x86_64 )          CIAOARCH=LINUXi86_64 ;;
+	Linux,alpha )           CIAOARCH=LINUXalpha ;;
+	Linux,ppc )		CIAOARCH=LINUXppc ;;
+	Linux,powerpc )		CIAOARCH=LINUXppc ;;
+        Linux,sparc )           CIAOARCH=LINUXSparc ;;
+        Linux,sparc64 )         CIAOARCH=LINUXSparc64 ;;
+	Linux,armv4l )          CIAOARCH=LINUXarmv4l ;;
+	Linux,armv5tel )        CIAOARCH=LINUXarmv5tel ;;
+        CYGWIN_*,i[3456]86)     CIAOARCH=Win32i86 ;;      # DCG, MCL
+        CYGWIN_*,alpha)         CIAOARCH=Win32alpha ;;    # DCG, MCL
+	SUPER-UX,SX-3 )         CIAOARCH=SX3 ;;
+	ULTRIX,RISC )           CIAOARCH=PMAX ;;
+	ULTRIX,VAX )            CIAOARCH=UVAX ;;
+	IRIX,* )                CIAOARCH=SGI ;;
+	AIX*,* )                CIAOARCH=RS6K ;;
+	*HP*,9000/[2345]* )     CIAOARCH=HP300 ;;
+	*HP*,9000/[78]* )       CIAOARCH=HPPA ;;
+	*,alpha )               CIAOARCH=ALPHA ;;
+	CRSOS,smp )             CIAOARCH=CRAYSMP ;;
+	*,paragon )             CIAOARCH=PGON ;;
+	dgux,AViiON )           CIAOARCH=DGAV ;;
+	*,88k )                 CIAOARCH=E88K ;;
+	*,mips )                CIAOARCH=MIPS ;;
+	*,CRAY-2 )              CIAOARCH=CRAY2 ;;
+	Darwin,"Power Macintosh" ) CIAOARCH=DARWINppc ;;    # JFMC 
+	esac
+fi
+
+if [ "$CIAOARCH" = UNKNOWN ]; then
+	if [ -f /bin/arch ]; then
+		case "`/bin/arch`" in
+		ksr1 ) CIAOARCH=KSR1 ;;
+		sun2 ) CIAOARCH=SUN2 ;;
+		sun3 ) CIAOARCH=SUN3 ;;
+		sun4 ) CIAOARCH=SunOS4 ;;
+		esac
+	fi
+fi
+
+if [ "$CIAOARCH" = UNKNOWN ]; then
+
+	if [ -f /ultrixboot ]; then
+		if [ -f /pcs750.bin ]; then
+			CIAOARCH=UVAX
+		else
+			CIAOARCH=PMAX
+		fi
+	else
+		if [ -f /pcs750.bin ]; then CIAOARCH=VAX; fi
+	fi
+
+	if [ -d /usr/alliant ]; then CIAOARCH=AFX8; fi
+	if [ -f /usr/bin/cluster ]; then CIAOARCH=BFLY; fi
+	if [ -d /usr/convex ]; then CIAOARCH=CNVX; fi
+	if [ -f /unicos ]; then CIAOARCH=CRAY; fi
+	if [ -f /hp-ux ]; then CIAOARCH=HP300; fi
+	if [ -f /usr/bin/getcube ]; then CIAOARCH=I860; fi
+	if [ -f /usr/bin/asm56000 ]; then CIAOARCH=NEXT; fi
+	if [ -f /etc/vg ]; then CIAOARCH=RS6K; fi
+	if [ -d /usr/include/caif ]; then CIAOARCH=RT; fi
+	if [ -f /bin/4d ]; then CIAOARCH=SGI; fi
+	if [ -f /dynix ]; then CIAOARCH=SYMM; fi
+	if [ -f /bin/titan ]; then CIAOARCH=TITN; fi
+
+	if [ -f /usr/bin/machine ]; then
+		case "`/usr/bin/machine`" in
+		i386 ) CIAOARCH=BSDi86 ;;
+		esac
+	fi
+	if [ -f /usr/bin/uxpm ] && /usr/bin/uxpm ; then
+		CIAOARCH=UXPM
+	fi
+fi
+
+if [ "$CIAOARCH" = UNKNOWN ]; then
+	if [ -f /bin/uname -o -f /usr/bin/uname ]; then
+		if [ -f /bin/uname ]; then
+			os="`/bin/uname -s`"
+			ht="`/bin/uname -m`"
+		else
+			os="`/usr/bin/uname -s`"
+			ht="`/usr/bin/uname -m`"
+		fi
+
+		case "$os,$ht" in
+		*,i[3456]86 )            CIAOARCH=SCO ;;
+		esac
+	fi
+fi
+
+if [ "$CIAOARCH" = SunOS4Sparc ]; then
+	rel="`/bin/uname -r`"
+	case "$rel" in
+	5.* )   CIAOARCH=SUN4SOL2 ;;
+	esac
+fi
+if [ "$CIAOARCH" = SUN4SOL2 ]; then
+	nproc="`/bin/mpstat | wc -l`"
+	if [ $nproc -gt 2 ]; then CIAOARCH=SUNMP; fi
+fi
+if [ "$CIAOARCH" = ALPHA ]; then
+	rel="`/usr/bin/uname -r`"
+	case "$rel" in
+	*3.*)
+		nproc="`/usr/sbin/sizer -p`"
+		if [ $nproc -gt 1 ]; then CIAOARCH=ALPHAMP; fi ;;
+	esac
+fi
+if [ "$CIAOARCH" = SGI ]; then
+	rel="`/bin/uname -r`"
+	case "$rel" in
+	5.* )   CIAOARCH=SGI5 ;;
+	6.* )   CIAOARCH=SGI64 ;;
+	esac
+fi
+if [ "$CIAOARCH" = SGI64 ]; then
+	nproc="`mpadmin -n | wc -w`"
+	if [ $nproc -gt 1 -a "$SGIMP" = ON ]; then CIAOARCH=SGIMP64; fi
+fi
+if [ "$CIAOARCH" = SGI5 ]; then
+	nproc="`mpadmin -n | wc -w`"
+	if [ $nproc -gt 1 -a "$SGIMP" = ON ]; then CIAOARCH=SGIMP; fi
+fi
+if [ "$CIAOARCH" = SunOS4Sparc -a -f /dev/cm ]; then CIAOARCH=CM2; fi
+if [ "$CIAOARCH" = SunOS4Sparc -a -f /dev/cmni ]; then CIAOARCH=CM5; fi
+if [ "$CIAOARCH" = CNVX ]; then
+	if /usr/convex/getsysinfo -f native_default; then
+		CIAOARCH=CNVXN
+	fi
+fi
+if [ "$CIAOARCH" = PMAX -a -d /usr/maspar ]; then CIAOARCH=MASPAR; fi
+if [ "$CIAOARCH" = RS6K -a -d /usr/lpp/power4 ]; then CIAOARCH=POWER4; fi
+if [ "$CIAOARCH" = HPPA -a -f /bin/sysinfo ]; then CIAOARCH=CSPP; fi
+
+#
+# ugh, done.
+#
+
+# echo $CIAOARCH
+
+# MCL -- It is OK; but for us it is sometimes more detailed than
+# needed.  We are not so concerned about the architecture as about the
+# operating system version.  This simplifies the whole thing for the
+# machines we know.  Not all have been tested: probably some
+# simplifications are incompatible.  If so, split the faulty entry and
+# make a new one for that architecture.
+
+
+case $CIAOARCH in
+# We can have SGI5, SGI64, or SGIMP; we unify them 
+# (but I am not sure about this, since I did not have 
+# machines to try on)
+	SGI* )		CIAOARCH=IRIXmips ;;
+	SUN4SOL2 )	CIAOARCH=SolarisSparc ;;
+	SUNMP )		CIAOARCH=SolarisSparc ;;
+esac
+
+echo $CIAOARCH
+
+exit
+

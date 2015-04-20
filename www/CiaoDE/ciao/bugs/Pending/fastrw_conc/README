@@ -1,0 +1,16 @@
+
+- writer.pl implements a toy example of a program sending a term
+  through a socket and receiving an ack, using fastrw, as respose.
+
+- reader.pl implements a toy example of a program reading a term form
+  a socket and sending an ack, using fastrw, as response.
+
+ * Problem: In any case, the reader receives the term but if the
+   connection is established by a thread, the ack never gets to the
+   writer until the execution of the reader is aborted.
+
+* Execution: Run two ciao shells, one for the reader and another for
+  the writer and execute main in each, beginning with the reader. Then
+  the execution will apparently hang. To make it finish, abort the
+  reader. If not using threads, the behavior is normal.
+

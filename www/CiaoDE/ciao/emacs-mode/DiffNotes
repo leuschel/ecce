@@ -1,0 +1,611 @@
+
+These are older:
+-rw-------  1 herme clip 247604 Jul  6 16:26 ciao.el.body.NoXemacsToolbar
+-rw-------  1 herme clip 247603 Jul  6 16:26 ciao.el.body.testingXemacsToolbar
+
+-----------------------------------------------------------------------------
+Summary diffs between ciao.el.body-1.9 and current ciao.el.body:
+- ciao.el.body has graphical menu
+- ciao.el.body has exe-buffer-name defined
+- ciao.el.body is adapted to lpdoc 2.0
+- *** many changes in regular expressions and faces: we keep curr
+- *** significant change in ciao-do-send-command (left curr one for now)
+- *** many changes in tool-bar-mode
+    - 1.9 has ciao-tool-bar-add-item-from-menu and rest of xemacs stuff
+-----------------------------------------------------------------------------
+Differences in regexps
+-----------------------------------------------------------------------------
+1112,1115d1134
+<     ;; scripts
+<     ((lambda (limit) 
+<        (ciao-font-lock-match limit "^#!" "^[ \t]*$"))
+<      . ciao-face-script-header)
+1123,1129c1142,1153
+<     ;; % comments starting a line
+<     ("^[ \t]*%.*$" . 
+<      ,(if ciao-faces-use-variable-pitch-in-comments
+< 	  'ciao-face-comment-variable-pitch
+< 	'ciao-face-comment))
+<     ;; LPdoc comments
+<     ;; lpdoc bug comments
+---
+> 
+> 
+>     ;; comments
+>     ("%.*$" 0 ciao-face-comment)
+> 
+>     ;; scripts
+>     ((lambda (limit) 
+>        (ciao-font-lock-match limit "^#!" "^[ \t]*$"))
+>      . ciao-face-script-header)
+> 
+>     ;; lpdoc commands in comments
+>     ;; We want this before strings are highligthed
+1130a1155,1182
+>        (ciao-font-lock-match limit "@begin{verbatim}" "@end{verbatim}"))
+>      0 ciao-face-lpdoc-verbatim)
+> 
+>     ;; ?
+>     ((lambda (limit) 
+>        (ciao-font-lock-match limit "@include[^ {}@]*{" "[^}@]*}"))
+>      0 ciao-face-lpdoc-include)
+> 
+>     ;; LPDOC (this sections goes here because they have to be
+>     ;; highlighted before strings.
+>     ; lpdoc commands
+>     ;; example: @item @.{o} @OE... => why not put these commands
+>     ;; as @..?{}
+>     ;; What does the comment above mean???? MH
+>     ("@\\([}{@]\\|\\([A-Za-z]+\\|[?!]\\)[ \t\n]\\)"
+>      0 ciao-face-lpdoc-command keep)
+> 
+>     ("@[^ \t\n{}@=<>]*{[^{}@]*}"
+>      0 ciao-face-lpdoc-command keep)
+>     ;; lpdoc comment strings in assertions
+> ;    ("#[^\\\"]*\\(\"\\([^\\\"]\\|\\\\\\(.\\|\n\\)\\)*\"\\)" 
+>     ("#[ \n\t]*\\(\"\\([^\\\"]\\|\\\\\\(.\\|\n\\)\\)*\"\\)" 
+>      1 
+>      ,(if ciao-faces-use-variable-pitch-in-comments
+> 	  'ciao-face-lpdoc-comment-variable-pitch
+> 	'ciao-face-lpdoc-comment) keep)
+>     ;; lpdoc (bug) comments
+>     ((lambda (limit)
+1133,1141c1185,1186
+<                      "[^\\\"]\"[ \t\n]*)[ \t\n]*\\.[ \t]*$"))
+<      . ciao-face-lpdoc-bug-comment)
+<     ;; lpdoc version comments (and other related directives)
+<     ((lambda (limit) 
+<        (ciao-font-lock-match 
+< 	limit
+< 	"^[ \t]*:-[ \t\n]+\\(comment\\|doc\\)([ \t\n]*version(" 
+< 	"[^\\\"]\"[ \t\n]*)[ \t\n]*\\.[ \t]*$"))
+<      . ciao-face-lpdoc-version-comment)
+---
+>                      "[^\\\"]\"[ \t\n]*)[ \t\n]*\\.")) ; was [ \t]*$
+>      0 ciao-face-lpdoc-bug-comment keep)
+1149,1150c1194,1195
+< 	"[^\\\"]\"[ \t\n]*)[ \t\n]*\\.[ \t]*$"))
+<      . 
+---
+> 	"[^\\\"]\"[ \t\n]*)[ \t\n]*\\.")) ; was: [ \t]*$
+>      0
+1153c1198
+< 	'ciao-face-lpdoc-comment))
+---
+> 	'ciao-face-lpdoc-comment) keep)
+1159,1166c1204,1205
+< 	"[ \t\n]*)[ \t\n]*\\.[ \t]*$"))
+<      . 
+<      ,(if ciao-faces-use-variable-pitch-in-comments
+< 	  'ciao-face-lpdoc-comment-variable-pitch
+< 	'ciao-face-lpdoc-comment))
+<     ;; comment strings in assertions
+<     ("#[ \n]+\\(\"\\([^\\\"]\\|\\\\\\(.\\|\n\\)\\)*\"\\)" 
+<      1 
+---
+> 	"[ \t\n]*)[ \t\n]*\\.")) ; was: [ \t]*$
+>      0
+1169,1180c1208,1215
+< 	'ciao-face-lpdoc-comment))
+<     ;; lpdoc commands in comments
+<     ("@[^ \t\n{}@=<>]*{[^{}@]*}"
+<      0 ciao-face-lpdoc-command t)
+<     ("@\\([}{@]\\|\\([A-Za-z]+\\|[?!]\\)[ \t\n]\\)"
+<      0 ciao-face-lpdoc-command t)
+<     ((lambda (limit) 
+<        (ciao-font-lock-match limit "@include[^ {}@]*{" "[^}@]*}"))
+<      0 ciao-face-lpdoc-include t)
+<     ((lambda (limit) 
+<        (ciao-font-lock-match limit "@begin{verbatim}" "@end{verbatim}"))
+<      0 ciao-face-lpdoc-verbatim t)
+---
+> 	'ciao-face-lpdoc-comment) keep)
+> 
+>     ;; Characters 0'...
+>     ("0'\\(\\\\.\\|.\\)" 0 ciao-face-string)
+> 
+>     ;; quoted atoms
+>     ("\\('\\(\\\\\\\\\\|\\\\'\\|[^'\n]\\)*'\\)" 0 ciao-face-quoted-atom)
+> 
+1182,1184c1217,1224
+<      0 ciao-face-lpdoc-crossref t)
+<     ;; Directives 
+<     ((lambda (limit)
+---
+>      0 ciao-face-lpdoc-crossref)
+> 
+>     ;; Strings
+> ;;    ("^[^']*\\(\"\\([^\\\"]\\|\"\"\\|\\\\\\(.\\|\n\\)\\)*\"\\)" 1 ciao-face-string)
+>     ("\\(\"\\([^\\\"]\\|\"\"\\|\\\\\\(.\\|\n\\)\\)*\"\\)" 0 ciao-face-string)
+> 
+>     ;; Directives (keep => They can have a comment)
+>     ((lambda (limit) 
+1186c1226
+<         limit
+---
+>         limit    
+1188,1191c1228,1231
+< 		(regexp-opt ciao-builtin-directives t) "\\>")
+<         "^[ \t]*$\\|\\.$"))
+<      . ciao-face-builtin-directive)
+<     ((lambda (limit) 
+---
+> 		(regexp-opt ciao-predicate-directives t) "\\>")
+>         "\\.")) ; was: ^[ \t]*$\\|\\.$
+>      0 ciao-face-predicate-directive keep)
+>     ((lambda (limit)
+1195,1197c1235,1237
+< 		(regexp-opt ciao-predicate-directives t) "\\>")
+<         "^[ \t]*$\\|\\.$"))
+<       . ciao-face-predicate-directive)
+---
+> 		(regexp-opt ciao-builtin-directives t) "\\>")
+>         ")[ \t]*\\.")) ; was: "^[ \t]*$\\|\\."
+>      0 ciao-face-builtin-directive keep)
+1201c1241
+< 	(concat "^[ \t]*:-[ \t\n]*" 
+---
+> 	(concat "^[ \t]*:-[ \t\n]*"
+1203,1205c1243,1247
+< 	"^[ \t]*$\\|\\.$"))
+<      . ciao-face-module-directive)
+<     ((lambda (limit) 
+---
+> ;	")[ \t]*\\.")) ; was: [ \t]*
+> 	")[ \t]*\\."))
+>      0 ciao-face-module-directive keep)
+> 
+>     ((lambda (limit)
+1210,1211c1252,1254
+<         "^[ \t]*$\\|\\.$"))
+<      . ciao-face-library-directive)
+---
+>         "^[ \t]*$\\|\\.")) ; was: "^[ \t]*$\\|\\.$"
+>      0 ciao-face-library-directive keep)
+> 
+1216,1218c1259,1262
+<         "^[ \t]*$\\|\\.$"))
+<      . ciao-face-user-directive)
+<     ;; Assertions
+---
+>         "^[ \t]*$\\|\\.")) ; was: .$
+>      0 ciao-face-user-directive keep)
+>     ;; --- add whatever is like :- I dont know bla bla bla bla.
+> 
+1219a1264,1280
+>        (ciao-font-lock-match-until-matching-sexp limit "\\<debug_message("))
+>      0 ciao-face-debug-mess)
+> 
+>     ;; LPdoc comments
+>     ;; lpdoc version comments (and other related directives)
+>     ((lambda (limit) 
+>        (ciao-font-lock-match
+> 	limit
+> 	"^[ \t]*:-[ \t\n]+\\(comment\\|doc\\)([ \t\n]*version(" 
+> 	"[^\\\"]\"[ \t\n]*)[ \t\n]*\\.")) ; was [ \t]*$
+>      0 ciao-face-lpdoc-version-comment keep)
+> 
+>     ;; Assertions Variables
+>     ;; ("^[ \t]*:-[^(]*\\<\\([A-Z_][a-zA-Z0-9_]*\\)" 1 ciao-face-assrt-variable)
+> 
+>     ;; Assertions
+>     ((lambda (limit)
+1222,1226c1283,1284
+<      . ciao-face-checked-assrt)
+<     ((lambda (limit) 
+<        (ciao-font-lock-match-until-matching-sexp limit "^[ \t\n]*checked("))
+<      . ciao-face-checked-assrt)
+<     ((lambda (limit) 
+---
+>      0 ciao-face-checked-assrt keep)
+>     ((lambda (limit)
+1229,1233c1287,1288
+<      . ciao-face-true-assrt)
+<     ((lambda (limit) 
+<        (ciao-font-lock-match-until-matching-sexp limit "^[ \t\n]*true("))
+<      . ciao-face-true-assrt)
+<     ((lambda (limit) 
+---
+>      0 ciao-face-true-assrt keep)
+>     ((lambda (limit)
+1236,1240c1291,1292
+<      . ciao-face-false-assrt)
+<     ((lambda (limit) 
+<        (ciao-font-lock-match-until-matching-sexp limit "^[ \t\n]*false("))
+<      . ciao-face-false-assrt)
+<     ((lambda (limit) 
+---
+>      0 ciao-face-false-assrt keep)
+>     ((lambda (limit)
+1243,1247c1295,1296
+<      . ciao-face-trust-assrt)
+<     ((lambda (limit) 
+<        (ciao-font-lock-match-until-matching-sexp limit "^[ \t\n]*trust("))
+<      . ciao-face-trust-assrt)
+<     ((lambda (limit) 
+---
+>      0 ciao-face-trust-assrt keep)
+>     ((lambda (limit)
+1250c1299,1300
+<      . ciao-face-check-assrt)
+---
+>      0 ciao-face-check-assrt keep)
+> 
+1252,1253c1302,1303
+<        (ciao-font-lock-match-until-matching-sexp limit "^[ \t\n]*check("))
+<      . ciao-face-check-assrt)
+---
+>        (ciao-font-lock-match-until-matching-sexp limit "^[ \t\n]*true("))
+>      0 ciao-face-true-assrt keep)
+1254a1305,1317
+>        (ciao-font-lock-match-until-matching-sexp limit "^[ \t\n]*false("))
+>      0 ciao-face-false-assrt keep)
+>     ((lambda (limit) 
+>        (ciao-font-lock-match-until-matching-sexp limit "^[ \t\n]*trust("))
+>      0 ciao-face-trust-assrt keep)
+>     ((lambda (limit) 
+>        (ciao-font-lock-match-until-matching-sexp limit "^[ \t\n]*check("))
+>      0 ciao-face-check-assrt keep)
+>     ((lambda (limit)
+>        (ciao-font-lock-match-until-matching-sexp limit "^[ \t\n]*checked("))
+>      0 ciao-face-checked-assrt keep)
+> 
+>     ((lambda (limit)
+1257c1320,1321
+< 	       "\\(decl\\|pred\\|comp\\|calls\\|success\\)") 
+---
+> 	       (regexp-opt '("decl" "pred" "comp" "calls"" success") t)
+> 	       )
+1259c1323,1324
+<      . ciao-face-check-assrt)
+---
+>      0 ciao-face-check-assrt keep)
+> 
+1263c1328
+<      . ciao-face-prop-assrt)
+---
+>      0 ciao-face-prop-assrt keep)
+1267c1332
+<      . ciao-face-regtype-assrt)
+---
+>      0 ciao-face-regtype-assrt keep)
+1271c1336
+<      . ciao-face-entry-assrt)
+---
+>      0 ciao-face-entry-assrt keep)
+1275,1294c1340,1341
+<      . ciao-face-modedef-assrt)
+<     ((lambda (limit) 
+<        (ciao-font-lock-match-until-matching-sexp limit "\\<debug_message("))
+<      . ciao-face-debug-mess)
+<     ;; Clause heads
+<     ("^[a-z][a-zA-Z0-9_]*" . ciao-face-clauseheadname)
+<     ("^'\\([^']\\|''\\)*'" . ciao-face-clauseheadname) 
+<     ;; Strings
+<     ("\\(^\\|[^']\\)\\(\"\\([^\\\"]\\|\"\"\\|\\\\\\(.\\|\n\\)\\)*\"\\)"
+<      2 ciao-face-string)
+<     ;; quoted atoms
+<     ("\\(^\\|[^0-9]\\)\\('\\([^\n\\']\\|\\\\.\\|''\\)*'\\)"
+<      2 ciao-face-quoted-atom)
+<     ;; comments not starting a line
+<     ("[ \t]%.*$" . 
+<       ,(if ciao-faces-use-variable-pitch-in-comments
+< 	   'ciao-face-comment-variable-pitch
+< 	 'ciao-face-comment))
+<     ;; Characters 0'...
+<     ("0'\\(\\\\.\\|.\\)" . ciao-face-string)
+---
+>      0 ciao-face-modedef-assrt keep)
+> 
+1308c1355,1378
+<     ))
+---
+> 
+>     ;; Clause heads
+>     ; this consider atoms _without_ spaces and normal names as a
+>     ; clause name
+> ;    ("^\\([a-z'][^(\\.: ]*\\)\\([ \t\n]*\\.\\|[ \t\n]*:-\\|(\\)"
+> ;      1 ciao-face-clauseheadname t)
+>     ("^[a-z][a-zA-Z0-9_]*" 0 ciao-face-clauseheadname)
+>     ("^\\('\\(\\\\'\\|[^']\\)*'\\)\\([ \t\n]*\\.\\|[ \t\n]*:-\\|(\\)" 
+>     0 ciao-face-clauseheadname)
+> 
+>     ;; This is for debugging... if patata appears in green it means
+>     ;; all previous rules are understood by emacs (or XEmacs)
+>     ;; Emacs
+>     ;; ("patata" 0 patata_var t)
+>     ;; XEmacs
+> 
+>     ;; ("patata" 0 ciao-face-true-assrt t)
+>     
+>     ;; quoted atoms larger than 1 line
+>     ("\\('\\(\\\\\\\\\\|\\\\'\\|[^']\\)*'\\)" 0 ciao-face-quoted-atom)
+>     )
+>   )
+> 
+> (defvar patata_var 'ciao-face-true-assrt)
+1317c1387,1390
+<   "[ \t]#[ \t\n]\\|^#[ \t\n]\\|\\.[ \t]*$")
+---
+>   "[^#\\.]*\\(#\\|\\.\\)[ \t]*$")
+> 
+> ;  "[^#\\.]*\\(#[ \t\n]*\\|\\.[ \t\n]*$\\)")
+> ;  "[ \t]#[ \t\n]\\|^#[ \t\n]\\|\\.[ \t]*$")
+1515a1589,1599
+> ;(defvar ciao-face-assrt-variable 'ciao-face-variable)
+> ;(defface ciao-face-assrt-variable ;; ciao-face-assrt-variable
+> ;  '((((type tty) (class color)) (:foreground "magenta" :bold t))
+> ;    (((class grayscale) (background light)) (:foreground "DimGray" :italic t))
+> ;    (((class grayscale) (background dark)) (:foreground "LightGray" :italic t))
+> ;    (((class color) (background light)) (:foreground "DarkGoldenrod"))
+> ;    (((class color) (background dark)) (:foreground "goldenrod1"))
+> ;    (t (:italic t)))
+> ;  "Face to use for variables."
+> ;  :group 'ciao-highlighting-faces-misc)
+> 
+-----------------------------------------------------------------------------
+Differences in 
+-----------------------------------------------------------------------------
+2734,2746c2818,2819
+< ;; *** 
+< ;; - All this one is for playing around with compatibility with xemacs.
+< ;; (defcustom ciao-inhibit-toolbar nil
+< ;;   "*Non-nil means don't use the specialized Ciao toolbar in xemacs."
+< ;;   :type 'boolean
+< ;;   :group 'ciao)
+< ;; 
+< ;; ;; ***
+< ;; (defcustom ciao-toolbar-icon-directory "/home/clip/Systems/ciao/emacs-mode/"
+< ;;   "Directory for icons (used in xemacs)."
+< ;;   :type 'string
+< ;;   :group 'ciao)
+< ;; 
+---
+> ;; ;; *** 
+> ;; ;; - This one is for playing around with compatibility with xemacs.
+2748,2760d2820
+< ;;   (if (and (not ciao-inhibit-toolbar)
+< ;; 	   (or 
+< ;; 	    ;; FSF emacs case 
+< ;; 	    (and (fboundp 'tool-bar-mode)
+< ;; 		 (display-graphic-p))
+< ;; 	    ;; xemacs case 
+< ;; 	    (and (boundp 'xemacs-logo)
+< ;; 		 (featurep 'toolbar)
+< ;; 		 (console-on-window-system-p))
+< ;; 	   ))
+< ;;       (ciao-do-setup-tool-bar)))
+< ;; 
+< ;; (defun ciao-do-setup-tool-bar () 
+2762,2867c2822,2846
+< ;;   (set 'tool-bar-map
+< ;;        (let (tool-bar-map)
+< ;; 	 (if (boundp 'xemacs-logo)
+< ;; 	     (setq ciao-xemacs-tool-bar-tmp nil)
+< ;; 	   (setq tool-bar-map (make-sparse-keymap)))
+< ;; ;; ;; General stuff
+< ;; ;; 	     (ciao-tool-bar-add-item "icons/ciaopl" 'find-file 'find-file 
+< ;; ;;               :help "Open or create a (Ciao) file") 
+< ;; 	     (ciao-tool-bar-add-item-from-menu 'dired "icons/open")
+< ;; 	     (ciao-tool-bar-add-item-from-menu 'kill-this-buffer "icons/close")
+< ;; ;; 	     (ciao-tool-bar-add-item-from-menu 'save-buffer "icons/save" nil
+< ;; ;; 			       :visible '(or buffer-file-name
+< ;; ;; 					     (not (eq 'special
+< ;; ;; 						      (get major-mode
+< ;; ;; 							   'mode-class)))))
+< ;; ;; 	     (ciao-tool-bar-add-item-from-menu 'write-file "icons/saveas" nil
+< ;; ;; 			       :visible '(or buffer-file-name
+< ;; ;; 					     (not (eq 'special
+< ;; ;; 						      (get major-mode
+< ;; ;; 							   'mode-class)))))
+< ;; ;; 	     (ciao-tool-bar-add-item-from-menu 'undo "icons/undo" nil
+< ;; ;; 			       :visible '(not (eq 'special (get major-mode
+< ;; ;; 								'mode-class))))
+< ;; ;; 	     (ciao-tool-bar-add-item-from-menu 'kill-region "icons/cut" nil
+< ;; ;; 			       :visible '(not (eq 'special (get major-mode
+< ;; ;; 								'mode-class))))
+< ;; 	     (ciao-tool-bar-add-item-from-menu 'menu-bar-kill-ring-save 
+< ;; 					       "icons/copy")
+< ;; ;; 	     (ciao-tool-bar-add-item-from-menu 'yank "icons/paste" nil
+< ;; ;; 			       :visible '(not (eq 'special (get major-mode
+< ;; ;; 								'mode-class))))
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;;                                'nonincremental-search-forward "icons/search")
+< ;; 	     (ciao-tool-bar-add-item-from-menu 'print-buffer "icons/print")
+< ;; ;; ;; Ciao-specific stuff
+< ;; 	 (ciao-tool-bar-add-item-from-menu 
+< ;; 	  'run-ciao-toplevel "icons/ciao" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-fontify-buffer "icons/ciaorehighlight" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-load-buffer "icons/ciaoload" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-find-last-run-errors "icons/jump_to" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-unmark-last-run-errors "icons/clear" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-check-buffer-syntax "icons/ciaoasr" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-check-types-modes    "icons/checkassertions" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-preprocess-buffer-menu 
+< ;; 	      "icons/ciaopreprocask" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-preprocess-buffer    "icons/ciaopreproc" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-preprocess-buffer-and-show-output
+< ;; 	      "icons/ciaopreprocsee" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-debug-buffer "icons/ciaodebug" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-gen-buffer-doc "icons/lpdoc" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-start-viewer "icons/lpdocview" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-make-exec "icons/ciaoexeout" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-insert-script-header "icons/ciaoscrt" ciao-mode-map)
+< ;; ;; ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; ;; ;; 	      'ciao-make-po "icons/ciaopo" ciao-mode-map)
+< ;; ;; ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; ;; ;; 	      'ciao-make-exec "icons/ciaoitf" ciao-mode-map)
+< ;; ;; ;;	     (ciao-tool-bar-add-item "ciaomanuals" 
+< ;; ;; 	     (ciao-tool-bar-add-item "icons/manuals" 
+< ;; ;;               'ciao-goto-ciao-manuals 'ciao-goto-ciao-manuals 
+< ;; ;;  	      :help "Go to area containing the Ciao system manuals")
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-help-on-current-symbol "icons/wordhelp" ciao-mode-map)
+< ;; 	     (ciao-tool-bar-add-item-from-menu 
+< ;; 	      'ciao-complete-current-symbol "icons/complete" ciao-mode-map)
+< ;; ;; 	     (ciao-tool-bar-add-item "icons/preferences" 
+< ;; ;; 				(lambda ()
+< ;; ;; 				  (interactive)
+< ;; ;; 				  (customize-group 'ciao-environment))
+< ;; ;; 				'ciao-customize
+< ;; ;;  	      :help "Edit  (customize) preferences for Ciao, CIaoPP, LPdoc")
+< ;; 	 ;; xemacs postprocessing
+< ;; 	 (if (boundp 'xemacs-logo)
+< ;; 	     (progn
+< ;; 	       (set-default-toolbar-position 'left)
+< ;; 	       (set-specifier right-toolbar-visible-p t)
+< ;; 	       (set-specifier right-toolbar-width 60)
+< ;; 	       (set-specifier 
+< ;; 		;; default-toolbar 
+< ;; 		;; left-toolbar
+< ;; 		right-toolbar
+< ;; 		(cons 
+< ;; 		 (current-buffer) 
+< ;; 		 (append
+< ;; 		  ;; For adding the default stuff
+< ;; 		  ;; (specifier-specs default-toolbar 'global)
+< ;;                   ;; Separator
+< ;; 		  ;; '([:style 3d :size 30])
+< ;; 		  (reverse ciao-xemacs-tool-bar-tmp)
+< ;; 		  )))))
+< ;; 	 tool-bar-map))
+< ;;   )
+---
+> ;;   (if (not (display-graphic-p))
+> ;;       (set 'tool-bar-map nil)
+> ;;     (set 'tool-bar-map
+> ;; 	 (let ((tool-bar-map (make-sparse-keymap)))
+> ;; 	   (ciao-tool-bar-add-item "icons/ciaopl" 'find-file 'find-file 
+> ;; 			      :help "Open or create a (Ciao) file") 
+> ;; 	   (ciao-tool-bar-add-item-from-menu 'dired "open")
+> ;; 	   (ciao-tool-bar-add-item-from-menu 'kill-this-buffer "close")
+> ;; 	   (ciao-tool-bar-add-item-from-menu 'save-buffer "save" nil
+> ;; 				:visible '(or buffer-file-name
+> ;; 					      (not (eq 'special
+> ;; 						       (get major-mode
+> ;; 							    'mode-class)))))
+> ;; 	   (ciao-tool-bar-add-item-from-menu 
+> ;; 	    'run-ciao-toplevel "icons/ciao" ciao-mode-map)
+> ;; 	   (ciao-tool-bar-add-item "icons/manuals" 
+> ;; 		      'ciao-goto-ciao-manuals 'ciao-goto-ciao-manuals 
+> ;; 		      :help "Go to area containing the Ciao system manuals")
+> ;; 	   (ciao-tool-bar-add-item "preferences" 
+> ;; 			      (lambda ()
+> ;; 				(interactive)
+> ;; 				(customize-group 'ciao-environment))
+> ;; 			      'ciao-customize
+> ;;  	      :help "Edit  (customize) preferences for Ciao, CIaoPP, LPdoc")
+> ;; 	   tool-bar-map))))
+2869,2870c2848,2852
+< ;; ;; Menu bar accummulator for xemacs version
+< ;; (defvar ciao-xemacs-tool-bar-tmp nil)
+---
+> ;; ;; *** Just for testing 
+> ;; (defun ciao-tool-bar-add-item-from-menu (comm icon &optional map &rest props)
+> ;;   (unless map
+> ;;     (setq map global-map))
+> ;;   (tool-bar-add-item-from-menu comm icon map props))
+2872,2897c2854
+< ;; ;; Portable tool-bar-add-item-from-menu function
+< ;; ;; Adds to accumulators
+< ;; (defun ciao-tool-bar-add-item-from-menu 
+< ;;   (comm icon &optional from-map &rest props
+< ;; 	)
+< ;;   (if (boundp 'xemacs-logo)
+< ;;       ;; xemacs
+< ;;       (progn 
+< ;; 	(setq ciao-xemacs-tool-bar-tmp
+< ;; 	      (cons 
+< ;; 	       `[,(toolbar-make-button-list ;; icon
+< ;; 		   (expand-file-name (concat icon ".xpm")
+< ;; 				     ciao-toolbar-icon-directory))
+< ;; 		 ,comm ;; the actual callback
+< ;; 		 t  ;; enabled
+< ;; 		 "" ;; tooltip
+< ;; 		 ] 
+< ;; 	       ciao-xemacs-tool-bar-tmp))
+< ;; 	ciao-xemacs-tool-bar-tmp)
+< ;;     ;; FSF emacs
+< ;;     (unless from-map
+< ;;       (setq from-map global-map))
+< ;;     (tool-bar-add-item-from-menu comm icon from-map props)))
+< ;; 
+< ;; *** Just for testing 
+< ;; Portable low level tool-bar function (to be developed!)
+---
+> ;; ;; *** Just for testing 
+2899,2901d2855
+< ;;   (if (boundp 'xemacs-logo)
+< ;;       (ciao-tool-bar-add-item-from-menu icon def 
+< ;; 
+-----------------------------------------------------------------------------
+Differences (minor) in buffer switches
+-----------------------------------------------------------------------------
+4456,4462c4409,4428
+<    (switch-to-buffer-other-window (concat "*" buffername "*"))
+<    (goto-char (point-max))
+<    (if (eq recenter-opt t) 
+<        (recenter 0))
+<    (insert-string command)
+<    (comint-send-input)
+<    (switch-to-buffer-other-window ciao-tmp-calling-buff))
+---
+>   (let ((at-menu nil))
+>     (if (string= (concat (buffer-name (current-buffer))) 
+> 		 (exe-buffer-name ciao-ciaopp-gmenu-buffer-name))
+> 	(progn
+> 	  ; (set-buffer (concat "*" buffername "*"))
+> 	  (switch-to-buffer (concat "*" buffername "*"))
+> 	  (setq at-menu t)
+> 	  )
+>       (switch-to-buffer-other-window (concat "*" buffername "*")))
+>       ; (set-buffer (concat "*" buffername "*"))
+>     (goto-char (point-max))
+>     (if (eq recenter-opt t) 
+> 	(recenter 0))
+>     (insert-string command)
+>     (comint-send-input)
+>     (if at-menu
+> 	; ()
+> 	(switch-to-buffer (exe-buffer-name ciao-ciaopp-gmenu-buffer-name))
+>       (switch-to-buffer-other-window ciao-tmp-calling-buff))
+>     ))
+4963c5224
+<     ;; In this case, probably best to stay in original buffer
+---
+>     ;; In this case, probably best to go back to original buffer
+-----------------------------------------------------------------------------

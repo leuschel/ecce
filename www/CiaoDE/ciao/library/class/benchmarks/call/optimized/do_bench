@@ -1,0 +1,19 @@
+#!/bin/tcsh
+if ($?CIAOLIB) then
+
+ echo "O'CIAO predicate calling benchmark"
+ echo "----------------------------------"
+ echo
+
+ cd ${CIAOLIB}/library/class/benchmarks/call/optimized
+ echo "Compiling..."
+
+ rm -f *.itf *.po
+ ciaoc optimized
+
+ echo "Benchmarking..."
+ ./optimized
+
+ echo
+
+endif

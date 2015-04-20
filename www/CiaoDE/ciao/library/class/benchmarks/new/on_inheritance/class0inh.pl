@@ -1,0 +1,2 @@
+
+:- class(class0inh).

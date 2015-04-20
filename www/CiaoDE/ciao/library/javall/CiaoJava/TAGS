@@ -1,0 +1,270 @@
+
+PLAtom.java,513
+public class PLAtom PLAtom12,344
+  public PLAtom(PLAtom.PLAtom21,552
+  public String toString(PLAtom.toString33,760
+  public Object javaRepr(PLAtom.javaRepr49,1223
+  public Object javaRepr(PLAtom.javaRepr60,1474
+  public String getName(PLAtom.getName72,1733
+  public boolean isRunnable(PLAtom.isRunnable85,2028
+  public boolean equals(PLAtom.equals101,2426
+  public PLTerm copy(PLAtom.copy117,2794
+  int numberOfCells(PLAtom.numberOfCells130,3152
+  void launchGoal(PLAtom.launchGoal137,3254
+
+PLConnection.java,1119
+public class PLConnection PLConnection22,834
+    public PLConnection(PLConnection.PLConnection60,2058
+    public PLConnection(PLConnection.PLConnection76,2669
+    public PLConnection(PLConnection.PLConnection94,3423
+    public PLConnection(PLConnection.PLConnection112,4060
+    private void start(PLConnection.start130,4703
+    private void start(PLConnection.start160,5658
+    public void start(PLConnection.start184,6351
+    public PLInterpreter getInterpreter(PLConnection.getInterpreter198,6741
+    private void createSockets(PLConnection.createSockets206,6946
+    public PLGoal query(PLConnection.query269,9066
+    void toPrologPJ(PLConnection.toPrologPJ286,9557
+    void toPrologJP(PLConnection.toPrologJP299,9922
+    PLTerm fromPrologPJ(PLConnection.fromPrologPJ317,10490
+    PLTerm fromPrologJP(PLConnection.fromPrologJP339,11224
+    public void close(PLConnection.close356,11736
+    public void stop(PLConnection.stop370,12149
+    public void join(PLConnection.join393,12639
+    public static PLConnection getPreviousConnection(PLConnection.getPreviousConnection405,12869
+
+PLEventListener.java,870
+class PLEventListener PLEventListener15,449
+  PLEventListener(PLEventListener.PLEventListener52,1347
+  void addListener(PLEventListener.addListener75,2203
+  void removeListener(PLEventListener.removeListener97,2836
+  public synchronized void eventDispatched(PLEventListener.eventDispatched114,3346
+class PLEvents PLEvents128,3711
+  PLEvents(PLEvents.PLEvents148,4160
+  void addEvent(PLEvents.addEvent159,4451
+  void removeEvent(PLEvents.removeEvent175,4851
+  boolean isEmpty(PLEvents.isEmpty187,5136
+  void eventDispatched(PLEvents.eventDispatched200,5555
+class PLGoals PLGoals214,5880
+  PLGoals(PLGoals.PLGoals226,6099
+  PLGoals(PLGoals.PLGoals235,6284
+  void addGoal(PLGoals.addGoal245,6490
+  public void removeGoal(PLGoals.removeGoal253,6650
+  boolean isEmpty(PLGoals.isEmpty262,6853
+  void launchGoals(PLGoals.launchGoals272,7008
+
+PLException.java,236
+public class PLException PLException8,181
+  public PLException(PLException.PLException14,310
+  public PLException(PLException.PLException27,545
+  public static PLException translateException(PLException.translateException43,945
+
+PLFloat.java,481
+public class PLFloat PLFloat7,172
+  public PLFloat(PLFloat.PLFloat20,561
+  public String toString(PLFloat.toString33,851
+  public Object javaRepr(PLFloat.javaRepr53,1475
+  public Object javaRepr(PLFloat.javaRepr67,1805
+  public double getValue(PLFloat.getValue77,2060
+  public boolean isRunnable(PLFloat.isRunnable91,2378
+  public boolean equals(PLFloat.equals106,2704
+  public PLTerm copy(PLFloat.copy122,3071
+  int numberOfCells(PLFloat.numberOfCells131,3192
+
+PLGoal.java,907
+public class PLGoal PLGoal14,410
+  public PLGoal(PLGoal.PLGoal55,2040
+  public PLGoal(PLGoal.PLGoal77,2815
+  public PLGoal(PLGoal.PLGoal99,3605
+  public PLGoal(PLGoal.PLGoal128,4739
+  public void query(PLGoal.query151,5516
+  public PLTerm nextSolution(PLGoal.nextSolution208,7633
+  public boolean execute(PLGoal.execute258,9329
+  public boolean isStillRunning PLGoal.isStillRunning301,10770
+  public void terminate(PLGoal.terminate340,11961
+  public void useModule(PLGoal.useModule365,12840
+  public void useModule(PLGoal.useModule401,14271
+  private void terminate_(PLGoal.terminate_409,14484
+  protected void finalize(PLGoal.finalize431,15175
+  private PLTerm parseTerm(PLGoal.parseTerm453,15903
+  public String toString(PLGoal.toString478,16509
+    private PLTerm getJavaId(PLGoal.getJavaId487,16680
+    public PLConnection getConnection(PLGoal.getConnection499,17035
+
+PLGoalException.java,182
+public class PLGoalException PLGoalException8,151
+  public PLGoalException(PLGoalException.PLGoalException14,290
+  public PLGoalException(PLGoalException.PLGoalException26,510
+
+PLInteger.java,506
+public class PLInteger PLInteger10,305
+  public PLInteger(PLInteger.PLInteger24,736
+  public String toString(PLInteger.toString37,1040
+  public Object javaRepr(PLInteger.javaRepr55,1678
+  public Object javaRepr(PLInteger.javaRepr68,2054
+  public int getValue(PLInteger.getValue77,2273
+  public boolean isRunnable(PLInteger.isRunnable90,2569
+  public boolean equals(PLInteger.equals105,2882
+  public PLTerm copy(PLInteger.copy121,3294
+  int numberOfCells(PLInteger.numberOfCells134,3694
+
+PLInterpreter.java,1306
+class PLInterpreter PLInterpreter15,418
+    public PLInterpreter(PLInterpreter.PLInterpreter41,1620
+    public PLTerm interpret(PLInterpreter.interpret99,4746
+  private PLTerm getValue(PLInterpreter.getValue151,6493
+  private PLTerm setValue(PLInterpreter.setValue210,8521
+  private PLTerm deleteObject(PLInterpreter.deleteObject255,10138
+  private PLTerm createObject(PLInterpreter.createObject295,11605
+  private PLTerm invokeMethod(PLInterpreter.invokeMethod373,14505
+  private PLTerm addListener(PLInterpreter.addListener471,17884
+  private PLTerm removeListener(PLInterpreter.removeListener518,19552
+  private PLTerm prologRepr(PLInterpreter.prologRepr559,20916
+  private PLTerm java_object(PLInterpreter.java_object629,22853
+  private Method getMethod(PLInterpreter.getMethod664,24299
+  private Constructor getConstructor(PLInterpreter.getConstructor750,26892
+  private int getDistance(PLInterpreter.getDistance823,29211
+    private Object invoke(PLInterpreter.invoke930,32782
+    private Object translateArg(PLInterpreter.translateArg956,33597
+  public static boolean isInterpretable(PLInterpreter.isInterpretable998,34859
+  public Object getObject(PLInterpreter.getObject1034,35856
+  private Class getPrimitiveClass(PLInterpreter.getPrimitiveClass1049,36398
+
+PLJavaObjServer.java,161
+class PLJavaObjServer PLJavaObjServer17,364
+    public PLJavaObjServer(PLJavaObjServer.PLJavaObjServer28,648
+    public void run(PLJavaObjServer.run37,830
+
+PLJavaServer.java,159
+public class PLJavaServer PLJavaServer13,305
+    public static void main(PLJavaServer.main21,535
+    private static void usage(PLJavaServer.usage86,1890
+
+PLList.java,761
+public class PLList PLList13,443
+  public PLList(PLList.PLList27,947
+  public PLList(PLList.PLList48,1630
+  public PLList(PLList.PLList75,2499
+  public String toString(PLList.toString95,3000
+  public Object javaRepr(PLList.javaRepr121,3748
+  public boolean isRunnable(PLList.isRunnable143,4333
+  public PLTerm getHead(PLList.getHead152,4494
+  public PLTerm getTail(PLList.getTail163,4746
+  void setTail(PLList.setTail175,5069
+  public void add(PLList.add184,5247
+  public boolean equals(PLList.equals207,5892
+  public PLTerm copy(PLList.copy229,6503
+  public boolean unify(PLList.unify259,7400
+  void backtrack(PLList.backtrack284,7991
+  public int length(PLList.length302,8435
+  int numberOfCells(PLList.numberOfCells322,8838
+
+PLMultithreadSocketReader.java,514
+class PLMultithreadSocketReader PLMultithreadSocketReader22,820
+    public PLMultithreadSocketReader(PLMultithreadSocketReader.PLMultithreadSocketReader61,2189
+    public void run(PLMultithreadSocketReader.run72,2506
+    public PLTerm read(PLMultithreadSocketReader.read118,4076
+    private void addMsg(PLMultithreadSocketReader.addMsg150,5247
+    private synchronized PLTerm getMsg(PLMultithreadSocketReader.getMsg164,5619
+    private synchronized void clear(PLMultithreadSocketReader.clear186,6086
+
+PLServerSocket.java,381
+public class PLServerSocket PLServerSocket13,210
+  public PLServerSocket(PLServerSocket.PLServerSocket28,731
+  public Socket openSocket(PLServerSocket.openSocket51,1247
+  protected static BufferedReader getReader(PLServerSocket.getReader70,1862
+  protected static PrintWriter getWriter(PLServerSocket.getWriter84,2387
+  public int getPort(PLServerSocket.getPort95,2729
+
+PLSocketReader.java,358
+class PLSocketReader PLSocketReader19,628
+    public PLSocketReader(PLSocketReader.PLSocketReader43,1256
+    public void run(PLSocketReader.run53,1507
+    public synchronized PLTerm read(PLSocketReader.read84,2441
+    private synchronized void addMsg(PLSocketReader.addMsg106,3041
+    private synchronized void clear(PLSocketReader.clear117,3266
+
+PLSocketWriter.java,360
+class PLSocketWriter PLSocketWriter16,409
+    public PLSocketWriter(PLSocketWriter.PLSocketWriter42,1079
+    public void run(PLSocketWriter.run52,1332
+    public synchronized void write(PLSocketWriter.write89,2755
+    private synchronized PLTerm getMsg(PLSocketWriter.getMsg100,3001
+    private synchronized void clear(PLSocketWriter.clear118,3384
+
+PLString.java,541
+public class PLString PLString13,404
+  public PLString(PLString.PLString22,619
+  public String toString(PLString.toString34,830
+  public String getValue(PLString.getValue45,1013
+  public Object javaRepr(PLString.javaRepr61,1450
+  public Object javaRepr(PLString.javaRepr73,1745
+  public boolean isRunnable(PLString.isRunnable84,2020
+  public boolean equals(PLString.equals100,2449
+  public PLTerm copy(PLString.copy114,2729
+  public int length(PLString.length126,2955
+  int numberOfCells(PLString.numberOfCells139,3204
+
+PLStructure.java,851
+public class PLStructure PLStructure11,237
+  public PLStructure(PLStructure.PLStructure25,577
+  public PLStructure(PLStructure.PLStructure45,1050
+  public String toString(PLStructure.toString62,1429
+  public String getFunctor(PLStructure.getFunctor78,1778
+  public int getArity(PLStructure.getArity89,1954
+  public PLTerm[] getArgs(PLStructure.getArgs102,2226
+  public PLTerm getArg(PLStructure.getArg117,2561
+  public Object javaRepr(PLStructure.javaRepr139,3184
+  public boolean isRunnable(PLStructure.isRunnable158,3774
+  public boolean equals(PLStructure.equals171,4089
+  public PLTerm copy(PLStructure.copy192,4724
+  public boolean unify(PLStructure.unify217,5547
+  void backtrack(PLStructure.backtrack246,6234
+  int numberOfCells(PLStructure.numberOfCells259,6579
+  void launchGoal(PLStructure.launchGoal280,7335
+
+PLTerm.java,1375
+public abstract class PLTerm PLTerm19,469
+    Object hashKey(PLTerm.hashKey199,6544
+  void launchGoal(PLTerm.launchGoal218,7158
+  public boolean unify(PLTerm.unify240,7846
+  void backtrack(PLTerm.backtrack269,8658
+  public boolean isVariable(PLTerm.isVariable284,9018
+  public boolean isStructure(PLTerm.isStructure294,9235
+  public boolean isList(PLTerm.isList304,9443
+  public boolean isString(PLTerm.isString314,9646
+  public boolean isNil(PLTerm.isNil324,9844
+  boolean isException(PLTerm.isException335,10077
+  static PLTerm javaException(PLTerm.javaException353,10455
+  boolean isPrologFail(PLTerm.isPrologFail367,10793
+  boolean isPrologSuccess(PLTerm.isPrologSuccess383,11129
+  boolean isQueryId(PLTerm.isQueryId399,11473
+  boolean isSolution(PLTerm.isSolution417,11900
+  static PLTerm fastRead(PLTerm.fastRead440,12528
+  private static void getPrefix(PLTerm.getPrefix468,13170
+  private static int getInt(PLTerm.getInt502,14019
+  private static float getFloat(PLTerm.getFloat529,14702
+  private static char getChar(PLTerm.getChar556,15422
+  private static String getString(PLTerm.getString585,16089
+  private static PLTerm getTerm(PLTerm.getTerm607,16558
+  String fastWrite(PLTerm.fastWrite717,19526
+  private StringBuffer genPrefix(PLTerm.genPrefix745,20099
+  private StringBuffer genTerm(PLTerm.genTerm776,20787
+
+PLVariable.java,820
+public class PLVariable PLVariable15,439
+  public PLVariable(PLVariable.PLVariable25,692
+  public PLVariable(PLVariable.PLVariable42,977
+  public boolean isFree(PLVariable.isFree59,1351
+  public PLTerm getBinding(PLVariable.getBinding71,1579
+  int getNumber(PLVariable.getNumber82,1740
+  public void bind(PLVariable.bind95,2017
+  public void unbind(PLVariable.unbind105,2216
+  public String toString(PLVariable.toString118,2516
+  public Object javaRepr(PLVariable.javaRepr135,2824
+  public boolean isRunnable(PLVariable.isRunnable148,3088
+  public boolean equals(PLVariable.equals160,3417
+  public PLTerm copy(PLVariable.copy176,3913
+  public boolean unify(PLVariable.unify197,4477
+  public void backtrack(PLVariable.backtrack217,4937
+  int numberOfCells(PLVariable.numberOfCells229,5184

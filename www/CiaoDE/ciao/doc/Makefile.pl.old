@@ -1,0 +1,70 @@
+:- module(_,_,[make, functions, assertions]).
+:- use_module(library(terms)).
+:- use_module(library(lists)).
+:- use_module(library(format)).
+:- use_module(library(ciaoconfig)).
+:- use_module(library(distutils),[make_subdir/5]).
+:- use_module(library('make/system_extra')).
+
+:- use_module('../CIAOSETTINGS').
+:- use_module('../CIAOSHARED').
+
+default <- [] :-
+	display(~atom_concat(['{Building ', ~main, ' documentation...}\n'])),
+	make_subdir(~lpmake, ~gmake, '../emacs-mode', '', 'CiaoMode.pl'),
+	del_file_nofail(~atom_concat(['reference/', ~main, '.htmlindex'])),
+	make_subdir(~lpmake, ~gmake, 'reference', ~atom_concat(['CIAOLIB=',~ciaosrc]),
+	'all').
+
+install <- :-
+	display(~atom_concat(['{Installing ', ~main, ' documentation...}\n'])),
+	make_subdir(~lpmake, ~lpmake, 'reference', ~atom_concat(['CIAOLIB=',~ciaosrc]),
+	'-l distutils/installmkf -m LPSETTINGS install'),
+	make(installdoclib).
+
+installdoclib <- :-
+	display(~atom_concat(['{Installing ', ~main, ' documentation libraries...}\n'])),
+	atom_concat(~reallibdir, '/doc/common', DocLib),
+	convert_permissions(~execmode, ExecMode),
+	convert_permissions(~datamode, DataMode),
+	make_dirpath(DocLib, ExecMode),
+% 	chmod(~atom_concat(~reallibdir,'/doc'), ExecMode),
+% 	chmod(DocLib, ExecMode),
+% 	-set_perms(~atom_concat(~reallibdir,'/doc'),~execmode),
+% 	-set_perms(DocLib,~execmode),
+	copy_files_nofail(~ls('common','*'), 'common', DocLib, yes),
+	ls(DocLib,'*',Fs),
+	(
+	    member(F,Fs), \+(member(F,['.','..'])),
+	    chmod(~atom_concat([DocLib,'/',F]),DataMode),
+	    fail
+	;
+	    true
+	),
+	display('Done.}\n').
+
+prb <- :-
+	make_dirpath('hello_world'),
+	set_perms('hello_world', ~execmode).
+
+uninstall <- :-
+	display('{Uninstalling '), display(~main), display(' documentation...}\n'),
+	make_opt('uninstall').
+
+%# Will be taken care of by recursive distribution script!
+distclean <- :- true.
+
+clean <- :-
+	display('{Cleaning up (clean) '), display(~main), display(' doc directories...}\n'),
+	make_opt('clean').
+
+realclean <- :-
+	display('{Cleaning up (realclean) '), display(~main), display(' doc directories...}\n'),
+	make_opt('realclean').
+
+braveclean <- :-
+	display('{Cleaning up (braveclean) '), display(~main), display(' doc directories...}\n'),
+	make_opt('braveclean').
+
+make_opt(Option) :-
+	make_subdir(~lpmake, ~lpmake, 'reference', '', ~atom_concat('-l distutils/installmkf -m LPSETTINGS ',Option)).

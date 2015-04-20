@@ -1,0 +1,37 @@
+#!/bin/sh
+CIAOVERSION=-1.13
+CIAOSUFFIX=
+if [ "${CIAODOCDIR:-0}" = "0" ] ; then
+  cat <<EOF
+Welcome to the Ciao Prolog Development System!
+
+** WARNING **: your shell initialization scripts have not been
+properly modified for locating the Ciao on-line documentation. Please
+refer to the instructions in the file /home/asap/asap-online-demo/CiaoDE/ciao/NewUser. 
+
+EOF
+#  exit 1
+fi
+
+CIAOBINDIR=/home/asap/asap-online-demo/CiaoDE/bin
+
+# CIAOBINDIR=`dirname $0`
+
+if [ "${PATH:-0}" = "0" ]
+then
+    PATH=${CIAOBINDIR}
+else
+    case ${PATH} in
+	${CIAOBINDIR}:* | *:${CIAOBINDIR} | *:${CIAOBINDIR}:* ) ;;
+	* )
+	    PATH=${CIAOBINDIR}:${PATH} ;;
+    esac
+fi
+
+if test "$#" = "0" ; then
+  exec ${CIAOBINDIR}/ciaosh${CIAOVERSION}${CIAOSUFFIX}
+elif test "$1" = "-c"; then
+  shift ; exec ${CIAOBINDIR}/ciaoc${CIAOVERSION}${CIAOSUFFIX} "$@"
+else
+  exec ${CIAOBINDIR}/ciao-shell${CIAOVERSION}${CIAOSUFFIX} "$@"
+fi

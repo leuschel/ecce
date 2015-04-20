@@ -1,0 +1,28 @@
+
+ How to install a ODBC 32-bit data source
+ ========================================
+
+ Once the ODBC driver is installed, and the database file is created,
+you may define an ODBC data source making a few simple steps (they can
+slightly differ depending on the database manager used):
+
+ Start-Settings-Control Panel-ODBC 32
+
+ Choose 'User DSN' tab if you want the data source only visible for
+you, or 'System DSN' if you want it to be visible for all the NT/W95
+users.  Click on the 'Add' button. Select the ODBC driver you want to
+use (e.g. Sybase SQL Anywhere, Microsoft Access Driver, SQL Server,
+...). Then click 'Finish'.
+
+ Now you to fill some fields (they can differ depending on the ODBC driver): 
+
+	Data Source Name.  - This is the source name you are using to
+        connect to. 
+	Description. 	   - Field to insert any comment.
+	User ID, Password. - Name and keyword to access to the data source.
+	Database File.	   - The main file containing the database
+        (.mdb, .db , ...). 
+	Others(optionals). - Database name, Server name, ...
+
+
+						CLIP, 14-December-1998 

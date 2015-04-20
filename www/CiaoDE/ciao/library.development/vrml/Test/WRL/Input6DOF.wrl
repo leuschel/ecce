@@ -1,0 +1,122 @@
+#VRML V2.0 utf8
+
+
+
+PROTO Input6DOF [
+
+    field    SFInt32    port 0
+
+    field    SFBool     accumulateTranslations FALSE
+
+    field    SFBool     accumulateRotations FALSE
+
+    field    SFVec3f    translationScale 1 1 1
+
+    field    SFVec3f    rotationScale 3.14159 3.14159 3.14159
+
+    field    SFBool     enabled TRUE
+
+    field    SFBool     latching FALSE
+
+    eventIn  SFBool     set_enabled
+
+    eventIn  SFBool     set_accumulateTranslations
+
+    eventIn  SFBool     set_accumulateRotations
+
+    eventIn  SFBool     level
+
+    eventIn  SFBool     home
+
+    eventIn  SFTime     pollTime
+
+    eventOut SFString   description
+
+    eventOut SFVec3f    position
+
+    eventOut SFRotation orientation
+
+    eventOut SFInt32    buttons
+
+    eventOut SFInt32    whichButton
+
+    eventOut SFBool     button1
+
+    eventOut SFBool     button2
+
+    eventOut SFBool     button3
+
+    eventOut SFBool     button4
+
+    eventOut SFBool     button5
+
+    eventOut SFBool     button6
+
+    eventOut SFBool     button7
+
+    eventOut SFBool     button8
+
+]
+
+{
+
+Script {
+
+    url "Read6DOF.class"
+
+    field    SFInt32    port IS port
+
+    field    SFBool     accumulateTranslations IS accumulateTranslations
+
+    field    SFBool     accumulateRotations IS accumulateRotations
+
+    field    SFVec3f    translationScale IS translationScale
+
+    field    SFVec3f    rotationScale IS rotationScale
+
+    field    SFBool     enabled IS enabled
+
+    field    SFBool     latching IS latching
+
+    eventIn  SFBool     set_enabled IS set_enabled
+
+    eventIn  SFBool     set_accumulateTranslations IS set_accumulateTranslations
+
+    eventIn  SFBool     set_accumulateRotations IS set_accumulateRotations
+
+    eventIn  SFBool     level IS level
+
+    eventIn  SFBool     home IS home  # profound!
+
+    eventIn  SFTime     pollTime IS pollTime
+
+    eventOut SFString   description IS description
+
+    eventOut SFVec3f    position IS position
+
+    eventOut SFRotation orientation IS orientation
+
+    eventOut SFInt32    buttons IS buttons
+
+    eventOut SFInt32    whichButton IS whichButton
+
+    eventOut SFBool     button1 IS button1
+
+    eventOut SFBool     button2 IS button2
+
+    eventOut SFBool     button3 IS button3
+
+    eventOut SFBool     button4 IS button4
+
+    eventOut SFBool     button5 IS button5
+
+    eventOut SFBool     button6 IS button6
+
+    eventOut SFBool     button7 IS button7
+
+    eventOut SFBool     button8 IS button8
+
+    }
+
+}
+

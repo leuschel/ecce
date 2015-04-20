@@ -1,0 +1,105 @@
+#!/bin/bash
+# ---------------------------------------------------------------------------
+# Some convenience definitions
+myself=`which $0`
+ROOTDIR=`dirname ${myself}`
+
+NEWCIAODIR=${ROOTDIR}
+NEWCIAOENGINE=${NEWCIAODIR}/bin/LINUXi86/ciaoengine 
+
+OLDCIAOC=${ROOTDIR}/bootstrap/ciaoc.sta
+OLDCIAOENGINE=${ROOTDIR}/bootstrap/ciaoengine.sta
+
+# Clean all the .po and .itf files in the directory recursively
+function clean_ciao_libs() {
+  cd ${NEWCIAODIR}
+  FILES=`find -name '*.po'; find -name '*.itf'`
+  if [ "x$FILES" == "x" ]; then
+    true
+  else
+    rm $FILES
+  fi
+}
+
+# Delete the file specified as first argument, if it exists
+function tryrm() {
+  FILE=$1; [ "x$FILE" != "x" ] && [ -x "$FILE" ] && rm "$FILE"
+}
+
+# ---------------------------------------------------------------------------
+# Do bootstrap to compile ciao
+
+# NEW BOOTSTRAP
+# Requirements: new compiler can be compiled with the old compiler
+#               new compiler with old bytecode can be executed with the old engine
+# Details:
+# The new compiler is compiled with the old compiler and old engine.
+# A new compiler with the old bytecode is generated and can be
+# run with the old engine. 
+# The new compiler is compiled again with the new compiler and old engine,
+# so that it is generated with new bytecode and can be runned with new engine.
+
+function make_engine() {
+  echo Make new engine
+  cd ${NEWCIAODIR}
+  make eng
+}
+
+function bootstrap() {
+  echo With old ciaoc+engine+new libs, compile Ciaoc2 with old bytecode
+  clean_ciao_libs
+  cd ${NEWCIAODIR}/ciaoc
+  tryrm ciaoc
+  CIAOENGINE=${OLDCIAOENGINE} CIAOLIB=${NEWCIAODIR} ${OLDCIAOC} -s -x ciaoc
+  cp ciaoc ciaoc2
+
+  echo With ciaoc2 and the old engine, compile Ciaoc with new bytecode
+  clean_ciao_libs
+  cd ${NEWCIAODIR}/ciaoc
+  tryrm ciaoc
+  CIAOENGINE=${OLDCIAOENGINE} CIAOLIB=${NEWCIAODIR} ${NEWCIAODIR}/ciaoc/ciaoc2 -s -x ciaoc
+  clean_ciao_libs
+
+  make_engine
+}
+
+function bootstrap2() {
+  make_engine
+
+  echo With old ciaoc+new engine+new libs, compile Ciaoc2 with old bytecode
+  clean_ciao_libs
+  cd ${NEWCIAODIR}/ciaoc
+  tryrm ciaoc
+  CIAOENGINE=${NEWCIAOENGINE} CIAOLIB=${NEWCIAODIR} ${OLDCIAOC} -s -x ciaoc
+  cp ciaoc ciaoc2
+
+  echo With ciaoc2 and the new engine, compile Ciaoc with new bytecode
+  clean_ciao_libs
+  cd ${NEWCIAODIR}/ciaoc
+  tryrm ciaoc
+  CIAOENGINE=${NEWCIAOENGINE} CIAOLIB=${NEWCIAODIR} ${NEWCIAODIR}/ciaoc/ciaoc2 -s -x ciaoc
+  clean_ciao_libs
+}
+
+bootstrap2
+
+# ---------------------------------------------------------------------------
+# Make some tests
+
+function tests() {
+  cd ${ROOTDIR}/ctoc/src
+  make clean
+  time make
+  cd ${ROOTDIR}/ctoc/benchmarks
+  ./ccs
+}
+
+CIAOLIB=${NEWCIAODIR} \
+CIAOENGINE=${NEWCIAOENGINE} \
+PATH=${NEWCIAODIR}/ciaoc:$PATH \
+  tests
+
+# ---------------------------------------------------------------------------
+# Return to the root directory 
+cd ${ROOTDIR}
+  

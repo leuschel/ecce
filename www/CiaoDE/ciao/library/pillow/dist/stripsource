@@ -1,0 +1,121 @@
+#!/bin/sh
+exec ciao-shell $0 "$@" # -*- mode: ciao; -*-
+
+%:- module(_,[main/1],[dcg]).
+:- use_module(library(streams)).
+:- use_module(library(strings),
+        [write_string/1, get_line/1]).
+:- use_module(library(lists), [append/3]).
+:- use_module(library('pillow/pillow_aux'), [http_sp/2]).
+
+main(_) :-
+        strip('../pillow_aux.pl', 'pillow_aux.pl',_),
+        strip('../html.pl', 'html.pl', Exp_html),
+        strip('../http.pl', 'http.pl', Exp_http),
+        create_header('header.pl', Exp_html, Exp_http).
+
+strip(In, Out, Exports) :-
+        message(['{Creating ',Out,' file']), 
+        open_input(In, OldIn),
+        open_output(Out, OldOut),
+        get_line(Line),
+        strip_lines(Line, Exports),
+        close_input(OldIn),
+        close_output(OldOut),
+        message(['}']).
+
+create_header(Header, Exp1, Exp2) :-
+        open_output(Header, OldOut),
+        display(':- module(pillow, ['),
+        write_lines(Exp1),
+        display(','),
+        write_lines(Exp2),
+        display(']).\n'),
+        close_output(OldOut).
+
+write_lines([]).
+write_lines([Line|Lines]) :-
+        nl, write_string(Line),
+        write_lines(Lines).
+
+strip_lines(end_of_file,_) :- !,
+        error(['No export list found']).
+strip_lines(Line,Exports) :-
+        module_def(Line), !,
+        get_line(OtherLine),
+        get_exports(OtherLine,Exports).
+strip_lines(_Line,Exports) :-
+        get_line(OtherLine),
+        strip_lines(OtherLine,Exports).
+
+get_exports(end_of_file, _) :- !,
+        error(['No end of export list found']).
+get_exports(Line, Exports) :-
+        end_module_def(Line), !,
+        Exports = [],
+        get_line(OtherLine),
+        strip_lines_(OtherLine).
+get_exports(Line, [Line|Exports]) :-
+        get_line(OtherLine),
+        get_exports(OtherLine,Exports).
+
+strip_lines_(end_of_file) :- !.
+strip_lines_(Line) :-
+        import_line(Line), !,
+        skip_imports(Line).
+strip_lines_(Line) :-
+        comment_line(Line), !,
+        comment_comments(Line).
+strip_lines_(Line) :- % Normal line
+        write_string(Line), nl,
+        get_line(OtherLine),
+        strip_lines_(OtherLine).
+        
+skip_imports(end_of_file) :- !,
+        error(['No end of import found']).
+skip_imports([]) :- !,
+        error(['Import does not end correctly']).
+skip_imports(Line) :-
+        end_import_line(Line), !,
+        get_line(OtherLine),
+        strip_lines_(OtherLine).
+skip_imports(_Line) :-
+        get_line(OtherLine),
+        skip_imports(OtherLine).
+
+comment_comments(end_of_file) :-
+        error(['No end of comment found']).
+comment_comments(Line) :-
+        end_comment_line(Line), !,
+        write_line_commented(Line),
+        get_line(OtherLine),
+        strip_lines_(OtherLine).
+comment_comments(Line) :-
+        write_line_commented(Line),
+        get_line(OtherLine),
+        comment_comments(OtherLine).
+
+
+write_line_commented(Line) :-
+        display('% '), write_string(Line), nl.
+
+% syntax definitions
+
+module_def(":- module("||_).
+
+end_module_def(Line) :-
+        http_sp(Line,"]"||_).
+
+import_line(":- use_module("||_).
+
+end_import_line(Line) :- append(_,").",Line).
+
+comment_line(":- "||R) :- comment(R).
+
+comment("comment("||_).
+comment("pred "||_).
+comment("prop "||_).
+comment("true "||_).
+
+end_comment_line(Line) :- append(_,").",Line).
+end_comment_line(Line) :- append(_,"\".",Line).

@@ -1,0 +1,33 @@
+#VRML V2.0 utf8 narmare sanningen
+
+PROTO Bandera [field SFVec3f location 0 0 0 {
+        Transform {
+	    translation IS location
+            children  
+                DEF estrella Shape {
+                    appearance    Appearance {
+                        material  Material {
+			    ambientIntensity  0.8 
+			    diffuseColor  1 1 1
+                        }
+		        texture PixelTexture { image 0 0 0 }
+                    }
+
+                    geometry  IndexedFaceSet {
+                        coord Coordinate {
+                            point  [ 0 0
+			             0 
+				     ]
+                        }
+                        color  NULL
+                        coordIndex  [ 0 0 0
+			            ]
+                        normal  NULL 
+			
+			ccw FALSE 
+
+		    }
+	}
+      }
+}
+Bandera{location 20 32 0

@@ -1,0 +1,8 @@
+#VRML V2.0 utf8
+
+
+DEF view Viewpoint {
+   position 5 5 5
+   orientation 0,1,0,0.85
+   fieldOfView 2.5}
+

@@ -1,0 +1,56 @@
+
+    The process looks like this the different systems:
+
+LINUX:
+======
+
+    The emulator must be linked with the "-rdynamic" (undocumented!)
+option, in order to make their symbols available to the runtime
+linker:
+
+gcc -rdynamic wam.o kernel.o foreign.o format.o inout.o misc.o nondet.o objareas.o streams.o timing.o wambuiltin.o wamfunction.o unix_utils.o attr.o kprim.o dynlink.o alloc.o heapgc.o indexing.o initial.o registers.o saverestore.o stacks.o support.o term_support.o wamsupport.o qread.o qget.o builtin.o interrupt.o gauge.o bignum.o sicstus.o main.o version.o flinkage.o -ldl -o ciaoengine
+
+    The .c file which make up the dynamic libraries must be combined
+into a .o, and then into a .so using the "-shared" option of gcc.
+
+gcc <Defined symbols, etc> -fPIC -c sockets.c  
+gcc -shared  -o sockets.so sockets.o  
+
+
+---------------------------------------------------------------------------
+
+SunOS 4.1
+=========
+
+    No special options for the emulator:
+
+gcc wam.o kernel.o  foreign.o format.o inout.o misc.o nondet.o objareas.o streams.o timing.o wambuiltin.o wamfunction.o unix_utils.o attr.o kprim.o dynlink.o alloc.o heapgc.o indexing.o initial.o registers.o saverestore.o stacks.o support.o term_support.o wamsupport.o qread.o qget.o builtin.o interrupt.o gauge.o bignum.o  sicstus.o main.o version.o  flinkage.o -ldl -o ciaoengine
+
+    The dynamic libraries must be made in a two-step fashion again:
+first create a .o object, then turn it into a .so object.
+
+gcc <Defined symbols, etc> -fpic -c sockets.c  
+ld -assert pure-text -o sockets.so sockets.o  
+
+
+---------------------------------------------------------------------------
+
+
+SunOS 5.5 (Solaris 2.5)
+=======================
+
+    Nothing special in the compilation of the engine:
+
+gcc wam.o kernel.o  foreign.o format.o inout.o misc.o nondet.o objareas.o streams.o timing.o wambuiltin.o wamfunction.o unix_utils.o attr.o kprim.o dynlink.o alloc.o heapgc.o indexing.o initial.o registers.o saverestore.o stacks.o support.o term_support.o wamsupport.o qread.o qget.o builtin.o interrupt.o gauge.o bignum.o  sicstus.o main.o version.o  flinkage.o -ldl -lnsl -o ciaoengine
+
+
+    Two-step creation of a .so library:
+
+gcc <Defined symbols, etc> -c sockets.c  
+ld -G -o sockets.so sockets.o  -lsocket
+
+----------------------------------------------------------------------------
+
+    As an restriction, the entry point for the file "x.so" must be
+called "x_init", and it will be called as such. The module name is
+given separately to dynlink/2.

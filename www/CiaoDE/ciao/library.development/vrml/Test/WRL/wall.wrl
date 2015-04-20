@@ -1,0 +1,40 @@
+#VRML V2.0 utf8
+
+
+
+Shape {
+
+    appearance Appearance {
+
+        material Material {
+
+            diffuseColor 1 0 0
+
+        }
+
+    }
+
+    geometry IndexedFaceSet {
+
+        coord Coordinate {
+
+            point [
+
+                0 0 0
+
+                0 3 0
+
+                0 3 1
+
+                0 0 1
+
+            ]
+
+        }
+
+        coordIndex [ 0 1 2 3 -1 ]
+
+    }
+
+}
+

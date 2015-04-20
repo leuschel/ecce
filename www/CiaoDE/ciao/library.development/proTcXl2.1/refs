@@ -1,0 +1,183 @@
+Fichero dirs.pl:
+
+   Predicados definidos:      Utilizado en:
+   protcl_objects/1           ????
+   protcl_source/1            tk_common.pl 
+   tcl_library/1              ????
+   tk_library/1               ????
+   x_include/1                ????
+   xlibsw/1                   ????
+
+   Predicados utilizados:     Definido en:
+
+
+Fichero foreign.pl:
+
+   Predicados definidos:      Utilizado en:
+   (:-)/1                     ????
+   foreign/3                  ????
+   foreign_file/2             ????
+
+   Predicados utilizados:     Definido en:
+
+
+Fichero string_utils.pl:
+
+   Predicados definidos:      Utilizado en:
+   append/3                   string_utils.pl 
+   atom_string/2              ????
+   concat_atoms/3             tk_common.pl 
+   concat_string/2            string_utils.pl 
+   number_string/2            ????
+
+   Predicados utilizados:     Definido en:
+   append/3                   string_utils.pl
+   concat_string/2            string_utils.pl
+
+
+Fichero tcl.pl:
+
+   Predicados definidos:      Utilizado en:
+   expand_tcl/2               tcl.pl 
+   is_evaluable/1             tcl.pl 
+   make_atom/2                tcl.pl 
+   make_incomplete_string/3   tcl.pl 
+   make_string/2              tcl.pl 
+   merge_vars/3               tcl.pl 
+   tcl/1                      ????
+   tcl/2                      ????
+   tcl/3                      ????
+   tcl_eval/1                 tcl.pl tk_common.pl 
+   tcl_eval/2                 tcl.pl 
+   tcl_eval_string/2          ????
+
+   Predicados utilizados:     Definido en:
+   expand_tcl/2               tcl.pl
+   is_evaluable/1             tcl.pl
+   make_atom/2                tcl.pl
+   make_incomplete_string/3   tcl.pl
+   make_string/2              tcl.pl
+   merge_vars/3               tcl.pl
+   tcl_eval/1                 tcl.pl
+   tcl_eval/2                 tcl.pl
+   tcl_eval_string/3          ????
+
+
+Fichero tk.pl:
+
+   Predicados definidos:      Utilizado en:
+   (:-)/1                     ????
+   first_atom/3               tk.pl 
+   make_prolog_list_from_tcl_atom/3
+                              tk.pl 
+   skip_blanks/2              tk.pl 
+   tcl_item_to_prolog/4       tk.pl 
+   tcl_l_to_prolog/4          tk.pl 
+   tcl_l_to_prolog_l/3        tk.pl 
+   tk/1                       tk_common.pl 
+   tk_do_one_event/1          tk_common.pl 
+   tk_do_one_event/2          tk_common.pl 
+   tk_do_one_event_atom_list/2????
+
+   Predicados utilizados:     Definido en:
+   first_atom/3               tk.pl
+   make_prolog_list_from_tcl_atom/3
+                              tk.pl
+   skip_blanks/2              tk.pl
+   tcl_item_to_prolog/4       tk.pl
+   tcl_l_to_prolog/4          tk.pl
+   tcl_l_to_prolog_l/3        tk.pl
+   tk_do_one_event_atom/2     ????
+   tk_init/2                  tk_common.pl
+   update/0                   tk_common.pl
+
+
+Fichero tk_common.pl:
+
+   Predicados definidos:      Utilizado en:
+   tk/1                       ????
+   tk_demo/0                  ????
+   tk_file/2                  ????
+   tk_get_event/1             ????
+   tk_get_event/2             tk_common.pl 
+   tk_init/2                  tk.pl tk_common.pl 
+   tk_main_loop/0             ????
+   tk_next_event/1            ????
+   tk_next_event/2            tk_common.pl 
+   tk_options/2               tk_common.pl 
+   update/0                   tk.pl tk_common.pl 
+
+   Predicados utilizados:     Definido en:
+   concat_atoms/3             string_utils.pl
+   protcl_source/1            dirs.pl
+   tcl_eval/1                 tcl.pl
+   tk/1                       tk.pl
+   tk_clear_options/0         ????
+   tk_do_one_event/1          tk.pl
+   tk_do_one_event/2          tk.pl
+   tk_get_event/2             tk_common.pl
+   tk_init/1                  ????
+   tk_init/2                  tk_common.pl
+   tk_next_event/2            tk_common.pl
+   tk_option/2                ????
+   tk_options/2               tk_common.pl
+   update/0                   tk_common.pl
+
+
+   Predicado                  Definido en         Utilizado en
+
+   (:-)/1                     foreign.pl          ????
+   (:-)/1                     tk.pl               ????
+   append/3                   string_utils.pl     string_utils.pl 
+   atom_string/2              string_utils.pl     ????
+   concat_atoms/3             string_utils.pl     tk_common.pl 
+   concat_string/2            string_utils.pl     string_utils.pl 
+   expand_tcl/2               tcl.pl              tcl.pl 
+   first_atom/3               tk.pl               tk.pl 
+   foreign/3                  foreign.pl          ????
+   foreign_file/2             foreign.pl          ????
+   is_evaluable/1             tcl.pl              tcl.pl 
+   make_atom/2                tcl.pl              tcl.pl 
+   make_incomplete_string/3   tcl.pl              tcl.pl 
+   make_prolog_list_from_tcl_atom/3
+                              tk.pl               tk.pl 
+   make_string/2              tcl.pl              tcl.pl 
+   merge_vars/3               tcl.pl              tcl.pl 
+   number_string/2            string_utils.pl     ????
+   protcl_objects/1           dirs.pl             ????
+   protcl_source/1            dirs.pl             tk_common.pl 
+   skip_blanks/2              tk.pl               tk.pl 
+   tcl/1                      tcl.pl              ????
+   tcl/2                      tcl.pl              ????
+   tcl/3                      tcl.pl              ????
+   tcl_eval/1                 tcl.pl              tcl.pl tk_common.pl 
+   tcl_eval/2                 tcl.pl              tcl.pl 
+   tcl_eval_string/2          tcl.pl              ????
+   tcl_eval_string/3          ????                tcl.pl 
+   tcl_item_to_prolog/4       tk.pl               tk.pl 
+   tcl_l_to_prolog/4          tk.pl               tk.pl 
+   tcl_l_to_prolog_l/3        tk.pl               tk.pl 
+   tcl_library/1              dirs.pl             ????
+   tk/1                       tk.pl               tk_common.pl 
+   tk/1                       tk_common.pl        ????
+   tk_clear_options/0         ????                tk_common.pl 
+   tk_demo/0                  tk_common.pl        ????
+   tk_do_one_event/1          tk.pl               tk_common.pl 
+   tk_do_one_event/2          tk.pl               tk_common.pl 
+   tk_do_one_event_atom/2     ????                tk.pl 
+   tk_do_one_event_atom_list/2tk.pl               ????
+   tk_file/2                  tk_common.pl        ????
+   tk_get_event/1             tk_common.pl        ????
+   tk_get_event/2             tk_common.pl        tk_common.pl 
+   tk_init/1                  ????                tk_common.pl 
+   tk_init/2                  tk_common.pl        tk.pl tk_common.pl 
+   tk_library/1               dirs.pl             ????
+   tk_main_loop/0             tk_common.pl        ????
+   tk_next_event/1            tk_common.pl        ????
+   tk_next_event/2            tk_common.pl        tk_common.pl 
+   tk_option/2                ????                tk_common.pl 
+   tk_options/2               tk_common.pl        tk_common.pl 
+   update/0                   tk_common.pl        tk.pl tk_common.pl 
+   x_include/1                dirs.pl             ????
+   xlibsw/1                   dirs.pl             ????
+

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# Or, by hand: 
+# gmake compile; gmake install; emacs /tmp/foo.pl
+# 
+# gmake compile; gmake install; xemacs /tmp/foo.pl
+# 
+# xemacs -l ciao-xemacs-simpler-toolbar.el -f ciao-xemacs-setup-toolbar &
+# 
+# emacs -l ciao-xemacs-simpler-toolbar.el -f ciao-setup-toolbar
+
+TMPNAME=`mktemp /tmp/ciaomodepathsXXXXXX`
+echo "(setq load-path (cons \"/home/clip/Systems/ciao-1.11/emacs-mode/\" load-path))" \
+    > $TMPNAME
+echo "(setq load-path (cons \"/home/clip/Systems/ciao-1.11/emacs-mode/icons\" load-path))" \
+    >> $TMPNAME
+
+case $1 in
+    fsf ) emacs -geometry -0+0 -q \
+	  -l $TMPNAME -l ciao-mode-init.el.skel -l ciao.el.body $2 ;;
+    x   ) xemacs -geometry -0+0-q \
+          -l $TMPNAME -l ciao-mode-init.el.skel -l ciao.el.body $2 ;;
+    *   ) echo "Usage: $0 <fsf|x> <file>"
+          exit 0  ;;
+esac
+
+rm -f $TMPNAME
+
+
+
+

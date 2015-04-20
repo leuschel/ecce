@@ -1,0 +1,25 @@
+#VRML V2.0 utf8
+#Example 11.17 - Day and Night Background Example
+#By Chris Fouts, Silicon Graphics, Inc.
+DEF HeadGroup Group {
+  children [
+    DEF BoxShape Shape {
+      geometry DEF TheBox Box {}
+    }
+    DEF Touch TouchSensor {}
+    DEF Day Background {
+      groundColor [ 0.14 0.28 0.00, 0.09 0.11 0.00 ]
+      groundAngle [ 1.5708 ]
+      skyColor [ 1 1 0, 1 1 0.5, 0 0 .5, 0.2 1 1 ]
+      skyAngle [ .05, .1, 2 ]
+    }
+    DEF Night Background {
+      groundColor [ 0.02 0.1 0.00, 0.0 0.05 0.00 ]
+      groundAngle [ 1.5708 ]
+      skyColor [ 1 1 1, 1 1 1, 0 0 .1, 0 0.1 0.2 ]
+      skyAngle [ .03, .03, 1.5708 ]
+    }
+  ]
+  ROUTE Touch.isOver TO Night.set_bind
+}
+#EOF

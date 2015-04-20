@@ -1,0 +1,187 @@
+field_def(db,'DB code','Database code (for internal use)',db) .
+field_def(db_name,'DB name','Database name (for humans)',name) .
+field_def(db_desc,'Description','Description of the database',description) .
+field_def(table,'Table code','Table code (for internal use)',table) .
+field_def(table_name,'Table name','Table name (for humans)',name) .
+field_def(table_desc,'Description','Description of the table',description) .
+field_def(table_args,'Number of fields','Number of fields of the table',smallnum) .
+field_def(default_rows,'Rows to display','Default number of rows to show',smallnum) .
+field_def(field_index,'Field index','Index of the field',smallnum) .
+field_def(field,'Field code','Field code (for internal use)',field) .
+field_def(required,'Required?','"Yes" if the field needs to be filled',boolean) .
+field_def(in_key,'In key?','"Yes" if the field is member of the (selected) key',boolean) .
+field_def(field_name,'Field name','Field name (for humans)',name) .
+field_def(field_desc,'Description','Description of the field',description) .
+field_def(type,'Type','Type of the field',type) .
+field_def(kind,'Kind','Kind of the type',kind) .
+field_def(param,'Parameter name','Name of the parameter',param) .
+field_def(param_index,'Parameter index','Index of the parameter (may be void)',smallnum) .
+field_def(param_value,'Parameter value','Value for the parameter',param_value) .
+field_def(index_order,'Order','',smallnum) .
+field_def(dcf_weight,'DCF Weight','',percent) .
+field_def(comp_weight,'Comparables Weight','',percent) .
+field_def(tran_weight,'Transactions Weight','',tran_weight) .
+field_def(difference,'Difference','',percent) .
+field_def(increment,'Increment','',percent) .
+field_def(ticker,'Ticker','',ticker) .
+field_def(web,'Web','',name40) .
+field_def(company_name,'Name','',name40) .
+field_def(descrip_en,'Description','Description in English',description60) .
+field_def(descrip_es,'Descripción','Descripción en español',description60) .
+field_def(stock_market,'Stock Market','',smallname) .
+field_def(notes,'Notes','',description40) .
+field_def(short_descrip,'Short Description','',description40) .
+field_def(data_sources,'Data Sources','',description60) .
+field_def(mentions,'Mentions','',description40) .
+field_def(sector,'Sector 1','',sector) .
+field_def(ssector,'Sector 2','',ssector) .
+field_def(sssector,'Sector 3','',sssector) .
+field_def(ssssector,'Sector 4','',ssssector) .
+field_def(currency,'Currency','International code of the currency',currency) .
+field_def(month,'Month','',month) .
+field_def(last_change_date,'Date of change','Automatically changed to current date on changes',change_date) .
+field_def(actualization_date,'Actualization','When the data for this company has been actualized. Leave blank to get current date.',date_dmy) .
+field_def(comps_year,'Year','',comps_year) .
+field_def(trans_year,'Year','',trans_year) .
+field_def(gross_sales,'Ventas brutas','',signed_amount) .
+field_def(net_sales,'Ventas netas','',signed_amount) .
+field_def(sales_c,'Coste de la venta','',negative_amount) .
+field_def(personnel_c,'Personal','',negative_amount) .
+field_def(overhead_c,'Generales, admin. y desarrollo de producto','',negative_amount) .
+field_def(marketing_c,'Marketing','',negative_amount) .
+field_def(other_c,'Otros costes','',negative_amount) .
+field_def(ebitda,'EBITDA','',signed_amount) .
+field_def(d_a,'Depreciación y amortización','',negative_amount) .
+field_def(ebit,'EBIT','',signed_amount) .
+field_def(participated,'Participadas','',signed_amount) .
+field_def(other_income,'Otros ingresos','',signed_amount) .
+field_def(interest,'Interés neto','',signed_amount) .
+field_def(pretax_profit,'Beneficio antes de impuestos','',signed_amount) .
+field_def(tax_rate,'Tasa impositiva real','Negativa a menos que se dé un crédito fiscal',signed_percent) .
+field_def(tax,'Impuestos','Negativo a menos que se dé un crédito fiscal',signed_amount) .
+field_def(extraordinary,'Ingresos / pérdidas extraordinarios','',signed_amount) .
+field_def(minorities_profit,'Minoritarios','',signed_amount) .
+field_def(net_profit,'Beneficio neto','',signed_amount) .
+field_def(preferred_dividend,'Dividendo preferente','',negative_amount) .
+field_def(ordinary_dividend,'Dividendo ordinario','',negative_amount) .
+field_def(net_profit_aft_div,'Bº Neto después de dividendos','',signed_amount) .
+field_def(fcf,'FCF','',signed_amount) .
+field_def(fiscal_yr_end,'Fiscal year end','Mes de cierre',month) .
+field_def(wacc,'WACC','WACC',percent_2d) .
+field_def(headquarters,'Headquarters','Country where the headquarters of the company is located.',country) .
+field_def(geozone,'Geographical zone','',geozone) .
+field_def(cash,'Caja+IFT','',positive_amount) .
+field_def(short_liabs,'Deuda cpl','',positive_amount) .
+field_def(long_liabs,'Deuda lpl','',positive_amount) .
+field_def(convertible,'Convertibles','',positive_amount) .
+field_def(preferred,'Preferentes','',positive_amount) .
+field_def(other,'Otros','',positive_amount) .
+field_def(net_debt,'Total neto deuda/(caja)','',signed_amount) .
+field_def(peripherals,'Periféricos','',positive_amount) .
+field_def(minorities,'Minoritarios','',positive_amount) .
+field_def(equity,'F. Propios','',signed_amount) .
+field_def(total_employees,'Total','',positive_int) .
+field_def(billable_employees,'Billable','',positive_int) .
+field_def(last_price,'Last Price','',share_price) .
+field_def(transactions,'Transactions','Volumen de Transacciones  (media 3 Meses)',positive_amount) .
+field_def(avg_number,'Núm. Accion (f. diluted) media 12m (M)','Núm. Accion (fully diluted) Media 12 meses (millones) ',positive_amount) .
+field_def(number_diluted,'Núm. Accion (f. diluted) (M)','Núm. Accion (fully diluted) Actual (millones) ',positive_amount) .
+field_def(number_basic,'Núm. Accion (basic) (M)','Núm. Accion (basic) Actual (millones)',positive_amount) .
+field_def(avg_price,'Avg. Price (3 months)','Precio acción - media 3 meses',share_price) .
+field_def(data_id,'Data Id','',smallname) .
+field_def(data_val,'Data Value','',smallname) .
+field_def(vd_number,'V.D. Number','Value Driver Number',smallnum) .
+field_def(vd_val,'Value','',signed_amount) .
+field_def(revenue_type,'Revenue type #','',revenue_type) .
+field_def(revenue_percent,'Percentage','',percent_2d) .
+field_def(share_price_used,'Share Price','',last_or_mean) .
+field_def(share_number_used,'Number of shares','',last_or_mean) .
+field_def(multiple,'Multiple','',multiple) .
+field_def(limit,'Limit','',smallnum) .
+field_def(discount,'Discount','Tanto por uno',tanto_por_uno) .
+field_def(euro_sales,'Sales in Euro','Ventas en euros',positive_amount) .
+field_def(mark_0_5,'Mark','Mark from 0 to 5',mark_0_5) .
+field_def(liquidity,'Liquidity','',tanto_por_uno) .
+field_def(size_weight,'Size Weight','',percent) .
+field_def(trcode,'Code','Different for each transaction',smallname) .
+field_def(trtype,'Type','',name) .
+field_def(trtype2,'Form','',name) .
+field_def(buyer,'Buyer','',description40) .
+field_def(trdate,'Date','',date_dmy) .
+field_def(seller,'Seller','',description40) .
+field_def(target_descrip_en,'Description','Description in English',description60) .
+field_def(target_descrip_es,'Descripción','Descripción en español',description60) .
+field_def(trcountry,'Country/countries','',name) .
+field_def(nmonths,'Months #','',smallnum) .
+field_def(cash_paid,'Cash paid','',positive_amount) .
+field_def(stock_paid,'Stock paid','',positive_amount) .
+field_def(assumed_debt,'Assumed debt','',positive_amount) .
+field_def(percent_bought,'Percent bought','',percent_2d) .
+field_def(value_interpretation,'Value interpretation','',value_interpretation) .
+field_def(debt,'Debt','',signed_amount) .
+field_def(stddev_div,'Standard deviation divisor','',smallfloat) .
+field_def(limit_var,'Limit of deviation from mean','',percent) .
+field_def(age_weight,'Age mark weight','',percent) .
+field_def(monthslimit,'Age in months','',smallnum) .
+field_def(yr_1_w,'Year -1 weight','',smallnum) .
+field_def(yr0_w,'Year 0 weight','',smallnum) .
+field_def(yr1_w,'Year 1 weight','',smallnum) .
+field_def(yr2_w,'Year 2 weight','',smallnum) .
+field_def(yr3_w,'Year 3 weight','',smallnum) .
+field_def(year_code,'Year (relative)','',year_code) .
+field_def(percent_available,'Available ratios','',percent) .
+field_def(intrinsic_value,'Value','',smallnum) .
+field_def(year_count,'No. of years','',smallnum) .
+field_def(minimum_limit,'Minimum coincidence','',percent) .
+field_def(w_rev_bd,'Revenue Breakdown','',smallnum) .
+field_def(w_margins,'Margins','',smallnum) .
+field_def(w_ssector,'Subsector','',smallnum) .
+field_def(minimum_ratios,'Minimum Number','',smallnum) .
+field_def(comps_weight_warning,'Percent for Warning','',percent) .
+field_def(net_profit_when,'Net Profit is','',net_profit_when) .
+field_def(currency_change,'Change','',currency_change) .
+field_def(input_dcf_variable,'Variable','Input DCF Variable',input_dcf_variable) .
+field_def(max_variable_change,'Maximum Change','',percent) .
+field_def(qname,'Question','',qname) .
+field_def(form_year,'Year','',form_year) .
+field_def(percent_change,'Percent','',signed_percent) .
+field_def(answer,'Answer','From 0 onwards',smallnum) .
+field_def(answer_,'Answer','From 0 onwards, or _ for any/all',smalltext) .
+field_def(weight,'Weight','Relative weight',smallnum) .
+field_def(range_limit,'Limit','Upper limit of the range (included in the range).  The topmost limit is not significative.  For yes/no questions use 0 and 1.',signed_amount) .
+field_def(minimum_coincidence,'Minimum coincidence','',percent) .
+field_def(bonus_increment,'Bonus Increment','',percent) .
+field_def(range_number,'Range #','Número de rango (puede ser mayor que 3)',smallnum) .
+field_def(from,'From','Lower limit (inclusive)',signed_amount) .
+field_def(to,'To','Upper limit (inclusive)',signed_amount) .
+field_def(revenue_concept,'Revenue Concept','',revenue_concept) .
+field_def(country_zone,'Country/Zone','Leave _Unspecified_ for default values',country_zone) .
+field_def(dcf_year,'Year','',dcf_year) .
+field_def(concept,'Concept','',concept) .
+field_def(historical,'Historical Years','',smallnum) .
+field_def(projections,'Projected Years','',smallnum) .
+field_def(weight_h_p,'Weight','',percent) .
+field_def(client_weight,'Weight','',percent) .
+field_def(cagr_limit,'Client CAGR of Revenues','',per_1_signed) .
+field_def(w_age,'Age','',smallnum) .
+field_def(w_cagr,'CAGR','',smallnum) .
+field_def(w_size,'Size','',smallnum) .
+field_def(tc,'TC','',percent_2d) .
+field_def(tc_age_weight,'Age Weight','Age Weight vs Growth Weight',percent) .
+field_def(inicio_descuento,'Inicio Descuento','Años, 0.5 es medio año',smallfloat) .
+field_def(sensibilidad_WACC,'Sensibilidad WACC','WACC: hacia "arriba" y hacia "abajo" modificar el WACC en este tanto por ciento.',percent_2d) .
+field_def(num_WACC_var,'Variaciones WACC arriba y abajo','Modificar el WACC este número de veces hacia "arriba" y hacia "abajo".',smallnum) .
+field_def(sensibilidad_TC,'Sensibilidad TC','TC: hacia "arriba" y hacia "abajo" modificar el TC en este tanto por ciento.',percent_2d) .
+field_def(num_TC_var,'Variaciones TC arriba y abajo','Modificar el TC este número de veces hacia "arriba" y hacia "abajo".',smallnum) .
+field_def(scenario_concept,'Concept','',scenario_concept) .
+field_def(scenario,'Scenario','',scenario) .
+field_def(option,'Opción','',option) .
+field_def(p_cons,'Conservador','',percent) .
+field_def(p_crec,'Crecimiento','',percent) .
+field_def(p_base,'Base','',p_base) .
+field_def(country_tax_rate,'Tax Rate','',percent_2d) .
+field_def(inflation,'Inflation','',smallfloat) .
+field_def(inc_dec,'Increase/Decrease','Increase (positive) / decrease (negative) in rate per 1',per_1_signed) .
+field_def(rate,'Rate','Amount per 1',per_1_signed) .
+field_def(growth,'Growth','Amount per 1',per_1_signed) .
+field_def(beta,'Beta','Amount per 1',per_1_signed) .

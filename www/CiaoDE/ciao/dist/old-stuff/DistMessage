@@ -1,0 +1,44 @@
+
+---------- Downloading the Ciao Prolog Development System -------------
+
+Thank you for you interest in the Ciao Prolog Development System. The
+current version of the Ciao system (Linux, Solaris, SunOS, IRIX,
+Windows95/98/NT, ...) as well as compatible versions of the
+auto-documenter and the preprocessor (experimental) and are now
+available for download from:
+
+http://www.clip.dia.fi.upm.es/Software/Beta/Ciao
+
+The area under http://www.clip.dia.fi.upm.es/Software/Beta/ requires a
+user name and password to enter (the reason is not protection --this
+software is distributed under GNU General Public License-- but rather
+that some of this software is still under development, mostly with
+regard to the documentation), as follows:
+
+user:      clipsoft 
+password:  clipfriends 
+
+We will very much appreciate if you let us know of any problem that
+you may have during installation or use of these or other CLIP
+packages, which we will try to fix for upcoming releases. Please send
+email to
+
+ciao-bug@clip.dia.fi.upm.es
+
+Also, if you make any improvements to the system, we would be very
+grateful if you can send them to us so that we can incorporate them
+into the next distribution if appropriate.
+
+Finally, we would be very grateful if you reference the Ciao System in
+work that you develop with its help.
+
+Happy logic programming!
+
+The CLIP Ciao Prolog Development Team
+
+P.S. As a result of your request, and so that you automatically
+receive updated information, you have been added to the Ciao Prolog
+mailing list. If you would like to be deleted from the list, please
+follow the instructions that you will receive separately. In any case
+we will keep your email address strictly confidential.
+

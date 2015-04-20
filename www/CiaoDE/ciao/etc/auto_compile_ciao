@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# This script compiles Ciao to some directory and compiles it there.
+# Nothing more.  It is useful to test distributions automatically.
+
+if [ $# -ne 2 ] ; then
+    echo Usage: $0 ciao_origin directory_name
+    echo This script copies the ciao distribution located in ciao_origin
+    echo to a directory under directory_name, cleans it, and recompiles it.
+    echo Useful to beta-test distributions
+    exit
+fi
+
+
+# Start compilation: test types, set variables
+
+if [ ! -d $1 ] ; then
+    echo $1 is not a directory
+    exit
+else 
+    ORIGIN=$1
+fi
+
+if [ ! -d $2 ] ; then
+    echo $2 is not a directory
+    exit
+else 
+    DESTDIR=$2/ciao-auto-compile
+    /bin/mkdir --parents $DESTDIR
+fi
+
+
+BASENAME=`basename $ORIGIN`
+CIAODESTDIR=$DESTDIR/$BASENAME
+
+# Make the copy
+
+echo
+echo
+echo ========================================================================
+echo Copying from $ORIGIN to $CIAODESTDIR
+echo ========================================================================
+echo
+echo
+
+/usr/bin/rsync  --copy-links \
+                --exclude '.svn' \
+                --exclude '*.po'  \
+                --exclude '*.o'   \
+                --exclude '*.itf' \
+                --exclude '*.asr' \
+                --exclude '*~' \
+                --exclude '.class' \
+                --delete --delete-excluded -av $ORIGIN $DESTDIR
+
+
+# Substitute variables in SETTING; avoid shell clobbering
+
+/bin/mv -f $CIAODESTDIR/SETTINGS $CIAODESTDIR/SETTINGS-temp
+
+eval "sed -e 's:SRC=.*$:SRC=$CIAODESTDIR:g'" < $CIAODESTDIR/SETTINGS-temp > $CIAODESTDIR/SETTINGS
+
+cd $CIAODESTDIR
+
+echo
+echo
+echo ========================================================================
+echo Cleaning $CIAODESTDIR
+echo ========================================================================
+echo
+echo
+
+make totalclean
+
+echo
+echo
+echo ========================================================================
+echo Compiling $CIAODESTDIR
+echo ========================================================================
+echo
+echo
+
+make allnoquestions
+
+echo
+echo
+echo ========================================================================
+echo Removing directory $CIAODESTDIR
+echo ========================================================================
+echo
+echo
+
+rm -rf $CIAODESTDIR

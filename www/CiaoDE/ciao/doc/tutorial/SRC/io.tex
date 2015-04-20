@@ -1,0 +1,25 @@
+
+\section{Input/Output}
+% Does this belong here (a Tutorial) or in a ``Programming Manual''
+
+
+\subsection{Independent File Names}
+
+In .ciaorc
+
+\begin{verbatim}
+file(1,'/home/user/...').
+...
+file(n,...
+\end{verbatim}
+
+In the program:
+
+\begin{verbatim}
+... :- ..., file(3,File3), open(File3,...
+\end{verbatim}
+
+This makes tan executable completely portable: you only have to change
+the .ciaorc between different runs if you want different files or if
+you are using different file systems with different file naming
+conventions. 

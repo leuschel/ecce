@@ -1,0 +1,5 @@
+float_consts.c:196:http://computing.ee.ethz.ch/sepp/gcc-3.3.1-mo/gcc_86.html#SEC86
+profile.c:169:    cce = get_cc_entry(active_cc->cc_entry_table,functor);
+profile.c:305:  if(cc->functor)
+profile.c:306:    printf(" Cost Center \t %s/%d\n", GetString(cc->functor->printname),cc->functor->arity);
+profile.c:310:  t=cc->cc_entry_table;

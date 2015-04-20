@@ -1,0 +1,36 @@
+
+A very simple example program.
+
+0.- AMS must be enabled in the server host by running "server" with
+    the name of the server host.
+
+    For example:    server clip.dia.fi.upm.es 2> server_log &
+
+    Executable "strapper" must be in the same directory from where
+    "server" is run.
+
+1.- The application is app.pl. It declares the application name and
+    one active module (look at the code).
+
+2.- The active module is file.pl. It does nothing very relevant (look
+    at the code) but gives some backtracking on the first argument.
+
+3.- The active module "file" has to be precompiled by running "actmod"
+    on it, giving the http address of it. 
+
+    For example, if it would be located (as it currently is) in 
+    http://www.clip.dia.fi.upm.es/~clip then run:
+                        actmod file "/~clip"
+
+4.- Copy the original source code file.pl to the http address (and
+    give it the required permissions). 
+
+    In the example, copy it (though it should already be there) to:
+    ~clip/public_html 
+
+5.- Compile "app" and run it (with one argument)!
+
+    For example:    app 3
+
+Note: Each run of an active module would leave two "strapper"
+      processes running: be careful to kill them!

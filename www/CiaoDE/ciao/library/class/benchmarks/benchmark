@@ -1,0 +1,21 @@
+#!/bin/tcsh
+echo "O'CIAO benchmarking generation"
+echo "******************************"
+echo
+if ($?CIAOLIB) then
+   cd ${CIAOLIB}/library/class/benchmarks
+   source ${CIAOLIB}/library/class/benchmarks/new/on_attr/do_bench
+   source ${CIAOLIB}/library/class/benchmarks/new/no_destroy/do_bench
+   source ${CIAOLIB}/library/class/benchmarks/new/destroy/do_bench
+   source ${CIAOLIB}/library/class/benchmarks/call/non_optimized/do_bench
+   source ${CIAOLIB}/library/class/benchmarks/call/optimized/do_bench
+   source ${CIAOLIB}/library/class/benchmarks/call/obj_vs_module/do_bench
+   source ${CIAOLIB}/library/class/benchmarks/call/staticobj_vs_module/do_bench
+   source ${CIAOLIB}/library/class/benchmarks/assrt/do_bench
+
+   'cp' -p ${CIAOLIB}/library/class/benchmarks/new/on_attr/on_attr.ps .
+   'cp' -p ${CIAOLIB}/library/class/benchmarks/new/no_destroy/no_destroy.ps .
+   'cp' -p ${CIAOLIB}/library/class/benchmarks/new/destroy/destroy.ps .
+else
+   echo "CIAOLIB environment variable must be set"
+endif

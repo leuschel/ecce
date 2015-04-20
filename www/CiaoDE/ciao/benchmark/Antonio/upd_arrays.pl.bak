@@ -1,0 +1,156 @@
+:- module(upd_arrays, 
+        [
+            make_array/3,
+            access_array/3,
+            update_array/3,
+            access_update_array/4,
+            access_update_array_ho/5
+        ], []).
+
+:- use_module(library(odd), [setarg/3]).  % Yes! I am using it!
+:- use_package(hiord).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Maximum arity to use, minus one (I need one extra position to hold
+% the bucket size at each level, see below).
+
+max_arity(254).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% create a new array: we need the dope vector (to store it
+% in the array) and the size (to create the array itself).
+make_array(Dims, '$array'(Size, Dope, Container), Init):-
+        dope(Dims, Dope),
+        size(Dims, 1, Size),
+        max_arity(MaxArity),
+        make_container(Size, MaxArity, Container, Init).
+
+% A precomputed vector to speed up computing the final index
+dope(Dims, Dope):- dope2(Dims, 1, Dope).
+dope2([], _Curr, []).
+dope2([D|Ds], Curr, [Curr|Rest]):-
+        NextCurr is Curr*D,
+        dope2(Ds, NextCurr, Rest).
+ 
+size([], D, D).
+size([S|Ss], I, R):-
+        I1 is I * S,
+        size(Ss, I1, R).
+
+% This makes the actual container where the elements of the array
+% will go.
+
+make_container(NumEls, MaxArity, Container, Init):-
+        NumEls =< MaxArity, !,                  % This is a leave
+        RealArity is NumEls + 1,
+        functor(Container, '$array', RealArity),
+        arg(RealArity, Container, 1),           % Bucket size
+        initialize_leave(NumEls, Container, Init).
+make_container(NumEls, MaxArity, Container, Init):-
+        NumEls > MaxArity,                        % Intermediate level
+        BucketSize is ceiling(NumEls / MaxArity), % Size of this bucket
+        NumBucks is ceiling(NumEls / BucketSize), % No. of buckets
+        RealArity is NumBucks + 1,
+        functor(Container, '$array', RealArity),
+        arg(RealArity, Container, BucketSize),    % Save no. of buckets
+        initialize_middle(NumBucks, BucketSize, MaxArity, Container, Init).
+
+initialize_middle(0, _BucketSize, _Max, _Container, _Init):- !.
+initialize_middle(NumBucks, BucketSize, MaxArity, Container, Init):-
+        NumBucks > 0,
+        arg(NumBucks, Container, Arg),
+        make_container(BucketSize, MaxArity, Arg, Init),
+        NextNumBucks is NumBucks - 1,
+        initialize_middle(NextNumBucks, BucketSize, MaxArity, Container, Init).
+
+initialize_leave(0, _F, _I).
+initialize_leave(N, Functor, Init):-
+        N > 0,
+        arg(N, Functor, Init),
+        N1 is N - 1,
+        initialize_leave(N1, Functor, Init).
+        
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+access_array(A, Loc, Ele):-
+        leaf_functor(A, Loc, Functor, Position),
+        arg(Position, Functor, Ele).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+update_array(A, Loc, New):-
+        leaf_functor(A, Loc, Functor, Position),
+        setarg(Position, Functor, New).
+        
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+:- meta_predicate(access_update_array_ho(?, ?, ?, ?, pred(2))).
+
+access_update_array_ho(A, Loc, Old, New, Update):-
+        leaf_functor(A, Loc, Functor, Position),
+        arg(Position, Functor, Old),
+        Update(Old, New),
+        setarg(Position, Functor, New).
+        
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+access_update_array(A, Loc, Old, New):-
+        leaf_functor(A, Loc, Functor, Position),
+        arg(Position, Functor, Old),
+        setarg(Position, Functor, New).
+        
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+leaf_functor(Array, Loc, Functor, Position):-
+        nonvar(Array),
+        Array = '$array'(Size, Dope, Container),
+        index(Loc, Dope, Index),
+        Index > 0, Index =< Size,  %% Check wether in limits
+        locate_leaf(1, Index, Container, Functor, Position).
+
+% The index (in a linear vector) corresponding to a given index (Location)
+% using the previously computed Dope vector.
+
+index(Location, Dope, Index):- direct_product(Location, Dope, 0, Index).
+
+direct_product([], [], Accum, AccumOut):- AccumOut is Accum + 1.
+direct_product([L|Ls], [D|Ds], Accum, Index):-
+        NewAccum is Accum+D*(L-1),
+        direct_product(Ls, Ds, NewAccum, Index).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+locate_leaf(Low, Index, Container, Functor, Position):-
+        % Sanity check
+        % (Index >= Low -> true ; display('*** Uh oh! In locate_leave')),
+        functor(Container, _, Arity),
+        arg(Arity, Container, 1),               % This is the leave
+        !,   
+        Container = Functor,
+        Position is Index - Low + 1.
+% Cached at toplevel.
+%        Position < Arity.
+locate_leaf(Low, Index, Container, Functor, Position):-
+        functor(Container, _, Arity),           % Arity is NumBucks + 1
+        arg(Arity, Container, BucketSize),
+        BucketSize > 1, !,                      % Not a leave
+        % Locate the bucket, and find out which indexes are there
+        TargetIndex is ((Index - Low) // BucketSize) + 1,
+        arg(TargetIndex, Container, Bucket),
+        NewLow is Low + BucketSize * (TargetIndex - 1),
+        locate_leaf(NewLow, Index, Bucket, Functor, Position).
+        
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

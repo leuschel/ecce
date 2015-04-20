@@ -1,0 +1,178 @@
+# -*- mode: Makefile; -*-
+# ----------------------------------------------------------------------------
+# Ciao Global Compilation/Installation SETTINGS
+# ----------------------------------------------------------------------------
+# Define this to be a directory where the sources are reachable system-wide 
+# SRC=/usr/local/src/ciao
+#
+SRC=/home/clip/Systems/ciao-1.11
+#-----------------------------------------------------------------------------
+# Define the following to be the places under which the installation
+# will be performed:
+
+# CIAOROOT=/usr/local
+#   or
+# CIAOROOT=/usr
+#   or
+CIAOROOT=/home/clip
+
+# Executables will go here:
+BINROOT=$(CIAOROOT)/bin
+
+# Directory libraries will grow here:
+LIBROOT=$(CIAOROOT)/lib
+
+# Headers will go here:
+INCLUDEROOT=$(CIAOROOT)/include
+
+# Define this to be the directory in which you want the documentation
+# installed.  Ideally, this directory should be accessible via WWW,
+# emacs info, and man:
+# DOCROOT=/usr/local/etc/httpd/htdocs
+# 
+#   or
+# DOCROOT=/var/www/html/ciao
+
+DOCROOT=/home/clip/public_html/Local/lpdoc_docs/Ciao
+#-----------------------------------------------------------------------------
+# Misc installation options:
+
+# For the PiLLoW Web programming library, define WEB_IMAGES_PATH as the
+# directory (accessible via WWW) where the icons which come with PiLLoW
+# (in library/pillow/images) will go, and define WEB_IMAGES_URL to the
+# corresponding URL for accessing that directory via WWW.
+# WEB_IMAGES_PATH=/usr/local/etc/httpd/htdocs/images/
+# WEB_IMAGES_URL=http:/my.host.here/images/
+#
+WEB_IMAGES_PATH=/home/clip/public_html/images
+WEB_IMAGES_URL=/images/
+
+# Set to "no" if you do not want to create a link to Ciao named "prolog",
+# for example because there are more prolog's in the system
+INSTALL_PROLOG_NAME=yes
+
+# Set to "no" if you do not want to install the Ciao emacs libraries,
+# which implement the Ciao Emacs mode (highly recommended).  It should
+# be set to no if emacs is not installed in the system.  It is safe to
+# leave as "yes" otherwise:
+INSTALL_EMACS_SUPPORT=yes
+
+# Set to "no" if you do not want to interface with the MySQL database.
+# If you choose to have the MySQL interfafe, you should have the MySQL
+# client part installed in the machine where you are compiling and
+# using it.  The MySQL daemon should also be up and running when using
+# the interface.  You should also know where the MySQL client
+# library is installed.  In a Linux machine you can do that by looking at
+# the output of the command "locate mysqlclient.a".  The directory
+# part of the path is what is relevant here.
+WITH_MYSQL=yes
+MYSQL_CLIENT_DIRECTORY=/usr/lib/mysql
+
+# Do you have a reasonably recent Java (i.e., jdk 1.3 or equivalent)?
+# If so you may want to compile the utilities for the Java interface.
+# These are currently under $(SRC)/library/javall, along with examples
+# and documentation.  If you do not have java you should better set
+# the option below to "no", in order to avoid compile-time error.
+# Otherwise, it is safe to set it to "yes".
+WITH_JAVA_INTERFACE=yes
+
+# If you want to compile an engine with threads capability
+# (concurrency), set the following variable to "yes".  Otherwise, set
+# it to "no".  If the architecture does not support threads (or thread
+# support has not yet been added to Ciao Prolog for this
+# architecture), this will be automatically disabled at compile time.
+# Concurrency support does not cause any appreciable runtime overhead
+# for non-concurrent programs, so it is safe to leave it as "yes".
+USE_THREADS=yes
+
+# When using threads, locks are mandatory, and they do not make any
+# sense if you are not using threads.  So, threads enable locks.  Ciao
+# Prolog includes native code locks for some architectures, but allows
+# specifying the use of POSIX-compliant locks if posix libraries are
+# available.  POSIX locks will be automatically selected if no native
+# lock implementation is included in Ciao for a given architecture.
+# We recommend letting this option set to "no" since a primitive lock
+# implementation is usually much faster than then library-based POSIX
+# one.
+USE_POSIX_LOCKS=no
+
+# Optimization level used when compiling the bytecode emulator. Choose one of:
+#    optimized       -- Turn on optimization flags
+#    normal          -- Normal emulator (non-optimized code)
+# For normal use, we recommend leaving it as "optimized".  But if you
+# suspect that your compiler performs buggy optimizations (which
+# should not be the case), turn optimization off.  This can be happen
+# more easily in concurrent applicacions: if you write any
+# thread-based program and unexpected results appear, try recompiling
+# Ciao without optimization options first.
+OPTIM_LEVEL=optimized
+
+# If you want to compile the Ciao libraries with their bytecode compressed
+# then set the following variable to "yes". Libraries generated this way
+# will be smaller at the sake of a slightly slower usage, both in their load
+# as when employed to create an executable.
+COMPRESS_LIBS=no
+
+# ----------------------------------------------------------------------------
+# You should not need to touch anything below this line.  However,
+# these are user-definable settings, so changing them should not be
+# critical (it may create some minor discrepancies with the installation 
+# documentation).
+# ----------------------------------------------------------------------------
+
+# This is quite standard: put executables right in their directory.
+# You probably do not want to change it.
+BINDIR=$(BINROOT)
+
+# This is also quite standard, a ciao directory will contain all ciao libs:
+# LIBDIR=$(SRC)/lib
+LIBDIR=$(LIBROOT)/ciao
+
+# Define this to be the dir in which you want the documentation installed. 
+# Ideally, this dir should be accessible via WWW, emacs info, and man:
+DOCDIR=$(DOCROOT)
+
+# Define this to be the permissions for installed execs/dirs and data files:
+EXECMODE=775
+DATAMODE=664
+INSTALLGROUP=clip
+
+# You only want to change this if you are a developer.  Additionally,
+# setting the environment variable CIAODEBUG to the value '-debug' at
+# the time of compiling the engine will override the OPTIM_LEVEL and
+# DEBUG_LEVEL flags, and produce non optimized emulator code with
+# debugging information.
+# Level of debugging built into the bytecode emulator. Choose one of:
+#    nodebug         -- Do not include debug information or messages
+#    debug           -- Emulator with C level debugging info available
+#                       plus extended C compilation warnings
+#    profile         -- Include profiling options for the emulator
+#    paranoid-debug  -- Emulator with C level debugging info available
+#                       plus paranoid C compilation warnings
+# DEBUG_LEVEL=nodebug
+DEBUG_LEVEL=nodebug
+
+# This is to compile locally the engine in cygwin across a Samba share
+#SAMBASRCDIR=//clip/clip/Systems/ciao-1.11
+
+ifeq (CYGWIN,$(findstring CYGWIN,$(shell uname)))
+# SRC=$(SAMBASRCDIR)
+ ALT=win32
+ EXECSUFFIX=.exe
+endif
+
+ifeq ($(OSTYPE),cygwin)
+#  SRC=$(SAMBASRCDIR)
+  ALT=win32
+  EXECSUFFIX=.exe
+endif
+
+ifeq ($(OSTYPE),cygwin32)
+#   SRC=$(SAMBASRCDIR)
+   ALT=win32
+   EXECSUFFIX=.exe
+endif
+
+# ----------------------------------------------------------------------------
+# Happy compilation!
+# ----------------------------------------------------------------------------

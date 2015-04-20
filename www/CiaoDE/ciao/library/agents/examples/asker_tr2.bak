@@ -1,0 +1,88 @@
+%%----------------------------------------------%%
+%% A Simple asker Agent.                        %%
+%%----------------------------------------------%%
+
+%% Agent declaration: the current source defines a class of agents.
+:- class(asker_tr).
+:- inherit_class(library(agents)).
+
+:- export([main/0]).
+
+:- use_module(library(concurrency)).
+ 
+:- use_module(library(platforms)).
+
+:- implements(library('protocols/ask_inform')).
+
+% State declaration: 
+
+:- data question/1.
+
+question(capital(francia)).
+question(capital(alemania)).
+question(capital(españa)).
+question(capital(italia)).
+:- data no_more_question/0.
+
+:- data knowledge/2.
+
+knowledge(capital(portugal),lisboa).
+
+% Interface declaration: the following messages will
+% be acepted at run-time.
+%% :- message inform.
+%% :- export inform/3.
+
+
+%% Tasks:
+%% :- task asker_ask.
+
+asker_tr(Name):-
+	agents(Name).
+
+do_task(Task):-
+	self(X), Y = (X:Task), call(Y),!,
+	( continue_task(Task) ->
+	  display('Redo' + Y),nl,
+	  do_task(Task)
+	;
+	  true).
+
+check(P):-
+	current_fact_nb(P).
+	
+% Initial Task
+
+main :-
+	agent_id(Name),
+	show('Name'),nl,
+	register_service(Name,[asking]),
+	add_task(look_for_answer,true).
+
+look_for_answer :-
+	( look_for_service(Answer,[answering]) ->
+	  add_task(asker_ask(Answer),true),
+	  remove_task(look_for_answer)
+	;
+	  wait(2)).
+
+%% Task Answer_ask
+asker_ask(Answer) :-
+%	( look_for_service(Answer,[answering]) ->
+	  ( current_fact(question(Q)) ->
+	    Msg = ask(Q),
+	    show(Msg),nl,
+	    send(Answer,Msg),
+	    recive(Answer,inform(_Msg2))
+	  ;
+	    send(Answer,no_more_ask), 
+	    remove_task(asker_tr(Answer))
+	  ).
+	
+inform(_X,Answer,_Mess_Id):-
+	current_fact(question(Question)),
+	asserta_fact(knowledge(Question,Answer)),
+	current_fact_nb(knowledge(Question1,Answer1)),
+	show(knowledge(Question1,Answer1)),
+	retract_fact(question(Question)).
+

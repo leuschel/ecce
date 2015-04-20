@@ -1,0 +1,65 @@
+
+java2pl.java,4381
+public class java2pl java2pl14,266
+  public static void main(java2pl.main19,322
+  private static void usage(java2pl.usage121,3284
+abstract class PrologFile PrologFile141,4043
+  public PrologFile(PrologFile.PrologFile196,6181
+  void generate(PrologFile.generate210,6428
+  void generateRecursive(PrologFile.generateRecursive259,7881
+  private void genHeaderComments(PrologFile.genHeaderComments307,9131
+  private void genDeclarations(PrologFile.genDeclarations328,9716
+  private void genFields(PrologFile.genFields348,10204
+  private void genDeclaredClasses(PrologFile.genDeclaredClasses382,11208
+  private void genConstructors(PrologFile.genConstructors408,11869
+  private void genMethods(PrologFile.genMethods438,12697
+  private void genFinalDeclarations(PrologFile.genFinalDeclarations465,13485
+  protected String varSequence(PrologFile.varSequence477,13735
+  protected String varSequence(PrologFile.varSequence496,14123
+  protected String varSequence(PrologFile.varSequence512,14495
+  protected String varSequence(PrologFile.varSequence529,14875
+  protected void printInclude(PrologFile.printInclude551,15319
+  protected void printExport(PrologFile.printExport562,15580
+  protected String printTypeTesting(PrologFile.printTypeTesting590,16663
+  protected static String getPrologName(PrologFile.getPrologName671,19026
+  private static boolean isPrologId(PrologFile.isPrologId687,19375
+  protected String getFileName(PrologFile.getFileName722,20312
+  protected String getRelFileName(PrologFile.getRelFileName741,20857
+  protected String getRelBasePath(PrologFile.getRelBasePath757,21240
+  private String getFilePath(PrologFile.getFilePath779,21726
+  protected String getPrologVar(PrologFile.getPrologVar796,22046
+  protected String getPrologVar(PrologFile.getPrologVar814,22432
+  protected TreeSet getInterfaceSet(PrologFile.getInterfaceSet828,22738
+  private Iterator getImportations(PrologFile.getImportations859,23610
+  protected List toList(PrologFile.toList882,24217
+class PrologClassFile PrologClassFile1075,29121
+  public PrologClassFile(PrologClassFile.PrologClassFile1092,29876
+  protected void genInheritance(PrologClassFile.genInheritance1108,30409
+  protected void genMiscelanea(PrologClassFile.genMiscelanea1132,31171
+  protected void genInterfaces(PrologClassFile.genInterfaces1180,32942
+  protected Iterator getDeclElements(PrologClassFile.getDeclElements1203,33611
+  protected Iterator getDeclElementSet(PrologClassFile.getDeclElementSet1226,34335
+  protected void printDeclaration(PrologClassFile.printDeclaration1245,34867
+  protected void printImportation(PrologClassFile.printImportation1268,35391
+  protected void printInterface(PrologClassFile.printInterface1279,35646
+  private void printDispose(PrologClassFile.printDispose1290,35922
+  protected void printField(PrologClassFile.printField1303,36266
+  protected void printFieldAssertion(PrologClassFile.printFieldAssertion1319,36747
+  protected void printConstructor(PrologClassFile.printConstructor1338,37264
+  protected void printMethod(PrologClassFile.printMethod1367,38090
+  protected String printObjectTypeTesting(PrologClassFile.printObjectTypeTesting1398,39016
+class PrologModuleFile PrologModuleFile1421,39821
+  public PrologModuleFile(PrologModuleFile.PrologModuleFile1440,40641
+  protected void genInheritance(PrologModuleFile.genInheritance1456,41182
+  protected void genMiscelanea(PrologModuleFile.genMiscelanea1478,41808
+  protected void genInterfaces(PrologModuleFile.genInterfaces1513,43009
+  protected Iterator getDeclElements(PrologModuleFile.getDeclElements1524,43291
+  protected Iterator getDeclElementSet(PrologModuleFile.getDeclElementSet1546,43966
+  protected void printDeclaration(PrologModuleFile.printDeclaration1562,44315
+  protected void printImportation(PrologModuleFile.printImportation1579,44750
+  private void printDispose(PrologModuleFile.printDispose1589,45007
+  protected void printField(PrologModuleFile.printField1602,45314
+  protected void printFieldAssertion(PrologModuleFile.printFieldAssertion1615,45688
+  protected void printConstructor(PrologModuleFile.printConstructor1632,46164
+  protected void printMethod(PrologModuleFile.printMethod1673,47346
+  protected String printObjectTypeTesting(PrologModuleFile.printObjectTypeTesting1697,48105

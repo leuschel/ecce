@@ -1,0 +1,9 @@
+Debugging goals with cyclic terms produced an infinite loop in the
+debugger.
+
+1.- Load 'inf_term.pl' in trace mode.
+2.- Call main/0.
+3.- Step on the debugger.  The 5th line Ciao hangs, and it aborts after
+    a while (with a "Memory allocated out of addressable bounds" error).
+
+This bug has been distilled from the debugger_bug_curry_translation one.

@@ -1,0 +1,106 @@
+Pruebas con LDS (r2d3, r2d4, r2d7, aguirre):
+
+-queens de 12 reinas (secuencial: ).
+1 worker (r2d3):
+   - 1 solucion:
+       LDS = 10-> R:	405287 ms	C: No acaba
+       LDS = 3 -> R:	  8100 ms	C: 9817 ms
+       LDS = 2 -> R:	  2876 ms(*)	C: 3182 ms
+       LDS = 1 -> R:	  5139 ms	C: 5724 ms
+       LDS = 0 -> R:	  5121 ms	C: 5407 ms/7996 ms
+
+2 workers (r2d3, r2d7):
+   - 1 solucion:
+       LDS = 10-> R:	87949 ms	R+: 76534 ms	C: No acaba
+       LDS = 3 -> R:	 8331 ms	R+:  5171 ms	C: 3699 ms
+       LDS = 2 -> R:	 2858 ms(*)	R+:  4904 ms	C: 3698 ms
+       LDS = 1 -> R:	 5331 ms	R+:  9152 ms	C: 2450 ms
+       LDS = 0 -> R:	 3591 ms	R+:  9122 ms	C: 2471 ms/3203ms
+
+3 workers (r2d3, r2d4, r2d7):
+   - 1 solucion:
+       LDS = 10-> R:  20699 ms	R+: 45904 ms		C: 28028 ms
+       LDS = 3 -> R:   5863 ms	R+: 11033 ms		C:  3551 ms
+       LDS = 2 -> R:   5700 ms	R+:  5254 ms(*)	C:  4698 ms
+       LDS = 1 -> R:   3702 ms	R+:  5996 ms		C:  3828 ms
+       LDS = 0 -> R:   3566 ms(*)  R+:   5475 ms		C:  3625 ms
+
+4 workers (r2d3, r2d4, r2d7, aguirre):
+   - 1 solucion:
+       LDS = 10-> R:	19568 ms	R+: 36115 ms		C: 15477 ms
+       LDS = 3 -> R:	 5844 ms	R+:  6064 ms		C:  2901 ms
+       LDS = 2 -> R:	 5691 ms	R+:  5474 ms		C:  4956 ms
+       LDS = 1 -> R:	 3519 ms (*)	R+:  5920 ms		C:  3696 ms
+       LDS = 0 -> R:	 3519 ms (*)	R+:  5858 ms		C:  3141 ms
+
+5 workers (r2d3, r2d4, r2d7, aguirre, clip), LDS=0:
+	  R: 3255 ms   R+: 3723 ms     C: 1777 ms
+
+- queens 24, 1 sol:
+1 worker (clip):                    R: 1440556 ms  R+: 1440556 ms C: Na,nm
+2 workers (r2d3,r2d4):              R: 1292663 ms  R+: 6301393 ms C: "	"
+3 workers (r2d3,r2d4,r2d7):         R: 1172561 ms  R+:  240001/157391 ms C: ""
+4 workers (r2d3,r2d4,r2d7,aguirre): R:  590316 ms  R+: 1958872 ms C: " "
+5 workers (r2d3,r2d4,r2d7,ag,clip): R:  123625 ms  R+:  139834 ms C: " "
+
+- queens 12, 100 sols:
+1 worker (r2d3):                    R: 713248ms R+: 682461ms C: 234853ms
+2 workers (r2d3,r2d4):              R: 218826ms R+: 374465ms C: 174220ms
+3 workers (r2d3,r2d4,r2d7):         R: 209126ms R+: 171259ms C:  85956ms
+4 workers (r2d3,r2d4,r2d7,ag):      R: 107046ms R+:  98051ms C:  55985ms
+5 workers (r2d3,r2d4,r2d7,ag,clip): R:  56132ms R+:  58719ms C:  30541ms
+-DGR (secuencial: ).
+
+1 worker (r2d3):
+       LDS = 10-> R: 220373 ms	C: 51745 ms
+       LDS = 3 -> R: 203611 ms	C: 47709 ms
+       LDS = 2 -> R: 212838 ms	C: 47414 ms
+       LDS = 1 -> R:  16502 ms (*)	C:  3679 ms
+       LDS = 0 -> R:  16514 ms 	C:  3942 ms
+
+2 workers (r2d3, r2d7):
+       LDS = 10-> R:  14850 ms	R+: 77532 ms		C: No acaba
+       LDS = 3 -> R:   4817 ms	R+: 40079 ms		C: 3572 ms
+       LDS = 2 -> R:   9616 ms	R+:  9748 ms		C: 2146 ms
+       LDS = 1 -> R:   9451 ms	R+:  9435 ms		C: 3469 ms
+       LDS = 0 -> R:   9404 ms (*)  R+:  9289 ms		C: 3479 ms
+
+3 workers (r2d3, r2d4, r2d7):
+       LDS = 10-> R: 14082 ms	R+: 43685 ms		C: No acaba
+       LDS = 3 -> R:  8511 ms (*)  R+:  5098 ms		C: 2662 ms
+       LDS = 2 -> R:  9818 ms	R+: 10076 ms		C: 3339 ms
+       LDS = 1 -> R:  9586 ms	R+:  9294 ms		C: 3489 ms
+       LDS = 0 -> R:  9734 ms	R+:  9394 ms		C: 3498 ms
+
+4 workers (r2d3, r2d4, r2d7, aguirre):
+       LDS = 10-> R:  8269 ms	R+: 12444 ms		C: No acaba
+       LDS = 3 -> R:  2736 ms (*)   R+:  3258 ms		C: 2785 ms
+       LDS = 2 -> R:  5464 ms	R+:  5804 ms		C: 3350 ms
+       LDS = 1 -> R:  5396 ms	R+:  5226 ms		C: 3666 ms
+       LDS = 0 -> R:  5700 ms	R+:  5327 ms		C: 3703 ms
+
+5 workers, LDS=0 (r2d3, r2d4, r2d7, aguirre, clip): 
+	   R: 2565 ms	      R+: 2989 ms    C:1940 ms
+(R= Recomputacion R+= Recomputacion + reparto eq. del trabajo C = Copia)
+
+C es mucho menos sensible a la potencia de la maquina => Se consiguen
+grupos de trabajo mucho mas homogeneos aunque las maquinas sean de
+potencias distintas.
+
+- Investigar por que en C, cuando el problema es grande (24-queens) los
+  workers "renuncian" tan siquiera a empezar la busqueda (memory
+  requirement explotion?) Visto, se queda sin memoria. Y aunque aguantara
+  más es mas lento en problemas con arboles de busqueda profundos porque
+  cuesta más estar reorganizando constantemente la memoria para buscar
+  hueco que hacer una recomputacion, que al fin y al cabo es inmediata y
+  con tiempo constante.
+
+- alpha. LDS=0,  (Viene muy bien para probar cosas relativas al tamaño y al
+  coste).
+
+  1 worker (r2d3):                    R: 535925 ms R+: 550392 ms C: 213434 ms
+  2 workers (r2d3,r2d7):              R: 595984 ms R+: 306016 ms C: 262615 ms
+  3 workers (r2d3,r2d4,r2d7):         R: 286040 ms R+: 304908 ms C: 298856 ms
+  4 workers (r2d3,r2d4,r2d7,ag):      R: 142219 ms R+: 147391 ms C:  80101 ms
+  5 workers (r2d3,r2d4,r2d7,ag,clip): R:  93370 ms R+:  90432 ms C:  35753 ms
+  

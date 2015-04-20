@@ -1,0 +1,174 @@
+Connected to port:
+49999
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/main,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,102,105,108,101,46,112,108],private)
+booting_server
+awaiting_answer
+answer(2507)
+return(2507)
+shutting_down(2507)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/main,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,102,105,108,101,46,112,108],private)
+booting_server
+awaiting_answer
+answer(2548)
+return(2548)
+shutting_down(2548)
+return(1)
+return(ok)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(2570)
+return(2570)
+shutting_down(2570)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(2709)
+return(2709)
+shutting_down(2709)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(2833)
+return(2833)
+shutting_down(2833)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(2858)
+return(2858)
+shutting_down(2858)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(2887)
+return(2887)
+shutting_down(2887)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(2906)
+return(2906)
+shutting_down(2906)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(2952)
+return(2952)
+shutting_down(2952)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3045)
+return(3045)
+shutting_down(3045)
+return(1)
+return(ok)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3105)
+return(3105)
+shutting_down(3105)
+return(1)
+return(ok)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3195)
+return(3195)
+shutting_down(3195)
+return(1)
+return(ok)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3220)
+return(3220)
+shutting_down(3220)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3269)
+return(3269)
+shutting_down(3269)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3295)
+return(3295)
+shutting_down(3295)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3478)
+return(3478)
+shutting_down(3478)
+connect() in prolog_connect_to_socket: Connection refused
+{ERROR: connect_to_socket_type/[3,4]: cannot connect()}
+return(-5)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3505)
+return(3505)
+shutting_down(3505)
+return(1)
+return(ok)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3512)
+return(3512)
+shutting_down(3512)
+return(1)
+return(ok)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3518)
+return(3518)
+shutting_down(3518)
+return(1)
+return(ok)
+starting_up(file://clip.dia.fi.upm.es/home/clip/Systems/ciao-1.7/library/ams/examples/class/expanded/useofstack,[104,116,116,112,58,47,47,99,108,105,112,46,100,105,97,46,102,105,46,117,112,109,46,101,115,47,126,99,108,105,112,47,115,116,97,99,107,46,112,108],private)
+booting_server
+awaiting_answer
+answer(3524)
+return(3524)
+shutting_down(3524)
+return(1)
+return(ok)

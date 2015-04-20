@@ -1,0 +1,40 @@
+:- module(_,_,[functions,assertions]).
+:- use_module(library(terms),[atom_concat/2]).
+
+src := '/home/edison/Systems/ciao-1.11'.
+libdir := ~atom_concat([~src,'/lib']).
+docdir := '/home/edison/tmp/Ciao'.
+
+ciaolib := ~src.
+
+pathsfile := 'libpaths.pl'.
+
+index := concept.
+index := lib.
+index := pred.
+index := prop.
+index := regtype.
+index := decl.
+%index := modedef.
+index := global.
+
+bibfile := '/home/clip/bibtex/clip/clip'.
+bibfile := '/home/clip/bibtex/clip/others'.
+
+startpage := 1.
+
+papertype := afourpaper.
+
+htmlstyle := ~atom_concat([~libdir,'/default.css']).
+
+libtexinfo := 'yes'.
+
+compresscommand := 'gzip -f'.
+
+compressext := 'gz'.
+
+datapermissions(perm(rw,rw,r)).
+
+execpermissions(perm(rwx,rwx,rx)).
+
+

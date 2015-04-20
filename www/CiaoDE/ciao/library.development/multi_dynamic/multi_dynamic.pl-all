@@ -1,0 +1,705 @@
+:- module(multi_dynamic, [
+        asserta_fact/1, 
+	asserta_fact/2, 
+	assertz_fact/1, 
+	assertz_fact/2,
+
+        current_fact/1, 
+	current_fact/2, 
+	retract_fact/1, 
+	retractall_fact/1,
+
+        current_fact_nb/1, 
+	retract_fact_nb/1,
+
+        close_predicate/1, 
+	open_predicate/1,
+
+        set_fact/1, 
+	erase/1,
+
+        asserta/1, 
+	asserta/2, 
+	assertz/1, 
+	assertz/2, 
+	assert/1, 
+	assert/2,
+
+        retract/1, 
+	retractall/1, 
+	abolish/1,
+
+        clause/2, 
+	clause/3, 
+	current_predicate/1, 
+	current_predicate/2,
+
+        dynamic/1, 
+	data/1, 
+	wellformed_body/3
+        ],
+
+        [assertions, isomodes, .(metadefs)]).
+
+multi_new(Db) :-
+	new_atom(Db).
+
+multi_data(Db, Spec) :-
+	indirect_spec(Db, Spec, Spec2),
+	data(Spec2).
+
+multi_current_fact(Db, Fact) :-
+	indirect_fact(Db, Fact, Fact2),
+	current_fact(Fact2).
+
+multi_asserta_fact(Db, Fact) :-
+	indirect_fact(Db, Fact, Fact2),
+	asserta_fact(Fact2).
+
+multi_asserta_fact(Db, Fact, Ref) :-
+	indirect_fact(Db, Fact, Fact2),
+	asserta_fact(Fact2, Ref).
+
+multi_assertz_fact(Db, Fact) :-
+	indirect_fact(Db, Fact, Fact2),
+	assertz_fact(Fact2).
+
+multi_assertz_fact(Db, Fact, Ref) :-
+	indirect_fact(Db, Fact, Fact2),
+	assertz_fact(Fact2, Ref).
+
+multi_retract_fact(Db, Fact) :-
+	indirect_fact(Db, Fact, Fact2),
+	retract_fact(Fact2).
+
+multi_retractall_fact(Db, Fact) :-
+	indirect_fact(Db, Fact, Fact2),
+	retractall_fact(Fact2).
+
+:- meta_predicate multi_asserta(?, ?, goal).
+
+multi_asserta(Db, Head, Body) :-
+	indirect_fact(Db, Head, Head2),
+	asserta((Head2 :- Body)).
+
+
+
+indirect_spec(Db, Spec, Spec2) :-
+	Spec = N/A,
+	atom_concat(Db, N, N2),
+	Spec2 = N2/A.
+
+indirect_fact(Db, Fact, Fact2) :-
+	Fact =.. [N|As],
+	atom_concat(Db, N, N2),
+	Fact2 =.. [N2|As].
+
+
+
+:- use_module(engine(internals), [
+        term_to_meta/2, '$meta_call'/1,
+        '$compile_term'/2,'$current_clauses'/2,'$inserta'/2,'$insertz'/2,
+        '$ptr_ref'/2,'$current_instance'/5,'$instance'/3,'$erase'/1,
+        '$close_predicate'/1, '$open_predicate'/1, '$unlock_predicate'/1]).
+
+:- primitive_meta_predicate(asserta_fact(fact)).
+:- primitive_meta_predicate(asserta_fact(fact,-)).
+:- primitive_meta_predicate(assertz_fact(fact)).
+:- primitive_meta_predicate(assertz_fact(fact,-)).
+:- primitive_meta_predicate(current_fact(fact)).
+:- primitive_meta_predicate(current_fact(fact,-)).
+:- primitive_meta_predicate(retract_fact(fact)).
+:- primitive_meta_predicate(retractall_fact(fact)).
+:- primitive_meta_predicate(current_fact_nb(fact)).
+:- primitive_meta_predicate(retract_fact_nb(fact)).
+:- primitive_meta_predicate(open_predicate(fact)).
+:- primitive_meta_predicate(close_predicate(fact)).
+:- meta_predicate set_fact(fact).
+
+:- comment(asserta_fact(Fact), "@var{Fact} is added to the corresponding
+   @concept{data predicate}.  The fact becomes the first clause of the
+   predicate concerned.").
+
+:- true pred asserta_fact(+callable).
+
+asserta_fact(Fact) :-
+        '$compile_term'([Fact|true], Ptr),
+	'$current_clauses'(Fact, Root),
+	'$inserta'(Root, Ptr).
+
+:- comment(asserta_fact(Fact,Ref), "Same as @pred{asserta_fact/1},
+   instantiating @var{Ref} to a unique identifier of the asserted
+   fact.").
+
+:- true pred asserta_fact(+callable,-reference).
+
+asserta_fact(Fact, Ref) :-
+        '$compile_term'([Fact|true], Ptr),
+	'$current_clauses'(Fact, Root),
+	'$inserta'(Root, Ptr),
+        '$ptr_ref'(Ptr, Ref).
+
+:- comment(assertz_fact(Fact), "@var{Fact} is added to the corresponding
+   @concept{data predicate}.  The fact becomes the last clause of the
+   predicate concerned.").
+
+:- true pred assertz_fact(+callable).
+
+assertz_fact(Fact) :-
+        '$compile_term'([Fact|true], Ptr),
+	'$current_clauses'(Fact, Root),
+	'$insertz'(Root, Ptr).
+
+:- comment(assertz_fact(Fact,Ref), "Same as @pred{assertz_fact/1},
+   instantiating @var{Ref} to a unique identifier of the asserted
+   fact.").
+
+:- true pred assertz_fact(+callable,-reference).
+
+assertz_fact(Fact, Ref) :-
+        '$compile_term'([Fact|true], Ptr),
+	'$current_clauses'(Fact, Root),
+	'$insertz'(Root, Ptr),
+        '$ptr_ref'(Ptr, Ref).
+
+:- comment(current_fact(Fact), "Gives on backtracking all the facts
+   defined as data or concurrent which unify with @var{Fact}.  It is
+   faster than calling the predicate explicitly, which do invoke the
+   meta-interpreter.  If the @var{Fact} has been defined as concurrent
+   and has not been @concept{closed}, @pred{current_fact/1} will wait
+   (instead of failing) for more clauses to appear after the last clause
+   of @var{Fact} is returned.").
+
+%% Current fact: if no clause is available, or if it is possible to 
+%% determine that no matching exists, , $current_instance leaves
+%% the predicate unlocked.  If the predicate is called, then it is left 
+%% locked while the clause is being executed.
+
+:- true pred current_fact(+callable).
+
+current_fact(Fact) :-
+	'$current_clauses'(Fact, Root),
+	'$current_instance'(Fact, true, Root, _, block),
+        '$unlock_predicate'(Root).
+
+:- comment(current_fact_nb(Fact), "Behaves as @pred{current_fact/1} but
+   a fact is never waited on even if it is @concept{concurrent} and
+   non-closed.").
+
+:- true pred current_fact_nb(+callable).
+
+current_fact_nb(Fact) :-
+	'$current_clauses'(Fact, Root),
+	'$current_instance'(Fact, true, Root, _, no_block),
+        '$unlock_predicate'(Root).
+
+:- comment(current_fact(Fact,Ref), "@var{Fact} is a fact of a
+   @concept{data predicate} and @var{Ref} is its reference identifying
+   it uniquely.").
+
+:- true pred current_fact(+callable,-reference) # "Gives on backtracking all
+   the facts defined as data which unify with @var{Fact}, instantiating
+   @var{Ref} to a unique identifier for each fact.".
+
+:- true pred current_fact(?callable,+reference) # "Given @var{Ref}, unifies
+   @var{Fact} with the fact identified by it.".
+
+current_fact(Fact, Ref) :-
+	'$ptr_ref'(Ptr, Ref), !,
+	'$instance'(Fact, true, Ptr).
+current_fact(Fact, Ref) :-
+	'$current_clauses'(Fact, Root),
+	'$current_instance'(Fact, true, Root, Ptr, no_block),
+        '$ptr_ref'(Ptr, Ref),
+        '$unlock_predicate'(Root).
+
+:- comment(retract_fact(Fact), "Unifies @var{Fact} with the first
+   matching fact of a @concept{data predicate}, and then erases it.  On
+   backtracking successively unifies with and erases new matching facts.
+   If @var{Fact} is declared as @concept{concurrent} and is
+   non-@concept{closed}, @pred{retract_fact/1} will wait for more
+   clauses or for the closing of the predicate after the last matching
+   clause has been removed.").
+
+:- true pred retract_fact(+callable). 
+
+retract_fact(Fact) :-
+	'$current_clauses'(Fact, Root),
+        '$current_instance'(Fact, true, Root, Ptr, block),
+	'$erase'(Ptr),
+        '$unlock_predicate'(Root).
+
+:- comment(retract_fact_nb(Fact), "Behaves as @pred{retract_fact/1}, but
+   never waits on a fact, even if it has been declared as
+   @concept{concurrent} and is non-@concept{closed}.").
+
+:- true pred retract_fact_nb(+callable).
+
+retract_fact_nb(Fact) :-
+	'$current_clauses'(Fact, Root),
+        '$current_instance'(Fact, true, Root, Ptr, no_block),
+	'$erase'(Ptr),
+        '$unlock_predicate'(Root).
+
+:- comment(retractall_fact(Fact), "Erase all the facts of a
+   @concept{data predicate} unifying with @var{Fact}.  Even if all facts
+   are removed, the predicate continues to exist.").
+
+:- true pred retractall_fact(+callable). 
+
+retractall_fact(Fact) :-
+	'$current_clauses'(Fact, Root),
+        '$current_instance'(Fact, true, Root, Ptr, no_block),
+	'$erase'(Ptr),
+        '$unlock_predicate'(Root),
+	fail.
+retractall_fact(_).
+
+:- comment(close_predicate(Pred), "@cindex{closed} Changes the behavior
+   of the predicate @var{Pred} if it has been declared as a
+   @concept{concurrent predicate}: calls to this predicate will fail
+   (instead of wait) if no more clauses of @var{Pred} are available.").
+
+:- true pred close_predicate(+callable).
+
+close_predicate(Fact):-
+        '$current_clauses'(Fact, Root),
+        '$close_predicate'(Root).
+
+:- comment(open_predicate(Pred), "Reverts the behavior of
+   @concept{concurrent predicate} @var{Pred} to waiting instead of
+   failing if no more clauses of @var{Pred} are available.").
+
+:- true pred open_predicate(+callable).
+
+open_predicate(Fact):-
+        '$current_clauses'(Fact, Root),
+        '$open_predicate'(Root).
+
+:- comment(set_fact(Fact), "Sets @var{Fact} as the unique fact of the
+   corresponding @concept{data predicate}.").
+
+:- true pred set_fact(+callable).
+
+set_fact(Fact) :-
+        term_to_meta(Fact_t, Fact),
+        functor(Fact_t, F, A),
+        functor(Template, F, A),
+        '$meta_call'(retractall_fact(Template)),
+        '$meta_call'(asserta_fact(Fact_t)).
+
+:- comment(erase(Ref), "Deletes the clause referenced by @var{Ref}.").
+
+:- true pred erase(+reference).
+
+erase(Ref) :-
+	'$ptr_ref'(Ptr, Ref),
+	'$erase'(Ptr).
+
+% :- comment(doinclude, fact/1).
+% 
+% :- true prop fact(F) + regtype
+%    # "@var{F} is a fact (an atom or a structure).".
+% 
+% fact(F) :- callable(F).
+
+:- comment(doinclude, reference/1).
+
+:- true prop reference(R) + regtype # "@var{R} is a reference of a
+dynamic or data clause.".
+
+reference('$ref'(_,_)).
+
+:- comment(version_maintenance,dir('../../version')).
+
+:- comment(version(1*7+95,2001/05/02,12:18*06+'CEST'), "Documentation
+   on @decl{data/1} and @decl{concurrent} declarations now appear in
+   manuals.  (Manuel Hermenegildo)").
+
+
+:- use_module(engine(internals)).
+:- use_module(library(prolog_sys), [new_atom/1]).
+
+:- meta_predicate
+        asserta(clause),
+        asserta(clause, ?),
+        assertz(clause),
+        assertz(clause, ?),
+        assert(clause),
+        assert(clause, ?),
+        retract(clause),
+        retractall(fact),
+        abolish(spec),
+	dynamic(addmodule),
+        data(addmodule),
+        clause(fact,?),
+        clause(fact,?,?),
+        current_predicate(addmodule).
+
+:- comment(title,"Dynamic predicates").
+
+:- comment(module,"This module implements the assert/retract family of
+   predicates to manipulate dynamic predicates.
+
+   The predicates defined in this module allow modification of the
+   program as it is actually running.  Clauses can be added to the
+   program (@em{asserted}) or removed from the program (@em{retracted}).
+   For these predicates, the argument which corresponds to the clause
+   head must be instantiated to an atom or a compound term. The argument
+   corresponding to the clause must be instantiated either to a term
+   @tt{Head :- Body} or, if the body part is empty, to @tt{Head}. An
+   empty body part is represented as @tt{true}.  Note that using this
+   library is very detrimental to global analysis, and that for most
+   uses the predicates listed in @ref{Fast/concurrent update of facts}
+   suffice.").
+
+:- comment(doinclude, dynamic/1).
+
+:- true decl dynamic(Predicates) : sequence_or_list(predname) + iso
+        # "Defines each predicate in @var{Predicates} as a
+          @concept{dynamic predicate}.  If a predicate is defined
+          dynamic in a file, it must be defined dynamic in every file
+          containing clauses for that predicate. The directive should
+          precede all clauses of the affected predicates.  This
+          directive is defined as a prefix operator in the compiler.".
+
+:- pred asserta(+Clause) + iso
+# "The current instance of @var{Clause} is interpreted as a clause and is
+   added to the current program.  The predicate concerned must be dynamic.
+   The new clause becomes the @em{first} clause for the predicate concerned.
+   Any uninstantiated variables in @var{Clause} will be replaced by new
+   private variables.".
+%% along with copies of any subgoals blocked on these variables.
+
+asserta(Clause) :-
+        dynamic_clauses(Clause, Root, Ptr0, asserta/1),
+	'$inserta'(Root, Ptr0).
+
+:- pred asserta(+Clause,-Ref)
+# "Like @tt{asserta/1}. @var{Ref} is a unique identifier of the asserted
+   clause.".
+
+asserta(Clause, Ref) :-
+        dynamic_clauses(Clause, Root, Ptr0, asserta/2),
+	'$inserta'(Root, Ptr0),
+	'$ptr_ref'(Ptr0, Ref).
+
+:- pred assertz(+Clause) + iso
+# "Like @tt{asserta/1}, except that the new clause becomes the @em{last}
+   clause for the predicate concerned.".
+
+assertz(Clause) :-
+        dynamic_clauses(Clause, Root, Ptr0, assertz/1),
+	'$insertz'(Root, Ptr0).
+
+:- pred assertz(+Clause,-Ref)
+# "Like @tt{assertz/1}. @var{Ref} is a unique identifier of the asserted
+   clause.".
+
+assertz(Clause, Ref) :-
+        dynamic_clauses(Clause, Root, Ptr0, assertz/2),
+	'$insertz'(Root, Ptr0),
+	'$ptr_ref'(Ptr0, Ref).
+
+:- pred assert(+Clause)
+# "Identical to @tt{assertz/1}. Included for compatibility.".
+
+assert(Clause) :-
+        dynamic_clauses(Clause, Root, Ptr0, assert/1),
+	'$insertz'(Root, Ptr0).
+
+:- pred assert(+Clause,-Ref)
+# "Identical to @tt{assertz/2}. Included for compatibility.".
+
+assert(Clause, Ref) :-
+        dynamic_clauses(Clause, Root, Ptr0, assert/2),
+	'$insertz'(Root, Ptr0),
+	'$ptr_ref'(Ptr0, Ref).
+
+dynamic_clauses(Clause, Root, Ptr0, Goal) :-
+        term_to_meta(CL, Clause),
+	(   canonical_clause(CL, Head, Body0),
+	    wellformed_body(Body0, +, Body) ->
+	    dynamic1(Head, Goal),
+	    '$compile_term'([Head|Body], Ptr0), 
+	    '$current_clauses'(Head, Root)
+	;  
+            throw(error(type_error(clause, CL), Goal-1))
+	).
+
+canonical_clause((H :- B), H, B) :- !,
+	functor(H, F, _),
+	atom(F).
+canonical_clause(H, H, true) :-
+	functor(H, F, _),
+	atom(F).
+
+:- comment(wellformed_body(BodyIn,Env,BodyOut),
+   "@var{BodyIn} is a well-formed clause body. @var{BodyOut} is its
+    counterpart with no single-variable meta-goals (i.e., with @tt{call(X)}
+    for @tt{X}). @tt{Env} denotes if global cuts are admissible in
+    @tt{BodyIn} (@tt{+} if they are, @tt{-} if they are not)."). 
+
+wellformed_body(B, _, call(B)) :- var(B), !.
+wellformed_body(!, Env, !) :- !, Env = + .
+wellformed_body((A,B), Env, (A1,B1)) :- !,
+        wellformed_body(A, Env, A1),
+	wellformed_body(B, Env, B1).
+wellformed_body((A->B), Env, (A1->B1)) :- !,
+        wellformed_body(A, -, A1),
+	wellformed_body(B, Env, B1).
+wellformed_body((A;B), Env, (A1;B1)) :- !,
+        wellformed_body(A, Env, A1),
+	wellformed_body(B, Env, B1).
+wellformed_body((\+ A), _, (\+ A1)) :- !,
+        wellformed_body(A, -, A1).
+wellformed_body(if(A,B,C), Env, if(A1,B1,C1)) :- !,
+        wellformed_body(A, -, A1),
+        wellformed_body(B, Env, B1),
+        wellformed_body(C, Env, C1).
+wellformed_body(L^A, Env, L^A1) :- !,
+        wellformed_body(A, Env, A1).
+wellformed_body(Goal, _, Goal) :-
+	functor(Goal, F, _),
+	atom(F).
+
+:- comment(dynamic(F/A), "The predicate named @var{F} with arity
+@var{A} is made @concept{dynamic} in the current module at runtime
+(useful for predicate names generated on-the-fly).  If the predicate
+functor name @var{F} is uninstatiated, a new, unique, predicate name
+is generated at runtime.").
+
+:- pred dynamic(+Spec).
+
+dynamic(F/A, Mod) :-
+        atom(F), !,
+        module_concat(Mod, F, MF),
+        functor(Head, MF, A), !,
+        asserta_fact(imports(Mod, Mod, F, A, Mod)), % defines/3 in not dynamic
+	dynamic1(Head, dynamic/2).
+
+dynamic(F/A, Mod) :-
+        var(F), !,
+        new_atom(F),
+        dynamic(F/A, Mod).
+
+
+:- comment(doinclude, data/1).
+
+:- pred data(+Spec).
+
+:- comment(data(F/A), "The predicate named @var{F} with arity @var{A}
+is made @concept{data} in the current module at runtime (useful for
+predicate names generated on-the-fly).  If the predicate functor name
+@var{F} is uninstatiated, a new, unique, predicate name is generated
+at runtime. ").
+
+% By now identical to dynamic
+data(F/A, Mod) :-
+        atom(F), !,
+        module_concat(Mod, F, MF),
+        functor(Head, MF, A), !,
+        asserta_fact(imports(Mod, Mod, F, A, Mod)), % defines/3 in not dynamic
+	dynamic1(Head, data/2).
+data(F/A, Mod) :-
+        var(F), !,
+        new_atom(F),
+        data(F/A, Mod).
+
+
+dynamic1(F, Goal) :-
+	'$predicate_property'(F, _, Prop), !,
+	(   Prop/\2 =:= 2 -> true		% dynamic, xref nondet.c
+        ;   functor(F, N, A),
+            throw(error(permision_error(modify, static_procedure, N/A), Goal))
+	).
+dynamic1(F, _) :-
+	functor(F, Name, Ar),
+	'$define_predicate'(Name/Ar, consult),
+	'$set_property'(F, (dynamic)).		% xref indexing.c
+
+
+ %% Now in library(concurrency)
+ %% :- pred concurrent(+Spec).
+ %% 
+ %% :- comment(concurrent(F/A), "The predicate named @var{F} with arity
+ %% @var{A} is made @concept{concurrent} in the current module at runtime
+ %% (useful for predicate names generated on-the-fly).  If the predicate
+ %% functor name @var{F} is uninstatiated, a new, unique, predicate name
+ %% is generated at runtime. ").
+ %% 
+ %% 
+ %% concurrent(F/A, Mod) :-
+ %%         atom(F), !,
+ %%         module_concat(Mod, F, MF),
+ %%         functor(Head, MF, A), !,
+ %%         asserta_fact(imports(Mod, Mod, F, A, Mod)), % defines/3 in not dynamic
+ %% 	concurrent1(Head, data/2).
+ %% concurrent(F/A, Mod) :-
+ %%         var(F), !,
+ %%         new_atom(F),
+ %%         concurrent(F/A, Mod).
+ %% 
+ %% 
+ %% concurrent1(F, Goal) :-
+ %% 	'$predicate_property'(F, _, Prop), !,
+ %% 	(   Prop/\2 =:= 2 -> true		% dynamic, xref nondet.c
+ %%         ;   functor(F, N, A),
+ %%             throw(error(permision_error(modify, static_procedure, N/A), Goal))
+ %% 	).
+ %% concurrent1(F, _) :-
+ %% 	functor(F, Name, Ar),
+ %% 	'$define_predicate'(Name/Ar, consult),
+ %% 	'$set_property'(F, (concurrent)).		% xref indexing.c
+
+
+
+:- pred retract(+Clause) + iso
+# "The first clause in the program that matches @var{Clause} is erased.
+   The predicate concerned must be dynamic. 
+
+   The predicate @tt{retract/1}
+   may be used in a non-determinate fashion, i.e., it will successively
+   retract clauses matching the argument through backtracking. If reactivated
+   by backtracking, invocations of the predicate whose clauses are being
+   retracted will proceed unaffected by the retracts. This is also true
+   for invocations of @tt{clause} for the same predicate. The space occupied
+   by a retracted clause will be recovered when instances of the clause are
+   no longer in use.".
+
+retract(Clause) :-
+        term_to_meta(CL, Clause),
+	canonical_clause(CL, Head, Body), 
+	dynamic1(Head, retract/1),
+	'$current_clauses'(Head, Root), 
+        '$current_instance'(Head, Body, Root, Ptr, no_block),
+	'$erase'(Ptr),
+        '$unlock_predicate'(Root).
+
+:- pred retractall(+Head)
+# "Erase all clauses whose head matches @var{Head}, where @var{Head} must
+   be instantiated to an atom or a compound term.  The predicate concerned
+   must be dynamic.  The predicate definition is retained.".
+
+retractall(Head) :-
+        term_to_meta(H, Head),
+	nonvar(H),
+        retractall_(H).
+
+retractall_(Head) :-
+	dynamic1(Head, retractall/1),
+	'$current_clauses'(Head, Root), 
+        '$current_instance'(Head, _, Root, Ptr, no_block),
+	'$erase'(Ptr),
+        '$unlock_predicate'(Root),
+	fail.
+retractall_(_).
+
+:- pred abolish(+Spec) + iso
+# "Erase all clauses of the predicate specified by the predicate spec
+   @var{Spec}. The predicate definition itself is also erased (the
+   predicate is deemed undefined after execution of the abolish). The
+   predicates concerned must all be user defined.".
+
+abolish(Spec) :-
+        term_to_meta(F/A, Spec),
+        functor(Head, F, A), !,
+	abolish_data_of(Head),
+	'$abolish'(Head).
+
+:- multifile do_on_abolish/1.
+
+:- comment(do_on_abolish(Head),"A hook predicate which will be called
+	when the definition of the predicate of @var{Head} is abolished.").
+
+abolish_data_of(Head) :-
+        do_on_abolish(Head),
+        fail.
+abolish_data_of(_).
+
+:- pred clause(+Head,?Body) +iso
+# "The clause '@var{Head} @tt{:-} @var{Body}' exists in the current
+   program. The predicate concerned must be dynamic.".
+
+clause(HEAD, Body) :-
+        term_to_meta(Head, HEAD),
+	nonvar(Head),
+	dynamic1(Head, clause/2),
+	'$current_clauses'(Head, Root),
+	'$current_instance'(Head, Body, Root, _, no_block),
+        '$unlock_predicate'(Root).
+
+:- comment(clause(Head,Body,Ref),"Like @tt{clause(Head,Body)}, plus the
+   clause is uniquely identified by @var{Ref}.").
+
+:- pred clause(+Head,?Body,?Ref)
+# "@var{Head} must be instantiated to an atom or a compound term.".
+
+:- pred clause(?Head,?Body,+Ref)
+# "@var{Ref} must be instantiated to a valid identifier.".
+
+clause(HEAD, Body, Ref) :-
+	'$ptr_ref'(Ptr, Ref), !, 
+	'$instance'(Head, Body, Ptr), 
+	Head\==0,
+        term_to_meta(Head, HEAD).
+clause(HEAD, Body, Ref) :-
+        term_to_meta(Head, HEAD),
+	nonvar(Head), 
+	dynamic1(Head, clause/3),
+	'$current_clauses'(Head, Root), 
+        '$current_instance'(Head, Body, Root, Ptr, no_block),
+        '$unlock_predicate'(Root),
+	'$ptr_ref'(Ptr, Ref).
+
+:- pred current_predicate(?Spec) + iso
+        # "A predicate in the current module is named @var{Spec}.".
+
+:- pred current_predicate(?Spec,?Module)
+        # "A predicate in @var{Module} is named @var{Spec}. @var{Module}
+           never is an engine module.".
+
+current_predicate(F/A,M) :-
+        current_module(M),
+        \+ internal_module(M),
+        module_concat(M,'',MPref),
+        '$predicate_property'(P, _, _),
+        functor(P, MF, A),
+        atom_concat(MPref,F,MF).
+
+internal_module(internals).
+internal_module(M) :- builtin_module(M).
+
+% ----------------------------------------------------------------------
+
+:- comment(version_maintenance,dir('../version')).
+
+:- comment(version(1*7+93,2001/04/24,19:02*53+'CEST'),
+   "current_predicate/2 now enumerates non-engine modules (Daniel Cabeza
+   Gras)").
+
+:- comment(version(1*7+24,2000/10/13,12:43*39+'CEST'), "concurrent/1
+now in library(concurrency).  (MCL)").
+
+:- comment(version(1*7+23,2000/10/05,13:45*26+'CEST'), "Added
+concurrent/1 as callable from code.  It generates names if needed. (MCL)").
+
+:- comment(version(1*7+22,2000/10/05,13:30*16+'CEST'), "data/1 and
+dynamic/1 now generate predicate names if the name is uninstantaited.
+(MCL)").
+
+:- comment(version(1*7+8,2000/08/16,11:45*04+'CEST'), "Added some
+documentation.  (MCL)").
+
+:- comment(version(1*5+146,2000/05/19,21:01*42+'CEST'), "Implemented
+   current_predicate/1 better.  Added current_predicate/2. (Daniel
+   Cabeza Gras)").
+
+:- comment(version(0*5+30,1998/06/30,14:23*37+'MET DST'), "Fixed bug in
+   retract/1 -- unlocking before erasing (Daniel Cabeza Gras, Manuel Carro)").
+
+:- comment(version(0*5+11,1998/05/23,19:30*30+'MET DST'), "Added
+   dynamic/2 which use the new 'module' meta argument type (Daniel
+   Cabeza Gras)").
+
+:- comment(version(0*4+5,1998/2/24), "Synchronized file versions with

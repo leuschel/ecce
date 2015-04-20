@@ -1,0 +1,45 @@
+#!/bin/tcsh
+if ($?CIAOLIB) then
+
+echo "BENCHMARK: new/2 performance versus number of created instances"
+echo "---------------------------------------------------------------"
+
+ cd $CIAOLIB/library/class/benchmarks/new/no_destroy
+
+echo "compiling..."
+
+rm -f *.itf *.po
+ciaoc no_destroy
+
+echo "benchmarking, please, wait..."
+
+if ( -e ./bench ) then
+ 'rm' ./bench
+endif
+ 
+no_destroy 5000 >bench
+echo "completed 1/9"
+no_destroy 7000 >>bench
+echo "completed 2/9"
+no_destroy 9000 >>bench
+echo "completed 3/9"
+no_destroy 11000 >>bench
+echo "completed 4/9"
+no_destroy 13000 >>bench
+echo "completed 5/9"
+no_destroy 15000 >>bench
+echo "completed 6/9"
+no_destroy 17000 >>bench
+echo "completed 7/9"
+no_destroy 19000 >>bench
+echo "completed 8/9"
+no_destroy 21000 >>bench
+echo "completed 9/9"
+
+echo
+echo "generating report..."
+echo
+
+gnuplot psplot
+
+endif
