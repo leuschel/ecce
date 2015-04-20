@@ -33,7 +33,7 @@ function pl_edited(){
 }
 
 function new_window() {
-   url="http://www.stups.uni-duesseldorf.de/~fontaine/mecce/nmecce.php?form_data=present&new_window=on&";
+   url="http://wyvern.cs.uni-duesseldorf.de/ecce/index.php?form_data=present&new_window=on&";
    url=url.concat(document.pressed,"=",document.value);
 
    window.open(url,'winChTree','width=100,height=100');
