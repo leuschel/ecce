@@ -37,23 +37,25 @@ More information about how partial deduction is controlled
 <ol>
 <li>choosing a file from disk, and loading it, or</li> 
 <li>selecting a pre-loaded working example from the right-hand drop menu, or</li>
-<li>pasting straight into the <i>source</i> textarea.</li>
+<li>pasting straight into the <i>source</i> text area.</li>
 </ol>
 The source code must be a pure Prolog program, which can contain built-ins, and this is going to be used as input to the specialiser.</p>
 
 <img style="float:left; margin:0 10px;" src="images/actions.jpg" width="200"/>
 <p>There are five <i>actions</i> available for this input code: Specialisation, Slicing, Most Specific Version (MSV) bottom-up propagation, Redundant Argument Filtering (RAF), and inverse Redundant Argument Filtering (FAR).</p>
 
+<!-- 
 <img style="float:right; margin:0 10px;" src="images/plugins.jpg" width="150"/>
 <p>In addition to these actions, the user can also perform some extra analysis given in the <i>plug-ins</i> section.
 Currently, there are two plug-ins incorporated to the tool: Regular Unary Logic (RUL) program analisys and RUL bottom-up analysis.   
 </p>
+ -->
 
 <img style="float:left; margin:0 10px;" src="images/goal.jpg" width="200"/>
-<p>Actions and plug-ing that are not bottom-up, also require the user to type in a goal in the appropriate text box.
-These are: Specialisation, Slicing, RAF and RUL analyses.</p>
+<p>Actions that are not bottom-up, also require the user to type in a goal in the appropriate text box.
+These are: Specialisation, Slicing, and the RAF  analysis.</p> <!-- and RUL -->
 
-<p>The user can perform the partial evaluation, i.e. specialisation, of a given source program for a given goal.
+<p>The user can perform the partial evaluation, i.e., specialisation, of a given source program for a given goal.
 For instance, by partial evaluation of the following Prolog code (loaded as source, as explained before):
 <pre class="console">
 doubleapp(X,Y,Z,XYZ) :- append(X,Y,XY), append(XY,Z,XYZ).
