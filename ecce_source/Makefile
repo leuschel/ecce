@@ -1,7 +1,7 @@
-SICSTUS=/Users/leuschel/bin/bin/sicstus
-SPLD=/Users/leuschel/bin/bin/spld
+SICSTUS=sicstus
+SPLD=spld
 
-all: sav sicsexe
+all: ecce_sicstus.sav sicsexe
 
 ecce:  *.pl */*.pl
 	ciaoc ecce_ciao_entry.pl 
@@ -21,13 +21,13 @@ clean:
 	find . -name "*.ast" -print -exec rm {} \;
 	-rm ecce_ciao_entry
 
-sav:
+ecce_sicstus.sav:
 	@echo "Creating sav file..."
 	${SICSTUS} -l ecce_sicstus.pl --goal "save_program('ecce_sicstus.sav'),halt."
 	@echo "...done!"
 	@echo 
 
-sicsexe:
+sicsexe: ecce_sicstus.sav
 	@echo "Creating Sicstus executable..."
 	${SPLD} --static --output ecce --resources=./ecce_sicstus.sav=/ecce_sicstus.sav
 	@echo "...done!"
