@@ -108,7 +108,7 @@ proc procGUI_Menu {} {
          -variable gtUsePSViewer -value 0
    .menubar.mnuAnalyse.mnuViewer add radiobutton -label "GV" \
          -variable gtUsePSViewer -value 1
-   .menubar.mnuAnalyse.mnuViewer add radiobutton -label "MacGhostViewX" \
+   .menubar.mnuAnalyse.mnuViewer add radiobutton -label "Preview" \
          -variable gtUsePSViewer -value 2
    .menubar.mnuAnalyse.mnuViewer add radiobutton -label "GSView32" \
          -variable gtUsePSViewer -value 3
@@ -618,7 +618,7 @@ proc procOpenPSFile {psName} {
     if {$gtUsePSViewer == 1} {
        exec gv $psName &
     } elseif {$gtUsePSViewer == 2} {
-       exec open -a /Applications/MacGhostViewX_Folder/MacGhostViewX.app $psName &
+       exec open -a /Applications/Preview.app $psName &
     } else {
       exec C:/Ghostgum/gsview/gsview32 $psName
     }
