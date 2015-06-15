@@ -82,6 +82,7 @@
 
 initialise_parameters :-
 	available_parameters(Parameter,_Char,_Descr,_SD,Default),
+	format('Initialising Parameter ~w = ~w~n',[Parameter,Default]),
 	set_parameter(Parameter,Default),
 	fail.
 initialise_parameters.
