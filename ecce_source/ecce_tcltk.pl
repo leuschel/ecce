@@ -18,6 +18,7 @@
 :- use_module(library(tcltk)).
 :- use_module(library(random)).
 :- use_module(library(system),[]).
+
 :- if(current_prolog_flag(version_data,sicstus(3,_,_,_,_))).
 :- initialization(system:environ('ECCE_SOURCE',_R)).
 :- initialization(system:working_directory(_,_R)). % is now current_directory in SICS 4 in file_systems
@@ -85,6 +86,6 @@ tcltk_turn_rul_bup_on :-
 :- initialization(nl).
 :- initialization(print('Starting ECCE')).
 :- initialization(nl).
-:- initialization(debug).
+%:- initialization(debug).
 :- initialization(go).
 

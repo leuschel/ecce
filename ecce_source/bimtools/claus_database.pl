@@ -308,9 +308,9 @@ set_make_iff_when_reading_clauses :-
 	print('choice =>'),
 	read(NewValue),
 	((\+ (NewValue=on),\+(NewValue=off))
-	 -> (print('Illegal value, assuming off'),nl,
-	     set_make_iff_when_reading_clauses(off))
-	 ;  (set_make_iff_when_reading_clauses(NewValue))
+	 ->  print('Illegal value, assuming off'),nl,
+	     set_make_iff_when_reading_clauses(off)
+	 ;   set_make_iff_when_reading_clauses(NewValue)
 	).
 
 /* ----------------------------------- */

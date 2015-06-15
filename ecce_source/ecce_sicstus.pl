@@ -188,16 +188,3 @@ ecce_recompile :- ecce_reconsult('ecce_compile').
 
 :- nl,nl,print('Type "ecce." and hit return to start the system'),nl.
 
-
-main_sicstus :-
-   prolog_flag(argv,ArgV),
-   main(ArgV).
-   
-runtime_entry(start) :- main_sicstus.
-
-%:- main_sicstus.
-
-%:- ecce.
-
-
-% RUNTIME ENTRY: main + get arguments...

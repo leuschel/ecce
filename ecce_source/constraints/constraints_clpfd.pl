@@ -7,7 +7,7 @@
 %%% Ciao does not support CLPFD!
 %%%
 
-:- use_module(library(clpfd)).
+:- use_module(library(clpfd),[]).
 
 :- assert(clpfd:full_answer).
 
@@ -131,8 +131,8 @@ keep_entailed(DC,[C|T],Res) :- print(checking(DC,C)),nl,
 
 normalise_constraint([],[]).
 normalise_constraint([in(Var,'..'(Low,Up))|T],Res) :- !,
-	((Low=inf) ->(Res=Res1) ; (Res = [Var#>=Low|Res1])),
-	((Up=sup)  ->(Res1=NT)  ; (Res1 = [Var#=<Up | NT])),
+	(Low=inf -> Res=Res1 ; Res = [Var#>=Low|Res1]),
+	(Up=sup  -> Res1=NT  ; Res1 = [Var#=<Up | NT]),
 	normalise_constraint(T,NT).
 normalise_constraint([C|T],[C|NT]) :-
 	normalise_constraint(T,NT).
@@ -184,6 +184,6 @@ satisfiable([C|T]) :-
 project_constraint([],_,[]).
 project_constraint([C|T],Term,Res) :-
 	(sharing(C,Term)
-	 -> (Res = [C|TR]) ; (Res = TR)
+	 -> Res = [C|TR] ; Res = TR
 	),
 	project_constraint(T,Term,TR).
