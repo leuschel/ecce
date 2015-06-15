@@ -245,6 +245,9 @@ proc procGUI_Menu {} {
    .menubar.mnuPostprocessing add sep
    .menubar.mnuPostprocessing add command -label "Turn all off" -command {procTurnPPOff}
    .menubar.mnuPostprocessing add command -label "Turn all on" -command {procTurnPPOn}
+   .menubar.mnuPostprocessing add sep
+   .menubar.mnuPostprocessing add command -label "Turn Debugging on" -command {prolog set_debug_printing(on)}
+   .menubar.mnuPostprocessing add command -label "Turn Debugging off" -command {prolog set_debug_printing(off)}
     
     # -------------------- About menu
 #    menu .menubar.mnuAbout -tearoff 0
