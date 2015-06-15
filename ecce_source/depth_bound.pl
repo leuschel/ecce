@@ -25,8 +25,8 @@ post_condition(depth_bound_ok(_L)).
 
 depth_bound_ok(L) :-
 	current_depth_bound(DB),
-	((DB<1) -> (true)
-		;  (list_shorter_than(L,DB))
+	(DB<1 -> true
+		;  list_shorter_than(L,DB)
 	).
 
 list_shorter_than(X,_Nr) :-

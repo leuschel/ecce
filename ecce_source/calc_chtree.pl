@@ -643,9 +643,8 @@ is_undefined_literal(CLiteral) :-
     not(Literal = fail),
 	(is_open_literal(Literal)
 	  -> true
-	   ; (not(is_negative_literal(Literal,_Atom)),
-	      not(is_built_in_literal(Literal))
-	     )
+	   ; not(is_negative_literal(Literal,_Atom)),
+	     not(is_built_in_literal(Literal))
 	),
 	Literal =.. [Pred|Args],
 	generate_variables(Args,Vars),
@@ -668,7 +667,7 @@ post_condition(is_negative_literal(_Literal,Atom)) :-
 is_negative_literal(Literal,Atom) :-
 %	verify_pre(is_negative_literal(Literal,Atom)),
 	peel_off_calls(Literal,PLiteral),
-	((PLiteral = not(CAtom)) ; (PLiteral = \+(CAtom))),
+	(PLiteral = not(CAtom) ; PLiteral = \+(CAtom)),
 	peel_off_calls(CAtom,Atom).
 
 /* --------------------- */
@@ -774,8 +773,8 @@ self_check(must_succeed(divide_constraint_goal([],[],[]))).
 divide_constraint_goal([],[],[]).
 divide_constraint_goal([Lit|T],OrdLits,ConstrLits) :-
    (is_constraint_literal(Lit)
-    -> (ConstrLits = [Lit|C2], O2 = OrdLits)
-    ;  (OrdLits = [Lit|O2], C2 = ConstrLits)
+    -> ConstrLits = [Lit|C2], O2 = OrdLits
+    ;  OrdLits = [Lit|O2], C2 = ConstrLits
    ),
    divide_constraint_goal(T,O2,C2).
 
@@ -797,10 +796,10 @@ divide_constraint_residual_goal([],[],[]).
 divide_constraint_residual_goal([Lit|T],OrdLits,ConstrLits) :-
    (is_constraint_literal(Lit)
      ->(keep_constraint_literal_in_residual_program(Lit)
-         -> (ConstrLits = [Lit|C2], O2 = OrdLits)
-         ;  (ConstrLits = C2, OrdLits = O2)
+         -> ConstrLits = [Lit|C2], O2 = OrdLits
+         ;  ConstrLits = C2, OrdLits = O2
        )
-    ;  (OrdLits = [Lit|O2], C2 = ConstrLits)
+    ;  OrdLits = [Lit|O2], C2 = ConstrLits
    ),
    divide_constraint_residual_goal(T,O2,C2).
 
@@ -987,8 +986,8 @@ msg_can_be_taken([A1|T1],[A2|T2]) :-
 
 print_predicate(Pred) :-
 	((Pred=pred(Name,Arity))
-	-> (print(Name),print('/'),print(Arity))
-	;  (print('### not pred(Name,Arity): '),print(Pred))
+	-> print(Name),print('/'),print(Arity)
+	;  print('### not pred(Name,Arity): '),print(Pred)
 	).
 
 /* --------- */
