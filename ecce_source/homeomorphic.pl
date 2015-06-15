@@ -1,4 +1,4 @@
-:- module(homeomorphic,[homeomorphic_embedded_conjunction/2,not_more_general_conjunction/2,mixtus_term_size_embedded/2,mixtus_term_size/2,homeomorphic_embedded/2,chtree_homeomorphic_embedded/2,sub_term/2,print_c/1,term_nesting_level/3,chtree_functor/1]).
+:- module(homeomorphic,[homeomorphic_embedded_conjunction/2,not_more_general_conjunction/2,mixtus_term_size_embedded/2,mixtus_term_size/2,homeomorphic_embedded/2,chtree_homeomorphic_embedded/2,gen_sub_term/2,print_c/1,term_nesting_level/3,chtree_functor/1]).
 
 /* --------------------------------------------- */
 /* (C) COPYRIGHT MICHAEL LEUSCHEL 1995,1996,1997 */
@@ -145,11 +145,11 @@ homeomorphic_embedded(X,Y) :- /* coupling */
 homeomorphic_embedded(X,Y) :- /* diving */
 	nonvar(Y),
 	term_nesting_level(X,NX,SumX),
-	sub_term(Y,Sub),
+	gen_sub_term(Y,Sub),
 	term_nesting_level(Sub,NSub,SumSub),
 	NSub>=NX,
 	SumSub>=SumX,
-	/*print(sub_term(Y,Sub)),nl,*/
+	/*print(gen_sub_term(Y,Sub)),nl,*/
 	homeomorphic_embedded(X,Sub),!.
 
 /* l_homeomorphic_embedded(X,Y) :- 
@@ -201,7 +201,7 @@ chtree_homeomorphic_embedded2(X,Y) :-
 	),!.
 chtree_homeomorphic_embedded2(X,Y) :-
 	/* term_nesting_level(X,NX,SumX), */
-	sub_term(Y,Sub),
+	gen_sub_term(Y,Sub),
 	/* term_nesting_level(Sub,NSub,SumSub),
 	NSub>=NX,
 	SumSub>=SumX, */
@@ -213,7 +213,7 @@ l_chtree_homeomorphic_embedded([X|TX],[Y|TY]) :-
 	chtree_homeomorphic_embedded2(X,Y),!,
 	l_chtree_homeomorphic_embedded(TX,TY).
 
-sub_term(X,Sub) :-
+gen_sub_term(X,Sub) :-
 	nonvar(X),
 	X=..[_F|Args],
 	member(Sub,Args).

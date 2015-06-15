@@ -724,7 +724,7 @@ is_built_in_literal(numbervars(_X,_,_)). 	/* not declarative */
 is_built_in_literal(ecce_call(_Cond,_Call)). 	/* FORCE ECCE TO CALL A PREDICATE */
 is_built_in_literal(in(_CLPFDVariable,_Domain)) :- clpfd_active(yes).
 is_built_in_literal('#<'(_FDT1,_FDT2)) :- clpfd_active(yes).
-is_built_in_literal('#\='(_FDT1,_FDT2)) :- clpfd_active(yes).
+is_built_in_literal('#\\='(_FDT1,_FDT2)) :- clpfd_active(yes).
 is_built_in_literal('#>'(_FDT1,_FDT2)) :- clpfd_active(yes).
 is_built_in_literal('#='(_FDT1,_FDT2)) :- clpfd_active(yes).
 is_built_in_literal(labeling(_Opts,_Vars)) :- clpfd_active(yes).
@@ -737,7 +737,7 @@ is_built_in_literal(X) :-
 
 is_constraint_literal(in(_CLPFDVariable,_Domain)) :- clpfd_active(yes).
 is_constraint_literal('#<'(_FDT1,_FDT2)) :- clpfd_active(yes).
-is_constraint_literal('#\='(_FDT1,_FDT2)) :- clpfd_active(yes).
+is_constraint_literal('#\\='(_FDT1,_FDT2)) :- clpfd_active(yes).
 is_constraint_literal('#>'(_FDT1,_FDT2)) :- clpfd_active(yes).
 is_constraint_literal('#='(_FDT1,_FDT2)) :- clpfd_active(yes).
 is_constraint_literal(clpfd:'t=u+c'(_,_,_)) :- clpfd_active(yes).
@@ -750,7 +750,7 @@ is_constraint_literal(rul__constraint__declaration(_C,_Def)) :-
 keep_constraint_literal_in_residual_program(in(_CLPFDVariable,_Domain)) :- 
      clpfd_active(yes).
 keep_constraint_literal_in_residual_program('#<'(_FDT1,_FDT2)) :- clpfd_active(yes).
-keep_constraint_literal_in_residual_program('#\='(_FDT1,_FDT2)) :- 
+keep_constraint_literal_in_residual_program('#\\='(_FDT1,_FDT2)) :- 
      clpfd_active(yes).
 keep_constraint_literal_in_residual_program('#>'(_FDT1,_FDT2)) :- clpfd_active(yes).
 keep_constraint_literal_in_residual_program('#='(_FDT1,_FDT2)) :- clpfd_active(yes).

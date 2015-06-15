@@ -18,13 +18,15 @@
 :- use_module(library(tcltk)).
 :- use_module(library(random)).
 :- use_module(library(system),[]).
-:- initialization(system:environ('ECCE_SOURCE',R)).
-:- initialization(system:working_directory(_,R)).
+:- if(\+ current_prolog_flag(version_data,sicstus(3,_,_,_,_))).
+:- initialization(system:environ('ECCE_SOURCE',_R)).
+:- initialization(system:working_directory(_,_R)). % is now current_directory in SICS 4 in file_systems
+:- endif.
 
 runtime_entry(start) :- go.
 main :- go.
 
-save :- save_program('~/cvs_root/ecce/ecce_source/ecce.sav').
+save :- save_program('~/git_root/ecce/ecce_source/ecce.sav').
 %:- ensure_consulted('ecce_main.pl').
 % MV: I am bypassing ecce_sicstus.pl!!!
 % MAL: this does not work !!!!

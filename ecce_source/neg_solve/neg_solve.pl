@@ -39,8 +39,7 @@ available_options(negsolve,97,
 	'solve ground + unground if empty c.a.s.').
 available_options(negsolve,103,
 	'neg_solve/neg_solve.ground.pl',
-	'solve ground (or dead) negative literals
-     (supposes ground negative literals terminate)').
+	'solve ground (or dead) negative literals (supposes ground negative literals terminate)').
 available_options(negsolve,110,
 	'neg_solve/neg_solve.none.pl',
 	'none').

@@ -81,6 +81,8 @@ copy(C,CC) :- copy_term(C,CC).
 
 /* From: instance.pro */
 
+
+:- if(\+ current_prolog_flag(version_data,sicstus(3,_,_,_,_))).
 variant_of(Goal,UIGoal) :-
 	copy(Goal,CGoal),
 	variant(UIGoal,CGoal).
@@ -93,7 +95,21 @@ strict_instance_of(Goal1,Goal2) :-
 	copy(Goal1,CGoal),
 	subsumes_chk(Goal2,CGoal),
 	not(subsumes_chk(CGoal,Goal2)).
+:- else.
+:- use_module(library(terms),[variant/2]).
+variant_of(Goal,UIGoal) :-
+	copy(Goal,CGoal),
+	variant(UIGoal,CGoal).
 
+instance_of(Goal,UIGoal) :- 
+	copy(Goal,CGoal),
+	subsumes_term(UIGoal,CGoal).
+
+strict_instance_of(Goal1,Goal2) :-
+	copy(Goal1,CGoal),
+	subsumes_term(Goal2,CGoal),
+	\+(subsumes_term(CGoal,Goal2)).
+:- endif.
 
 ecce_get(Ascii) :- get(Ascii).
 

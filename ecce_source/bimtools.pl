@@ -123,6 +123,7 @@
 % FOR CIAO!
 % DTM: KEEP like this becaus the sicstus expansion has to eliminate them!
 
+:- if(\+ current_prolog_flag(dialect,sicstus)).
 :- export( string_concatenate/3).
 % :- export( transform_dcg_term/2).
 % :- export( please/2).
@@ -143,6 +144,7 @@
 % :- export( variant_of/2).
 % :- export( strict_instance_of/2).
 :- export( same_length/2).
+:- endif.
 
 :- use_package( .(ecce_no_rt) ).
 
@@ -150,7 +152,9 @@
 :- set_prolog_flag(discontiguous_warnings,off).
 :- set_prolog_flag(single_var_warnings,off).
 
+:- if(\+ current_prolog_flag(dialect,sicstus)).
 :- use_module(library(dec10_io)).
+:- endif.
 :- use_module(library(lists)).
 
 :- use_module(library(aggregates)).
@@ -194,7 +198,9 @@
 not(Goal) :- \+(Goal).
 
 
+:- if(\+ current_prolog_flag(dialect,sicstus)).
 :- include('bimtools/ciao_specific.pl').
+:- endif.
 
 :- include('bimtools/gensym.pl').
 :- include('bimtools/msg.pl').

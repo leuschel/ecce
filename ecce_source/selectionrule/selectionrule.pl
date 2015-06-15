@@ -90,8 +90,7 @@ available_options(selectionrule,101,
 	user_expert(yes).
 available_options(selectionrule,100,
 	'selectionrule/selectionrule.det.pl',
-	'Determinate unfolding (unsafe w/o depth bound)
-     (non-determinate steps only allowed at top)') :- 
+	'Determinate unfolding (unsafe w/o depth bound, non-determinate steps only allowed at top)') :- 
 	user_expert(yes).
 available_options(selectionrule,104,
 	'selectionrule/selectionrule.homo.pl',

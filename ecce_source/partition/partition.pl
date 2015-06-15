@@ -81,13 +81,11 @@ available_options(partition,115,
 	'Standard PD (partition into atomic sub-goals)').
 available_options(partition,117,
 	'partition/partition.staticcontig-mdes.pl',
-	'conjunctive PD (only static contiguous conjunctions,
-	 no built-ins, require i/o mode link)').
+	'conjunctive PD (only static contiguous conjunctions, no built-ins, require i/o mode link)').
 
 available_options(partition,110,
 	'partition/partition.naive.pl',
-	'naive standard PD (only atoms,
-	 make non-ground args fully dynamic)') :- 
+	'naive standard PD (only atoms, make non-ground args fully dynamic)') :- 
 	user_expert(yes).
 
 available_options(partition,120,

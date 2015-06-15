@@ -345,7 +345,7 @@ strip_body([H|T],Res) :-
 
 strip_literal(X,[X]) :- var(X),!.
 strip_literal('C'(X,Y,Z),['='(X,[Y|Z])]). /* for DCGs */
-strip_literal('\+'(X),[not(SX)]) :-
+strip_literal('\\+'(X),[not(SX)]) :-
 	strip_literal(X,[SX]).
 strip_literal(not(X),[not(SX)]) :-
 	strip_literal(X,[SX]).

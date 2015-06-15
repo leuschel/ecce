@@ -76,16 +76,13 @@ available_ciaopp_option(abstraction,108,'conj-msg').
 
 available_options(abstraction,99,
 	'abstract/abstract.msgchtree.pl',
-	'msg of atoms and Chtree part
-     (impose Msg of chtree part on the generalisation)').
+	'msg of atoms and Chtree part (impose Msg of chtree part on the generalisation)').
 available_options(abstraction,100,
 	'abstract/abstract.precisemsgchtree.pl',
-	'msg of atoms and precise msg of chtree part
-     (impose Msg of chtree part on the generalisation)').
+	'msg of atoms and precise msg of chtree part (impose Msg of chtree part on the generalisation)').
 available_options(abstraction,101,
 	'abstract/abstract.eco.pl',
-	'Ecological Partial Deduction
-     (Msg of atoms with same chtree + impose chtree)').
+	'Ecological Partial Deduction (Msg of atoms with same chtree + impose chtree)').
 available_options(abstraction,105,
 	'abstract/abstract.conjsplit-contig.pl',
 	'conJunctive split: most specific msg with homeomorphic embedded contiguous subconjunction (or split off first literal if none exists)').

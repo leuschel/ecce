@@ -96,9 +96,7 @@ available_options(whistle,103,
 	'set-based homeomorphic embedding whistle on characteristic trees + termsize on conjunctions').*/
 available_options(whistle,101,
 	'whistle/whistle.eco.pl',
-	'Ecological partial deduction whistle
-     (whistle if atom with same chtree and not strictly more general)
-     (guarantees termination only if number of chtrees is finite!)').
+	'Ecological partial deduction whistle (whistle if atom with same chtree and not strictly more general)(guarantees termination only if number of chtrees is finite!)').
 available_options(whistle,104,
 	'whistle/whistle.homo.pl',
 	'Homeomorphic embedding whistle on atoms AND chtrees').

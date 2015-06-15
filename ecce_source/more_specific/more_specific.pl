@@ -67,10 +67,7 @@ available_options(msv,99,
 	user_expert(yes). */
 available_options(msv,102,
 	'more_specific/more_specific.functionality.pl',
-	'Simple, msg of matching heads + functionality based upon mode
-	 declarations (Warning: all modes supposed to be DETERMINATE 
-	 for the output arguments !
-	 e.g. :- mode f(i,o). means :- mode f(i,o) is determinate.)').
+	'Simple, msg of matching heads + functionality based upon mode declarations (Warning: all modes supposed to be DETERMINATE for the output arguments ! e.g. :- mode f(i,o). means :- mode f(i,o) is determinate.)').
 available_options(msv,110,
 	'more_specific/more_specific.none.pl',
 	'None').
