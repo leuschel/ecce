@@ -15,6 +15,7 @@
 
 :- use_module('../bimtools').
 :- use_module('../calc_chtree').
+:- use_module('../constraints/constraints_clpfd',[project_and_check_constraint/3]).
 
 /* instantiates goals during the unfolding process to more specific versions */
 

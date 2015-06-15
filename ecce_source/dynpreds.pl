@@ -178,10 +178,10 @@ detect_dead_literals_or_non_leftmost_builtins(yes).
 
 get_current_parameter_value(X,Y) :-
   (current_parameter_value(X,Y)
-    -> true
-    ; (print('### Warning: No current parameter value found !'),nl,
+    -> (var(Y) -> format('### Warning: Unbound parameter value for ~w~n',[X]) ; true)
+    ; print('### Warning: No current parameter value found !'),nl,
        print('### Call: '), print(get_current_parameter_value(X,Y)),nl
-      )).
+      ).
      
 :- data current_parameter_value/2.
 current_parameter_value(_X,_Y).

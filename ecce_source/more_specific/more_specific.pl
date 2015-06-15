@@ -43,7 +43,7 @@
 
 
 more_specific_transformation(G) :-
-   get_current_parameter_value(msv,Z), 
+   get_current_parameter_value(msv,Z), %print(call_msv(Z)),nl,
    'more_specific:dispatch'(Z,G).
 
 'more_specific:dispatch'(99 ,G) :- 'more_specific.conj-msv:more_specific_transformation'(G).

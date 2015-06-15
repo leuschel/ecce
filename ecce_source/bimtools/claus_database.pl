@@ -121,15 +121,15 @@ clear_database(Name) :-
 
 /* fails if database undeclared */
 
-:- use_module(library(dcg_expansion)).
+%:- use_module(library(dcg_expansion)).
 
 read_database(Name) :-
 	declared_database(Name),
 	next_free_clause_nr(Name,Nr),
 	read_database(Name,Nr,NewNr),
 	(Name = compat
-	-> (retract(next_free_clause_nr(Nr)),assert(next_free_clause_nr(NewNr)))
-	; (retract(next_free_clause_nr(Name,Nr)),assert(next_free_clause_nr(Name,NewNr)))
+	-> retract(next_free_clause_nr(Nr)),assert(next_free_clause_nr(NewNr))
+	 ; retract(next_free_clause_nr(Name,Nr)),assert(next_free_clause_nr(Name,NewNr))
 	),
 	Delta is NewNr - Nr,
 	Total is NewNr - 1,

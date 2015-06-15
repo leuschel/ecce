@@ -84,7 +84,7 @@
 :- use_module(global_tree).
 :- use_module(calc_chtree).
 %:- use_module('rul/ecceRUL').
-%:- use_module('constraints/constraints.clpfd').
+%:- use_module('constraints/constraints_clpfd').
 :- use_module('more_specific/more_specific').
 
 :- use_module(main_functions).
@@ -246,14 +246,15 @@ generate_resultants_for_goal(NodeID,_Goal,FGoal) :-
 	).
 
 
+:- use_module('constraints/constraints_clpfd',[project_and_check_constraint/3]).
 assert_spec_clause(Head,Body) :-
 	(constraints_active
 	 -> (debug_print(call_assert_spec_clause(Head,Body)),debug_nl,
              divide_constraint_goal(Body,OBody,Constraints),
              divide_constraint_residual_goal(Body,OBody,ResConstraints),
              debug_print(divide(OBody,Constraints,ResConstraints)),debug_nl,
-             ((Constraints=[])
-              -> (ResBody=OBody)
+             (Constraints=[]
+              -> ResBody=OBody
               ;  (debug_print(checking(Constraints)),debug_nl,
 	         project_and_check_constraint((Head,OBody),Constraints,_),
                  debug_print(checked(Constraints)),debug_nl,
@@ -264,7 +265,7 @@ assert_spec_clause(Head,Body) :-
              ),
 	     debug_print(clpfd_spec_clause(Head,ResBody)),debug_nl
 	    )
-	 ;  (ResBody = Body)
+	 ;  ResBody = Body
 	),
 	remove_redundant_calls(ResBody,Body2,[]),
 	simplify_calls(Body2,NewBody),
@@ -283,20 +284,20 @@ assert_unsimplified_spec_clause(Head,Body) :-
 simplify_calls([],[]).
 simplify_calls([H|T],SHT) :-
 	simplify_call(H,SH),
-	((SH=true) -> (SHT = ST) ; (SHT = [SH|ST])),
+	(SH=true -> SHT = ST ; SHT = [SH|ST]),
 	simplify_calls(T,ST).
 
 simplify_call(call(X),S) :-
 	nonvar(X),!,simplify_call(X,S).
 simplify_call(not(X),Res) :- !,
 	(simplify_call(X,S)
-	 -> ((S=true) -> (fail) ; (Res = not(S)))
-	 ;  (Res = true)
+	 -> (S=true -> fail ; Res = not(S))
+	 ;  Res = true
 	).
 simplify_call(\+(X),Res) :- !,
 	(simplify_call(X,S)
-	 -> ((S=true) -> (fail) ; (Res = \+(S)))
-	 ;  (Res = true)
+	 -> (S=true -> fail ; Res = \+(S))
+	 ;  Res = true
 	).
 simplify_call(BI,S) :- detect_dead_literals_or_non_leftmost_builtins(yes),
 	is_callable_built_in_literal(BI),!,

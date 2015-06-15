@@ -15,7 +15,6 @@ consult_without_redefine_warning(File) :-
 transform_dcg_term(Term,ExpTerm) :-
 	expand_term(Term,ExpTerm). 
 
-ecce_put(X) :- put(X).
 
 max(X,Y,Z) :- Z is max(X,Y).
 
@@ -82,7 +81,7 @@ copy(C,CC) :- copy_term(C,CC).
 /* From: instance.pro */
 
 
-:- if(\+ current_prolog_flag(version_data,sicstus(3,_,_,_,_))).
+:- if(current_prolog_flag(version_data,sicstus(3,_,_,_,_))).
 variant_of(Goal,UIGoal) :-
 	copy(Goal,CGoal),
 	variant(UIGoal,CGoal).
@@ -95,6 +94,9 @@ strict_instance_of(Goal1,Goal2) :-
 	copy(Goal1,CGoal),
 	subsumes_chk(Goal2,CGoal),
 	not(subsumes_chk(CGoal,Goal2)).
+	
+ecce_put(X) :- put(X).
+ecce_get(Ascii) :- get(Ascii).
 :- else.
 :- use_module(library(terms),[variant/2]).
 variant_of(Goal,UIGoal) :-
@@ -109,9 +111,25 @@ strict_instance_of(Goal1,Goal2) :-
 	copy(Goal1,CGoal),
 	subsumes_term(Goal2,CGoal),
 	\+(subsumes_term(CGoal,Goal2)).
+  
+ecce_put(X) :- put_code(X).
+ecce_get(Ascii) :- get_code(Ascii).
+
+
+/* from File: sp4_compatibility_mappings.pl */
+/* Created: 08/05/2007 by Michael Leuschel */
+
+:- meta_predicate call_residue(0,*).
+
+call_residue(X,Residue) :- call_residue_vars(X,V),filter_residue_vars(V,Residue).
+
+filter_residue_vars([],[]).
+filter_residue_vars([H|T],Res) :-
+  frozen(H,FH),
+  (FH=true -> Res=RT ; Res = [FH|RT]),
+  filter_residue_vars(T,RT).
 :- endif.
 
-ecce_get(Ascii) :- get(Ascii).
 
 
 
@@ -129,3 +147,9 @@ get_end_of_layout([_|T],R) :- get_end_of_layout(T,R).
 
 retractall_fact( X ) :-
 	retractall( X ).
+
+:- if(current_prolog_flag(version_data,sicstus(3,_,_,_,_))).
+
+:- endif.
+
+:- use_module('../constraints/constraints_clpfd').

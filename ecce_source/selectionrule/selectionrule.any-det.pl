@@ -19,8 +19,9 @@
 /* A simple determinate unfolding rule w/o a depth bound */
 
 'selectionrule.any-det:select_positive_literal'(Goal,_TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
+    %print(select_within(Goal,UnfHist)),nl,trace,
 	/* Try to find determinate literals */
-	(not(find_any_unimposed_variant(Goal,_VariantID)) ; (UnfHist=[])),
+	(not(find_any_unimposed_variant(Goal,_VariantID)) ; UnfHist=[]),
 		/* stop if variant exists at the global level */
 	member_nr(SelLiteral,Goal,NrOfSel),
 	not(is_negative_literal(SelLiteral,_Atom)),

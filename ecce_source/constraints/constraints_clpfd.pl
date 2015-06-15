@@ -1,4 +1,4 @@
-:- module('constraints.clpfd',_).
+:- module('constraints_clpfd',[project_and_check_constraint/3]).
 /* -------------------------------------------- */
 /* Constraint manipulation routines for CLP(FD) */
 /* -------------------------------------------- */
@@ -140,8 +140,8 @@ normalise_constraint([C|T],[C|NT]) :-
 /* Example:
 ?- project_and_check_constraint(p(X,Y),[X#>1,Y#>2,Z#>3],C).
 */
-
-project_and_check_constraint(Goal,Constraint,ProjConstraint) :-
+project_and_check_constraint(_,true,P) :- !, P=true.
+project_and_check_constraint(Goal,Constraint,ProjConstraint) :- print(project(Goal,Constraint)),nl,
 	varlist(Goal,Vars),
 	retractall(temp_clpfd_pred(_)),
 	assert(( temp_clpfd_pred(Vars) :- assert_constraint(Constraint))),

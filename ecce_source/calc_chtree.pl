@@ -227,15 +227,15 @@ calc_chtree([H|T],TopGoalVarlist,UnfHist,Chtree) :-
 			bd_findall(CP,pp_cll(calc_chpath([H|T],TopGoalVarlist,
 				  NrOfSelLiteral,IntUnfHist,CP)), Chpaths),
 	               ((Chpaths=[])
-	                -> (Chtree=empty)
-	                ;  (Chtree=select(NrOfSelLiteral,Chpaths))
+	                -> Chtree=empty
+	                ;  Chtree=select(NrOfSelLiteral,Chpaths)
 	               )
 		      )
 		   ;  (DI = det, debug_print(deterministic),debug_nl,
 			calc_chpath([H|T],TopGoalVarlist,
 					NrOfSelLiteral,IntUnfHist,CP)
-			   -> (Chtree=select(NrOfSelLiteral,[CP]))
-			   ;  (Chtree=empty)
+			   -> Chtree=select(NrOfSelLiteral,[CP])
+			   ;  Chtree=empty
 		      )
 		  )
 	         )
@@ -514,17 +514,15 @@ undeterminate(Goal,NrOfSel) :-
 	not(is_negative_literal(SelLit,_NegAtom)),
 	not(pp_cll(is_built_in_literal(SelLit))),
 	claus(Nr,SelLit,Body),
-	append(Body,Right,IntGoal),
-	append(Left,IntGoal,NewGoal),
+	append([Left,Body,Right],NewGoal),
 	live(NewGoal),
 	/* now test if there is another live resolvent */
 	copy(Goal,Goal2),
 	split_list(Goal2,NrOfSel,Left2,SelCall2,Right2),
 	peel_off_calls(SelCall2,SelLit2),
 	claus(Nr2,SelLit2,Body2),
-	not(Nr=Nr2),
-	append(Body2,Right2,IntGoal2),
-	append(Left2,IntGoal2,NewGoal2),
+	Nr \= Nr2,
+	append([Left2,Body2,Right2],NewGoal2),
 	live(NewGoal2).
 	
 /* --------------- */
@@ -1083,7 +1081,7 @@ leaf(select(SelLitNr,Chpaths),Goal,Leaf,ChPos) :-
 	pp_mnf(split_list(Goal,SelLitNr,Left,SelCall,Right)),
 	peel_off_calls(SelCall,Sel),
 	member(match(ClauseNr,SubTree),Chpaths),
-	(claus(ClauseNr,Sel,Body) -> (true)
+	(claus(ClauseNr,Sel,Body) -> true
 		; (print('### Error: clause not matching in leaf/4'),nl,
 		   print('###  ClauseNr:'),print(ClauseNr),nl,
 		   print('###  SelAtom: '),print(Sel),nl,fail)

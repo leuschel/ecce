@@ -23,12 +23,13 @@
 
 /* instantiates goals during the unfolding process to more specific versions */
 
-'more_specific.conj-msv:more_specific_transformation'(Goal) :-
-	l_peel_off_calls(CGoal,Goal),
+'more_specific.conj-msv:more_specific_transformation'(UPGoal) :-
+	l_peel_off_calls(UPGoal,Goal),
 	print(calling(msv(Goal))),nl,
 	get_fold_clauses(Goal,FClauses),
 	print(gfc(Goal,FClauses)),nl,
-	fold_bup(FClauses,[],T),print(fold_bup(T)),nl,
+	fold_bup(FClauses,[],T),
+	print(fold_bup(T)),nl,
 	T = [Goal].
 
 fold_bup(FClauses,OldT,NewT) :-
@@ -36,8 +37,8 @@ fold_bup(FClauses,OldT,NewT) :-
 	%take_msg(NewGs,[],IntT),  <<< changed by MV >>>
 	take_msg(NewGs,IntT),
 	(variant_of(OldT,IntT)
-	-> (NewT = IntT)
-	;  (print('.'),fold_bup(FClauses,IntT,NewT))
+	-> NewT = IntT
+	;  print('.'),fold_bup(FClauses,IntT,NewT)
 	).
 
 fold_bup_propagation_step([],Tuple,Tuple).

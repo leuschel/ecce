@@ -28,6 +28,7 @@ ensure_consulted(File) :-
 	ensure_loaded(CF). */
 
 
+:- use_module(library(dcg_expansion)).
 transform_dcg_term(Term,ExpTerm) :-
 	expand_term(Term,ExpTerm). 
 
