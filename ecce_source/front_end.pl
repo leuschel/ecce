@@ -86,7 +86,7 @@ ecce_interactive :-
 	print('Based on work by Michael Leuschel, Bern Martens, Jesper Jorgensen,'),nl,
 	print('Danny De Schreye, Robert Glueck, Morten Heine Sorensen, Andre de Waal,'),nl,
 	print('and Mauricio Varea.'),nl,
-	print('(C) 1995-2006'),nl,nl,
+	print('(C) 1995-2015'),nl,nl,
 	print('Interactive Mode'),nl,
 	print('type h or ? for help'),nl,
 	print('type o to turn off run-time type checking (10x speedup)'),nl,

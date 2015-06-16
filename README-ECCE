@@ -1,8 +1,16 @@
-README File for ECCE 1.1
-------------------------
+README File for ECCE
+--------------------
 
 ECCE is an automatic partial deduction system for logic programs.
 
+Implemented by Michael Leuschel
+Based on work by Michael Leuschel, Bern Martens, Jesper Jorgensen,
+Danny De Schreye, Robert Glueck, Morten Heine Sorensen, Andre de Waal,
+and Mauricio Varea.
+(C) 1995-2015
+
+An online version of Ecce is available at:
+  http://wyvern.cs.uni-duesseldorf.de/ecce/index.php
 
 To start using the ECCE system you have to
 
@@ -89,11 +97,10 @@ On Mac OS X: be sure to use the right Ghostscript interpreter for gv
 For further information or bug reports you can reach me
 as follows:
 ============================================================
-Michael Leuschel (http://www.ecs.soton.ac.uk/~mal)
-Declarative Systems and Software Engineering
-Department of Electronics and Computer Science
-University of Southampton
-Highfield, Southampton, SO17 1BJ,  U.K.
-Fax: +44 01703 59 3045   Tel: +44 01703 59 3377
-E-mail: mal@ecs.soton.ac.uk
+Michael Leuschel (http://stups.hhu.de)
+Institut für Informatik
+Heinrich-Heine-Universität Düsseldorf
+Universitätsstr. 1
+D-40225 Düsseldorf
+E-mail: leuschel@cs.uni-duesseldorf.de
 ============================================================

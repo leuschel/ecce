@@ -21,14 +21,14 @@ clean:
 	find . -name "*.ast" -print -exec rm {} \;
 	-rm ecce_ciao_entry
 
-ecce_sicstus.sav:
+ecce_sicstus.sav: *.pl */*.pl
 	@echo "Creating sav file..."
-	${SICSTUS} -l ecce_sicstus.pl --goal "save_program('ecce_sicstus.sav'),halt."
+	${SICSTUS} -l ecce_cli.pl --goal "save_program('ecce_sicstus.sav'),halt."
 	@echo "...done!"
 	@echo 
 
-sicsexe: ecce_sicstus.sav
+ecce_cli: ecce_sicstus.sav
 	@echo "Creating Sicstus executable..."
-	${SPLD} --static --output ecce --resources=./ecce_sicstus.sav=/ecce_sicstus.sav
+	${SPLD} --static --output ecce_cli --resources=./ecce_sicstus.sav=/ecce_sicstus.sav
 	@echo "...done!"
 	@echo 	

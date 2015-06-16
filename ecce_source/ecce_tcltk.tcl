@@ -413,7 +413,8 @@ proc procGUI_Source {} {
 # procedure to initialise main GUI
 # -------
 proc procInitGUI {} {
-    wm title . "ECCE - (c) Michael Leuschel"
+    wm title . "ECCE - The Online Partial Deduction System"
+    # wm title . "ECCE - (c) Michael Leuschel"
     wm iconname . "ECCE"
 
     procGUI_Menu
@@ -455,7 +456,7 @@ proc procLoadFile {} {
         # message .progress.msg -text "Compiling $strFilename"
         # pack configure .progress .progress.msg -fill x
          # raise .progress
-	        wm title . "ECCE: \[[file tail $strFilename]\] : (c) Michael Leuschel"
+	        wm title . "ECCE: \[[file tail $strFilename]\]"
             # the file exists, so load it.
             procShowSourceCode $strFilename
             
