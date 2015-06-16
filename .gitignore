@@ -1,1 +1,17 @@
 .svn
+ecce_benchmarks/orig/advisor.pro.xce
+ecce_benchmarks/orig/partialevaluator.pro.xce
+ecce_benchmarks/orig/vanilla.doubleapp.pro.xce
+ecce_examples/demo/apdtest.pl.xce
+ecce_examples/demo/basic/append.pl.xce
+ecce_examples/demo/basic/match.pl.xce
+ecce_examples/demo/deforestation/maxlen.pl.xce
+ecce_examples/even_odd.pl.xce
+ecce_examples/even_odd.xce.dot
+ecce_examples/even_odd.xce.ps
+ecce_examples/grandmother.pl.xce
+ecce_examples/mul_plus.pl.xce
+ecce_examples/mymember.pl.xce
+ecce_examples/mymember.xce.dot
+ecce_examples/mymember.xce.ps
+ecce_source/ecce_sicstus.sav
