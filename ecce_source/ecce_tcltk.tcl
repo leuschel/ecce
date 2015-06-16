@@ -125,8 +125,12 @@ proc procGUI_Menu {} {
         -menu .menubar.mnuSettings.mnuInstCheck
    .menubar.mnuSettings add cascade -label "Pre-Defined Settings" \
         -menu .menubar.mnuSettings.mnuPredefined
+   .menubar.mnuSettings add sep
    .menubar.mnuSettings add command -label "Turn Debugging Checks off" \
          -command {prolog "tcltk_turn_type_checking_off"}
+   .menubar.mnuSettings add sep
+   .menubar.mnuSettings add command -label "Turn Debug Info on" -command {prolog set_debug_printing(on)}
+   .menubar.mnuSettings add command -label "Turn Debug Info off" -command {prolog set_debug_printing(off)}
   
     # -------------------- Unfold menu
     global unfoldVal
@@ -245,9 +249,6 @@ proc procGUI_Menu {} {
    .menubar.mnuPostprocessing add sep
    .menubar.mnuPostprocessing add command -label "Turn all off" -command {procTurnPPOff}
    .menubar.mnuPostprocessing add command -label "Turn all on" -command {procTurnPPOn}
-   .menubar.mnuPostprocessing add sep
-   .menubar.mnuPostprocessing add command -label "Turn Debugging on" -command {prolog set_debug_printing(on)}
-   .menubar.mnuPostprocessing add command -label "Turn Debugging off" -command {prolog set_debug_printing(off)}
     
     # -------------------- About menu
 #    menu .menubar.mnuAbout -tearoff 0
@@ -320,7 +321,7 @@ proc procTurnPPOn {} {
   set ppDPU 1
   set ppRPV 1
   set ppMSV 1
-   
+  procUpdateEcceOptions
 }
 
 proc procUpdateOptionsMenu {} {
