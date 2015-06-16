@@ -178,7 +178,7 @@ post_condition(calc_chtree(_G,TopGoalVarlist,_UnfHist,Chtree)) :-
 calc_chtree([],_TopGoalVarlist,_UnfHist,success).
 calc_chtree([H|T],TopGoalVarlist,UnfHist,Chtree) :- 
     ((pp_cll(more_specific_transformation([H|T])),
-      (detect_dead_literals_or_non_leftmost_builtins(no) -> true ; not(dead([H|T]))) )
+      (detect_dead_literals_or_non_leftmost_builtins(no) -> true ; \+(dead([H|T]))) )
       ->
   /* MISSING: Look for simplifiable Built-in's and simplifiable Negations */
 	(select_callable_built_in([H|T],NrOfBI,SelBI)
@@ -327,7 +327,7 @@ calc_chpath(Goal,TopGoalVarlist,NrOfSelLiteral,UnfHist,Chpath) :-
 	),
 	l_peel_off_calls(NewGoal,PNewGoal),
 	pp_mnf(calc_chtree(PNewGoal,TopGoalVarlist,NewUnfHist,SubTree)),
-	not(SubTree=empty),
+	SubTree \= empty,
 	Chpath=match(ClauseNr,SubTree).
 
 
@@ -428,9 +428,9 @@ post_condition(dead_positive_literal(_Goal,Literal,NrOfSelLiteral)) :-
 dead_positive_literal(Goal,Literal,NrOfSelLiteral) :-
 	member_nr(SelLiteral,Goal,NrOfSelLiteral),
 	peel_off_calls(SelLiteral,Literal),
-	not(is_negative_literal(Literal,_Atom)),
-	not(pp_cll(is_built_in_literal(Literal))),
-	not(claus(_Nr,Literal,_Body)).
+	\+(is_negative_literal(Literal,_Atom)),
+	\+(pp_cll(is_built_in_literal(Literal))),
+	\+(claus(_Nr,Literal,_Body)).
 	/* print(dead_lit(Literal)),nl. */
 
 /* ------------------------ */
@@ -469,7 +469,7 @@ post_condition(dead_built_in(_Goal,Literal,NrOfSelLiteral)) :-
 dead_built_in(Goal,Literal,NrOfSelLiteral) :-
 	member_nr(Literal,Goal,NrOfSelLiteral),
 	is_callable_built_in_literal(Literal),
-	not(call_built_in(Literal)).
+	\+(call_built_in(Literal)).
 	/* print(dead_bi(Literal)),nl. */
 
 /* ------ */
@@ -493,7 +493,7 @@ dead2(Goal,SelLiteral) :-
 
 live(Goal) :-
 	more_specific_transformation(Goal),
-	not(dead(Goal)).
+	\+(dead(Goal)).
 
 /* --------------- */
 /* undeterminate/2 */
@@ -511,8 +511,8 @@ undeterminate(Goal,NrOfSel) :-
 	copy(Goal,Goal1),
 	split_list(Goal1,NrOfSel,Left,SelCall,Right),
 	peel_off_calls(SelCall,SelLit),
-	not(is_negative_literal(SelLit,_NegAtom)),
-	not(pp_cll(is_built_in_literal(SelLit))),
+	\+(is_negative_literal(SelLit,_NegAtom)),
+	\+(pp_cll(is_built_in_literal(SelLit))),
 	claus(Nr,SelLit,Body),
 	append([Left,Body,Right],NewGoal),
 	live(NewGoal),
@@ -541,8 +541,8 @@ has_matching_rule(Goal,NrOfSel) :-
 	copy(Goal,Goal1),
 	split_list(Goal1,NrOfSel,Left,SelCall,Right),
 	peel_off_calls(SelCall,SelLit),
-	not(is_negative_literal(SelLit,_NegAtom)),
-	not(pp_cll(is_built_in_literal(SelLit))),
+	\+(is_negative_literal(SelLit,_NegAtom)),
+	\+(pp_cll(is_built_in_literal(SelLit))),
 	claus(_Nr,SelLit,[BodyHead|BodyRest]),
 	append([BodyHead|BodyRest],Right,IntGoal),
 	append(Left,IntGoal,NewGoal),
@@ -556,11 +556,11 @@ reduces_search_space(Goal,NrOfSel) :-
 	copy(Goal,Goal1),
 	split_list(Goal1,NrOfSel,Left,SelCall,Right),
 	peel_off_calls(SelCall,SelLit),
-	not(is_negative_literal(SelLit,_NegAtom)),
-	not(pp_cll(is_built_in_literal(SelLit))),
+	\+(is_negative_literal(SelLit,_NegAtom)),
+	\+(pp_cll(is_built_in_literal(SelLit))),
 	maximally_general_atom(SelLit,MaxLit),
 	claus(Nr,MaxLit,_MB),
-	not(leads_to_live_resolvent(Nr,SelLit,Right,Left)).
+	\+(leads_to_live_resolvent(Nr,SelLit,Right,Left)).
 
 leads_to_live_resolvent(Nr,SelLit,Right,Left) :-
 	claus(Nr,SelLit,Body),
@@ -597,8 +597,8 @@ goal_increasing_selection(Goal,NrOfSel) :-
 	copy(Goal,Goal1),
 	split_list(Goal1,NrOfSel,_Left,SelCall,_Right),
 	peel_off_calls(SelCall,SelLit),
-	not(is_negative_literal(SelLit,_NegAtom)),
-	not(pp_cll(is_built_in_literal(SelLit))),
+	\+(is_negative_literal(SelLit,_NegAtom)),
+	\+(pp_cll(is_built_in_literal(SelLit))),
 	claus(_Nr,SelLit,Body),
 	Body = [_Atom1,_Atom2|_RestBody],
 	member_nr(A1,Body,Nr1),
@@ -640,11 +640,11 @@ post_condition(is_undefined_literal(_Literal)).
 
 is_undefined_literal(CLiteral) :-
 	peel_off_calls(CLiteral,Literal),
-    not(Literal = fail),
+    Literal \= fail,
 	(is_open_literal(Literal)
 	  -> true
-	   ; not(is_negative_literal(Literal,_Atom)),
-	     not(is_built_in_literal(Literal))
+	   ; \+(is_negative_literal(Literal,_Atom)),
+	     \+(is_built_in_literal(Literal))
 	),
 	Literal =.. [Pred|Args],
 	generate_variables(Args,Vars),
@@ -813,7 +813,7 @@ call_built_in('=..'(X,Y)) :- nonvar(Y), Y = [A|T],
 call_built_in(call(X)) :- !,call_built_in(X).
 call_built_in(ecce_call(_Cond,X)) :- !,ecce_call(X).
 call_built_in('is'(X,_ArithExpr)) :-
-	nonvar(X), not(number(X)),!,print('::='),fail.
+	nonvar(X), \+(number(X)),!,print('::='),fail.
 call_built_in(BI) :- debug_print(call_bi(BI)),
 	on_exception(Exc,call(BI),
 	             (nl,print('! ERROR: Exception occured while evaluating built-in'),nl,
@@ -872,13 +872,13 @@ is_callable_built_in_literal(call(X)) :-
 is_callable_built_in_literal(clause(X,_Y)) :-
 	nonvar(X).
 is_callable_built_in_literal('\\=='(X,Y)) :-
-	(not(X=Y) ; (ground(X),ground(Y)) ; (X==Y) ).
+	(X\=Y ; (ground(X),ground(Y)) ; (X==Y) ).
 is_callable_built_in_literal('=='(X,Y)) :-
-	(not(X=Y) ; (ground(X),ground(Y)) ; (X==Y) ).
+	(X\=Y ; (ground(X),ground(Y)) ; (X==Y) ).
 is_callable_built_in_literal('\\='(X,Y)) :-
-	(not(X=Y) ; (ground(X),ground(Y)) ; (X==Y) ). 
+	(X\=Y ; (ground(X),ground(Y)) ; (X==Y) ). 
 is_callable_built_in_literal(dif(X,Y)) :-
-	(not(X=Y) ; (ground(X),ground(Y)) ; (X==Y) ). 
+	(X\=Y ; (ground(X),ground(Y)) ; (X==Y) ). 
 is_callable_built_in_literal(print(_X)) :-
 	fail.
 is_callable_built_in_literal(nl) :-
@@ -985,7 +985,7 @@ msg_can_be_taken([A1|T1],[A2|T2]) :-
 /* ----------------- */
 
 print_predicate(Pred) :-
-	((Pred=pred(Name,Arity))
+	(Pred=pred(Name,Arity)
 	-> print(Name),print('/'),print(Arity)
 	;  print('### not pred(Name,Arity): '),print(Pred)
 	).
@@ -1026,10 +1026,10 @@ connected_sub_goal([_X|T],InGoal,ConSubGoal) :-
 sub_goal([],[]).
 sub_goal([X|T],Res) :-
 	sub_goal(T,ST),
-	((not(ST=[]), Res = ST) ; (Res = [X|ST])).
+	(ST\=[], Res = ST ; Res = [X|ST]).
 
 var_can_be_added_to_subgoal(X,InGoal) :-
-	(sharing(X,InGoal) ; (InGoal = [])),!.
+	(sharing(X,InGoal) ; InGoal = []),!.
 
 
 
