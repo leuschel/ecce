@@ -399,7 +399,7 @@ action(112,P):- /* p: partially evaluate an atom */
 action(111,P) :-  /* o: NOT WORKING YET! needs the implementation of a dispatcher for 
 	             bimtools:prepost (also allocating each part of bimtools into 
                      separate modules would be a good idea!)*/
-	ecce_reconsult('bimtools/prepost.nocheck.pro'),
+	ecce_reconsult('bimtools/prepost.nocheck.pl'),
 	display( P ) , nl ,nl,
 	front_end(P).
 action(113,_). /* q for quit */
