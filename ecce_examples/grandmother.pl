@@ -6,4 +6,6 @@ mother(sue,simon).
 mother(sue,patrick).
 mother(monica,sue).
 
+%father(X,Y) :- dif(X,Y), father1(X,Y).
+
 test(X) :- grandmother(X,simon).
