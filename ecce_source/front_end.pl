@@ -61,11 +61,9 @@ last_pd_query(true).
 last_read_file('../append-test').
 
 main(Inputs) :-
-	initialise_parameters,
-        ((Inputs=[])->set_exec_mode(interactive);set_exec_mode(compiled)),
-        (
-         (exec_mode(interactive)->ecce_interactive);
-         (exec_mode(compiled)->ecce_compiled(Inputs))
+	    initialise_parameters,
+        (Inputs=[] -> set_exec_mode(interactive),ecce_interactive
+         ; set_exec_mode(compiled), ecce_compiled(Inputs)
         ).
 
 ecce :- main([]).
@@ -288,7 +286,11 @@ add_dot([],".").
 add_dot(".",".") :- !.
 add_dot([A|T],[A|R]) :- add_dot(T,R).
   
-  
+safe_front_end_read_in_file(Filename) :-
+        catch(front_end_read_in_file(FileName),Exc,
+             (format(user_error,"*** Error reading file '~w'.~n",[FileName]),
+                         print_exception(Exc))).
+                          
 front_end_read_in_file(Filename) :-
    read_in_file(Filename),
    retract_fact(last_read_file(_)),
@@ -300,15 +302,15 @@ front_end([]) :- !,
 	print('=> '),
 	ecce_get(AsciiChar),
  	(action(AsciiChar)
-	-> (true)
-	;  (print('Unknown command, type h or ? for help'),nl,front_end([]))
+	-> true
+	;  format('Unknown command ~w, type h or ? for help',[AsciiChar]),nl,
+	   front_end([])
 	).
-
 front_end([A|P]) :-
         char_code(A,Action),debug_print('::'),debug_print(action(Action)),debug_nl,
  	(action(Action,P)
-	-> (true)
-	;  (print('Unknown command, try "ecce h" or "ecce ?" for help'),nl)
+	-> true
+	;  format('Unknown command ~w, try "ecce h" or "ecce ?" for help',[Action]),nl
 	).
 
 
@@ -318,16 +320,19 @@ list_database :-
 	print_clause_with_nl(Head,Body),fail.
 list_database :-
 	next_free_mode_nr(MNr),
-	((MNr > 1)
-	-> (MT is MNr - 1,
-	    print('number of mode declarations: '),print(MT),nl)
-	; (true)
+	(MNr > 1
+	-> MT is MNr - 1,
+	   print('number of mode declarations: '),print(MT),nl
+	; true
 	).
 
 :- set_prolog_flag(multi_arity_warnings,off).
 
 action(X):- action(X,[]).
 
+action(10,P) :- % newline 
+   front_end(P).
+action(13,P) :- front_end(P).
 action(98,P):- 
 	(exec_mode(compiled) -> P=[RR|PP] ; P=PP),
 	execute_benchmark(RR),  /* b for Benchmark */
@@ -382,20 +387,19 @@ action(112,P):- /* p: partially evaluate an atom */
 	    beginner_print('Type a dot (.) and hit return at the end.'),beginner_nl,
 	    print('atom or goal (l for '),print(Last),print(') =>'))
 	; true ),
-	((P=[])->(read(R),PP=[]);(P=[RR|PP],read_atom(RR,R))),
-	((R=l) -> (Atom = Last)
-	       ;  (Atom = R,retract_fact(last_pd_query(_)),
-	           assertz_fact(last_pd_query(Atom))
-		  )
+	(P=[] -> read(R),PP=[] ; P=[RR|PP],read_atom(RR,R)),
+	(R=l -> Atom = Last
+	    ;   Atom = R,retract_fact(last_pd_query(_)),
+	        assertz_fact(last_pd_query(Atom))
 	),
 	time(main_functions:pe(Atom),T),nl,
 	print('Full transformation time (with code generation): '), print(T),
 	print(' ms'),nl,
 	front_end(PP).
-action(111,P) :-  /* NOT WORKING YET! needs the implementation of a dispatcher for 
+action(111,P) :-  /* o: NOT WORKING YET! needs the implementation of a dispatcher for 
 	             bimtools:prepost (also allocating each part of bimtools into 
                      separate modules would be a good idea!)*/
-	%ecce_reconsult('bimtools/prepost.nocheck.pro'),
+	ecce_reconsult('bimtools/prepost.nocheck.pro'),
 	display( P ) , nl ,nl,
 	front_end(P).
 action(113,_). /* q for quit */
@@ -405,9 +409,9 @@ action(114,P):- /* r for read in file into clause database */
 	->(beginner_print('Type a dot (.) and hit return at the end.'),beginner_nl,
 	   print('filename (l for '),print(Last),print(') =>'))
 	; true ),
-	((P=[])->(read(R),PP=[]);(P=[R|PP])),
-	((R=l) -> (Filename = Last) ;  (Filename = R) ),
-	front_end_read_in_file(Filename),
+	(P=[]-> read(R),PP=[] ; P=[R|PP]),
+	(R=l -> Filename = Last ;  Filename = R),
+	safe_front_end_read_in_file(Filename),
 	front_end(PP).
 action(115,P):- /* s for set parameters */
 	set_parameters, front_end(P).
