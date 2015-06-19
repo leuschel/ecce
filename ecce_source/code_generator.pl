@@ -1012,7 +1012,7 @@ quote_functor(F) :-
 	name(F,Name),
 	Name = [FirstChar|_],
 	((FirstChar>64, FirstChar<91) /* uppercase */
-	 ; (FirstChar = 95)), /* underscore */
+	 ; FirstChar = 95), /* underscore */
 	!.
 quote_functor(F) :-
 	atomic(F),
@@ -1020,11 +1020,7 @@ quote_functor(F) :-
 	member(AsciiChar,Name),
 	strange_ascii_for_name(AsciiChar),!.
 
-strange_ascii_for_name(X) :-
-	X<48,!.
-strange_ascii_for_name(X) :-
-	X>122,!.
-strange_ascii_for_name(X) :-
-	X>57,X<65,!.
-strange_ascii_for_name(X) :-
-	X>90,X<97,(X\=95),!.
+strange_ascii_for_name(X) :- X<48,!.
+strange_ascii_for_name(X) :- X>122,!.
+strange_ascii_for_name(X) :- X>57,X<65,!.
+strange_ascii_for_name(X) :- X>90,X<97,(X\=95),!.
