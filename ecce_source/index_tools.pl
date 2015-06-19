@@ -26,8 +26,8 @@ non_indexed_unfolding(SelLiteral,Varlist) :-
 
 non_indexed_instantiation([X|_T],[OrigX|_OrigT]) :-
 	nonvar(OrigX), nonvar(X),
-	not(indexed_atom(X)),
-	not(variant_of(X,OrigX)).
+	\+(indexed_atom(X)),
+	\+(variant_of(X,OrigX)).
 	  /* -> we have an instantiation which will not
 			 be captured by indexing */
 non_indexed_instantiation([_X|T],[_OrigX|OrigT]) :-

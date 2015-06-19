@@ -305,8 +305,8 @@ set_detpostunfold :-
 	print(Cur),nl,
 	print('choice =>'),
 	read(NewValue),
-	((not(NewValue=yes),not(NewValue=no))
-	 -> (print('Illegal value'),nl)
+	((NewValue\=yes,NewValue\=no)
+	 -> print('Illegal value'),nl
 	 ;  (set_perform_determinate_post_unfolding(NewValue))
 	).
 
@@ -329,8 +329,8 @@ set_postmsv :-
 	print(Cur),nl,
 	print('choice =>'),
 	read(NewValue),
-	((not(NewValue=yes),not(NewValue=no))
-	 -> (print('Illegal value'),nl)
+	((NewValue\=yes,NewValue\=no)
+	 -> print('Illegal value'),nl
 	 ;  (set_perform_post_msv_analysis(NewValue))
 	).
 
@@ -353,8 +353,8 @@ set_raf :-
 	print(Cur),nl,
 	print('choice =>'),
 	read(NewValue),
-	((not(NewValue=yes),not(NewValue=no))
-	 -> (print('Illegal value'),nl)
+	((NewValue\=yes,NewValue\=no)
+	 -> print('Illegal value'),nl
 	 ;  (set_perform_raf(NewValue))
 	).
 
@@ -377,8 +377,8 @@ set_far :-
 	print(Cur),nl,
 	print('choice =>'),
 	read(NewValue),
-	((not(NewValue=yes),not(NewValue=no))
-	 -> (print('Illegal value'),nl)
+	((NewValue\=yes,NewValue\=no)
+	 -> print('Illegal value'),nl
 	 ;  (set_perform_far(NewValue))
 	).
 
@@ -401,8 +401,8 @@ set_dce :-
 	print(Cur),nl,
 	print('choice =>'),
 	read(NewValue),
-	((not(NewValue=yes),not(NewValue=no))
-	 -> (print('Illegal value'),nl)
+	((NewValue\=yes,NewValue\=no)
+	 -> print('Illegal value'),nl
 	 ;  (set_perform_dce(NewValue))
 	).
 
@@ -425,8 +425,8 @@ set_ppa :-
 	print(Cur),nl,
 	print('choice =>'),
 	read(NewValue),
-	((not(NewValue=yes),not(NewValue=no))
-	 -> (print('Illegal value'),nl)
+	((NewValue\=yes,NewValue\=no)
+	 -> print('Illegal value'),nl
 	 ;  (set_perform_ppa(NewValue))
 	).
 
@@ -450,8 +450,8 @@ set_rrc :-
 	print(Cur),nl,
 	print('choice =>'),
 	read(NewValue),
-	((not(NewValue=yes),not(NewValue=no))
-	 -> (print('Illegal value'),nl)
+	((NewValue\=yes,NewValue\=no)
+	 -> print('Illegal value'),nl
 	 ;  (set_perform_rrc(NewValue))
 	).
 
@@ -473,8 +473,8 @@ set_slice :-
 	print(Cur),nl,
 	print('choice =>'),
 	read(NewValue),
-	((not(NewValue=yes),not(NewValue=no))
-	 -> (print('Illegal value'),nl)
+	((NewValue\=yes,NewValue\=no)
+	 -> print('Illegal value'),nl
 	 ;  (set_perform_slice(NewValue))
 	).
 
@@ -495,8 +495,8 @@ set_detect_dead_literals_or_non_leftmost_builtins :-
 	print(Cur),nl,
 	print('choice =>'),
 	read(NewValue),
-	((not(NewValue=yes),not(NewValue=no))
-	 -> (print('Illegal value'),nl)
+	((NewValue\=yes,NewValue\=no)
+	 -> print('Illegal value'),nl
 	 ;  (set_detect_dead_literals_or_non_leftmost_builtins(NewValue))
 	).
 

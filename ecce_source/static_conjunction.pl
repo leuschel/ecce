@@ -96,7 +96,7 @@ sca_pred(c(P,Dp),D) :-
 	max_desc([[d(P,1)],D1],D),
 	cond_assert(memo(cm(P,Dp,D))).
 sca_pred(c(P,Dp),[d(P,1)]) :-
-	not(user_defined_predicate(P)).
+	\+(user_defined_predicate(P)).
 	
 
 sca_preds([],[]).

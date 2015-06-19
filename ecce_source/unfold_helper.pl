@@ -28,7 +28,7 @@ manual_unfold :-
 	 ;  (PEGoal = [Goal])
 	),
 	(term_is_of_type(PEGoal,goal,no)
-	 -> (true)
+	 -> true
 	 ;  (print('ILLEGAL GOAL: '),print(goal),nl,
 	     print('Contains variables as literals (use call/1)'),nl,
 	     print(' or is an open-ended list.'),nl,
@@ -39,7 +39,7 @@ manual_unfold :-
 	 -> (print('### Goal contains undefined calls --> will fail !'),nl,
 	     print('### Be sure to read in all necessary files !'),nl
 	    )
-	 ;  (true)
+	 ;  true
 	),
 	varlist(PEGoal,Top),
 	manual_unfold(Top,PEGoal).
@@ -57,7 +57,7 @@ manual_unfold([],_TopGoalVarlist,_UnfHist,success) :- print('success'),nl.
 manual_unfold([H|T],TopGoalVarlist,UnfHist,Chtree) :-
     unfhist_indent(UnfHist),print_goal(TopGoalVarlist,[H|T]),
     ((pp_cll(more_specific_transformation([H|T])),
-      not(dead([H|T])) )
+      \+(dead([H|T])) )
       ->
 	(select_callable_built_in([H|T],NrOfBI,SelBI)
 	 -> ((unfhist_indent(UnfHist),print(calling_built_in(SelBI)),
@@ -68,9 +68,9 @@ manual_unfold([H|T],TopGoalVarlist,UnfHist,Chtree) :-
 		 append(Left,Right,NewGoal),
 		 get_predicate(SelBI,BI),
 		 manual_unfold(NewGoal,TopGoalVarlist,IntUnfHist,SubChtree),
-		 ((SubChtree = empty)
-		  -> (Chtree=empty)
-		  ;  (Chtree=built_in_eval(NrOfBI,BI,SubChtree))
+		 (SubChtree = empty
+		  -> Chtree=empty
+		  ;  Chtree=built_in_eval(NrOfBI,BI,SubChtree)
 		 )
 		)
 	     ;  (print(' - failed'),nl,
@@ -87,9 +87,9 @@ manual_unfold([H|T],TopGoalVarlist,UnfHist,Chtree) :-
 		;  get_predicate(SelNegLit,NegPred)
 	     ),
 	     manual_unfold(NewGoal,TopGoalVarlist,IntUnfHist,SubChtree),
-	     ((SubChtree = empty)
-		-> (Chtree=empty)
-		;  (Chtree=remove(NrOfNegLit,NegPred,SubChtree))
+	     (SubChtree = empty
+		-> Chtree=empty
+		;  Chtree=remove(NrOfNegLit,NegPred,SubChtree)
 	     )
 	    )
 	 ;  ((pp_cll(depth_bound_ok(UnfHist)),
@@ -165,7 +165,7 @@ manual_chpath(Goal,TopGoalVarlist,NrOfSelLiteral,UnfHist,Chpath) :-
 	pp_mnf(update_unfold_history(UnfHist,NrOfSelLiteral,
 				Body,NewUnfHist)),
 	manual_unfold(NewGoal,TopGoalVarlist,NewUnfHist,SubTree),
-	not(SubTree=empty),
+	SubTree\=empty,
 	Chpath=match(ClauseNr,SubTree).
 
 unfhist_indent([]).

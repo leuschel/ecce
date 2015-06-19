@@ -16,7 +16,7 @@ mst_l_msg(Atom,[Atom2|T],MSG) :-
 mst_instantiate_atom(Atom) :- %print(mst_instantiate_atom(Atom)),nl,
 	mst_matching_heads(Atom,Heads),!, %print(heads(Heads)),nl,
 	((Heads = [])
-	 -> (true)  /* do nothing, dead literals will be detected anyway, and the atom could be a built-in or a negative literal */
+	 -> true  /* do nothing, dead literals will be detected anyway, and the atom could be a built-in or a negative literal */
 	;  (mst_msg_of_list(Heads,MsgOfHeads),
 	    Atom=MsgOfHeads)
 	).

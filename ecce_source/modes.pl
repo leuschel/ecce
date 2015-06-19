@@ -28,7 +28,7 @@ find_applicable_mode_declaration(functor(C,N,F),[C],[],[N,F],
 
 other_mode_declaration(Nr,H) :-
 	mode_declaration(Nr2,H,_InArgs,_AnyArgs,_OutArgs),
-	not(Nr2=Nr).
+	Nr2\=Nr.
 
 
 pre_condition(get_potential_io_args(Call,_InArgs,_OutArgs)) :-

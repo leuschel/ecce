@@ -98,7 +98,7 @@ add_atom_of_interest(Atom) :-
 	nonvar(Atom),
 	get_sub_term(Atom,Pred,Arity,_SubT,Pos),
 	assert(dont_erase(Pred,Arity,Pos)),
-	debug_print(dont_erase(Pred,Arity,Pos)),debug_nl,
+	debug_println(dont_erase(Pred,Arity,Pos)),
 	fail.
 add_atom_of_interest(_).
 
@@ -159,7 +159,7 @@ propagate_erasure2(Head,Body,Atom,_Struct) :-
 
 assert_dont_erase(Pred,Arity,Pos) :-
 	assert(dont_erase(Pred,Arity,Pos)),
-	debug_print(dont_erase(Pred,Arity,Pos)),debug_nl,
+	debug_println(dont_erase(Pred,Arity,Pos)),
 	(erasure_changed -> true ; assert(erasure_changed)).
 
 

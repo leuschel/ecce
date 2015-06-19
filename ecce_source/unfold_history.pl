@@ -129,5 +129,5 @@ post_condition(contains_non_determinate_step_at_top(_UnfHist)).
 
 contains_non_determinate_step_at_top([sel(_AncSelLit,_Pos,_AddedLits,nondet)]).
 contains_non_determinate_step_at_top([sel(_AncSelLit,_Pos,_AddedLits,DI)|Rest]) :-
-	not(DI=nondet),
+	DI=\nondet,
 	contains_non_determinate_step_at_top(Rest).

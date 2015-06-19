@@ -48,7 +48,7 @@ post_processing :-
 	     abstract_equivalent_goals,
 	     verbose_nl
 	   )
-	 ;  (true)
+	 ;  true
 	).
 
 
@@ -100,7 +100,7 @@ abstract_equivalent_goals :-
 	Class = [GoalID1|Rest],
 	gt_node_goal(GoalID1,Goal),
 	class_msg(Rest,Goal,MSG),
-	debug_print(msg(MSG)),debug_nl,
+	debug_println(msg(MSG)),
 	mnf_call(change_gt_node_goal(GoalID1,MSG)),
 	add_abstraction_for_equivalence_class(Class,GoalID1),
 	fail.
@@ -111,14 +111,14 @@ get_equivalence_class(Class) :-
 	gt_node_goal(GoalID,_Goal),
 	smallest_element_of_equivalence_class(GoalID),
 	gt_node_chtree(GoalID,Chtree),
-	not(Chtree = empty),
+	Chtree \= empty,
 	Class = [GoalID|RestClass],
 	findall(EqID, pp_node_equivalent(GoalID,EqID), RestClass).
 
 
 smallest_element_of_equivalence_class(GoalID) :-
 	pp_node_equivalent(GoalID,_GoalID2),
-	not(pp_node_equivalent(_OtherGoalID,GoalID)),!.
+	\+(pp_node_equivalent(_OtherGoalID,GoalID)),!.
 	
 
 class_msg([],MSG,MSG).
@@ -130,8 +130,8 @@ class_msg([GoalID1|T],MSGSoFar,MSG) :-
 
 add_abstraction_for_equivalence_class([],_MoreGeneralID).
 add_abstraction_for_equivalence_class([GoalID|T],MoreGeneralID) :-
-	((GoalID=MoreGeneralID)
-	 -> (true)
+	(GoalID=MoreGeneralID
+	 -> true
 	 ;  (mark_gt_node_as_instance_of(GoalID,MoreGeneralID),
 		debug_print(inst_of(GoalID,MoreGeneralID)),print('+'),debug_nl)
 	),
@@ -144,7 +144,7 @@ add_abstraction_for_equivalence_class([GoalID|T],MoreGeneralID) :-
 
 make_goals_with_same_chtree_equivalent :-
 	gt_node_chtree(GoalID,Chtree),
-	not(has_builtins_which_generate_bindings(Chtree)),
+	\+(has_builtins_which_generate_bindings(Chtree)),
 	code_has_to_be_generated_for_node(GoalID),
 	gt_node_chtree(GoalID2,Chtree),
 		/* Missing: improve to detect similar chtrees */
@@ -154,7 +154,7 @@ make_goals_with_same_chtree_equivalent :-
 	msg_can_be_taken(Goal1,Goal2),
 	code_has_to_be_generated_for_node(GoalID2),
 	assert(pp_node_equivalent(GoalID,GoalID2)),
-	debug_print(equiv(GoalID,GoalID2)),debug_nl,
+	debug_println(equiv(GoalID,GoalID2)),
 	fail.
 make_goals_with_same_chtree_equivalent.
 
@@ -182,13 +182,13 @@ discernable_goal(GoalID1,GoalID2) :-
 	pp_node_equivalent(GoalID1,GoalID2),
 	transition(GoalID1,ChildID1,ChPos),
 	(transition(GoalID2,ChildID2,ChPos)
-	 -> not(equivalent_pp_nodes(ChildID1,ChildID2))
+	 -> \+(equivalent_pp_nodes(ChildID1,ChildID2))
 	 ;  true
 	).
 discernable_goal(GoalID1,GoalID2) :-
 	pp_node_equivalent(GoalID1,GoalID2),
 	transition(GoalID2,_ChildID2,ChPos),
-	not(transition(GoalID1,_ChildID1,ChPos)).
+	\+(transition(GoalID1,_ChildID1,ChPos)).
 
 equivalent_pp_nodes(GoalID,GoalID) :- !.
 equivalent_pp_nodes(GoalID1,GoalID2) :-

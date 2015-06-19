@@ -35,18 +35,18 @@ neg_solve_db([],success,DB,Orig,OrigC) :-
 neg_solve_db(Goal,fail,DB,Orig,OrigC) :-
 	dead(Goal),!.
 neg_solve_db([H|T],SolveSol,DB,Orig,OrigC) :-
-	not(is_negative_literal(H,Atom)),
-	not(is_built_in_literal(H)),
-	not(is_open_literal(H)),
+	\+(is_negative_literal(H,Atom)),
+	\+(is_built_in_literal(H)),
+	\+(is_open_literal(H)),
 	DB > 0,
 	DB1 is DB - 1,
 	findall(HSol,
 		neg_solve_positive_db(H,T,HSol,DB1,Orig,OrigC),ListOfHSol),
 	(member(success,ListOfHSol)
-	  -> (SolveSol = success)
+	  -> SolveSol = success
 	  ;  (member(unknown,ListOfHSol)
-		-> (SolveSol = unknown)
-		;  (SolveSol = fail)
+		-> SolveSol = unknown
+		;  SolveSol = fail
 	     )
 	).
 /* MISSING: HANDLE NEGATIONS  */
