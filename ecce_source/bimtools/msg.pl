@@ -42,9 +42,8 @@ construct_msg( _term1, _term2, _msg ):-
     msg_of_pair( _term1, _term2, _msg, [], _ ).
 
 
-msg_of_pair( _term1, _term2, _msg, _record, _record ):-
-    _triplet = triplet( _term1, _term2, _msg ),
-    triplet_recorded( _record, _triplet ), !.
+msg_of_pair( _term1, _term2, _msg, _record, _record ) :-
+    triplet_recorded( _record, triplet( _term1, _term2, _msg ) ), !.
                 /* The same pair already occured, MSG fetched from the record. */
 msg_of_pair( _term1, _term2, _msg, _record, [_triplet|_record] ) :- 
     atomic( _term1 ), atomic( _term2 ),
@@ -70,8 +69,7 @@ msg_of_pairs( [_term1|_rest1], [_term2|_rest2], [_msg|_msgs], _inrec, _outrec ):
     msg_of_pairs( _rest1, _rest2, _msgs, _tmprec, _outrec ).
 
 
-triplet_recorded( [_triplet|_], _template ):-
-    _triplet =  triplet( _term1, _term2, _submsg ),
+triplet_recorded( [triplet( _term1, _term2, _submsg )|_], _template ):-
     _template = triplet( _term3, _term4, _submsg ),
     _term1 == _term3,
     _term2 == _term4,
