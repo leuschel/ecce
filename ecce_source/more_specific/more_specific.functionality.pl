@@ -33,13 +33,13 @@
 /* use determinism mode declarations to implement functionality inference: */
 functionality_msv(H,T) :-
 	nonvar(H),
-	not(is_negative_literal(H,_Atom)),
+	\+(is_negative_literal(H,_Atom)),
 	find_applicable_mode_declaration(H,InArgs,AnyArgs,OutArgs,
 				         DCall,DI,DO),!,
 		/* several might apply: future work: try all */
 	((member(DCall,T), DI==InArgs) 
 	 -> (DO = OutArgs,print(f),
-	    debug_print(func(Pred,DI,DO)),debug_nl)
+	    debug_println(func(Pred,DI,DO)))
 	 ;  true
 	).
 functionality_msv(H,T).

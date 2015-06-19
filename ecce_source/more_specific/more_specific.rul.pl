@@ -37,7 +37,7 @@ more_specific_transformation_classic([CH|T]) :-
 mst_instantiate_atom(Atom) :-
 	mst_matching_heads(Atom,Heads),!,
 	((Heads = [])
-	 -> (true)  /* do nothing, dead literals will be detected anyway, and the atom could be a built-in or a negative literal */
+	 -> true  /* do nothing, dead literals will be detected anyway, and the atom could be a built-in or a negative literal */
 	;  (mst_msg_of_list(Heads,MsgOfHeads),
 	    Atom=MsgOfHeads)
 	).
