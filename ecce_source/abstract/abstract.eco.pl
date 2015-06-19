@@ -24,7 +24,7 @@
 	 -> (print('### WARNING improper use of abstract.eco'),nl,
 	     print('### Whistle Goal not partially evaluated !'),nl
 	    )
-	 ;  (true)
+	 ;  true
 	),
 	gt_node_chtree(WhistleGoalID,WhistleChtree),
 	((Chtree=WhistleChtree)

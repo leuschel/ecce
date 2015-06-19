@@ -77,7 +77,7 @@
 'abstract.conjsplit-tszcntig:find_embedding_conjunction'([PA|PAs],[A|As],SelNr,
 		[A|C],[SelNr|CN],R,RN) :-
   atoms_have_same_predicate(PA,A,_),
-  not(strict_instance_of(PA,A)),
+  \+(strict_instance_of(PA,A)),
   mixtus_term_size_embedded(PA,A),
   S1 is SelNr + 1,
   'abstract.conjsplit-tszcntig:find_embedding_conjunction'(PAs,As,S1,C,CN,R,RN).
@@ -98,7 +98,7 @@
 	get_literal_numbers(Rest,SelNr,RN).
 'abstract.conjsplit-tszcntig:fcec'([PA|PAs],[A|As],SelNr,[A|C],[SelNr|CN],R,RN) :-
   atoms_have_same_predicate(PA,A,_),
-  not(strict_instance_of(PA,A)),
+  \+(strict_instance_of(PA,A)),
   mixtus_term_size_embedded(PA,A),
   S1 is SelNr + 1,
   'abstract.conjsplit-tszcntig:fcec'(PAs,As,S1,C,CN,R,RN).

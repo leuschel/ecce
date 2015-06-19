@@ -29,7 +29,7 @@
 	((Chtree=WhistleChtree)
 	 -> (NewChtrees = [Chtree])
 	 ;  (pp_mnf(precise_msg_chtree(Chtree,WhistleChtree,MSGChtree)),
-	     ((MSGChtree=stop, not(variant_of(Goal,MSG)))
+	     ((MSGChtree=stop, \+(variant_of(Goal,MSG)))
 	      -> (NewChtrees = [none]) /* so that the goal will be unfolded */
 	      ;  (NewChtrees = [MSGChtree])
 	     )

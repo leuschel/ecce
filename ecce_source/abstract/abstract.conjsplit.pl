@@ -67,7 +67,7 @@
 'abstract.conjsplit:find_homeomorphic_embeddeding_conjunction'([],[],_SelNr,[],[],[],[]).
 'abstract.conjsplit:find_homeomorphic_embeddeding_conjunction'([PA|PAs],[A|As],SelNr,
 		[A|C],[SelNr|CN],R,RN) :-
-  not(strict_instance_of(PA,A)),
+  \+(strict_instance_of(PA,A)),
   homeomorphic_embedded(PA,A),
   S1 is SelNr + 1,
   'abstract.conjsplit:find_homeomorphic_embeddeding_conjunction'(PAs,As,S1,C,CN,R,RN).

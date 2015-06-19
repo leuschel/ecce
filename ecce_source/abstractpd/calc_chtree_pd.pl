@@ -111,7 +111,7 @@ calc_chtree([],_C,_TopGoalVarlist,_UnfHist,success).
 calc_chtree([H|T],Constraint,TopGoalVarlist,UnfHist,Chtree) :-
         debug_print(calling_calc_chtree([H|T],Constraint)),debug_nl,
     ((pp_cll(more_specific_transformation([H|T])),
-      not(dead([H|T])) )
+      \+(dead([H|T])) )
       ->
   /* MISSING: Look for simplifiable Built-in's and simplifiable Negations */
 	(select_callable_built_in([H|T],NrOfBI,SelBI)
@@ -229,7 +229,7 @@ calc_chpath(Goal,Constraint,TopGoalVarlist,NrOfSelLiteral,UnfHist,Chpath) :-
 	 ),
 	project_constraint(SConstraint,PNewGoal,PConstraint),
 	pp_mnf(calc_chtree(PNewGoal,PConstraint,TopGoalVarlist,NewUnfHist,SubTree)),
-	not(SubTree=empty),
+	(SubTree\=empty),
 	Chpath=match(ClauseNr,SubTree).
 
 	
@@ -255,9 +255,9 @@ post_condition(dead_positive_literal(_Goal,_C,Literal,NrOfSelLiteral)) :-
 dead_positive_literal(Goal,Constraint,Literal,NrOfSelLiteral) :-
 	member_nr(SelLiteral,Goal,NrOfSelLiteral),
 	peel_off_calls(SelLiteral,Literal),
-	not(is_negative_literal(Literal,_Atom)),
-	not(pp_cll(is_built_in_literal(Literal))),
-	not((claus(_Nr,Literal,_Body),satisfiable(Constraint))),
+	\+(is_negative_literal(Literal,_Atom)),
+	\+(pp_cll(is_built_in_literal(Literal))),
+	\+((claus(_Nr,Literal,_Body),satisfiable(Constraint))),
 	print(dead_lit(Literal,Constraint)),nl.
 	
 	
@@ -278,7 +278,7 @@ dead(Goal,_) :-
 
 live(Goal,C) :-
 	more_specific_transformation(Goal),
-	not(dead(Goal,C)).
+	\+(dead(Goal,C)).
 	
 /* --------------- */
 /* undeterminate/3 */
@@ -297,8 +297,8 @@ undeterminate(Goal,C,NrOfSel) :-
 	copy((Goal,C),(Goal1,C1)),
 	split_list(Goal1,NrOfSel,Left,SelCall,Right),
 	peel_off_calls(SelCall,SelLit),
-	not(is_negative_literal(SelLit,_NegAtom)),
-	not(pp_cll(is_built_in_literal(SelLit))),
+	\+(is_negative_literal(SelLit,_NegAtom)),
+	\+(pp_cll(is_built_in_literal(SelLit))),
 	claus(Nr,SelLit,Body),
 	append(Body,Right,IntGoal),
 	append(Left,IntGoal,NewGoal1),
@@ -309,7 +309,7 @@ undeterminate(Goal,C,NrOfSel) :-
 	split_list(Goal2,NrOfSel,Left2,SelCall2,Right2),
 	peel_off_calls(SelCall2,SelLit2),
 	claus(Nr2,SelLit2,Body2),
-	not(Nr=Nr2),
+	(Nr\=Nr2),
 	append(Body2,Right2,IntGoal2),
 	append(Left2,IntGoal2,NewGoal2),
 	live(NewGoal2,C2).
@@ -390,9 +390,9 @@ rl(X) :- recompute_leaves(X).
 
 recompute_leaves(GoalID) :-
      gt_node_pe_status(GoalID,VPEStat),
-     not(VPEStat = no),
-     not(VPEStat = abstracted(_)),
-     not(gt_node_instance_of(GoalID,_)),
+     (VPEStat \= no),
+     (VPEStat \= abstracted(_)),
+     \+(gt_node_instance_of(GoalID,_)),
      gt_node_constraint(GoalID,(Goal,Constraint)),
      gt_node_chtree(GoalID,Chtree),
      add_leaves(GoalID,Goal,Constraint,Chtree),
@@ -489,7 +489,7 @@ leaf(select(SelLitNr,Chpaths),Goal,Constraint,Leaf,LeafC,ChPos,BUPC) :-
 	pp_mnf(simplify_constraint(Constraint,SC)),
 	peel_off_calls(SelCall,Sel),
 	member(match(ClauseNr,SubTree),Chpaths),
-	(claus(ClauseNr,Sel,Body) -> (true)
+	(claus(ClauseNr,Sel,Body) -> true
 		; (print('### Error: clause not matching in leaf/4'),nl,
 		   print('###  ClauseNr:'),print(ClauseNr),nl,
 		   print('###  SelAtom: '),print(Sel),nl,fail)

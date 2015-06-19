@@ -33,14 +33,14 @@
 	((Chtree=WhistleChtree)
 	 -> (NewChtrees = [Chtree])
 	 ;  (pp_mnf(msg_chtree(Chtree,WhistleChtree,MSGChtree)),
-	     ((MSGChtree=stop, not(variant_of(WhistleGoal,MSG)))
+	     ((MSGChtree=stop, \+(variant_of(WhistleGoal,MSG)))
 		/* if MSG strictly more general: no danger of non-termination */
 	      -> (NewChtrees = [none]) /* so that the goal will be unfolded */
 	      ;  (NewChtrees = [MSGChtree])
 	     )
 	    )
 	),
-	(not(variant_of(WhistleGoal,MSG)) ; (NewChtrees \== [WhistleChtree])),
+	(\+(variant_of(WhistleGoal,MSG)) ; (NewChtrees \== [WhistleChtree])),
 		/* abstract_parent must change something */
 	NewGoals = [split_goal(MSG,FSI)],
 	get_full_split_indicator(MSG,1,FSI).
@@ -57,7 +57,7 @@
 	((Chtree=WhistleChtree)
 	 -> (NewChtrees = [Chtree])
 	 ;  (pp_mnf(msg_chtree(Chtree,WhistleChtree,MSGChtree)),
-	     ((MSGChtree=stop, not(variant_of(Goal,MSG)))
+	     ((MSGChtree=stop, \+(variant_of(Goal,MSG)))
 		/* if MSG strictly more general: no danger of non-termination */
 	      -> (NewChtrees = [none]) /* so that the goal will be unfolded */
 	      ;  (NewChtrees = [MSGChtree])

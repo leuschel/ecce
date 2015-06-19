@@ -66,10 +66,10 @@ td_cflow_analysis(Count) :-
 	),
 	pp_cll(get_gt_cgoal_to_pe(GoalID,Goal,Constraint)),!,
 	copy(Goal,G),numbervars(G,1,_),
-	debug_print(goal_to_pe(GoalID,G,Constraint)),debug_nl,
+	debug_println(goal_to_pe(GoalID,G,Constraint)),
 	(gt_node_chtree(GoalID,none)
 	 -> (find_unimposed_variant(GoalID,Goal,VariantID)
-	     -> (debug_print(found_variant(VariantID,Goal)),debug_nl,
+	     -> (debug_println(found_variant(VariantID,Goal)),
 			/* no need to unfold */
 		     gt_node_chtree(VariantID,Chtree), /* just get chtree */
 		     ImpStat = unimposed
@@ -84,7 +84,7 @@ td_cflow_analysis(Count) :-
 		 ImpStat = unimposed
 		)
 	    )
-	 ;  (debug_print(handling(Goal)),debug_nl,  /* no need to unfold */
+	 ;  (debug_println(handling(Goal)),  /* no need to unfold */
 		gt_node_chtree(GoalID,ImpChtree), /* just get imposed chtree */
 		copy(Goal,CCGoal),
 	        pp_mnf(remove_incorrect_builtins(ImpChtree,CCGoal,
@@ -100,28 +100,28 @@ td_cflow_analysis(Count) :-
 		ImpStat = imposed
 	    )
 	),!,
-	((Chtree=stop) -> (set_abnormal_goal_encountered) ; (true)),
+	(Chtree=stop -> set_abnormal_goal_encountered ; true),
 	/* print_chtree(Chtree), */
 	(pp_cll(get_cinstance_of(GoalID,Goal,Constraint,Chtree,MoreGeneralID))
-	 -> (debug_print(cinstance_of(MoreGeneralID)),debug_nl,
+	 -> (debug_println(cinstance_of(MoreGeneralID)),
 	     pp_mnf(mark_gt_node_as_instance_of(GoalID,MoreGeneralID)),
 	     pp_mnf(mark_gt_node_as_ped(GoalID,pe(ImpStat),Chtree)),
 	     print('+'), debug_nl
 	    )
          ;  (pp_cll(whistle(GoalID,Goal,Chtree,WhistleGoalID))
-	         -> (debug_print(abstracting(WhistleGoalID))),debug_nl,
+	         -> (debug_println(abstracting(WhistleGoalID))),
 	             abstract_and_replace(GoalID,Goal,Chtree,WhistleGoalID,ImpStat),
-	             debug_print(done_abstracting),debug_nl,
+	             debug_println(done_abstracting),
 	            )
 	        ;  (pp_mnf(mark_gt_node_as_ped(GoalID,pe(ImpStat),Chtree)),
-	            debug_print(adding_leaves),debug_nl,
+	            debug_println(adding_leaves),
 		        add_leaves(GoalID,Goal,Constraint,Chtree),
-	            debug_print(done_adding_leaves),debug_nl,
+	            debug_println(done_adding_leaves),
 		        verbose_print('.')
 		       )
 	     )
 	 ),!,
-	 debug_nl,debug_print('...'),debug_nl,
+	 debug_nl,debug_println('...'),
 	td_cflow_analysis(NewCount).
 td_cflow_analysis(_) :- nl.
 
@@ -144,11 +144,11 @@ find_unimposed_cinstance(Goal,Constraint,VariantID) :-
 find_unimposed_cinstance(GoalID,Goal,Constraint,VariantID) :-
 	copy(Goal,CGoal),
 	gt_node_goal(VariantID,CGoal), /* lookup a potential match */
-	not(GoalID = VariantID),
+	(GoalID \= VariantID),
 	gt_node_pe_status(VariantID,VPEStat),
-	not(VPEStat = no),
+	(VPEStat \= no),
 		/* VariantID should already be PE'd */
-	not(VPEStat = pe(imposed)), not(VPEStat = abstracted(imposed)),
+	(VPEStat \= pe(imposed)), (VPEStat \= abstracted(imposed)),
 		/* otherwise chtree might be incorrect */
 	gt_node_constraint(VariantID,(MoreGeneralGoal,MC)),
 	pp_cll(constraint_instance_of(Goal,Constraint,MoreGeneralGoal,MC)).
