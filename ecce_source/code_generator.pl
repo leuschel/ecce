@@ -137,14 +137,14 @@ reset_spec_prog.
 
 copy_specialised_program_to_input :-
 	spec_clause(Nr,Head,Body),
-	not(Nr=filter_comment),
-	not(Nr=keep_original_program),
+	(Nr\=filter_comment),
+	(Nr\=keep_original_program),
 	add_new_clause(Head,Body),
 	fail.
 copy_specialised_program_to_input :-
     generate_slice_instead_of_spec_prog(no),
 	cg_filter_goal(_NodeID,_Goal,_MsvGoal,FGoal),
-	not(spec_clause(_SpecClauseNr,FGoal,_Body)),
+	\+(spec_clause(_SpecClauseNr,FGoal,_Body)),
 	add_new_clause(FGoal,[fail]),
 	fail.
 copy_specialised_program_to_input.
@@ -182,7 +182,7 @@ generate_new_filters.
 /* ----------------------------------- */
 
 code_has_to_be_generated_for_node(NodeID) :-
-	not(gt_node_instance_of(NodeID,_InstanceOfID)),
+	\+(gt_node_instance_of(NodeID,_InstanceOfID)),
 	gt_node_pe_status(NodeID,pe(_Imp)).
 
 
@@ -222,16 +222,15 @@ generate_resultants_for_goal(NodeID,Goal,FGoal) :-
         gt_node_bup_cas(NodeID,(_,_),(_,BUPC)),
         (abstract_partial_deduction_enabled(no) ; \+(BUPC=fail)),
 	assertz(spec_clause(filter_comment,FGoal,Goal)),
-	(not(Chtree=stop)
-	 -> (reset_gennum(1),
+	(Chtree\=stop
+	 ->  reset_gennum(1),
 	     debug_print(calling_resultant_body(Goal)),debug_nl,
 	     pp_cll(resultant_body(Chtree,NodeID,Goal,Body))
-	    )
-	 ;  (assertz(spec_clause(keep_original_program,FGoal,Goal)),
-	     wrap_in_calls(Goal,Body) )
+	 ;   assertz(spec_clause(keep_original_program,FGoal,Goal)),
+	     wrap_in_calls(Goal,Body)
 	),
 	(detect_dead_literals_or_non_leftmost_builtins(no)
-	   -> Body \= [fail|_] ; not(member(fail,Body))),
+	   -> Body \= [fail|_] ; \+(member(fail,Body))),
 	assert_spec_clause(FGoal,Body),
 	debug_print(done_assert_spec_clause(FGoal,Body)),debug_nl,
 	(resultants_generated(NodeID)
@@ -239,7 +238,7 @@ generate_resultants_for_goal(NodeID,Goal,FGoal) :-
 	fail.
 generate_resultants_for_goal(NodeID,_Goal,FGoal) :-
 	(resultants_generated(NodeID)
-	 -> (true)
+	 -> true
 	 ;  (gensym(spec,SpecClauseNr),
 	     assertz(spec_clause(SpecClauseNr,FGoal,[fail]))
 	    )
@@ -270,13 +269,13 @@ assert_spec_clause(Head,Body) :-
 	remove_redundant_calls(ResBody,Body2,[]),
 	simplify_calls(Body2,NewBody),
 	((allow_removal_of_duplicate_predicates(no);
-          not(useless_clause(Head,NewBody)))
+          \+(useless_clause(Head,NewBody)))
 	 -> assert_unsimplified_spec_clause(Head,NewBody)
 	 ;  true
 	),!.
 
 assert_unsimplified_spec_clause(Head,Body) :-
-	not(variant_clause_already_exists(Head,Body)),
+	\+(variant_clause_already_exists(Head,Body)),
 	gensym(spec,SpecClauseNr),
 	assertz(spec_clause(SpecClauseNr,Head,Body)),
 	debug_print(assertz(spec_clause(SpecClauseNr,Head,Body))),debug_nl.
@@ -354,7 +353,7 @@ print_specialised_program :-
 print_specialised_program :-
     generate_slice_instead_of_spec_prog(no), /* only print failing preds if no slicing */
 	cg_filter_goal(_NodeID,_Goal,_MsvGoal,FGoal),
-	not(spec_clause(_SpecClauseNr,FGoal,_Body)),
+	\+(spec_clause(_SpecClauseNr,FGoal,_Body)),
 	print_clause_with_nl(FGoal,[fail]),
 	fail.
 print_specialised_program.
@@ -707,7 +706,7 @@ get_filtered_version(Goal,NodeID,[FilteredAtom]) :-
 	 ;  ((divide_constraint_goal(Goal,OrdGoal,_),
 	      divide_constraint_goal(MsvG,OrdMsvG,_),
 	      OrdGoal = OrdMsvG, FilteredAtom = FG)
-	     -> (true)
+	     -> true
 	     ;  (print('### Warning: unable to filter:'),nl,
 	         print('### '),print(Goal),print(' '), print(G),nl,
 	         print('### '),print(OrdGoal),print(' '), print(OrdMsvG),nl,
@@ -1028,4 +1027,4 @@ strange_ascii_for_name(X) :-
 strange_ascii_for_name(X) :-
 	X>57,X<65,!.
 strange_ascii_for_name(X) :-
-	X>90,X<97,not(X=95),!.
+	X>90,X<97,(X\=95),!.

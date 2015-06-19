@@ -254,7 +254,7 @@ print_same_ranks :- print(' }'),nl.
 dot_print_goal(ID,X) :- 
     ((gt_print_node_ids(yes),gt_node(ID))
      -> (print(ID), print(':'), print('\\'),print('n'))
-     ;  (true)
+     ;  true
     ),
     ((gt_node(ID),code_has_to_be_generated_for_node(ID),
       get_filtered_version(X,ID,FGoal))
@@ -304,7 +304,7 @@ print_chtree_for_dot2(select(SelLitNr,Chpaths),Goal,ID) :-
 	pp_mnf(split_list(Goal,SelLitNr,Left,SelCall,Right)),
 	peel_off_calls(SelCall,Sel),
 	member(match(ClauseNr,SubTree),Chpaths),
-	(claus(ClauseNr,Sel,CBody) -> (true)
+	(claus(ClauseNr,Sel,CBody) -> true
 		; (print('### Error: clause not matching in print_chtree_for_dot2/4'),nl,
 		   print('###  ClauseNr:'),print(ClauseNr),nl,
 		   print('###  SelAtom: '),print(Sel),nl,
@@ -330,7 +330,7 @@ print_chtree_for_dot2(built_in_eval(NrOfBI,BI,SubTree),Goal,ID) :-
 		       print('###  '),print(Sel),
 		       print(': generates bindings and is not callable'),nl
 		      )
-		    ;  (true)
+		    ;  true
 		  )
 	),
 	pp_mnf(append(Left,Right,NewGoal)),

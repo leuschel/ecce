@@ -58,24 +58,22 @@ post_unfold_literal(Lit,[Lit],_) :-
 	is_negative_literal(Lit,_Atom),!.
 post_unfold_literal(Lit,NewGoal,Depth) :-
 	(purely_undeterminate(Lit)
-	 -> (NewGoal = [Lit])
-	 ;  (claus(_Nr,Lit,Body),
-	     ((Depth>0)
-		-> (length(Body,Len),
+	 -> NewGoal = [Lit]
+	 ;  claus(_Nr,Lit,Body),
+	    (Depth>0
+		->  length(Body,Len),
 		    D1 is Depth - Len,
 		    verbose_print('.'),
 		    post_unfold_body(Body,NewGoal,D1)
-		   )
-		;  (NewGoal = Body)
+		;  NewGoal = Body
 	     )
-	    )
 	).
 
 purely_undeterminate(Lit) :-
 	copy(Lit,CpLit),
 	(claus(Nr,CpLit,_Body)
-	 -> (copy(Lit,CpLit2),
+	 ->  copy(Lit,CpLit2),
 	     claus(Nr2,CpLit2,_Body2),
-	     not(Nr=Nr2))
-	 ;  (true /* it fails */)
+	     Nr\=Nr2
+	 ;   true /* it fails */
 	).

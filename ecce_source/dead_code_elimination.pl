@@ -51,9 +51,9 @@ add_reachable_atom(Atom) :-
 add_reachable_atom(Atom) :-
 	nonvar(Atom),
 	get_predicate(Atom,pred(Pred,Arity)),
-	not(reachable(Pred,Arity)),!,
+	\+(reachable(Pred,Arity)),!,
 	assert(reachable(Pred,Arity)),
-	debug_print(reachable(Pred,Arity)),debug_nl,
+	debug_println(reachable(Pred,Arity)),
 	(reachable_changed -> true ; assert(reachable_changed)).
 add_reachable_atom(_).
 
@@ -69,7 +69,7 @@ calc_dce_program :-
         ;  (cg_filter_goal(NodeID,_,_,Head) ->
              (retract(cg_filter_goal(NodeID,_,_,Head)),
               print('*'),
-              debug_print(rem(NodeID)),debug_nl )
+              debug_println(rem(NodeID)) )
             ; true)
         ),
 	fail.

@@ -82,7 +82,7 @@ check_for_illegal_types :-
 	print_type_definition_error(any,Descr).
 check_for_illegal_types :-
 	ecce_type(_Type,Descr),
-	not(legal_type_description(Descr)),
+	\+(legal_type_description(Descr)),
 	print_type_definition_error(any,Descr).
 
 print_type_definition_error(Type,Descr) :-
@@ -141,7 +141,7 @@ legal_type_description(term(_Functor,TypeList)) :-
 legal_type_description(vterm(_Functor,TypeList)) :-
 	l_legal_type_description(TypeList).
 legal_type_description(Type) :-
-	not(predefined_type(Type)),
+	\+(predefined_type(Type)),
 	ecce_type(Type,Descr),
 	legal_type_description(Descr).
 
@@ -186,7 +186,7 @@ term_is_of_type(_Term,any,_PrintErrMsg) :-
 term_is_of_type(Term,ground,_PrintErrMsg) :-
 	ground(Term),!.
 term_is_of_type(Term,nonground,_PrintErrMsg) :-
-	not(ground(Term)),!.
+	\+(ground(Term)),!.
 term_is_of_type(Term,var,_PrintErrMsg) :-
 	var(Term),!.
 term_is_of_type(Term,nonvar,_PrintErrMsg) :-
@@ -232,7 +232,7 @@ term_is_of_type(Term,vterm(Functor,ArgTypeList),PrintErrMsg) :-
 	Term =.. [Functor|Args],!,
 	l_term_is_of_type(Args,ArgTypeList,PrintErrMsg), !.
 term_is_of_type(Term,Type,_PrintErrMsg) :-
-	not(predefined_type(Type)),
+	\+(predefined_type(Type)),
 	ecce_type(Type,Descr), /* user defined type */
 	term_is_of_type(Term,Descr,no),!.
 	/* printing=no because several alternative options might exist */

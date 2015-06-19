@@ -326,17 +326,17 @@ pre_condition(mark_gt_node_as_ped(NodeID,Status,Chtree)) :-
 	term_is_of_type(NodeID,nodeid),
 	term_is_of_type(Status,pe_status),
 	term_is_of_type(Chtree,ext_chtree),
-	((not(Status=no), Chtree=none)
+	((Status\=no, Chtree=none)
 	 -> (print('### Warning: marking partially evaluated goal'),nl,
 	     print('###          with chtree = none'),nl,fail
 	    )
-	 ;  (true)
+	 ;  true
 	).
 post_condition(mark_gt_node_as_ped(_NodeID,_Status,_Chtree)).
 
 mark_gt_node_as_ped(NodeID,Status,_Chtree) :-
 	retract(gt_node_pe_status(NodeID,Stat)),
-	(((Stat = no) ; (Status = abstracted(_))) -> (true)
+	(((Stat = no) ; (Status = abstracted(_))) -> true
 	 ;(print('### WARNING: Node already partially evaluated for mark_gt_node_as_ped'),nl,
 	   print_gt_node(NodeID))
 	),fail.
@@ -357,7 +357,7 @@ pre_condition(mark_gt_node_as_instance_of(NodeID,InstanceOfID)) :-
 	 -> (print('### Warning self-loop added in mark_gt_node_as_instance_of'),nl,
 	     print('### NodeID = '), print(NodeID),nl,fail
 	    )
-	 ;  (true)
+	 ;  true
 	),
 	((gt_node_pe_status(InstanceOfID,abstracted(_ImpStat)),
 	  gt_node_descends_from(NodeID,InstanceOfID,_SplitInd))
@@ -365,7 +365,7 @@ pre_condition(mark_gt_node_as_instance_of(NodeID,InstanceOfID)) :-
 	     print('### NodeID = '), print(NodeID),nl,
 	     print('### InstanceOfID = '), print(InstanceOfID),nl,fail
 	    )
-	 ;  (true)
+	 ;  true
 	).
 post_condition(mark_gt_node_as_instance_of(_NodeID,_InstanceOfID)).
 
@@ -553,7 +553,7 @@ print_gt_node_as_graph_for_dot2(NodeID) :-
     print(', label="'), 
     (gt_print_node_ids(yes)
      -> (print(NodeID), print(':'), print('\\'),print('n'))
-     ;  (true)
+     ;  true
     ),
     ((FGoal=none) -> true ; (print(FGoal),print(' = '), print('\\'),print('n'))),
     print_goal_for_dot(Goal),

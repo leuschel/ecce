@@ -84,7 +84,7 @@ verify_pre(Call) :-
 	   	    print('### '),safe_print_term(Call),nl,
                     prepost_user_interaction
 		   )
-		;  (true)
+		;  true
 	     )
 	  )
 	; (print('### PRE-CONDITION Failed'),nl,
@@ -100,7 +100,7 @@ verify_post(Call) :-
 	   	    print('### '),safe_print_term(Call),nl,
                     prepost_user_interaction
 		   )
-		;  (true)
+		;  true
 	     )
 	  )
 	; (print('### POST-CONDITION Failed'),nl,
@@ -128,7 +128,7 @@ prepost_mnf_call2(X,Flag) :- /* mnf = must not fail */
 	asserta(prepost_mnf_flag(Flag)),
 	verify_post(X).
 prepost_mnf_call2(X,Flag) :-
-	not(prepost_mnf_flag(Flag)),
+	\+(prepost_mnf_flag(Flag)),
 	print('### WARNING CALL HAS FAILED !'),nl,
 	print('### '),safe_print_term(X),nl,
         prepost_user_interaction,
@@ -145,7 +145,7 @@ mnf_call(X,Flag) :- /* mnf = must not fail */
 	call(X),
 	asserta(prepost_mnf_flag(Flag)).
 mnf_call(X,Flag) :-
-	not(prepost_mnf_flag(Flag)),
+	\+(prepost_mnf_flag(Flag)),
 	print('### WARNING CALL HAS FAILED !'),nl,
 	print('### '),safe_print_term(X),nl,
         prepost_user_interaction,
