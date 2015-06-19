@@ -142,7 +142,7 @@ propagate_erasure2(_Head,_Body,Atom,Struct) :-
 	nonvar(Struct),
 	Struct = not(_X),!, /* a negation has been encountered */
 	get_sub_term(Atom,Pred,Arity,_SubTerm,Pos),	
-	not(dont_erase(Pred,Arity,Pos)),
+	\+(dont_erase(Pred,Arity,Pos)),
 	assert_dont_erase(Pred,Arity,Pos).
 	/* keep every position for negative literals */
 propagate_erasure2(_Head,_Body,Atom,_Struct) :-
@@ -150,9 +150,9 @@ propagate_erasure2(_Head,_Body,Atom,_Struct) :-
 	 /* must be var, otherwise cg_extract... would have dived further */
 	(var_call_encountered -> true ; assert(var_call_encountered)).
 propagate_erasure2(Head,Body,Atom,_Struct) :-
-	not(Atom = call(_)),
+	(Atom \= call(_)),
 	get_sub_term(Atom,Pred,Arity,SubTerm,Pos),	
-	not(dont_erase(Pred,Arity,Pos)), /* not erased so far */
+	\+(dont_erase(Pred,Arity,Pos)), /* not erased so far */
 	unsafe_erasure(SubTerm,Head,Body),
 	assert_dont_erase(Pred,Arity,Pos).
 
@@ -225,24 +225,24 @@ erase_literal(X,X). /* no atom inside */
 erase_atom(X,Y) :-
 	X =.. [Pred|Args],
 	length(Args,Arity),
-	erase_arguments(Pred,Arity,1,Args,ErArgs),
+	erase_arguments(Args,ErArgs,Pred,Arity,1),
 		/* MISSING: test whether necessary to change predicate */
 		/* string_concatenate(Pred,Arity,NewPred), */
 	NewPred = Pred,
 	Y =.. [NewPred|ErArgs].
 
-erase_arguments(_Pred,_Arity,_ecce_bimPos,[],[]).
-erase_arguments(Pred,Arity,Pos,[H|T],ErArgs) :-
+erase_arguments([],[],_Pred,_Arity,_ecce_bimPos).
+erase_arguments([H|T],ErArgs,Pred,Arity,Pos) :-
 	(dont_erase(Pred,Arity,Pos)
-	 -> (ErArgs = [H|ErT])
-	 ;  ((gen_anonymous_vars_for_erased_args(no)
+	 -> ErArgs = [H|ErT]
+	 ;  (gen_anonymous_vars_for_erased_args(no)
 	      -> ErArgs = ErT
 	      ;  ErArgs = ['*'|ErT]   /* IMPROVE: maybe use special constant fo pretty printer ? */
 	      ),  %print(erased(Pred,Pos)),nl,
-	     inc_nr_of_erased_arguments)
+	     inc_nr_of_erased_arguments
     ),
 	P1 is Pos + 1,
-	erase_arguments(Pred,Arity,P1,T,ErT).
+	erase_arguments(T,ErT,Pred,Arity,P1).
 
 
 /* ----------------------------------------------------------------- */
@@ -282,7 +282,7 @@ far_analysis :-
 propagate_far_erasure :-
 	claus(_Nr,Head,Body),
 	get_sub_term(Head,Pred,Arity,SubTerm,Pos),	
-	not(dont_erase(Pred,Arity,Pos)),
+	\+(dont_erase(Pred,Arity,Pos)),
 	unsafe_far_erasure(SubTerm,Head,Body),
 	assert_dont_erase(Pred,Arity,Pos),
 	fail.
