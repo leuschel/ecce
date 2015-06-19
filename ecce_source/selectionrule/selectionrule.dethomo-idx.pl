@@ -24,27 +24,27 @@
 'selectionrule.dethomo-idx:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	/* Try to find determinate literals first*/
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
-	not(undeterminate(Goal,NrOfSel)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
+	\+(undeterminate(Goal,NrOfSel)),
 	'selectionrule.dethomo-idx:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist).
 'selectionrule.dethomo-idx:select_positive_literal'(Goal,TopGoalVarlist,[],NrOfSel,SelLiteral) :-
 	member_nr(SelLiteral,Goal,NrOfSel),
 /* allow non-leftmost undeterminate steps at top (for conjunctive PD) */
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)).
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)).
 'selectionrule.dethomo-idx:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,1,SelLiteral) :-
 	member_nr(SelLiteral,Goal,1),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	indexed_varlist(TopGoalVarlist),
-	not(non_indexed_unfolding(SelLiteral,TopGoalVarlist)),
-	not(find_any_unimposed_variant([SelLiteral],VariantID)),
+	\+(non_indexed_unfolding(SelLiteral,TopGoalVarlist)),
+	\+(find_any_unimposed_variant([SelLiteral],VariantID)),
 		/* stop if variant exists at the global level */
 	'selectionrule.dethomo-idx:ok_to_unfold'(SelLiteral,1,UnfHist).
 
 'selectionrule.dethomo-idx:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist) :-
-	not('selectionrule.dethomo-idx:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
+	\+('selectionrule.dethomo-idx:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
 	/* print('selectionrule.dethomo-idx:ok_to_unfold'(SelLiteral,NrOfSel)),nl. */
 
 'selectionrule.dethomo-idx:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist) :-

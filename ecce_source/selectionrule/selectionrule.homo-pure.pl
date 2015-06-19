@@ -25,7 +25,7 @@
 	'selectionrule.homo-pure:select_positive_literal2'(Goal,UnfHist,NrOfSel,SelLiteral),
 	'selectionrule.homo-pure:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist),
 	/* 
-	((SelLiteral = unfold(X,_,_),not(X=[]))
+	((SelLiteral = unfold(X,_,_),\+(X=[]))
  	 -> (print(ok(SelLiteral)),nl,print(in(Goal)),nl,nl,
 	     debug_print(UnfHist),nl,nl)
 	 ;  true
@@ -36,14 +36,14 @@
 
 'selectionrule.homo-pure:select_positive_literal2'(Goal,_UnfHist,NrOfSel,SelLiteral) :-
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,_Atom)),
-	not(is_built_in_literal(SelLiteral)),
-	not(undeterminate(Goal,NrOfSel)).
+	\+(is_negative_literal(SelLiteral,_Atom)),
+	\+(is_built_in_literal(SelLiteral)),
+	\+(undeterminate(Goal,NrOfSel)).
 		/* first look for determinate unfolding steps */
 'selectionrule.homo-pure:select_positive_literal2'(Goal,_UnfHist,NrOfSel,SelLiteral) :-
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,_Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,_Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	undeterminate(Goal,NrOfSel).
 
 'selectionrule.homo-pure:goal_can_be_unfolded'(_Goal,[]) :- !.
@@ -51,17 +51,17 @@
 	partition_goal(Goal,SplitGoals),
 	member(split_goal(SGoal,_Pos),SplitGoals),
 	/* SGoal \== [Atom], */
-	not(find_unimposed_instance(SGoal,_VariantID)),
+	\+(find_unimposed_instance(SGoal,_VariantID)),
 	debug_print(not_variant(Goal)),debug_nl.
 
 'selectionrule.homo-pure:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist) :-
-	not('selectionrule.homo-pure:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
+	\+('selectionrule.homo-pure:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
 
 'selectionrule.homo-pure:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist) :-
 	covering_ancestor(NrOfSel,UnfHist,CovAncestor),
 	(homeomorphic_embedded(CovAncestor,SelLiteral)
-	 -> (true)
-	 ;  (/*SelLiteral = unfold(XU,_,_),not(XU=[]),
+	 -> true
+	 ;  (/*SelLiteral = unfold(XU,_,_),\+(XU=[]),
 		print(not_embeddeding),nl,
 		print(SelLiteral),nl,print(CovAncestor),
 		nl,nl,*/fail )

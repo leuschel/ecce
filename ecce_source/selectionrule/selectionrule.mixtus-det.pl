@@ -27,25 +27,25 @@
 	member_nr(SelLiteral,Goal,NrOfSel),
 	((NrOfSel=1) ; (UnfHist=[])),
 /* allow non-leftmost undeterminate steps at top (for conjunctive PD) */
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
-	(not(find_any_unimposed_variant([SelLiteral],VariantID))
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
+	(\+(find_any_unimposed_variant([SelLiteral],VariantID))
 	 ; (UnfHist=[])),
 		/* stop if variant exists at the global level */
-	(not(unfolding_leads_to_loop(SelLiteral)) ; (UnfHist=[])),
+	(\+(unfolding_leads_to_loop(SelLiteral)) ; (UnfHist=[])),
 	'selectionrule.mixtus-det:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist),!.
 'selectionrule.mixtus-det:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	/* Try to find determinate literals */
 	member_nr(SelLiteral,Goal,NrOfSel),
 	NrOfSel > 1,
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
-	not(undeterminate(Goal,NrOfSel)),
-	not(unfolding_leads_to_loop(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
+	\+(undeterminate(Goal,NrOfSel)),
+	\+(unfolding_leads_to_loop(SelLiteral)),
 	'selectionrule.mixtus-det:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist).
 
 'selectionrule.mixtus-det:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist) :-
-	not(loop_prevention(SelLiteral,NrOfSel,UnfHist)),
+	\+(loop_prevention(SelLiteral,NrOfSel,UnfHist)),
 	debug_print('selectionrule.mixtus-det:ok_to_unfold'(SelLiteral,NrOfSel)),debug_nl.
 
 

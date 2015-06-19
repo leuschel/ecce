@@ -38,7 +38,7 @@ may_loop2(T,S,Depth) :-
 
 stop_may_loop(T,S,Depth) :- Depth < 1.
 stop_may_loop(T,S,Depth) :- var(S),!.
-stop_may_loop(T,S,Depth) :- dynamic_term(S),not(number(S)).
+stop_may_loop(T,S,Depth) :- dynamic_term(S),\+(number(S)).
 stop_may_loop(T,S,Depth) :- inf_number(S).
 
 inf_number(T) :-

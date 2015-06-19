@@ -20,15 +20,15 @@
 'selectionrule.safedet:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	/* Try to find determinate literals */
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	'selectionrule.safedet:ok_to_unfold'(SelLiteral,Goal,NrOfSel,UnfHist).
 
 'selectionrule.safedet:ok_to_unfold'(SelLiteral,Goal,NrOfSel,[]). 
 	/* allow non-determinate unfolding at top */
 'selectionrule.safedet:ok_to_unfold'(SelLiteral,Goal,NrOfSel,UnfHist) :-
-	not(undeterminate(Goal,NrOfSel)),
-	not('selectionrule.safedet:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
+	\+(undeterminate(Goal,NrOfSel)),
+	\+('selectionrule.safedet:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
 
 'selectionrule.safedet:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist) :-
 	covering_ancestor(NrOfSel,UnfHist,CovAncestor),

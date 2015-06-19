@@ -13,8 +13,8 @@
 'selectionrule.once:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	'selectionrule.once:goal_can_be_unfolded'(Goal,UnfHist),
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	debug_print(ok(SelLiteral)),debug_nl.
 
 'selectionrule.once:goal_can_be_unfolded'(Goal,[]).

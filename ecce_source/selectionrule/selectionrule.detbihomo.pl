@@ -29,24 +29,24 @@
 'selectionrule.detbihomo:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	/* Try to find determinate literals first*/
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
-	not(undeterminate(Goal,NrOfSel)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
+	\+(undeterminate(Goal,NrOfSel)),
 	'selectionrule.detbihomo:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist).
 'selectionrule.detbihomo:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	get_sel_literal(Goal,SelLiteral,NrOfSel,UnfHist),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	((UnfHist \== [], find_any_unimposed_variant([SelLiteral],VariantID))
-	 -> (/*print(stop_unfolding_variant(VariantID,SelLiteral)),nl,*/
-	     fail)
-	 ;  (true)
+	 -> /*print(stop_unfolding_variant(VariantID,SelLiteral)),nl,*/
+	     fail
+	 ;  true
 	),
 		/* stop if variant exists at the global level */
 	'selectionrule.detbihomo:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist).
 
 'selectionrule.detbihomo:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist) :-
-	not('selectionrule.detbihomo:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
+	\+('selectionrule.detbihomo:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
 	/* print('selectionrule.detbihomo:ok_to_unfold'(SelLiteral,NrOfSel)),nl. */
 
 'selectionrule.detbihomo:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist) :-

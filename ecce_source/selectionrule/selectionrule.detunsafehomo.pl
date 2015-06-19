@@ -24,22 +24,22 @@
 	/* Try to find determinate literals first*/
 	/* without checking with covering ancestors !!! */
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
-	not(undeterminate(Goal,NrOfSel)).
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
+	\+(undeterminate(Goal,NrOfSel)).
 'selectionrule.detunsafehomo:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	member_nr(SelLiteral,Goal,NrOfSel),
 	((NrOfSel=1) ; (UnfHist=[])),
 /* allow non-leftmost undeterminate steps at top (for conjunctive PD) */
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
-	(not(find_any_unimposed_variant([SelLiteral],VariantID))
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
+	(\+(find_any_unimposed_variant([SelLiteral],VariantID))
 	 ; (UnfHist=[])),
 		/* stop if variant exists at the global level */
 	'selectionrule.detunsafehomo:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist).
 
 'selectionrule.detunsafehomo:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist) :-
-	not('selectionrule.detunsafehomo:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
+	\+('selectionrule.detunsafehomo:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
 	/* print('selectionrule.detunsafehomo:ok_to_unfold'(SelLiteral,NrOfSel)),nl. */
 
 'selectionrule.detunsafehomo:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist) :-

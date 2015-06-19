@@ -23,22 +23,22 @@
 
 'selectionrule.any-det-facts:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	/* Try to find determinate literals */
-	(not(find_any_unimposed_variant(Goal,_VariantID)) ; (UnfHist=[])),
+	(\+(find_any_unimposed_variant(Goal,_VariantID)) ; (UnfHist=[])),
 		/* stop if variant exists at the global level */
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	'selectionrule.any-det-facts:ok_to_unfold'(Goal,NrOfSel,UnfHist),
-	not('selectionrule.any-det-facts:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)),
+	\+('selectionrule.any-det-facts:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)),
 	debug_print(select(SelLiteral)),debug_nl.
 
 'selectionrule.any-det-facts:ok_to_unfold'(Goal,NrOfSel,[]) :- !.
 'selectionrule.any-det-facts:ok_to_unfold'(Goal,1,UnfHist) :-
-	not(pp_cll(contains_non_determinate_step(UnfHist))).
+	\+(pp_cll(contains_non_determinate_step(UnfHist))).
 'selectionrule.any-det-facts:ok_to_unfold'(Goal,NrOfSel,UnfHist) :-
-	not(undeterminate(Goal,NrOfSel)).
+	\+(undeterminate(Goal,NrOfSel)).
 'selectionrule.any-det-facts:ok_to_unfold'(Goal,NrOfSel,UnfHist) :-
-	not(has_matching_rule(Goal,NrOfSel)).
+	\+(has_matching_rule(Goal,NrOfSel)).
 
 'selectionrule.any-det-facts:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist) :-
 	covering_ancestor(NrOfSel,UnfHist,CovAncestor),

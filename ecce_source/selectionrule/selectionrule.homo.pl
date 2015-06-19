@@ -29,14 +29,14 @@
 
 'selectionrule.homo:select_positive_literal2'(Goal,UnfHist,NrOfSel,SelLiteral) :-
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
-	not(undeterminate(Goal,NrOfSel)).
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
+	\+(undeterminate(Goal,NrOfSel)).
 		/* first look for determinate unfolding steps */
 'selectionrule.homo:select_positive_literal2'(Goal,UnfHist,NrOfSel,SelLiteral) :-
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	((UnfHist=[]) ; reduces_search_space(Goal,NrOfSel)).
 
 'selectionrule.homo:goal_can_be_unfolded'(_Goal,[]) :- !.
@@ -47,16 +47,16 @@
 	partition_goal(Goal,SplitGoals),
 	member(split_goal(SGoal,Pos),SplitGoals),
 	/* SGoal \== [Atom], */
-	not(find_unimposed_instance(SGoal,VariantID)),
+	\+(find_unimposed_instance(SGoal,VariantID)),
 	debug_print(not_variant(Goal)),debug_nl.
 
 'selectionrule.homo:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist) :-
-	not('selectionrule.homo:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
+	\+('selectionrule.homo:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
 
 'selectionrule.homo:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist) :-
 	covering_ancestor(NrOfSel,UnfHist,CovAncestor),
 	(homeomorphic_embedded(CovAncestor,SelLiteral)
-	 -> (true)
+	 -> true
 	 ;  (debug_print(not_embeddeding),debug_nl,
 		debug_print(SelLiteral),debug_nl,debug_print(CovAncestor),
 		debug_nl,fail )

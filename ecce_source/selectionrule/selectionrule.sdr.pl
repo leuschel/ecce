@@ -19,8 +19,8 @@
 'selectionrule.sdr:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	/* Try to find determinate literals */
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	'selectionrule.sdr:ok_to_unfold'(Goal,NrOfSel,UnfHist).
 'selectionrule.sdr:select_positive_literal'(Goal,TopGoalVarlist,[],1,SelLiteral) :-
 	member_nr(SelLiteral,Goal,1).
@@ -30,8 +30,8 @@
 
 maximal_sdr(Goal,NrOfSel) :-
 	pp_mnf(split_list(Goal,NrOfSel,Left,Sel,Right)),
-	not(not_maximal_sdr(Sel,Left)),
-	not(not_maximal_sdr(Sel,Right)).
+	\+(not_maximal_sdr(Sel,Left)),
+	\+(not_maximal_sdr(Sel,Right)).
 
 not_maximal_sdr(Sel,List) :-
 	member(Atom,List),

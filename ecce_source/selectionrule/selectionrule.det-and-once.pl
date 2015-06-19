@@ -20,8 +20,8 @@
 
 'selectionrule.det-and-once:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	debug_print(try(SelLiteral)),
 	'selectionrule.det-and-once:ok_to_unfold'(Goal,SelLiteral,NrOfSel,UnfHist),
 	debug_print(ok(SelLiteral)),debug_nl.
@@ -29,15 +29,15 @@
 'selectionrule.det-and-once:ok_to_unfold'(Goal,SelLiteral,NrOfSel,[]) :- !.
 'selectionrule.det-and-once:ok_to_unfold'(Goal,SelLiteral,NrOfSel,UnfHist) :-
 	det_ok_to_unfold(Goal,NrOfSel,UnfHist),
-	not('selectionrule.det-and-once:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
+	\+('selectionrule.det-and-once:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
 'selectionrule.det-and-once:ok_to_unfold'(Goal,SelLiteral,NrOfSel,UnfHist) :-
 	debug_print(try_non_det(SelLiteral)),debug_nl,
-	not(more_than_one_covering_ancestor(SelLiteral,NrOfSel,UnfHist)).
+	\+(more_than_one_covering_ancestor(SelLiteral,NrOfSel,UnfHist)).
 
 det_ok_to_unfold(Goal,1,UnfHist) :-
-	not(pp_cll(contains_non_determinate_step(UnfHist))).
+	\+(pp_cll(contains_non_determinate_step(UnfHist))).
 det_ok_to_unfold(Goal,NrOfSel,UnfHist) :-
-	not(undeterminate(Goal,NrOfSel)).
+	\+(undeterminate(Goal,NrOfSel)).
 
 'selectionrule.det-and-once:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist) :-
 	covering_ancestor(NrOfSel,UnfHist,CovAncestor),

@@ -16,10 +16,10 @@
 'selectionrule.det:select_positive_literal'(Goal,_TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	/* Try to find determinate literals */
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	'selectionrule.det:ok_to_unfold'(Goal,NrOfSel,UnfHist).
 
 'selectionrule.det:ok_to_unfold'(Goal,NrOfSel,[]).  /* allow non-determinate unfolding at top */
 'selectionrule.det:ok_to_unfold'(Goal,NrOfSel,_UnfHist) :-
-	not(undeterminate(Goal,NrOfSel)).
+	\+(undeterminate(Goal,NrOfSel)).

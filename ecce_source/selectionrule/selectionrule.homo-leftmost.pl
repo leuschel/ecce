@@ -27,7 +27,7 @@
 	'selectionrule.homo-leftmost:select_positive_literal2'(Goal,UnfHist,NrOfSel,SelLiteral),
 	'selectionrule.homo-leftmost:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist),
 	/* 
-	((SelLiteral = unfold(X,_,_),not(X=[]))
+	((SelLiteral = unfold(X,_,_),\+(X=[]))
  	 -> (print(ok(SelLiteral)),nl,print(in(Goal)),nl,nl,
 	     debug_print(UnfHist),nl,nl)
 	 ;  true
@@ -40,25 +40,25 @@
 'selectionrule.homo-leftmost:select_positive_literal2'(Goal,_UnfHist,1,SelLiteral) :-
     %print(sel(Goal,1,SelLiteral)),
 	member_nr(SelLiteral,Goal,1), /* only allow selection of leftmost call */
-	not(is_negative_literal(SelLiteral,_Atom)),
-	not(is_built_in_literal(SelLiteral)).
+	\+(is_negative_literal(SelLiteral,_Atom)),
+	\+(is_built_in_literal(SelLiteral)).
 
 'selectionrule.homo-leftmost:goal_can_be_unfolded'(_Goal,[]) :- !.
 'selectionrule.homo-leftmost:goal_can_be_unfolded'(Goal,_UnfHist) :-
 	partition_goal(Goal,SplitGoals),
 	member(split_goal(SGoal,_Pos),SplitGoals),
 	/* SGoal \== [Atom], */
-	not(find_unimposed_instance(SGoal,_VariantID)),
+	\+(find_unimposed_instance(SGoal,_VariantID)),
 	debug_print(not_variant(Goal)),debug_nl.
 
 'selectionrule.homo-leftmost:ok_to_unfold'(SelLiteral,NrOfSel,UnfHist) :-
-	not('selectionrule.homo-leftmost:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
+	\+('selectionrule.homo-leftmost:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
 
 'selectionrule.homo-leftmost:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist) :-
 	covering_ancestor(NrOfSel,UnfHist,CovAncestor),
 	(homeomorphic_embedded(CovAncestor,SelLiteral)
-	 -> (true)
-	 ;  (/*SelLiteral = unfold(XU,_,_),not(XU=[]),
+	 -> true
+	 ;  (/*SelLiteral = unfold(XU,_,_),\+(XU=[]),
 		print(not_embeddeding),nl,
 		print(SelLiteral),nl,print(CovAncestor),
 		nl,nl,*/fail )

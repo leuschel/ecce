@@ -22,16 +22,16 @@
 'selectionrule.term-det:select_positive_literal'(Goal,TopGoalVarlist,UnfHist,NrOfSel,SelLiteral) :-
 	/* Try to find determinate literals */
 	member_nr(SelLiteral,Goal,NrOfSel),
-	not(is_negative_literal(SelLiteral,Atom)),
-	not(is_built_in_literal(SelLiteral)),
+	\+(is_negative_literal(SelLiteral,Atom)),
+	\+(is_built_in_literal(SelLiteral)),
 	'selectionrule.term-det:ok_to_unfold'(Goal,NrOfSel,UnfHist),
-	not('selectionrule.term-det:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
+	\+('selectionrule.term-det:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist)).
 	%print(select(Goal,NrOfSel,SelLiteral)),nl.
 
 'selectionrule.term-det:ok_to_unfold'(Goal,NrOfSel,[]) :- !.
 'selectionrule.term-det:ok_to_unfold'(Goal,1,UnfHist) :- 
-	not(undeterminate(Goal,NrOfSel)) ;
-	not(pp_cll(contains_non_determinate_step(UnfHist))).
+	\+(undeterminate(Goal,NrOfSel)) ;
+	\+(pp_cll(contains_non_determinate_step(UnfHist))).
 	
 
 'selectionrule.term-det:embedded_covering_ancestor'(SelLiteral,NrOfSel,UnfHist) :-
