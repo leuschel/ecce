@@ -79,13 +79,12 @@ calc_msv_clauses :-
 	 -> (assert_spec_clause(Head,Body),
 	     (variant_of(clause(Head,Body),CopyOfClause)
 		-> true
-		;  (assert_msv_change,
-		    debug_print(change(clause(Head,Body),CopyOfClause)),
-			debug_nl)
+		;   assert_msv_change,
+		    debug_println(change(clause(Head,Body),CopyOfClause))
 	    ))
-	 ; (assert_msv_change,
-	    debug_print(change(clause(Head,[fail]))),debug_nl,
-	    assert_unsimplified_spec_clause(Head,[fail]) )
+	 ;  assert_msv_change,
+	    debug_println(change(clause(Head,[fail]))),
+	    assert_unsimplified_spec_clause(Head,[fail])
 	),
 	fail.
 calc_msv_clauses.
@@ -98,23 +97,23 @@ retract_msv_change :- retract(msv_change),fail.
 retract_msv_change.
 
 bup :-
-	debug_print(bup),debug_nl,
+	debug_println(bup),
 	retract_msv_change,
 	propagation_step,
 	(msv_change
-	   -> (verbose_print('.'),bup)
+	   -> verbose_print('.'),bup
 	   ;  true
 	).
 
 propagation_step :-
 	defined_predicate(P,Arity),
-	get_predicate(G,pred(P,Arity)),
+	functor(G,P,Arity),
 	findall(G,propagate_tuple(G),NewGs), 
 	take_msg(NewGs,NewMsg),
 	(retract(msv_entry(G)) -> OldG=G ; OldG=[fail]),
 	assert(msv_entry(NewMsg)),
 	(variant_of(OldG,NewMsg)-> true ;
-	  assert_msv_change,debug_print(msv_chg(OldG,NewMsg)),debug_nl),
+	  assert_msv_change,debug_println(msv_chg(OldG,NewMsg))),
 	fail.
 propagation_step.
 
@@ -148,24 +147,20 @@ propagate_tuple(Head) :-
 	debug_print(prop(Head)).
 
 
-
+% unify body with msv answers found so far
 unify_body([]).
-unify_body([not(B1)|R]) :- !,
-	\+(is_a_fact(B1)), /* then assume negation succeeds */
-	unify_body(R).
-unify_body([\+(B1)|R]) :- !, 
-	\+(is_a_fact(B1)), /* then assume negation succeeds */
-	unify_body(R).
-unify_body([BI|R]) :-
-	is_callable_built_in_literal(BI),!,
-	call_built_in(BI),
-	unify_body(R).
-unify_body([BI|R]) :-
-	is_built_in_literal(BI),!,  /* suppose other built-ins succeed */
-	unify_body(R).
-unify_body([B1|R]) :-
-	msv_entry(B1),!,
-	unify_body(R).
+unify_body([H|T]) :- unify_body_atom(H), unify_body(T).
+
+unify_body_atom(not(B1)) :- !,
+	\+(is_a_fact(B1)). /* then assume negation succeeds */
+unify_body_atom(\+(B1)) :- !, 
+	\+(is_a_fact(B1)). /* then assume negation succeeds */
+unify_body_atom(BI) :-
+	is_built_in_literal(BI),!,
+	( is_callable_built_in_literal(BI) -> call_built_in(BI)
+	 ; true /* suppose other built-ins succeed */
+	).
+unify_body_atom(B1) :- msv_entry(B1),!.
 
 is_a_fact(B) :-
 	copy(B,BC),
