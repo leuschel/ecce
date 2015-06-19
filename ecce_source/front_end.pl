@@ -123,6 +123,7 @@ process_command_line_options(Inputs) :-  set_user_expert(yes), /* set expert mod
    set_options(RecognisedOptions),
    (member(perform_self_check,RecognisedOptions) -> perform_self_check ; true),
    (member(help,RecognisedOptions) -> print_help_info ; true),
+   (member(profiling,RecognisedOptions) -> profiling_on ; true),
    
    
    (RemOptions = [FileName|Rest] -> (clear_database,
@@ -163,9 +164,11 @@ process_command_line_options(Inputs) :-  set_user_expert(yes), /* set expert mod
       ; true),
    !,
    (error_in_pe_goal_encountered
-     -> (nl,print('### Undefined call in partial evaluation goal !'),nl)
+     -> nl,print('### Undefined call in partial evaluation goal !'),nl
     ; true),
-   (member(interactive,RecognisedOptions) -> (set_exec_mode(interactive),front_end([])) ; true).
+   (member(interactive,RecognisedOptions) -> 
+     set_exec_mode(interactive),front_end([]) ; true),
+   (member(profiling,RecognisedOptions) -> print_profiling_info ; true).
 process_command_line_options(_) :-
    print_help_info.
  
@@ -200,7 +203,11 @@ gen_dot_file(RecognisedOptions) :-
       -> (verbose_print('% Generating Dot Output: '), verbose_print(DotFile),verbose_nl,
           unfold_generate_dot_file(DotFile)) ; true).
           
-          
+
+profiling_on :- set_prolog_flag(profiling,on), print('% PROFILING ON'),nl.
+print_profiling_info :-
+ on_exception(error(existence_error(_,_),_),print_profile, print('CAN ONLY BE USED WHEN RUNNING ECCE FROM SOURCE')),nl.
+ 
 print_help_info :-
    print('ECCE: The online partial evaluator for pure Prolog'),nl,
    print('       (c) Michael Leuschel 1995-2005'),nl,
@@ -227,8 +234,8 @@ print_help_info :-
 get_options([],Rec,Rem) :- !,Rec=[],Rem=[].
 get_options(Inputs,RecognisedOptions,RemOptions) :-
    (recognise_option(Inputs,Flag,RemInputs)
-     -> (RecognisedOptions = [Flag|RecO2], RemO2 = RemOptions)
-     ;  (Inputs = [H|RemInputs], RemOptions = [H|RemO2], RecO2 = RecognisedOptions)
+     -> RecognisedOptions = [Flag|RecO2], RemO2 = RemOptions
+     ;  Inputs = [H|RemInputs], RemOptions = [H|RemO2], RecO2 = RecognisedOptions
    ),
    get_options(RemInputs,RecO2,RemO2).
 
@@ -261,7 +268,7 @@ recognised_option(['-pp_msv',Option],set_option(set_perform_post_msv_analysis(Op
 recognised_option(['--help'],help).
 recognised_option(['-help'],help).
 recognised_option(['-h'],help).
-
+recognised_option(['-profile'],profiling).
 
 
 translate_std_config('classic',98).
