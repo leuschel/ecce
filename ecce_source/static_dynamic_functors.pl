@@ -98,23 +98,23 @@ l_add_static_functors([H|T]) :-
 
 add_static_functors(X) :- var(X),!.
 add_static_functors(X) :-
-	get_predicate(X,pred(F,Arity)),!,
+	functor(X,F,Arity),!,
 	(static_functor(F,Arity)
 	 -> true
-	 ;  (assert(static_functor(F,Arity)),debug_print(sf(F,Arity)),debug_nl)
+	 ;  assert(static_functor(F,Arity)),debug_println(sf(F,Arity))
 	),
 	X =.. [F|Args],!,
 	l_add_static_functors(Args).
 
 dynamic_term(X) :- var(X),!,fail.
 dynamic_term(X) :-
-	get_predicate(X,pred(F,Arity)),
-	not(static_functor(F,Arity)).
+	functor(X,F,Arity),
+	\+(static_functor(F,Arity)).
 
 add_defined_predicate(X) :- var(X),!.
 add_defined_predicate(X) :-
 	nonvar(X),
-	get_predicate(X,pred(F,Arity)),!,
+	functor(X,F,Arity),!,
 	(defined_predicate(F,Arity)
 	 -> true
 	 ;  (assert(defined_predicate(F,Arity)),
@@ -130,7 +130,7 @@ l_add_open_predicates([H|T]) :-
 add_open_predicate(X) :-
 	nonvar(X),
 	extract_positive_atom_from_literal(X,A),
-	get_predicate(A,pred(F,Arity)),!,
+	functor(A,F,Arity),!,
 	(defined_predicate(F,Arity)
 	 -> true
 	 ;  (assert(open_predicate(F,Arity)),
@@ -140,7 +140,7 @@ add_open_predicate(_X).
 
 is_open_literal(X) :- var(X),!,fail.
 is_open_literal(X) :-
-	get_predicate(X,pred(F,Arity)),
+	functor(X,F,Arity),
 	open_predicate(F,Arity).
 
 
@@ -170,7 +170,7 @@ add_to_occurence_list(Pred,[],[d(Pred,1)]).
 add_to_occurence_list(Pred,[d(Pred,Count)|T],[d(Pred,C1)|T]) :-
 	C1 is Count + 1.
 add_to_occurence_list(Pred,[d(Pred2,Count)|T],[d(Pred2,Count)|Res]) :-
-	not(Pred = Pred2),
+	Pred \= Pred2,
 	add_to_occurence_list(Pred,T,Res).
 	
 
@@ -184,8 +184,8 @@ occurence_list_ok([d(Pred,Count)|T]) :-
 update_sc_pred_count([]).
 update_sc_pred_count([d(Pred,Count)|T]) :-
 	(sc_pred_count(Pred,Max)
-	-> ((Count =< Max)
-	     -> (true)
+	-> (Count =< Max
+	     -> true
 	     ;  (retractall(sc_pred_count(Pred,_)),
 		 assertz(sc_pred_count(Pred,Count)))
 	   )
