@@ -68,7 +68,7 @@ verify_pre(Call) :-
 	   	    print('### '),print(Call),nl,
                     prepost_user_interaction
 		   )
-		;  (true)
+		;  true
 	     )
 	  )
 	; (print('### No PRE-CONDITION for'),nl,
@@ -83,7 +83,7 @@ verify_post(Call) :-
 	   	    print('### '),print(Call),nl,
                     prepost_user_interaction
 		   )
-		;  (true)
+		;  true
 	     )
 	  )
 	; (print('### No POST-CONDITION for'),nl,

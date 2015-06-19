@@ -68,7 +68,7 @@ homeomorphic_embedded_conjunction([PA|PAs],[_|As]) :-
 not_more_general_conjunction([],_).
 not_more_general_conjunction([PA|PAs],[A|As]) :-
   atoms_have_same_predicate(PA,A,_),
-  not(strict_instance_of(PA,A)),
+  \+(strict_instance_of(PA,A)),
   mixtus_term_size_embedded(PA,A),
   not_more_general_conjunction(PAs,As).
 not_more_general_conjunction([PA|PAs],[_|As]) :-
@@ -187,17 +187,17 @@ chtree_homeomorphic_embedded(X,Y) :-
 
 chtree_homeomorphic_embedded2(X,Y) :- var(X),var(Y),!.
 chtree_homeomorphic_embedded2(X,Y) :-
-	nonvar(X),dynamic_term(X),not(chtree_functor(X)),
-	nonvar(Y),dynamic_term(Y),not(chtree_functor(Y)),!.
+	nonvar(X),dynamic_term(X),\+(chtree_functor(X)),
+	nonvar(Y),dynamic_term(Y),\+(chtree_functor(Y)),!.
 chtree_homeomorphic_embedded2(X,Y) :-
 	nonvar(X),nonvar(Y),
 	X=..[Func|XArgs],
 	Y=..[Func|YArgs],
 	retract(homeo_count(HC)),
 	HC1 is HC+1,assert(homeo_count(HC1)),
-	((HC>10000)
-	  -> ((HC = 10001) -> print('[Db]') ; true)
-	  ;  (l_chtree_homeomorphic_embedded(XArgs,YArgs))
+	(HC>10000
+	  -> (HC = 10001 -> print('[Db]') ; true)
+	  ;  l_chtree_homeomorphic_embedded(XArgs,YArgs)
 	),!.
 chtree_homeomorphic_embedded2(X,Y) :-
 	/* term_nesting_level(X,NX,SumX), */
@@ -223,7 +223,7 @@ print_count(0).
 
 print_c(S) :-
   retract(print_count(C)),
-  ((C>1000)
+  (C>1000
 	-> (print(S),assert(print_count(0)))
 	;  (C1 is C + 1, assert(print_count(C1)))
   ).

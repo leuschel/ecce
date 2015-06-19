@@ -75,7 +75,7 @@ expand_term(X,X).
 /* From: instance.pro */
 
 variant_of(Goal,UIGoal) :- copy(Goal,CGoal),
-	not(not(( numbervars(CGoal,0,N),
+	\+(\+(( numbervars(CGoal,0,N),
         numbervars(UIGoal,0,N),
 	CGoal = UIGoal))).
 
@@ -86,6 +86,6 @@ instance_of(Goal,UIGoal) :-
 strict_instance_of(Goal1,Goal2) :-
 	copy(Goal1,CGoal),
 	ask(CGoal,Goal2),
-	not(ask(Goal2,CGoal)).
+	\+(ask(Goal2,CGoal)).
 
 ecce_get(Ascii) :- get_byte(Ascii).

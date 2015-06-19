@@ -36,14 +36,14 @@
 	/* could be pre-processed */
 	'check_instance_of.rul:instance_is_ok'(MoreGeneralID,PEStatus,Chtree),
 	/* now check constraint entailment */
-	debug_print(check_instance_of(GoalID,MoreGeneralID)),debug_nl,
+	debug_println(check_instance_of(GoalID,MoreGeneralID)),
 	gt_node_goal(MoreGeneralID,MoreGeneralGoal),
 	divide_constraint_rul_goal(MoreGeneralGoal,MOG,MCG),
 	debug_print('instance_of_entails'(OrdGoal,ConstrGoal,MOG,MCG)),
 	debug_nl,
 	/*entails(OrdGoal,ConstrGoal,MOG,MCG),*/
 	instance_of_entails(OrdGoal,ConstrGoal,MOG,MCG),
-	debug_print('instance_of_entails succeeds'),debug_nl. 
+	debug_println('instance_of_entails succeeds'). 
 
 'check_instance_of.rul:instance_is_ok'(_MoreGeneralID,PEStat,_Chtree) :-
 	PEStat \== pe(imposed), PEStat \== abstracted(imposed).

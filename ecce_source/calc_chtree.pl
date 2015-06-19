@@ -182,7 +182,7 @@ calc_chtree([H|T],TopGoalVarlist,UnfHist,Chtree) :-
       ->
   /* MISSING: Look for simplifiable Built-in's and simplifiable Negations */
 	(select_callable_built_in([H|T],NrOfBI,SelBI)
-	 -> ((debug_print(calling_built_in(SelBI)),debug_nl,
+	 -> ((debug_println(calling_built_in(SelBI)),
 	      call_built_in(SelBI))
 	     -> (copy(SelBI,CSelBI),
 		 IntUnfHist = [sel(CSelBI,NrOfBI,0,bi)|UnfHist],
@@ -199,7 +199,7 @@ calc_chtree([H|T],TopGoalVarlist,UnfHist,Chtree) :-
 	    )
 	 ;
         (select_removable_literal([H|T],NrOfNegLit,SelNegLit)
-	 -> (debug_print(removing_literal(SelNegLit)),debug_nl,
+	 -> (debug_println(removing_literal(SelNegLit)),
 	     copy(SelNegLit,CSelNegLit),
 	     IntUnfHist = [sel(CSelNegLit,NrOfNegLit,0,neg)|UnfHist],
 	     pp_mnf(split_list([H|T],NrOfNegLit,Left,Sel,Right)),
@@ -219,11 +219,11 @@ calc_chtree([H|T],TopGoalVarlist,UnfHist,Chtree) :-
 		-> (print(bd_findall_critical),nl,fail) ; true),
 	      pp_cll(select_positive_literal([H|T],TopGoalVarlist,UnfHist,
 					NrOfSelLiteral,SelLit)) )
-	      -> (debug_print(select_positive_literal(SelLit)),debug_nl,
+	      -> (debug_println(select_positive_literal(SelLit)),
 		  copy(SelLit,CSelLit),
 	          IntUnfHist = [sel(CSelLit,NrOfSelLiteral,0,DI)|UnfHist],
 		  (undeterminate([H|T],NrOfSelLiteral)
-		   -> (DI = nondet, debug_print(non_deterministic),debug_nl,
+		   -> (DI = nondet, debug_println(non_deterministic),
 			bd_findall(CP,pp_cll(calc_chpath([H|T],TopGoalVarlist,
 				  NrOfSelLiteral,IntUnfHist,CP)), Chpaths),
 	               ((Chpaths=[])
@@ -231,7 +231,7 @@ calc_chtree([H|T],TopGoalVarlist,UnfHist,Chtree) :-
 	                ;  Chtree=select(NrOfSelLiteral,Chpaths)
 	               )
 		      )
-		   ;  (DI = det, debug_print(deterministic),debug_nl,
+		   ;  (DI = det, debug_println(deterministic),
 			calc_chpath([H|T],TopGoalVarlist,
 					NrOfSelLiteral,IntUnfHist,CP)
 			   -> Chtree=select(NrOfSelLiteral,[CP])
@@ -302,9 +302,9 @@ post_condition(calc_chpath(_G,TopGoalVarlist,_Nr,_UnfHist,Chpath)) :-
 	term_is_of_type(Chpath,chpath).
 
 calc_chpath(Goal,TopGoalVarlist,NrOfSelLiteral,UnfHist,Chpath) :-
-    debug_print(call_split_list(Goal,NrOfSelLiteral,Left,SelCall,Right)),debug_nl,
+    debug_println(call_split_list(Goal,NrOfSelLiteral,Left,SelCall,Right)),
 	pp_mnf(split_list(Goal,NrOfSelLiteral,Left,SelCall,Right)),
-	debug_print(calc_chpath(SelCall)),debug_nl,
+	debug_println(calc_chpath(SelCall)),
 	peel_off_calls(SelCall,Sel),
 	%debug_print(peeled(Sel)),debug_nl,
 	(is_negative_literal(Sel,_NegatedAtom)
@@ -335,7 +335,7 @@ calc_chpath(Goal,TopGoalVarlist,NrOfSelLiteral,UnfHist,Chpath) :-
 debug_print_chtree(Chtree) :-
 	(debug_printing(on)
 	 -> (print_chtree(Chtree))
-	 ;  (true)
+	 ;  true
 	).
 
 /* -------------- */
@@ -346,7 +346,7 @@ print_chtree(Chtree) :- print_chtree(Chtree,0).
 
 print_chtree(Chtree,Level) :-
 	((term_is_of_type(Chtree,chtree),term_is_of_type(Level,sint))
-	 -> (true) ; (print('### Type error in print_chtree/1'),nl)
+	 -> true ; (print('### Type error in print_chtree/1'),nl)
 	),
 	fail.
 print_chtree(none,Level) :- /* extended chtrees only */
@@ -837,9 +837,9 @@ is_callable_built_in_literal('C'(_X,_Y,_Z)).
 is_callable_built_in_literal(true).
 is_callable_built_in_literal(fail).
 is_callable_built_in_literal('=..'(X,Y)) :-
-	(nonvar(X)) ; (list_ok_for_eqdotdot(Y)).
+	(nonvar(X) ; list_ok_for_eqdotdot(Y)).
 is_callable_built_in_literal(functor(X,Y,Z)) :-
-	(nonvar(X)) ; (integer(Y),atom(Z)).
+	(nonvar(X) ; integer(Y),atom(Z)).
 is_callable_built_in_literal(arg(X,Y,_Z)) :-
 	nonvar(Y),integer(X).
 is_callable_built_in_literal('is'(_X,Y)) :-
@@ -1001,7 +1001,7 @@ post_condition(sharing(_Goal1,_Goal2)).
 
 sharing(Goal1,Goal2) :-
 	varlist(Goal1,Vars1),
-	not(not(share_vars(Goal2,Vars1))).
+	\+(\+(share_vars(Goal2,Vars1))).
 
 share_vars(X,Vars) :-
 	numbervars(X,1,_),
@@ -1015,7 +1015,7 @@ contains_nonvar([_X|T]) :- contains_nonvar(T).
 /* --------- */
 
 
-connected_sub_goal([],Goal,[]) :- not(Goal= []).
+connected_sub_goal([],Goal,[]) :- (Goal\= []).
 connected_sub_goal([X|T],InGoal,[X|ConSubGoal]) :-
 	var_can_be_added_to_subgoal(X,InGoal),
 	connected_sub_goal(T,[X|InGoal],ConSubGoal).
@@ -1134,7 +1134,7 @@ extract_positive_atom_from_literal(\+(X),Atom) :- !,
 extract_positive_atom_from_literal(call(X),Atom) :- !,
 	extract_positive_atom_from_literal(X,Atom).
 extract_positive_atom_from_literal(Atom,Atom) :-
-	not(pp_cll(is_built_in_literal(Atom))).
+	\+(pp_cll(is_built_in_literal(Atom))).
 
 
 l_peel_off_calls([],[]).
@@ -1166,7 +1166,7 @@ partition_goal(UPGoal,SplittedGoal) :-
 	    )
 	 ;  (pp_cll(partition_goal(Goal,Nrs,SplittedGoal)))
 	),
-	debug_print(partition_goal(Goal,SplittedGoal)),debug_nl.
+	debug_println(partition_goal(Goal,SplittedGoal)).
 
 
 get_literal_numbers([],_Nr,[]).
@@ -1196,8 +1196,8 @@ post_condition(select_positive_literal(_Goal,TopGoalVarlist,
 	term_is_of_type(NrOfSelLiteral,selected_literal_nr),
 	term_is_of_type(TopGoalVarlist,list(any)),
 	term_is_of_type(SelLit,literal),
-	not(is_negative_literal(SelLit,_NA)),
-	not(pp_cll(is_built_in_literal(SelLit))).
+	\+(is_negative_literal(SelLit,_NA)),
+	\+(pp_cll(is_built_in_literal(SelLit))).
 
 
 pre_condition(more_specific_transformation(Goal)) :-

@@ -82,7 +82,7 @@ remove_incorrect_builtins(built_in_eval(SelLitNr,BI,SubTree),Goal,RChtree) :-
 	      pp_cll(remove_incorrect_builtins(SubTree,NewGoal,RSubTree))
 	     )
 	  ;  (built_in_generates_bindings(Sel)
-	      -> (RChtree = stop, debug_print(removing(Sel)),debug_nl)
+	      -> (RChtree = stop, debug_println(removing(Sel)))
 	/* Instead of stop, can we keep/adapt the rest of the tree ?????? */
 	      ;  (RChtree = built_in_eval(SelLitNr,BI,RSubTree),
 		  pp_cll(remove_incorrect_builtins(SubTree,NewGoal,RSubTree))) 
@@ -347,11 +347,11 @@ replace_in_match_list(Nr,ChTerm,[],InMatches,OutMatches) :-
 	print(replace_in_match_list(Nr,ChTerm,[],InMatches,OutMatches)),nl,
 	OutMatches=InMatches.
 replace_in_match_list(Nr,ChTerm,[Nr|_R],[M|RestM],[ChTerm|RestM]) :-
-	((M=nomatch) -> (true)
+	(M=nomatch -> true
 	 ; (print('### ERROR: Double assignment in replace_in_match_list in chtree_tools.pl'),nl)
 	),!.
 replace_in_match_list(Nr,ChTerm,[Nr2|R],[M|RestM],[M|RRestM]) :-
-	not(Nr=Nr2),
+	(Nr\=Nr2),
 	replace_in_match_list(Nr,ChTerm,R,RestM,RRestM).
 
 
