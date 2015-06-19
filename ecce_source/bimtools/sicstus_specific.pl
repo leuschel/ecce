@@ -29,25 +29,28 @@ hide.
 
 :- use_module(library(terms)).
 is_inf(X) :- cyclic_term(X).
-/* varlist(T,VList) :- term_variables(T,VList).
- Sicstus version: does not keep variables in order */
 
+:- if(current_prolog_flag(version_data,sicstus(3,_,_,_,_))).
+/* Sicstus 3 version: term_variables does not keep variables in order */
 varlist(T,VList) :- varlist2(T,[],VList).
 
 varlist2(X,L,R) :- ground(X),!,L=R.
 varlist2(X,L,R) :- var(X),!,
-   add_var(X,L,R).
+   add_var(L,X,R).
 varlist2(X,L,R) :- nonvar(X),X=..[_F|Args],!,
   l_varlist2(Args,L,R).
 varlist2(_X,L,L) :- print('*** unknown termtype in varlist2'),nl.
 
-add_var(X,[],[X]).
-add_var(X,[H|T],Res) :-
-  ((X==H) -> (Res = [H|T]) ; (Res = [H|T2], add_var(X,T,T2))).
+add_var([],X,[X]).
+add_var([H|T],X,Res) :-
+  (X==H -> Res = [H|T] ; Res = [H|T2], add_var(T,X,T2)).
 
 l_varlist2([],L,L).
 l_varlist2([X|T],L,R) :- 
 	varlist2(X,L,L2), l_varlist2(T,L2,R).
+:- else.
+varlist(T,VList) :- term_variables(T,VList).
+:- endif.
 
 stop :- halt.
 
@@ -93,7 +96,7 @@ instance_of(Goal,UIGoal) :-
 strict_instance_of(Goal1,Goal2) :-
 	copy(Goal1,CGoal),
 	subsumes_chk(Goal2,CGoal),
-	not(subsumes_chk(CGoal,Goal2)).
+	\+(subsumes_chk(CGoal,Goal2)).
 	
 ecce_put(X) :- put(X).
 ecce_get(Ascii) :- get(Ascii).
