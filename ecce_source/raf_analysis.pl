@@ -173,7 +173,7 @@ unsafe_erasure(SubTerm,_Head,_Body) :-
 	debug_print(nonvar).
 unsafe_erasure(SubTerm,_Head,Body) :-
 	var(SubTerm),
-	l_variable_occurs(SubTerm,Body,0,Nr),
+	l_variable_occurs(Body,SubTerm,0,Nr),
 	Nr > 1,!, /* unsafe to erase if variable occurs more than once in body */
 	debug_print(occ(Nr)).
 unsafe_erasure(SubTerm,Head,_Body) :-
@@ -184,20 +184,20 @@ unsafe_erasure(SubTerm,Head,_Body) :-
 	debug_print(head_occ).
 
 
-variable_occurs(V,T,1) :-
-	V==T,!.
-variable_occurs(_V,T,0) :-
-	var(T),!.
 variable_occurs(V,T,Nr) :-
-	nonvar(T),
+	V==T,!, Nr=1.
+variable_occurs(_V,T,Nr) :-
+	var(T),!, Nr=0.
+variable_occurs(V,T,Nr) :-
+	%nonvar(T),
 	T=.. [_Pred|Args],
-	l_variable_occurs(V,Args,0,Nr).
+	l_variable_occurs(Args,V,0,Nr).
 
-l_variable_occurs(_V,[],Nr,Nr).
-l_variable_occurs(V,[H|T],InNr,OutNr) :-
+l_variable_occurs([],_V,Nr,Nr).
+l_variable_occurs([H|T],V,InNr,OutNr) :-
 	variable_occurs(V,H,HNr),
 	IntNr is InNr + HNr,
-	l_variable_occurs(V,T,IntNr,OutNr).
+	l_variable_occurs(T,V,IntNr,OutNr).
 
 
 l_erase_literal([],[]).
@@ -298,5 +298,5 @@ unsafe_far_erasure(SubTerm,Head,_Body) :-
 unsafe_far_erasure(SubTerm,_Head,Body) :-
 	var(SubTerm),
 	l_erase_literal(Body,EBody),
-	l_variable_occurs(SubTerm,EBody,0,Nr),
+	l_variable_occurs(EBody,SubTerm,0,Nr),
 	Nr > 0,!, debug_print(far_body_occ(EBody,Nr)).
