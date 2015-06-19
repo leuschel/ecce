@@ -130,7 +130,7 @@ pe_without_pp(Goal,PEGoal) :-
                    ; (PEGoal = [Goal], PEConstraint = []))
 	),
 	(term_is_of_type(PEGoal,goal,no)
-	 -> (true)
+	 -> true
 	 ;  (print('ILLEGAL GOAL: '),print(goal),nl,
 	     print('Contains variables as literals (use call/1)'),nl,
 	     print(' or is an open-ended list.'),nl,
@@ -144,7 +144,7 @@ pe_without_pp(Goal,PEGoal) :-
 	     print('###'),nl,nl,
 	     assert(error_in_pe_goal_encountered)
 	    )
-	 ;  (true)
+	 ;  true
 	),
 	init_gt,
 	add_gt_croot(PEGoal,PEConstraint,_ID),
@@ -226,10 +226,10 @@ pe_post_process(PEGoal) :-
 	    )
 	 ;  true
 	),
-	((output_to_file(File),not(File=screen))
+	((output_to_file(File),File\=screen)
 	-> (verbose_print('Writing Specialised Program to: '),
 	    verbose_print(File),verbose_nl, told, tell(File))
-	;  (true)
+	;  true
 	),
 	nl,
 	print_html('<h3>'),
@@ -262,12 +262,12 @@ pe_post_process(PEGoal) :-
 	(abnormal_goal_encountered(yes)
 	 -> (print(':'), print('- reconsult(original_program).  /*  <---------- */'),
 		newparagraph)
-	 ;  (true)
+	 ;  true
 	),!,
 	print_specialised_program,
-	((output_to_file(File),not(File=screen))
+	((output_to_file(File),File\=screen)
 	-> (told)
-	;  (true)
+	;  true
 	).
 
 :- data unf_time/1.
@@ -290,24 +290,24 @@ flow_analysis(Count) :-
 	 ;  (NewCount is Count + 1)
 	),
 	pp_cll(get_gt_goal_to_pe(GoalID,Goal)),!,
-	copy(Goal,G),numbervars(G,1,_),debug_print(goal_to_pe(GoalID,G)),debug_nl,
+	copy(Goal,G),numbervars(G,1,_),debug_println(goal_to_pe(GoalID,G)),
 	(gt_node_chtree(GoalID,none)
 	 -> (find_unimposed_variant(GoalID,Goal,VariantID)
-	     -> (debug_print(found_variant(VariantID,Goal)),debug_nl,
+	     -> (debug_println(found_variant(VariantID,Goal)),
 			/* no need to unfold */
 		 gt_node_chtree(VariantID,Chtree), /* just get chtree */
 		 ImpStat = unimposed
 		)
 	     ;  (/* print(Goal),nl, */
-	         debug_print(unfolding(Goal)),debug_nl,
+	         debug_println(unfolding(Goal)),
 		 time(pp_mnf(calculate_chtree(GoalID,Goal,Chtree)),UnfTime),
 		 add_unf_time(UnfTime),
-	     debug_print(unfolding_time(UnfTime)),debug_nl,
+	     debug_println(unfolding_time(UnfTime)),
 		 debug_print_chtree(Chtree),
 		 ImpStat = unimposed
 		)
 	    )
-	 ;  (debug_print(handling(Goal)),debug_nl,  /* no need to unfold */
+	 ;  (debug_println(handling(Goal)),  /* no need to unfold */
 		gt_node_chtree(GoalID,ImpChtree), /* just get imposed chtree */
 		copy(Goal,CCGoal),
 	        pp_mnf(remove_incorrect_builtins(ImpChtree,CCGoal,
@@ -315,19 +315,19 @@ flow_analysis(Count) :-
 		copy(Goal,CPPGoal),
 		pp_mnf(post_prune_chtree(CPPGoal,CorrectedChtree,PChtree)),
 		((PChtree = stop)
-		 -> (debug_print(one_step_unfolding(GoalID,Goal)),debug_nl,
+		 -> (debug_println(one_step_unfolding(GoalID,Goal)),
 		     one_step_unfolding(GoalID,Goal,Chtree))
 		 ;  (Chtree = PChtree)
 		),
 		ImpStat = imposed
 	    )
 	),!, debug_nl,debug_nl,
-	debug_print('Examining:'), debug_print(GoalID),debug_nl,
-	debug_print('    '),debug_nl, debug_print(Goal),debug_nl,debug_nl,
-	((Chtree=stop) -> (set_abnormal_goal_encountered) ; (true)),
+	debug_print('Examining:'), debug_println(GoalID),
+	debug_println('    '), debug_println(Goal),debug_nl,
+	((Chtree=stop) -> (set_abnormal_goal_encountered) ; true),
 	/* print_chtree(Chtree), */
 	(pp_cll(get_instance_of(GoalID,Goal,Chtree,MoreGeneralID))
-	 -> (debug_print(instance_of(MoreGeneralID)),debug_nl,
+	 -> (debug_println(instance_of(MoreGeneralID)),
 	     pp_mnf(mark_gt_node_as_instance_of(GoalID,MoreGeneralID)),
 	     pp_mnf(mark_gt_node_as_ped(GoalID,pe(ImpStat),Chtree)),
 	     verbose_print('+')
@@ -337,9 +337,9 @@ flow_analysis(Count) :-
 		     mnf_call(abstract_and_replace(GoalID,Goal,Chtree,WhistleGoalID,ImpStat)))
 	     ;  (trace_print(' ped  => '),trace_print(Goal),trace_nl,
 		  pp_mnf(mark_gt_node_as_ped(GoalID,pe(ImpStat),Chtree)),
-		  debug_print('adding leaves'),debug_nl,
+		  debug_println('adding leaves'),
 		 mnf_call(add_leaves(GoalID,Goal,Chtree)),
-		 debug_print('done adding leaves'),debug_nl,
+		 debug_println('done adding leaves'),
 		 verbose_print('.')
 		)
 	     )
@@ -369,11 +369,11 @@ find_unimposed_variant(Goal,VariantID) :-
 find_unimposed_variant(GoalID,Goal,VariantID) :-
 	copy(Goal,CGoal),
 	gt_node_goal(VariantID,CGoal), /* lookup a potential match */
-	not(GoalID = VariantID),
+	GoalID \= VariantID,
 	gt_node_pe_status(VariantID,VPEStat),
-	not(VPEStat = no),
+	VPEStat \= no,
 		/* VariantID should already be PE'd */
-	not(VPEStat = pe(imposed)), not(VPEStat = abstracted(imposed)),
+	VPEStat \= pe(imposed), VPEStat \= abstracted(imposed),
 		/* otherwise chtree might be incorrect */
 	gt_node_goal(VariantID,MoreGeneralGoal),
 	variant_of(Goal,MoreGeneralGoal).
@@ -383,9 +383,9 @@ find_any_unimposed_variant(Goal,VariantID) :-
 find_any_unimposed_variant(GoalID,Goal,VariantID) :-
 	copy(Goal,CGoal),
 	gt_node_goal(VariantID,CGoal), /* lookup a potential match */
-	not(GoalID = VariantID),
+	GoalID \= VariantID,
 	gt_node_pe_status(VariantID,VPEStat),
-	not(VPEStat = pe(imposed)), not(VPEStat = abstracted(imposed)),
+	VPEStat \= pe(imposed), VPEStat \= abstracted(imposed),
 		/* otherwise chtree might be incorrect */
 	gt_node_goal(VariantID,MoreGeneralGoal),
 	variant_of(Goal,MoreGeneralGoal).
@@ -395,11 +395,11 @@ find_unimposed_instance(Goal,VariantID) :-
 find_unimposed_instance(GoalID,Goal,VariantID) :-
 	copy(Goal,CGoal),
 	gt_node_goal(VariantID,CGoal), /* lookup a potential match */
-	not(GoalID = VariantID),
+	GoalID \= VariantID,
 	gt_node_pe_status(VariantID,VPEStat),
-	not(VPEStat = no),
+	VPEStat \= no,
 		/* VariantID should already be PE'd */
-	not(VPEStat = pe(imposed)), not(VPEStat = abstracted(imposed)),
+	VPEStat \= pe(imposed), VPEStat \= abstracted(imposed),
 		/* otherwise chtree might be incorrect */
 	gt_node_goal(VariantID,MoreGeneralGoal),
 	instance_of(Goal,MoreGeneralGoal).
@@ -412,7 +412,7 @@ find_unimposed_instance(GoalID,Goal,VariantID) :-
 abstract_and_replace(GoalID,Goal,Chtree,WhistleGoalID,_LeafImpStat) :-
 	perform_parent_abstraction(yes),
 	gt_node_goal(WhistleGoalID,WhistleGoal),
-        debug_print(trying_abstract_parent(Goal,WhistleGoal)),debug_nl,
+        debug_println(trying_abstract_parent(Goal,WhistleGoal)),
 	pp_cll(abstract_parent(GoalID,Goal,Chtree,WhistleGoalID,
 		NewGoals,NewChtrees)),
 	((NewGoals = [split_goal(NewGoal,_SI)],NewChtrees = [_NewChtree],
@@ -424,7 +424,7 @@ abstract_and_replace(GoalID,Goal,Chtree,WhistleGoalID,_LeafImpStat) :-
 	      print(WhistleGoalID),nl,
 	      fail
 	     )
-	 ;   (debug_print(abstract_parent(NewGoals)),debug_nl,!,
+	 ;   (debug_println(abstract_parent(NewGoals)),!,
 	      pp_mnf(remove_gt_leaves(WhistleGoalID)),
 	      pp_mnf(add_abstractions(NewGoals,NewChtrees,WhistleGoalID)),
 	      pp_mnf(gt_node_pe_status(WhistleGoalID,pe(WImpStat))),
@@ -449,7 +449,7 @@ abstract_and_replace(GoalID,Goal,Chtree,WhistleGoalID,ImpStat) :-
 	      pp_mnf(mark_gt_node_as_ped(GoalID,pe(ImpStat),Chtree)),
 	      mnf_call(add_leaves(GoalID,Goal,Chtree))
 	     )
-	 ;   (debug_print(abstract_leaf(NewGoals)),debug_nl,
+	 ;   (debug_println(abstract_leaf(NewGoals)),
 	      pp_mnf(add_abstractions(NewGoals,NewChtrees,GoalID)),
 	      pp_mnf(mark_gt_node_as_ped(GoalID,abstracted(ImpStat),Chtree)),
 	      verbose_print('#')
@@ -500,7 +500,7 @@ post_condition(whistle(_GoalID,_Goal,_Chtree,WhistleGoalID)) :-
 	 -> (print('### WARNING: whistle returns non-partially evaluated goal'),
 	     nl,fail
 	    )
-	 ;  (true)
+	 ;  true
 	).
 
 
@@ -537,10 +537,10 @@ post_condition(abstract_leaf(_GoalID,_Goal,_Chtree,_WhistleGoalID,
 
 
 print_specialised_msv_program_to_file :-
-	((output_to_file(File),not(File=screen))
+	((output_to_file(File),File\=screen)
 	-> (print('Writing Specialised Program to: '),
 	    print(File),nl, told, tell(File))
-	;  (true)
+	;  true
 	),
 	print('/'), print('* MSV Analysis Result *'), print('/'),nl,
 	(msv_change
@@ -548,35 +548,35 @@ print_specialised_msv_program_to_file :-
 		;  (print('/'), print('* No new information ! *'), print('/'))
 	),nl,
 	print_specialised_program,
-	((output_to_file(File),not(File=screen))
+	((output_to_file(File),File\=screen)
 	-> (told)
-	;  (true)
+	;  true
 	).
 	
 print_specialised_program_to_file(MSG) :-
-	((output_to_file(File),not(File=screen))
+	((output_to_file(File),File\=screen)
 	-> (print('Writing Specialised Program to: '),
 	    print(File),nl, told, tell(File))
-	;  (true)
+	;  true
 	),
 	print('/'), print('*'), print(MSG), print('*'), print('/'),nl,
 	print_specialised_program,
-	((output_to_file(File),not(File=screen))
+	((output_to_file(File),File\=screen)
 	-> (told)
-	;  (true)
+	;  true
 	).
 	
 print_specialised_program_to_file :-
-	((output_to_file(File),not(File=screen))
+	((output_to_file(File),File\=screen)
 	-> (print('Writing Specialised Program to: '),
 	    print(File),nl, told, tell(File))
-	;  (true)
+	;  true
 	),
 	print_specialised_program,
 
-	((output_to_file(File),not(File=screen))
+	((output_to_file(File),File\=screen)
 	-> (told)
-	;  (true)
+	;  true
 	).
 
 read_in_file(Filename) :-
