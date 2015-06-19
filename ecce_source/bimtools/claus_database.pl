@@ -78,7 +78,7 @@ print_claus_database_status(Name) :-
 	((MNr > 1)
 	-> (MT is MNr - 1,
 	    print('mode declarations: '),print(MT),nl)
-	; (true)
+	; true
 	),
 	(claus(Name,_,_,[])
         -> true
@@ -139,7 +139,7 @@ read_database(Name) :-
 	((MNr > 1)
 	-> (MT is MNr - 1,
 	    print('mode declarations stored: '),print(MT),nl)
-	; (true)
+	; true
 	).
 
 read_database(Name,Nr,Res) :-
@@ -216,7 +216,7 @@ add_new_mode(compat,ModedCall) :- !,
 	ModedCall =.. [P|MArgs],
 	make_mode_declaration(MArgs,VArgs,InArgs,AnyArgs,OutArgs),!,
 	VCall =.. [P|VArgs],
-	debug_print(mode(VCall,InArgs,AnyArgs,OutArgs)),debug_nl,
+	debug_println(mode(VCall,InArgs,AnyArgs,OutArgs)),
 	assert(mode_declaration(Nr,VCall,InArgs,AnyArgs,OutArgs)).
 
 add_new_mode(Name,ModedCall) :-
@@ -226,14 +226,14 @@ add_new_mode(Name,ModedCall) :-
 	ModedCall =.. [P|MArgs],
 	make_mode_declaration(MArgs,VArgs,InArgs,AnyArgs,OutArgs),!,
 	VCall =.. [P|VArgs],
-	debug_print(mode(VCall,InArgs,AnyArgs,OutArgs)),debug_nl,
+	debug_println(mode(VCall,InArgs,AnyArgs,OutArgs)),
 	assert(mode_declaration(Name,Nr,VCall,InArgs,AnyArgs,OutArgs)).
 
 add_clause(Name,Nr,Head,BodyList) :-
 	Head =.. [Predicate|Args],
 	length(Args,Arity),!,
 	(dont_assert(Predicate,Arity)
-	 -> (true)
+	 -> true
 	 ;  (strip_body(BodyList,StrippedBodyList),
 	     (Name = compat
 	     -> assert(claus(Nr,Head,StrippedBodyList))
