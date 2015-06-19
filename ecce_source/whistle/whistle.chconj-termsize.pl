@@ -24,21 +24,21 @@
 	gt_node_pe_status(ParID,pe(ImpStat)),
 		/* only test with non-abstracted ancestors */
 	gt_node_goal(ParID,ParGoal),
-	not(strict_instance_of(ParGoal,Goal)),
+	\+(strict_instance_of(ParGoal,Goal)),
 	not_more_general_conjunction1(ParGoal,Goal),
 	debug_print('conjunction growing detected'),debug_nl,
 	gt_node_chtree(ParID,ParChtree),
 	pp_mnf(transform_chtree_into_chterm(Chtree,Chterm)),
 	pp_mnf(transform_chtree_into_chterm(ParChtree,ParChterm)),
 	(chtree_homeomorphic_embedded(ParChterm,Chterm)
-	 ->(true) ; (debug_print('no chtree growing'),debug_nl,
+	 -> true ; (debug_print('no chtree growing'),debug_nl,
 		     fail)
 	),
 	debug_print('*chtree growing detected*'),
 	debug_print(Goal),debug_print(' desc from '), debug_print(ParGoal),
 	((Chtree=ParChtree)
 		-> debug_print(' with same chtree ')
-		;  (true)
+		;  true
 	),
 	debug_nl.
 'whistle.chconj-termsize:find_growing_among_ancestors'(ParID,Goal,Chtree,WhistlGoalID) :-

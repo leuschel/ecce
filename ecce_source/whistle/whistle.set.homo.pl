@@ -18,7 +18,7 @@
 'whistle.set.homo:whistle'(GoalID,Goal,Chtree,WhistlGoalID) :-
 	debug_print(calling_whistle(GoalID,Goal)),debug_nl,
 	gt_node(WhistlGoalID),
-	not(WhistlGoalID=GoalID),
+	WhistlGoalID\=GoalID,
 	'whistle.set.homo:find_growing_among_ancestors'(WhistlGoalID,Goal,Chtree).
 
 
@@ -38,7 +38,7 @@
 	pp_mnf(transform_chtree_into_chterm(Chtree,Chterm)),
 	pp_mnf(transform_chtree_into_chterm(ParChtree,ParChterm)),
 	(homeomorphic_embedded(ParChterm,Chterm)
-	 ->(true) ; (debug_print('no chtree growing'),debug_nl,
+	 -> true ; (debug_print('no chtree growing'),debug_nl,
 		     fail)
 	),
 	print('*'),debug_print('chtree growing detected*'),

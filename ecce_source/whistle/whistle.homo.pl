@@ -29,7 +29,7 @@
 	debug_print(test_for_growing_with(ParGoal)),debug_nl,
 	(strict_instance_of(ParGoal,Goal)
 	 -> (debug_print(par_strict_inst_of),debug_nl,fail)
-	 ;  (true)
+	 ;  true
 	),
 	homeomorphic_embedded(ParGoal,Goal),
 	debug_print('atom growing detected'),debug_nl,
@@ -40,7 +40,7 @@
 	/* term_nesting_level(Chterm,ChtLevel,ChtSum),
 	print(c(ChtLevel,ChtSum)),nl,*/
 	(chtree_homeomorphic_embedded(ParChterm,Chterm)
-	 ->(true) ; (print('c'),
+	 -> true ; (print('c'),
 		     debug_print('no chtree growing '),debug_nl,
 		     debug_print('parent: '),debug_nl,
 		     debug_print_chtree(ParChtree),

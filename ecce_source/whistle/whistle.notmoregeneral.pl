@@ -27,7 +27,7 @@
 		/* only test with non-abstracted ancestors */
 	gt_node_goal(ParID,ParGoal),
 	pp_cll(msg_can_be_taken(Goal,ParGoal)),
-	(not(instance_of(ParGoal,Goal))
+	(\+(instance_of(ParGoal,Goal))
 	 -> true /* blow whistle */
 	 ;  instance_of(Goal,ParGoal) /* we have a variant, also blow */
 	).

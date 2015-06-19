@@ -27,9 +27,9 @@
 	gt_node_goal(ParID,ParGoal),
 	pp_cll(msg_can_be_taken(Goal,ParGoal)),
 		/* for standard pd ensured by same chtree */
-	(not(instance_of(ParGoal,Goal))
-	 -> (true) /* blow whistle */
-	 ;  (instance_of(Goal,ParGoal) /* we have a variant */)
+	(\+(instance_of(ParGoal,Goal))
+	 -> true /* blow whistle */
+	 ;  instance_of(Goal,ParGoal) /* we have a variant */
 	).
 'whistle.eco:find_growing_among_ancestors'(ParID,Goal,Chtree,WhistlGoalID) :-
 	gt_node_descends_from(ParID,ParID2,_LeafLocalID),

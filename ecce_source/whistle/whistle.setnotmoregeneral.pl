@@ -19,7 +19,7 @@
 'whistle.setnotmoregeneral:whistle'(GoalID,Goal,Chtree,WhistlGoalID) :-
 	% print(call_whistle(GoalID,Goal)),nl, 
 	gt_node(WhistlGoalID),
-	not(WhistlGoalID=GoalID),
+	WhistlGoalID\=GoalID,
 	'whistle.setnotmoregeneral:find_growing_among_ancestors'(WhistlGoalID,Goal,Chtree).
 
 
