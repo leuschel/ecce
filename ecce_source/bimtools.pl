@@ -77,6 +77,7 @@
 	    set_debug_printing_value/1,
 	    set_debug_printing/1,
 	    debug_print/1,
+	    debug_println/1,
 	    debug_nl/0,
 	    debug_check_point/1,
 	    set_trace_printing_value/1,

@@ -75,6 +75,12 @@ debug_print(X) :-
 	print(X).
 debug_print(_X).
 
+
+debug_println(X) :-
+	debug_printing(on),!,
+	print(X),nl.
+debug_println(_X).
+
 /* --------- */
 /* debug_nl/ */
 /* --------- */
