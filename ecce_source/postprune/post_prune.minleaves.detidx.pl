@@ -87,7 +87,7 @@
 	).
 
 'post_prune.minleaves.detidx:prune_this_step'(Sel,Varlist,[Match1,Match2|RM]) :-
-	not(indexed_varlist(Varlist)).
+	\+(indexed_varlist(Varlist)).
 'post_prune.minleaves.detidx:prune_this_step'(Sel,Varlist,[Match1,Match2|RM]) :-
 	non_indexed_unfolding(Sel,Varlist).
 /* prune_this_step(Sel,Varlist,Chpaths) :-
