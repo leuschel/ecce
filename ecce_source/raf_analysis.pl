@@ -179,10 +179,18 @@ unsafe_erasure(SubTerm,_Head,Body) :-
 unsafe_erasure(SubTerm,Head,_Body) :-
 	var(SubTerm),
 	erase_literal(Head,EHead),
-	variable_occurs(SubTerm,EHead,Nr),
-	Nr > 0,!, /* unsafe to erase if occurs in erased head */
+	variable_occurs_at_least_once(SubTerm,EHead),
+	!, /* unsafe to erase if occurs in erased head */
 	debug_print(head_occ).
 
+:- if(current_prolog_flag(version_data,sicstus(4,_,_,_,_))).
+:- use_module(library(terms),[contains_var/2]).
+variable_occurs_at_least_once(V,Term) :-
+    contains_var(V,Term).
+:- else.
+variable_occurs_at_least_once(V,Term) :-
+   variable_occurs(V,Term,Nr), Nr>0.
+:- endif.
 
 variable_occurs(V,T,Nr) :-
 	V==T,!, Nr=1.
@@ -290,13 +298,14 @@ propagate_far_erasure.
 
 
 unsafe_far_erasure(SubTerm,_Head,_Body) :-
-	nonvar(SubTerm),!, debug_print(far_nonvar).
+	nonvar(SubTerm),!,
+	debug_print(far_nonvar).
 unsafe_far_erasure(SubTerm,Head,_Body) :-
-	var(SubTerm),
+	%var(SubTerm),
 	variable_occurs(SubTerm,Head,Nr),
 	Nr > 1,!, debug_print(far_head_occ(Nr)).
 unsafe_far_erasure(SubTerm,_Head,Body) :-
-	var(SubTerm),
+	%var(SubTerm),
 	l_erase_literal(Body,EBody),
-	l_variable_occurs(EBody,SubTerm,0,Nr),
-	Nr > 0,!, debug_print(far_body_occ(EBody,Nr)).
+	variable_occurs_at_least_once(SubTerm,EBody), %l_variable_occurs(EBody,SubTerm,0,Nr),Nr > 0,
+	!, debug_print(far_body_occ(EBody,Nr)).
