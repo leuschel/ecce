@@ -25,8 +25,8 @@
 	make_fully_dynamic(PosAtom,DynLit),
 	'partition.naive:partition_goal'(T,TN,ST).
 'partition.naive:partition_goal'([Lit|T],[SelNr|TN],[split_goal([DynLit],[SelNr])|ST]) :-
-	not(is_built_in_literal(Lit)),
-	not(is_negative_literal(Lit,Atom)),!,
+	\+(is_built_in_literal(Lit)),
+	\+(is_negative_literal(Lit,Atom)),!,
 	make_fully_dynamic(Lit,DynLit),
 	'partition.naive:partition_goal'(T,TN,ST).
 'partition.naive:partition_goal'([Lit|T],[SelNr|TN],ST) :-

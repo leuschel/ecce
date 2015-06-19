@@ -40,8 +40,8 @@
 'partition.static-contig:get_block'([H|T],[HN|TN],InBlockSoFar,InBlock,NotInBlock,
 			InSelNr,NotInSelNr) :-
 	((pp_cll(sharing(InBlockSoFar,[H])),
-	  not(is_built_in_literal(H)),
-	  not(is_negative_literal(H,_)),
+	  \+(is_built_in_literal(H)),
+	  \+(is_negative_literal(H,_)),
 	  /* reverse([H|InBlockSoFar],CurGoal),static_conjunction(CurGoal)
 		use if static_conj depends on order of literals */
 	  static_conjunction([H|InBlockSoFar])

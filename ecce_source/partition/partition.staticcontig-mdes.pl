@@ -44,8 +44,8 @@
 	pp_mnf(get_potential_io_args(H,HInArgs,HOutArgs)),
 	(( (pp_cll(sharing(InArgsSoFar,[HOutArgs]));
 	    pp_cll(sharing(OutArgsSoFar,[HInArgs]))),
-	  not(is_built_in_literal(H)),
-	  not(is_negative_literal(H,_)),
+	  \+(is_built_in_literal(H)),
+	  \+(is_negative_literal(H,_)),
 	  /* reverse([H|InBlockSoFar],CurGoal),static_conjunction(CurGoal)
 		use if static_conj depends on order of literals */
 	  static_conjunction([H|InBlockSoFar])

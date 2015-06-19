@@ -47,8 +47,8 @@
 'partition.conjnobi:get_block'([H|T],[HN|TN],InBlockSoFar,InBlock,NotInBlock,
 			InSelNr,NotInSelNr) :-
 	((pp_cll(sharing(InBlockSoFar,[H])),
-	  not(is_built_in_literal(H)),
-	  not(is_negative_literal(H,_))
+	  \+(is_built_in_literal(H)),
+	  \+(is_negative_literal(H,_))
 	)
 	 -> (InBlock = [H|InBlock2],
 	     InSelNr = [HN|InSelNr2],

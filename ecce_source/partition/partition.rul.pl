@@ -23,13 +23,13 @@
 'partition.rul:partition_goal'Goal,Nrs,ResSplitGoal) :-
     debug_nl,debug_nl,debug_print('partition: '),
     print_goal_for_dot(Goal),nl,
-	debug_print(start_partition_goal(Goal,Nrs,ResSplitGoal)),debug_nl,
+	debug_println(start_partition_goal(Goal,Nrs,ResSplitGoal)),
 	divide_constraint_goal_with_nrs(Goal,Nrs,OGoal,ONrs,CGoal,CNrs),
 	partition_goal_classic_conj(OGoal,ONrs,SplitOGoal),
 	/* print(calling_proj(SplitOGoal,CGoal,CNrs)),nl,*/
 	par_project_constraints(SplitOGoal,CGoal,CNrs,ResSplitGoal),
         debug_print(result_of_partition_goal(Goal,Nrs,ResSplitGoal)),trace_nl,
-     debug_print(result(Nrs)),debug_nl.
+     debug_println(result(Nrs)).
 
 wrap_into_built_in([],[]).
 wrap_into_built_in([H|T],[built_in(H)|WT]) :-
@@ -39,7 +39,7 @@ par_project_constraints([],_,_,[]).
 par_project_constraints([split_goal(Goal,SplitInd)|T],CGoal,CNrs,
 		    [split_goal(NewGoal,NewInd)|ST]) :-
 	((SplitInd = [_|_])
-	 -> (debug_print(call_proj_with_nrs(CGoal,CNrs,Goal,PCG,PCN,NGoal)),debug_nl,
+	 -> (debug_println(call_proj_with_nrs(CGoal,CNrs,Goal,PCG,PCN,NGoal)),
              project_constraint_with_nrs(CGoal,CNrs,Goal,PCG,PCN,NGoal),
              /* print(res_proj_with_nrs(CGoal,CNrs,Goal,PCG,PCN,NGoal)),nl,*/
 	     append(NGoal,PCG,NewGoal),
@@ -53,7 +53,7 @@ par_project_constraints([split_goal(Goal,SplitInd)|T],CGoal,CNrs,
 
 project_constraint_with_nrs([],_,Goal,
 			    [NewC],[],NewGoal) :- !, 
-       debug_print(one([],Goal)),debug_nl,
+       debug_println(one([],Goal)),
        
        project_RULify(Goal,NewGoal,rul__constraint__declaration([],[]),NewC),
        
@@ -61,7 +61,7 @@ project_constraint_with_nrs([],_,Goal,
    /* generate empty constraint if none present */
 
 project_constraint_with_nrs(CGoal,CNrs,Goal,[NewC],CNrs,NewGoal) :-
-        debug_print(two(CGoal,Goal)),debug_nl,
+        debug_println(two(CGoal,Goal)),
 	CGoal = [RULC],
 	RULC = rul__constraint__declaration(_,_),!,
 	
@@ -81,9 +81,9 @@ automatic_RULify(no).
 
 project_RULify(Goal,Goal,Rul,Rul) :- automatic_RULify(no).
 project_RULify(Goal,NewGoal,RULC,New) :- automatic_RULify(yes),
-       debug_print(call(l_goalRULification(Goal,NewGoal,RULC,NewC))),debug_nl,
+       debug_println(call(l_goalRULification(Goal,NewGoal,RULC,NewC))),
        l_goalRULification(Goal,NewGoal,RULC,NewC),
-       debug_print(rul(NewC)),debug_nl.
+       debug_println(rul(NewC)).
 
 
 

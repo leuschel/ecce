@@ -40,8 +40,8 @@
 'partition.staticconjnobi:get_block'([H|T],[HN|TN],InBlockSoFar,InBlock,NotInBlock,
 			InSelNr,NotInSelNr) :-
 	((pp_cll(sharing(InBlockSoFar,[H])),
-	  not(is_built_in_literal(H)),
-	  not(is_negative_literal(H,_)),
+	  \+(is_built_in_literal(H)),
+	  \+(is_negative_literal(H,_)),
 	  reverse([H|InBlockSoFar],CurGoal),  /* improve efficiency !! */
 	  static_conjunction(CurGoal)
 	)

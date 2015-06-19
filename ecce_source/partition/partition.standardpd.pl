@@ -25,8 +25,8 @@
 	extract_positive_atom_from_literal(Lit,PosAtom),!,
 	'partition.standardpd:partition_goal'(T,TN,ST).
 'partition.standardpd:partition_goal'([Lit|T],[SelNr|TN],[split_goal([Lit],[SelNr])|ST]) :-
-	not(is_built_in_literal(Lit)),
-	not(is_negative_literal(Lit,Atom)),!,
+	\+(is_built_in_literal(Lit)),
+	\+(is_negative_literal(Lit,Atom)),!,
 	'partition.standardpd:partition_goal'(T,TN,ST).
 'partition.standardpd:partition_goal'([Lit|T],[SelNr|TN],ST) :-
 	'partition.standardpd:partition_goal'(T,TN,ST).
