@@ -15,3 +15,11 @@ ecce_examples/mymember.pl.xce
 ecce_examples/mymember.xce.dot
 ecce_examples/mymember.xce.ps
 ecce_source/ecce_sicstus.sav
+ecce_examples/simplify.pl.xce
+ecce_examples/simplify.xce.dot
+ecce_examples/simplify.xce.ps
+ecce_examples/demo/basic/append.xce.dot
+ecce_examples/demo/basic/append.xce.ps
+ecce_examples/demo/ho.pl.xce
+ecce_examples/knows_logic.pl.xce
+ecce_examples/sat_codish/sum_32_8_po.pl.xce
