@@ -43,15 +43,19 @@ proc procGUI_Menu {} {
     # -------------------- file menu
 #    menu .menubar.mnuFile -tearoff 0
     .menubar.mnuFile add command -label "Open..." -command procOpenFile -accelerator Meta+o
-    .menubar.mnuFile add command -label "Reopen" -command procReOpenFile -state disabled
+    .menubar.mnuFile add command -label "Reopen" -command procReOpenFile -state disabled -accelerator Meta+r
     .menubar.mnuFile add command -label "Open Destination File" \
          -command procOpenDestFile -state disabled
     .menubar.mnuFile add sep
     .menubar.mnuFile add command -label "Quit" -command {destroy .} -accelerator Meta+q
     
-   bind . <Meta-o> {procOpenFile}
-   bind . <Meta-r> {procReOpenFile}
-   bind . <Meta-q> {destroy .}
+   bind . <Command-o> {procOpenFile}
+   bind . <Control-o> {procOpenFile}
+   bind . <Command-r> {procReOpenFile}
+   bind . <Control-r> {procReOpenFile}
+   bind . <Command-q> {destroy .}
+   bind . <Control-q> {destroy .}
+   bind . <Return> {procSpecialise}
 
     # -------------------- Analyse menu
 #    menu .menubar.mnuAnalyse -tearoff 0
@@ -386,7 +390,7 @@ proc procGUI_Source {} {
     scrollbar .frmSource.scrolly -command ".frmSource.text yview"
     scrollbar .frmSource.scrollx -command ".frmSource.text xview" -orient h
     text .frmSource.text -yscroll ".frmSource.scrolly set" -xscroll ".frmSource.scrollx set" \
-        -setgrid 1 -height 18 -state disabled
+        -setgrid 1 -height 18 -state normal
     pack .frmSource.scrolly -side right -fill y
     pack .frmSource.scrollx -side bottom -fill x
     pack .frmSource.text -expand 1 -fill both
@@ -697,7 +701,8 @@ proc procShowSourceCode {sFileName} {
     set fid [open $sFileName r]
     .frmSource.text insert 0.0 [read $fid]    
     close $fid
-    .frmSource.text configure -state disabled
+    # comment out to allow copy & paste
+    # .frmSource.text configure -state disabled
 }
 
 
