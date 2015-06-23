@@ -14,5 +14,7 @@ simplify(add(X,0),R) :- simplify(X,R).
 simplify(add(X,Y),add(SX,SY)) :- dif(X,0), dif(Y,0), 
   simplify(X,SX), simplify(Y,SY).
 simplify(N,N) :- atomic(N).
+%simplify(mul(2,Y),R) :- simplify(add(Y,Y),R).
+%simplify(add(Y,Y),R) :- simplify(mul(2,Y),R).
 
 test(R) :- simplify(mul(2,add(x,1)),R).
