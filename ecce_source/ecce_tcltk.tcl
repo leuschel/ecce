@@ -56,6 +56,7 @@ proc procGUI_Menu {} {
    bind . <Command-q> {destroy .}
    bind . <Control-q> {destroy .}
    bind . <Return> {procSpecialise}
+   bind . <Command-e> {procOpenFileInEditor}
 
     # -------------------- Analyse menu
 #    menu .menubar.mnuAnalyse -tearoff 0
@@ -492,7 +493,18 @@ proc procOpenDestFile {} {
         procLoadFile
     }
 }
-
+proc procOpenFileInEditor {} {
+    global strFilename
+    set Cmd "/Applications/BBEdit.app"
+    if {$strFilename != ""} {
+        if {[catch {eval exec open -a $Cmd $strFilename &} errid]} {
+         # use eval because Cmd is actually a list of commands with options
+         tkErrorBox "Could not execute '$Cmd'.\nError: $errid"
+      }
+    } else {
+       tk_messageBox -parent . -icon error -message "No File open. Cannot Open External Editor."
+    }
+}
 
 
 # -------
@@ -847,6 +859,7 @@ proc procMainInit {} {
     # initialise prolog
     prolog tcltk_initialise
 }
-
+global strFilename
+set strFilename ""
 procMainInit
 
