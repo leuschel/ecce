@@ -23,3 +23,12 @@ ecce_examples/demo/basic/append.xce.ps
 ecce_examples/demo/ho.pl.xce
 ecce_examples/knows_logic.pl.xce
 ecce_examples/sat_codish/sum_32_8_po.pl.xce
+depth.pl.xce
+depth.slice
+depth.xce.dot
+depth.xce.pdf
+depth.xce.ps
+prop-demo.pl.xce
+solve.pl.xce
+solve.slice
+solve.xce
