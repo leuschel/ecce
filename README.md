@@ -12,3 +12,7 @@ and Mauricio Varea.
 
 An online version of Ecce is available at:
   http://wyvern.cs.uni-duesseldorf.de/ecce/index.php
+
+To build the command-line version of ecce (ecce_cli) simply execute make in the
+main directory or within the ecce_source directory. This will also run a simple test.
+You need SICStus Prolog 4.3 or later to generate the Ecce binary.

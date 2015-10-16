@@ -1,7 +1,7 @@
 SICSTUS=sicstus
 SPLD=spld
 
-all: ecce_sicstus.sav sicsexe
+all: ecce_sicstus.sav ecce_cli
 
 ecce:  *.pl */*.pl
 	ciaoc ecce_ciao_entry.pl 
