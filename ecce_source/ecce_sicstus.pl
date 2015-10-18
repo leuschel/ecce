@@ -182,9 +182,9 @@ convert_cli_into_atom(CLIGOAL,Atom) :-
 
 ecce_recompile :- ecce_reconsult('ecce_compile').
 	
-:- ensure_consulted('bimtools/sicstus_specific.pl').
+:- ensure_loaded('bimtools/sicstus_specific.pl').
 
-:- ensure_consulted('ecce_main.pl').
+:- ensure_loaded('ecce_main.pl').
 
 :- nl,nl,print('Type "ecce." and hit return to start the system'),nl.
 
