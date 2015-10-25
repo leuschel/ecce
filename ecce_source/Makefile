@@ -1,7 +1,8 @@
 SICSTUS=sicstus
 SPLD=spld
+ECCECLI=../bin/ecce_cli
 
-all: ecce_sicstus.sav ecce_cli
+all: ecce_sicstus.sav $(ECCECLI)
 
 ecce:  *.pl */*.pl
 	ciaoc ecce_ciao_entry.pl 
@@ -27,8 +28,8 @@ ecce_sicstus.sav: *.pl */*.pl
 	@echo "...done!"
 	@echo 
 
-ecce_cli: ecce_sicstus.sav
+$(ECCECLI): ecce_sicstus.sav
 	@echo "Creating Sicstus executable..."
-	${SPLD} --static --output ecce_cli --resources=./ecce_sicstus.sav=/ecce_sicstus.sav
+	${SPLD} --static --output $(ECCECLI) --resources=./ecce_sicstus.sav=/ecce_sicstus.sav
 	@echo "...done!"
 	@echo 	

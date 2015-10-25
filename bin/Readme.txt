@@ -1,0 +1,1 @@
+This directory will contain Ecce binaries generated via the Makefile.
