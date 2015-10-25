@@ -32,3 +32,4 @@ prop-demo.pl.xce
 solve.pl.xce
 solve.slice
 solve.xce
+bin/ecce_cli
