@@ -1,3 +1,5 @@
+% (c) 1995-2016 Michael Leuschel
+% see https://github.com/leuschel/ecce for more details
 %:- module(ecce_tcltk ,
 %	[
 %	    main/0,

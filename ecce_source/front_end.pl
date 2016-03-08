@@ -1,4 +1,6 @@
 /* file: front_end.pro */
+% (c) 1995-2016 Michael Leuschel
+% see https://github.com/leuschel/ecce for more details
 
 % :- set_prolog_flag(multi_arity_warnings,off).
 % :- set_prolog_flag(discontiguous_warnings,off).
