@@ -146,7 +146,10 @@ read_database(Name,Nr,Res) :-
 	((
 	  %read_term(RTerm,[lines(S,E)]),Layout=[S,E],  <--- CIAO
 	  %read_term(RTerm,[layout(Layout)]),  % <---- SICSTUS
-	  read_term_with_lines( RTerm , S , E ),
+	  catch( read_term_with_lines( RTerm , S , E ),
+	         Exc, 
+	         (format('### Exception reading source file at clause ~w:~n ~w~n',[Nr,Exc]),
+	          fail)),
 	  %print(read_term_with_lines(RTerm,S,E)),nl,
 	  Layout = [S,E],
 %      read_term( RTerm , [] ),
