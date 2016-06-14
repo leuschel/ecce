@@ -150,17 +150,19 @@ read_database(Name,Nr,Res) :-
 	  %print(read_term_with_lines(RTerm,S,E)),nl,
 	  Layout = [S,E],
 %      read_term( RTerm , [] ),
-	  \+ (RTerm = end_of_file),transform_dcg_term(RTerm,DTerm),
+	  RTerm \= end_of_file,
+	  transform_dcg_term(RTerm,DTerm),
 	  transform_clause(DTerm,Term)
 	%,  print(transf(Term)),nl
 	 )
 	-> (Term =.. [Functor|Args],
 	    ((Functor=(':-'))
 	    -> (/* we have a clause */
-		((Args = [Head,BodyCommaList])
-		 -> (comma_to_list(BodyCommaList,BodyList),
-		     add_clause_with_layout(Name,Nr,Head,BodyList,Layout),Nrp1 is Nr + 1)
-		 ;  (treat_query(Name,Args), Nrp1 = Nr)
+		(Args = [Head,BodyCommaList]
+		 ->  comma_to_list(BodyCommaList,BodyList),
+		     add_clause_with_layout(Name,Nr,Head,BodyList,Layout),
+		     Nrp1 is Nr + 1
+		 ;   treat_query(Name,Args), Nrp1 = Nr
 		)
 	       )
 	    ;  ((Functor=('-->'))
@@ -174,16 +176,17 @@ read_database(Name,Nr,Res) :-
 		   )
 		;  (/* we have a fact */
 		    (special_fact(Term) /* e.g. unfold annotations */
-		     -> (treat_special_fact(Term), Nrp1 = Nr)
-		     ;  (add_clause_with_layout(Name,Nr,Term,[],Layout),Nrp1 is Nr + 1)
+		     -> treat_special_fact(Term), Nrp1 = Nr
+		     ;  add_clause_with_layout(Name,Nr,Term,[],Layout),Nrp1 is Nr + 1
 		    )
 		   )
 	       )
 	    ),
 	    read_database(Name,Nrp1,Res)
 	   )
-	;  (Res = Nr)
+	;  Res = Nr
 	).
+
 
 /* add a clause to the database */
 add_new_clause(Name,Head,Body) :-
@@ -248,19 +251,20 @@ add_clause(Name,Nr,Head,BodyList) :-
 claus_layout(Nr,Layout) :- claus_layout(compat,Nr,Layout).
 
 add_clause_with_layout(Name,Nr,Head,BodyList,Layout) :-
-   add_clause(Name,Nr,Head,BodyList),
+    add_clause(Name,Nr,Head,BodyList),
     assert(claus_layout(Name,Nr,Layout)).
 
 
 /* transform elements seperated by commas into a real prolog list */
-comma_to_list(Com,Lst) :-
-	((nonvar(Com),Com =.. [ ',' , Arg1 , Arg2 ])
-	 ->	(comma_to_list(Arg1,L1),
+comma_to_list(Com,Lst) :- var(Com),!,Lst=[call(Com)].
+comma_to_list(','(Arg1,Arg2),Lst) :- !,
+	   	 comma_to_list(Arg1,L1),
 		 comma_to_list(Arg2,L2),
-		 append(L1,L2,Lst)
-		)
-	 ;	(var(Com) -> (Lst = [call(Com)]) ; (Lst = [Com]))
-	).
+		 append(L1,L2,Lst).
+%comma_to_list(';'(Arg1,Arg2),Lst) :- !, % ECCE does not deal with or: create two clauses
+%	   	 (comma_to_list(Arg1,Lst) ;
+%		 comma_to_list(Arg2,Lst)).
+comma_to_list(Com,Lst) :- Lst = [Com].
 
 make_mode_declaration(X,[],[],[],[]) :- var(X),!,
 	print('### error in mode declaration'),nl.
