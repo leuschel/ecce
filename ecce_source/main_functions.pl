@@ -124,26 +124,24 @@ set_abnormal_goal_encountered :-
 pe(Goal) :- pe_without_pp(Goal,PEGoal),pe_post_process(PEGoal).
 
 pe_without_pp(Goal,PEGoal) :-
-	((Goal = [_|_])
-	 -> (PEGoal = Goal, PEConstraint = [])
-	 ;  ((Goal = (PEGoal,PEConstraint)) -> true
-                   ; (PEGoal = [Goal], PEConstraint = []))
+	(Goal = [_|_]
+	 -> PEGoal = Goal, PEConstraint = []
+	 ;  (Goal = (PEGoal,PEConstraint) -> true
+                   ; PEGoal = [Goal], PEConstraint = [])
 	),
 	(term_is_of_type(PEGoal,goal,no)
 	 -> true
-	 ;  (print('ILLEGAL GOAL: '),print(goal),nl,
+	 ;   print('ILLEGAL GOAL: '),print(goal),nl,
 	     print('Contains variables as literals (use call/1)'),nl,
 	     print(' or is an open-ended list.'),nl,
 	     fail
-	    )
 	),
 	(goal_contains_undefined_literal(PEGoal)
-	 -> (nl,print('###'),nl,
+	 ->  nl,print('###'),nl,
 	     print('### Goal contains undefined calls --> will fail !'),nl,
 	     print('### Be sure to read in all necessary files !'),nl,
 	     print('###'),nl,nl,
 	     assert(error_in_pe_goal_encountered)
-	    )
 	 ;  true
 	),
 	init_gt,
@@ -176,20 +174,18 @@ pe_without_pp(Goal,PEGoal) :-
 	
 pe_post_process(PEGoal) :-	
 	(perform_post_msv_analysis(yes)
-	 -> (clear_database,
+	 ->  clear_database,
 	     copy_specialised_program_to_input,
 	     verbose_println('-> msv analysis'),
 	     run_msv_anlysis
-	    )
 	 ;  true
 	),
 	((perform_determinate_post_unfolding(yes),
 	  generate_slice_instead_of_spec_prog(no))
-	 -> (clear_database,
+	 ->  clear_database,
 	     copy_specialised_program_to_input,
 	     verbose_println('-> determinate post unfolding'),
 	     calculate_post_unfolded_clauses
-	    )
 	 ;  true
 	),
 	(generate_slice_instead_of_spec_prog(no)
@@ -200,35 +196,32 @@ pe_post_process(PEGoal) :-
 	
 	(( /* generate_slice_instead_of_spec_prog(no), */
 	  perform_dce(yes))
-	 -> (clear_database,
+	 ->  clear_database,
 	     copy_specialised_program_to_input,
 
 	     verbose_print('-> dead code removal (DCE) '),
 	     verbose_print(GoalsOfInterest),
          verbose_nl,
 	     dead_code_elimination(GoalsOfInterest)
-	    )
 	 ;  true
 	),
 	(perform_raf(yes)
-	 -> (clear_database,
+	 ->  clear_database,
 	     copy_specialised_program_to_input,
 	     verbose_println('-> redundant argument filtering (RAF)'),
 	     perform_raf_analysis(GoalsOfInterest)
-	    )
 	 ;  true
 	),
 	(perform_far(yes)
-	 -> (clear_database,
+	 ->  clear_database,
 	     copy_specialised_program_to_input,
 	     verbose_println('-> reverse redundant argument filtering (FAR)'),
 	     perform_far_analysis(GoalsOfInterest)
-	    )
 	 ;  true
 	),
 	((output_to_file(File),File\=screen)
-	-> (verbose_print('Writing Specialised Program to: '),
-	    verbose_print(File),verbose_nl, told, tell(File))
+	->  verbose_print('Writing Specialised Program to: '),
+	    verbose_print(File),verbose_nl, told, tell(File)
 	;  true
 	),
 	nl,
@@ -256,17 +249,17 @@ pe_post_process(PEGoal) :-
 	print(' ms *'),print('/'),html_end_color,
 	newparagraph,
 	(error_in_pe_goal_encountered
-     -> (nl,print('% ###'),nl,print('% ### Undefined call in partial evaluation goal !'),nl,print('% ###'),nl,
-         newparagraph)
+     -> nl,print('% ###'),nl,print('% ### Undefined call in partial evaluation goal !'),nl,print('% ###'),nl,
+         newparagraph
     ; true),
 	(abnormal_goal_encountered(yes)
-	 -> (print(':'), print('- reconsult(original_program).  /*  <---------- */'),
-		newparagraph)
+	 -> print(':'), print('- reconsult(original_program).  /*  <---------- */'),
+		newparagraph
 	 ;  true
 	),!,
 	print_specialised_program,
 	((output_to_file(File),File\=screen)
-	-> (told)
+	-> told
 	;  true
 	).
 
@@ -284,10 +277,10 @@ add_unf_time(UnfTime) :-
 
 flow_analysis(Count) :-
     unfold_generate_dot_file,
-	((Count > 10)
-	 -> (NewCount = 1, get_nr_of_gt_nodes_to_pe(NrOfNPE),
-	     print('['),print(NrOfNPE),print(']'))
-	 ;  (NewCount is Count + 1)
+	(Count > 10
+	 -> NewCount = 1, get_nr_of_gt_nodes_to_pe(NrOfNPE),
+	    print('['),print(NrOfNPE),print(']')
+	 ;  NewCount is Count + 1
 	),
 	pp_cll(get_gt_goal_to_pe(GoalID,Goal)),!,
 	copy(Goal,G),numbervars(G,1,_),debug_println(goal_to_pe(GoalID,G)),
@@ -314,10 +307,10 @@ flow_analysis(Count) :-
 						CorrectedChtree)),
 		copy(Goal,CPPGoal),
 		pp_mnf(post_prune_chtree(CPPGoal,CorrectedChtree,PChtree)),
-		((PChtree = stop)
-		 -> (debug_println(one_step_unfolding(GoalID,Goal)),
-		     one_step_unfolding(GoalID,Goal,Chtree))
-		 ;  (Chtree = PChtree)
+		(PChtree = stop
+		 ->  debug_println(one_step_unfolding(GoalID,Goal)),
+		     one_step_unfolding(GoalID,Goal,Chtree)
+		 ;   Chtree = PChtree
 		),
 		ImpStat = imposed
 	    )
@@ -350,11 +343,10 @@ flow_analysis(_) :- nl,
 
 add_leaves(GoalID,Goal,Chtree) :-
 	get_leaf(Chtree,Goal,Leaf,ChPosition),
-	((Leaf = [])
-	 -> (print('### add_leaves: Leaf = []'),nl)
-	 ;  (pp_mnf(add_gt_leaf(GoalID,Leaf,ChPosition,_LeafID)),
+	(Leaf = []
+	 ->  print('### add_leaves: Leaf = []'),nl
+	 ;   pp_mnf(add_gt_leaf(GoalID,Leaf,ChPosition,_LeafID)),
 	     verbose_println(added_leaf(GoalID,_LeafID,Leaf))
-	    )
 	),
 	fail.
 add_leaves(_,_,_).
@@ -418,13 +410,13 @@ abstract_and_replace(GoalID,Goal,Chtree,WhistleGoalID,_LeafImpStat) :-
 	((NewGoals = [split_goal(NewGoal,_SI)],NewChtrees = [_NewChtree],
 	  variant_of(NewGoal,WhistleGoal)
 	  /* variant_of(NewChtree,Chtree) */)
-	 ->  (print('### WARNING: abstract_parent performed no modification !'),nl,
+	 ->   print('### WARNING: abstract_parent performed no modification !'),nl,
 	      print('### Goal = '),print(Goal),nl,
 	      print('### GoalID = '), print(GoalID), print('WhistleGoalID = '),
 	      print(WhistleGoalID),nl,
 	      fail
-	     )
-	 ;   (debug_println(abstract_parent(NewGoals)),!,
+	 ;   (debug_println(abstract_parent(NewGoals)),
+	      !,
 	      pp_mnf(remove_gt_leaves(WhistleGoalID)),
 	      pp_mnf(add_abstractions(NewGoals,NewChtrees,WhistleGoalID)),
 	      pp_mnf(gt_node_pe_status(WhistleGoalID,pe(WImpStat))),
@@ -468,12 +460,11 @@ post_condition(add_abstractions(_NewGoals,_NewChtrees,_GoalID)).
 
 add_abstractions([],[],_GoalID).
 add_abstractions([split_goal(NewGoal,SplitInd)|T],[NewChtree|CT],GoalID) :-
-	((NewGoal = [])
-	 -> (print('### add_abstractions: NewGoal = []'),nl)
-	 ;  (pp_mnf(add_gt_leaf(GoalID,NewGoal,
+	(NewGoal = []
+	 -> print('### add_abstractions: NewGoal = []'),nl
+	 ;   pp_mnf(add_gt_leaf(GoalID,NewGoal,
 				chpos(abstracted,SplitInd),NewID)),
 	     pp_mnf(mark_gt_node_as_ped(NewID,no,NewChtree))
-	    )
 	),
 	add_abstractions(T,CT,GoalID).
 
@@ -497,9 +488,8 @@ pre_condition(whistle(GoalID,Goal,Chtree,_WhistleGoalID)) :-
 post_condition(whistle(_GoalID,_Goal,_Chtree,WhistleGoalID)) :-
 	term_is_of_type(WhistleGoalID,nodeid),
 	(gt_node_pe_status(WhistleGoalID,no)
-	 -> (print('### WARNING: whistle returns non-partially evaluated goal'),
+	 -> print('### WARNING: whistle returns non-partially evaluated goal'),
 	     nl,fail
-	    )
 	 ;  true
 	).
 
@@ -549,7 +539,7 @@ print_specialised_msv_program_to_file :-
 	),nl,
 	print_specialised_program,
 	((output_to_file(File),File\=screen)
-	-> (told)
+	-> told
 	;  true
 	).
 	
@@ -575,7 +565,7 @@ print_specialised_program_to_file :-
 	print_specialised_program,
 
 	((output_to_file(File),File\=screen)
-	-> (told)
+	-> told
 	;  true
 	).
 
@@ -597,7 +587,7 @@ read_in_file(Filename) :-
 	      ;  true
 	    )
 	   )
-	;  (print('Could not open file:'),print(Filename),nl)
+	;  print('### Could not open file:'),print(Filename),nl
 	).
 
 read_atom(A, T) :-
