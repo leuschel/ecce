@@ -129,8 +129,10 @@
 <div id="bottom">
     <a href="index.php">ECCE</a> is part of the 
     <a href="http://www.clip.dia.fi.upm.es/Projects/ASAP/">ASAP Project</a>.
-    &nbsp;&nbsp;&nbsp; Queries? Please contact the
-    <a href="mailto: bendisposto@cs.uni-duesseldorf.de">System Administrator</a>.
+    &nbsp;&nbsp;&nbsp; Queries? Please contact: 
+			Heinrich-Heine-University, Institut für Software und Programmiersprachen:
+			<a href="http://www.stups.hhu.de/" target="_blank">To Website</a>.
+            <a href="http://www.uni-duesseldorf.de/home/footer/datenschutz.html">Datenschutz</a>.
 </div>
 
 <?php if (MECCE_DEBUG) echo $debug; ?>
