@@ -1,5 +1,5 @@
 /* file: front_end.pro */
-% (c) 1995-2016 Michael Leuschel
+% (c) 1995-2019 Michael Leuschel
 % see https://github.com/leuschel/ecce for more details
 
 % :- set_prolog_flag(multi_arity_warnings,off).
@@ -51,7 +51,8 @@
   
 :- use_module(dot_generator,
      [   unfold_generate_dot_file/1 ]).
-     
+
+:- use_module(main_functions, [pe/1]).
 
 /* --------- */
 /* FRONT-END */
@@ -60,7 +61,7 @@
 :- data last_pd_query/1.
 last_pd_query(true).
 :- data last_read_file/1.
-last_read_file('../append-test').
+last_read_file('ecce_examples/app.pl').
 
 main(Inputs) :-
 	    initialise_parameters,
@@ -86,7 +87,7 @@ ecce_interactive :-
 	print('Based on work by Michael Leuschel, Bern Martens, Jesper Jorgensen,'),nl,
 	print('Danny De Schreye, Robert Glueck, Morten Heine Sorensen, Andre de Waal,'),nl,
 	print('and Mauricio Varea.'),nl,
-	print('(C) 1995-2015'),nl,nl,
+	print('(C) 1995-2019'),nl,nl,
 	print('Interactive Mode'),nl,
 	print('type h or ? for help'),nl,
 	print('type o to turn off run-time type checking (10x speedup)'),nl,
@@ -296,11 +297,13 @@ add_dot(".",".") :- !.
 add_dot([A|T],[A|R]) :- add_dot(T,R).
   
 safe_front_end_read_in_file(Filename) :-
-        catch(front_end_read_in_file(FileName),Exc,
-             (format(user_error,"*** Error reading file '~w'.~n",[FileName]),
+        catch(front_end_read_in_file(Filename),Exc,
+             (format(user_error,"*** Error reading file '~w'.~n",[Filename]),
                          print_exception(Exc))).
                           
 front_end_read_in_file(Filename) :-
+   absolute_file_name(Filename,AF),
+   format(user_output,'Reading from file ~w~n',[Filename]),
    read_in_file(Filename),
    retract_fact(last_read_file(_)),
    assertz_fact(last_read_file(Filename)).
@@ -415,8 +418,8 @@ action(113,_). /* q for quit */
 action(114,P):- /* r for read in file into clause database */
 	last_read_file(Last),
 	(exec_mode(interactive) 
-	->(beginner_print('Type a dot (.) and hit return at the end.'),beginner_nl,
-	   print('filename (l for '),print(Last),print(') =>'))
+	-> beginner_print('Type a dot (.) and hit return at the end.'),beginner_nl,
+	   print('filename (l for '),print(Last),print(') =>')
 	; true ),
 	(P=[]-> read(R),PP=[] ; P=[R|PP]),
 	(R=l -> Filename = Last ;  Filename = R),
