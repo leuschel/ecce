@@ -23,22 +23,20 @@
 manual_unfold :-
 	print('Goal to unfold manually ==>'),
 	read(Goal),
-	((Goal = [_|_])
-	 -> (PEGoal = Goal)
-	 ;  (PEGoal = [Goal])
+	(Goal = [_|_]
+	 -> PEGoal = Goal
+	 ;  PEGoal = [Goal]
 	),
 	(term_is_of_type(PEGoal,goal,no)
 	 -> true
-	 ;  (print('ILLEGAL GOAL: '),print(goal),nl,
-	     print('Contains variables as literals (use call/1)'),nl,
-	     print(' or is an open-ended list.'),nl,
-	     fail
-	    )
+	 ;  print('ILLEGAL GOAL: '),print(goal),nl,
+	    print('Contains variables as literals (use call/1)'),nl,
+	    print(' or is an open-ended list.'),nl,
+	    fail
 	),
 	(goal_contains_undefined_literal(PEGoal)
-	 -> (print('### Goal contains undefined calls --> will fail !'),nl,
-	     print('### Be sure to read in all necessary files !'),nl
-	    )
+	 -> print('### Goal contains undefined calls --> will fail !'),nl,
+	    print('### Be sure to read in all necessary files !'),nl
 	 ;  true
 	),
 	varlist(PEGoal,Top),

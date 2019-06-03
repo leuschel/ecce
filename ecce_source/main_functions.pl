@@ -527,44 +527,44 @@ post_condition(abstract_leaf(_GoalID,_Goal,_Chtree,_WhistleGoalID,
 
 
 print_specialised_msv_program_to_file :-
-	((output_to_file(File),File\=screen)
-	-> (print('Writing Specialised Program to: '),
-	    print(File),nl, told, tell(File))
+	(output_to_file(File),File\=screen
+	->  print('Writing Specialised Program to: '),
+	    print(File),nl, told, tell(File)
 	;  true
 	),
 	print('/'), print('* MSV Analysis Result *'), print('/'),nl,
 	(msv_change
-		-> (print('/'), print('* New information was derived. *'), print('/'))
-		;  (print('/'), print('* No new information ! *'), print('/'))
+		->  print('/'), print('* New information was derived. *'), print('/')
+		;   print('/'), print('* No new information ! *'), print('/')
 	),nl,
 	print_specialised_program,
-	((output_to_file(File),File\=screen)
+	(output_to_file(File),File\=screen
 	-> told
 	;  true
 	).
 	
 print_specialised_program_to_file(MSG) :-
-	((output_to_file(File),File\=screen)
-	-> (print('Writing Specialised Program to: '),
-	    print(File),nl, told, tell(File))
+	(output_to_file(File),File\=screen
+	->  print('Writing Specialised Program to: '),
+	    print(File),nl, told, tell(File)
 	;  true
 	),
 	print('/'), print('*'), print(MSG), print('*'), print('/'),nl,
 	print_specialised_program,
-	((output_to_file(File),File\=screen)
-	-> (told)
+	(output_to_file(File),File\=screen
+	-> told
 	;  true
 	).
 	
 print_specialised_program_to_file :-
-	((output_to_file(File),File\=screen)
-	-> (print('Writing Specialised Program to: '),
-	    print(File),nl, told, tell(File))
+	(output_to_file(File),File\=screen
+	->  print('Writing Specialised Program to: '),
+	    print(File),nl, told, tell(File)
 	;  true
 	),
 	print_specialised_program,
 
-	((output_to_file(File),File\=screen)
+	(output_to_file(File),File\=screen
 	-> told
 	;  true
 	).
@@ -575,16 +575,15 @@ read_in_file(Filename) :-
  	    see(Filename),
 	    (print('*'),fail))
 	-> (read_database,seen,
-	    ((make_iff_when_reading_clauses(on),
-	      make_iff_definitions_read_in(no))
-	      -> (set_make_iff_when_reading_clauses(off),
-		  print('Reading in bimtools/makeiff.defs.pro'),nl,
-		  see('bimtools/makeiff.defs.pro'),
-		  read_database,seen,
-		  set_make_iff_when_reading_clauses(on),
-		  set_make_iff_definitions_read_in(yes)
-		 )
-	      ;  true
+	    (make_iff_when_reading_clauses(on),
+	     make_iff_definitions_read_in(no)
+	      ->  set_make_iff_when_reading_clauses(off),
+			  print('Reading in bimtools/makeiff.defs.pro'),nl,
+			  see('bimtools/makeiff.defs.pro'),
+			  read_database,seen,
+			  set_make_iff_when_reading_clauses(on),
+			  set_make_iff_definitions_read_in(yes)
+	      ;   true
 	    )
 	   )
 	;  print('### Could not open file:'),print(Filename),nl

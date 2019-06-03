@@ -138,8 +138,9 @@ filter_residue_vars([H|T],Res) :-
 
 read_term_with_lines( RTerm , Start , End ) :-
 	     read_term(RTerm,[layout(Layout)]), 
-	     (Layout=[Start|_],get_end_of_layout(Layout,End)
-	      -> true ; (Start = 0,End = -1)).
+	     ((Layout=[Start|_],get_end_of_layout(Layout,End))
+	      -> true , print(layout(Start,End)),nl
+	       ; Start = 0,End = -1).
 	     %print(read_term_layout(Start,End,Layout)),nl.
 
 

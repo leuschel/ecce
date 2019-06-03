@@ -52,7 +52,7 @@
 
 print_ecce_version :- print(' '),print('2.0').
 print_ecce_release :- prolog_flag(version,PV),
-    format('Release 3, June 2015, Prolog: ~w',[PV]).
+    format('Release 4, June 2019, Prolog: ~w',[PV]).
 
 /* file: dynpreds.pl */
 
@@ -78,10 +78,10 @@ beginner_nl :-
 
 toggle_user_expert :-
 	(user_expert(yes) ->
-	   (print('Switching EXPERT level OFF'),nl,
-	    set_user_expert(no))
-	 ; (print('Switching EXPERT level ON'),nl,
-	    set_user_expert(yes))
+	    print('Switching EXPERT level OFF'),nl,
+	    set_user_expert(no)
+	 ;  print('Switching EXPERT level ON'),nl,
+	    set_user_expert(yes)
 	).
 	
 
