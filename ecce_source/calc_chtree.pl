@@ -47,7 +47,8 @@
         peel_off_calls/2,
         l_peel_off_calls/2,
         partition_goal/2,
-        get_literal_numbers/3
+        get_literal_numbers/3,
+        simplify_calln/2, is_calln/1
 ]).
 
 
@@ -691,8 +692,9 @@ is_built_in_literal('<'(_X,_Y)).
 is_built_in_literal('=<'(_X,_Y)).
 is_built_in_literal('>'(_X,_Y)).
 is_built_in_literal('>='(_X,_Y)).
-is_built_in_literal(call(X)) :- var(X).
-is_built_in_literal(call(X)) :- nonvar(X), is_built_in_literal(X).
+is_built_in_literal(call(X)) :- (var(X) -> true ; is_built_in_literal(X)).
+is_built_in_literal(call(X,Y)) :- 
+        (var(X) -> true ; simplify_calln(call(X,Y),C2), is_built_in_literal(C2)).
 is_built_in_literal(nonvar(_X)).   /* declarative if delays until nonvar */
 is_built_in_literal(ground(_X)).   /* declarative if delays until nonvar */
 is_built_in_literal(number(_X)).   /* declarative if delays until nonvar */
@@ -810,7 +812,7 @@ divide_constraint_residual_goal([Lit|T],OrdLits,ConstrLits) :-
 call_built_in(X) :- var(X), print('### ERROR call(_)'),!,fail.
 call_built_in('=..'(X,Y)) :- nonvar(Y), Y = [A|T],
  nonvar(T), T = [], !, debug_print('=..'),X = A.
-call_built_in(call(X)) :- !,call_built_in(X).
+call_built_in(Call) :- simplify_calln(Call,X), !,call_built_in(X).
 call_built_in(ecce_call(_Cond,X)) :- !,ecce_call(X).
 call_built_in('is'(X,_ArithExpr)) :-
 	nonvar(X), \+(number(X)),!,print('::='),fail.
@@ -866,8 +868,8 @@ is_callable_built_in_literal(atomic(X)) :-
 	nonvar(X).
 is_callable_built_in_literal(atom(X)) :-
 	nonvar(X).
-is_callable_built_in_literal(call(X)) :-
-	nonvar(X),
+is_callable_built_in_literal(Call) :-
+    simplify_calln(Call,X),
 	is_callable_built_in_literal(X).
 is_callable_built_in_literal(clause(X,_Y)) :-
 	nonvar(X).
@@ -918,9 +920,10 @@ built_in_generates_bindings('=..'(_X,_Y)).
 built_in_generates_bindings(functor(_X,_Y,_Z)).
 built_in_generates_bindings(arg(_X,_Y,_Z)).
 built_in_generates_bindings('is'(_X,_Y)).
-built_in_generates_bindings(call(X)) :- built_in_generates_bindings(X).
 built_in_generates_bindings(term_variables(_X,_Vs)).
 built_in_generates_bindings(numbervars(_X,_,_)).
+built_in_generates_bindings(call(X)) :- !, built_in_generates_bindings(X).
+built_in_generates_bindings(Call) :- simplify_calln(Call,X),built_in_generates_bindings(X).
 built_in_generates_bindings(X) :- is_constraint_literal(X).
 
 
@@ -933,9 +936,29 @@ pre_condition(simplify_built_in_literal(Literal,_SLit)) :-
 post_condition(simplify_built_in_literal(_Literal,SLit)) :-
 	term_is_of_type(SLit,literal).
 
+simplify_built_in_literal(Call,Res) :-
+    simplify_built_in_literal(Call,Res).
 
-simplify_built_in_literal(call(X),X) :-
-	nonvar(X),!.
+simplify_calln(call(X),R) :- nonvar(X),!, R=X.
+simplify_calln(call(X,Y),Res) :- nonvar(X),!,
+	add_args(X,[Y],Res).
+simplify_calln(call(X,Y,Z),Res) :- nonvar(X),!,
+	add_args(X,[Y,Z],Res).
+simplify_calln(call(X,Y,Z,V),Res) :- nonvar(X),!,
+	add_args(X,[Y,Z,V],Res).
+simplify_calln(call(X,Y,Z,V,W),Res) :- nonvar(X),!,
+	add_args(X,[Y,Z,V,W],Res).
+
+add_args(Call,TailArgs,Res) :- Call =.. [Functor|Args],
+	append(Args,TailArgs,NewArgs),
+	Res =.. [Functor|NewArgs].
+
+
+is_calln(call(_)).
+is_calln(call(_,_)).
+is_calln(call(_,_,_)).
+is_calln(call(_,_,_,_)).
+is_calln(call(_,_,_,_,_)).
 
 /* ========== */
 /* PREDICATES */
@@ -952,8 +975,9 @@ get_predicate(Atom,pred(PredName,Arity)) :-
 	functor(Atom,PredName,Arity).
 	
 	
-get_predicate_through_calls(call(X),Pred) :- nonvar(X),!,
-   get_predicate_through_calls(X,Pred).
+get_predicate_through_calls(Call,Pred) :-
+   simplify_calln(Call,X2),!,
+   get_predicate_through_calls(X2,Pred).
 get_predicate_through_calls(Atom,Pred) :-
   get_predicate(Atom,Pred).
 
@@ -1131,7 +1155,8 @@ extract_positive_atom_from_literal(not(X),Atom) :- !,
 	extract_positive_atom_from_literal(X,Atom).
 extract_positive_atom_from_literal(\+(X),Atom) :- !,
 	extract_positive_atom_from_literal(X,Atom).
-extract_positive_atom_from_literal(call(X),Atom) :- !,
+extract_positive_atom_from_literal(Call,Atom) :- 
+    simplify_calln(Call,X),!,
 	extract_positive_atom_from_literal(X,Atom).
 extract_positive_atom_from_literal(Atom,Atom) :-
 	\+(pp_cll(is_built_in_literal(Atom))).
@@ -1143,7 +1168,7 @@ l_peel_off_calls([CC|CT],[C|T]) :-
 	l_peel_off_calls(CT,T).
 
 peel_off_calls(X,X) :- var(X),!.
-peel_off_calls(call(X),Y) :- nonvar(X),!, peel_off_calls(X,Y).
+peel_off_calls(Call,Y) :- simplify_calln(Call,X),!, peel_off_calls(X,Y).
 peel_off_calls(X,X).
 
 

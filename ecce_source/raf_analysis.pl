@@ -68,10 +68,9 @@ perform_raf_analysis(IGoal) :-
 	     perform_raf_analysis2([IGoal]))
 	),
 	(var_call_encountered
-	 -> (print('### Warning: call(_) encountered'),nl,
+	 ->  print('### Warning: call(_) encountered'),nl,
 	     print('### Filtered program could be incorrect !'),nl,
 	     print('### Keep the original program to be safe !'),nl
-	    )
 	 ;  true
 	).
 	%print_specialised_program_to_file('RAF Analysis Result').
@@ -146,11 +145,11 @@ propagate_erasure2(_Head,_Body,Atom,Struct) :-
 	assert_dont_erase(Pred,Arity,Pos).
 	/* keep every position for negative literals */
 propagate_erasure2(_Head,_Body,Atom,_Struct) :-
-	Atom = call(_),
+	is_calln(Atom), %Atom = call(_),
 	 /* must be var, otherwise cg_extract... would have dived further */
 	(var_call_encountered -> true ; assert(var_call_encountered)).
 propagate_erasure2(Head,Body,Atom,_Struct) :-
-	(Atom \= call(_)),
+	\+ is_calln(Atom), %(Atom \= call(_)),
 	get_sub_term(Atom,Pred,Arity,SubTerm,Pos),	
 	\+(dont_erase(Pred,Arity,Pos)), /* not erased so far */
 	unsafe_erasure(SubTerm,Head,Body),
@@ -221,7 +220,7 @@ post_condition(erase_literal(_X,Res)) :-
 
 erase_literal(X,Res) :-
 	cg_extract_positive_atom_from_literal(X,Atom,Struct,Ptr),!,
-	(Atom = call(_Call)
+	(is_calln(Atom) % Atom = call(_Call)
 	 -> (Ptr = Atom /* dont erase */)
 	 ;  (erase_atom(Atom,ErAtom),
 	     Ptr = ErAtom
@@ -260,10 +259,9 @@ perform_andprint_far_analysis :-
 	verbose_println(' --> performing far analysis'),
 	perform_far_analysis([]),
 	(var_call_encountered
-	 -> (print('### Warning: call(_) encountered'),nl,
+	 ->  print('### Warning: call(_) encountered'),nl,
 	     print('### Filtered program could be incorrect !'),nl,
 	     print('### Keep the original program to be safe !'),nl
-	    )
 	 ;  true
 	),
 	print_specialised_program_to_file('FAR Analysis Result').

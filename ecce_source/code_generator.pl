@@ -286,8 +286,6 @@ simplify_calls([H|T],SHT) :-
 	(SH=true -> SHT = ST ; SHT = [SH|ST]),
 	simplify_calls(T,ST).
 
-simplify_call(call(X),S) :-
-	nonvar(X),!,simplify_call(X,S).
 simplify_call(not(X),Res) :- !,
 	(simplify_call(X,S)
 	 -> (S=true -> fail ; Res = not(S))
@@ -298,6 +296,8 @@ simplify_call(\+(X),Res) :- !,
 	 -> (S=true -> fail ; Res = \+(S))
 	 ;  Res = true
 	).
+simplify_call(Call,S) :- simplify_calln(Call,X),
+	nonvar(X),!,simplify_call(X,S).
 simplify_call(BI,S) :- detect_dead_literals_or_non_leftmost_builtins(yes),
 	is_callable_built_in_literal(BI),!,
 	call_built_in(BI), S = true.
@@ -305,6 +305,7 @@ simplify_call(BI,S) :- detect_dead_literals_or_non_leftmost_builtins(yes),
 simplify_call(Call,S) :- Call == 'is'(Z,'+'(X,0)), !, X=Z, S = true.
 */
 simplify_call(X,X).
+
 
 /* --------------------------- */
 /* print_specialised_program/0 */
@@ -663,6 +664,8 @@ cg_extract_positive_atom_from_literal(\+(X),Atom,\+(Struct),Ptr) :- !,
 	cg_extract_positive_atom_from_literal(X,Atom,Struct,Ptr).
 cg_extract_positive_atom_from_literal(call(X),Atom,Struct,Ptr) :- !,
 	cg_extract_positive_atom_from_literal(X,Atom,Struct,Ptr).
+cg_extract_positive_atom_from_literal(Call,Atom,Struct,Ptr) :- simplify_calln(Call,X),!,
+	cg_extract_positive_atom_from_literal(X,Atom,Struct,Ptr).
 cg_extract_positive_atom_from_literal(Atom,Atom,Ptr,Ptr) :-
 	not(is_built_in_literal(Atom)).
 
@@ -681,6 +684,8 @@ cg_extract_positive_atom_or_builtin_from_literal(\+(X),Atom,\+(Struct),Ptr) :-
 	!,
 	cg_extract_positive_atom_or_builtin_from_literal(X,Atom,Struct,Ptr).
 cg_extract_positive_atom_or_builtin_from_literal(call(X),Atom,Struct,Ptr) :- !,
+	cg_extract_positive_atom_or_builtin_from_literal(X,Atom,Struct,Ptr).
+cg_extract_positive_atom_or_builtin_from_literal(Call,Atom,Struct,Ptr) :- simplify_calln(Call,X),!,
 	cg_extract_positive_atom_or_builtin_from_literal(X,Atom,Struct,Ptr).
 cg_extract_positive_atom_or_builtin_from_literal(Atom,Atom,Ptr,Ptr).
 

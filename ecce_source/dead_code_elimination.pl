@@ -44,10 +44,11 @@ l_add_reachable_atom([H|T]) :-
 	l_add_reachable_atom(T).
 
 add_reachable_atom(Atom) :-
-	Atom = call(_),!,
+	is_calln(Atom), %Atom = call(_),
+	!,
 	(var_call_encountered -> true
-	                      ;  (print('CALL encountered'),nl,
-	                          assert(var_call_encountered))).
+	                      ;  print('CALL encountered'),nl,
+	                         assert(var_call_encountered)).
 add_reachable_atom(Atom) :-
 	nonvar(Atom),
 	get_predicate(Atom,pred(Pred,Arity)),
