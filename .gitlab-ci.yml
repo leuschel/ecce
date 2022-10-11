@@ -1,0 +1,31 @@
+linux:build:
+  image: $CI_REGISTRY/stups/prob/prob-docker/prob/build:0.11-sicstus4.7.1
+  before_script:
+    - rm -rf ./bin
+    - mkdir ./bin
+  script:
+    - make
+  artifacts:
+    paths:
+      - bin/ecce_cli
+
+docker:build:
+  needs: ["linux:build"]
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - cp bin/ecce_cli www/bin/mecce
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+  script:
+    - docker image build --tag "${CI_REGISTRY_IMAGE}:latest" .
+    - docker image push "${CI_REGISTRY_IMAGE}:latest"
+
+docker:deploy:
+  needs: ["docker:build"]
+  image: alpine:latest
+  before_script:
+    - chmod 0400 "${DEPLOY_KEY}"
+    - apk add openssh-client
+  script:
+    - ssh -i "${DEPLOY_KEY}" -o StrictHostKeyChecking=no deploy@"${DEPLOY_HOST}"
