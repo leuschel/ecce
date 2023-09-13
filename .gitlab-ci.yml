@@ -25,7 +25,7 @@ docker:deploy:
   needs: ["docker:build"]
   image: alpine:latest
   before_script:
-    - chmod 0400 "${DEPLOY_KEY}"
+    - chmod 0400 "${DEPLOY_KEY}" "${DEPLOY_HOST_KEYS}"
     - apk add openssh-client
   script:
-    - ssh -i "${DEPLOY_KEY}" -o StrictHostKeyChecking=no deploy@"${DEPLOY_HOST}"
+    - ssh -i "${DEPLOY_KEY}" -o UserKnownHostsFile="${DEPLOY_HOST_KEYS}" deploy@"${DEPLOY_HOST}"
