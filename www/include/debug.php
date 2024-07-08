@@ -3,7 +3,8 @@
 //show_runtime_error("testerror","grund dafuer");
 //trigger_error("Cannot divide by zero", E_USER_ERROR)
 
-function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars)
+// as of PHP 8 the error handler no longer has a context argument
+function userErrorHandler($errno, $errmsg, $filename, $linenum)
 {
    // timestamp for the error entry
    $dt = date("Y-m-d H:i:s (T)");
@@ -33,9 +34,7 @@ function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars)
    $err .= "\t<scriptname>" . $filename . "</scriptname>\n";
    $err .= "\t<scriptlinenum>" . $linenum . "</scriptlinenum>\n";
 
-//   if (in_array($errno, $user_errors)) {
-//       $err .= "\t<vartrace>" . wddx_serialize_value($vars, "Variables") . "</vartrace>\n";
-//   }
+
    $err .= "</errorentry>\n\n";   
 
    $err = $dt." ".$errno." ".$errortype[$errno]." ".$errmsg." in ".$filename." line ".$linenum."\n";
