@@ -23,7 +23,7 @@
     <button onClick="window.open('doc/about.php','winAbout','width=350,height=300');"
         name="about" class="ecce_button">About us</button>
     <br/>
-    <button onClick="window.open('downloads/index.php','newWin','width=500,height=300');"
+    <button onClick="window.open('https://github.com/leuschel/ecce','newWin','width=500,height=300');"
         name="download" class="ecce_button">Download</button>
     </fieldset>
 
