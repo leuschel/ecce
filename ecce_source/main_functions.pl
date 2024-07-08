@@ -233,7 +233,7 @@ pe_post_process(PEGoal) :-
 	print_html('</h3>'),
 	html_begin_orange,
 	print('/'),print('* '),
-	print('PD Goal: '), numbervars(Goal,0,_), print(Goal),
+	print('PD Goal: '), \+ \+ (numbervars(PEGoal,0,_), print(PEGoal)),
 	print(' *'),print('/'),newlinebreak,
 	print('/'),print('* '),
 	print('Parameters: '), print_parameters,
