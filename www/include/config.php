@@ -23,7 +23,7 @@ define("DOT_CMD","/usr/bin/dot -Tsvg");
 
 
 $pref = array();
-$pref['base_url']="http://wyvern.cs.uni-duesseldorf.de/ecce/";
+$pref['base_url']="https://ecce.stups.hhu.de/ecce/";
 $pref['runtime_error_url']=$pref['base_url']."runtime_error.php";
 
 ?>
