@@ -1,4 +1,10 @@
+stages:
+  - build
+  - docker
+  - deploy
+
 linux:build:
+  stage: build
   image: $CI_REGISTRY/stups/prob/prob-docker/prob/build:0.11-sicstus4.7.1
   before_script:
     - rm -rf ./bin
@@ -10,6 +16,7 @@ linux:build:
       - bin/ecce_cli
 
 docker:build:
+  stage: docker
   needs: ["linux:build"]
   image: docker:latest
   services:
@@ -22,6 +29,7 @@ docker:build:
     - docker image push "${CI_REGISTRY_IMAGE}:latest"
 
 docker:deploy:
+  stage: deploy
   needs: ["docker:build"]
   image: alpine:latest
   before_script:
