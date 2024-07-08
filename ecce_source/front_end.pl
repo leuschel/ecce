@@ -315,14 +315,14 @@ front_end([]) :- !,
 	ecce_get(AsciiChar),
  	(action(AsciiChar)
 	-> true
-	;  format('Unknown command ~w, type h or ? for help',[AsciiChar]),nl,
+	;  format('Unknown command ~s, type h or ? for help',[[AsciiChar]]),nl,
 	   front_end([])
 	).
 front_end([A|P]) :-
         char_code(A,Action),debug_print('::'),debug_print(action(Action)),debug_nl,
  	(action(Action,P)
 	-> true
-	;  format('Unknown command ~w, try "ecce h" or "ecce ?" for help',[Action]),nl
+	;  format('Unknown command ~s, try "ecce h" or "ecce ?" for help',[[Action]]),nl
 	).
 
 
