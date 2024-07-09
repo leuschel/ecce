@@ -93,7 +93,7 @@ timeout_call(Call,Opts) :-
 
 get_timeout(Opts,TOut) :-
    member(timeout(OF),Opts),
-   name(OF,AsciiL),add_dot(AsciiL,AL2),read_from_chars(AL2,TOut),
+   atom_codes(OF,AsciiL),add_dot(AsciiL,AL2),read_from_codes(AL2,TOut),
    TOut>0, TOut=<2147483646.
  
 % add a dot at the end; in case user forgets
