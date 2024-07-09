@@ -108,10 +108,14 @@
 <fieldset><legend>Plug-ins</legend>
     <?php show_button('rul'); ?>
     <?php show_button('rul_bup'); ?>
+    <?php show_button('convex'); ?>
+    <?php show_button('convex_tt'); ?>
+<!-- 
     <?php show_button('nfta'); ?>
     <?php show_button('nfta_bup'); ?>
     <?php show_button('ciao_analyse'); ?>
     <?php show_button('ciao_optimise'); ?>
+ -->
    <button onClick="window.open('doc/plug-ins.php','winHelp','width=300,height=200');"
         name="About Plug-ins" class="ecce_button">About Plug-ins</button>
     <br/>
