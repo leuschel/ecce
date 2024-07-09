@@ -22,6 +22,8 @@ The PolyType tool was developed by <a href="http://www.ruc.dk/~jpg/">John Gallag
 and Maurice Bruynooghe
 with support from EU project
 <a href="http://www.clip.dia.fi.upm.es/Projects/ASAP/">ASAP</a>.
+The Polyhedra Convex Hull Analyser was written by Florence Benoy, Andy King and Fred Mesnard 
+ (small additions by Michael Leuschel).
 </p>
 
 <p>

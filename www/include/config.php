@@ -16,6 +16,7 @@ define("MECCE_BASEDIR","/var/www/html/ecce/");
 
 define("MECCE_BIN","/var/www/html/ecce/bin/mecce");
 define("RUL_BIN","/var/www/html/ecce/bin/rul_cli");
+define("CONVEX_BIN","/var/www/html/ecce/bin/convex_cli");
 define("NFTA_BIN","/var/www/html/ecce/bin/nfta");
 define("CIAOPPCL_BIN","/var/www/html/ecce/bin/ciaoppcl");
 

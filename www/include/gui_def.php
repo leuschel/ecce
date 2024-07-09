@@ -15,10 +15,12 @@ def_button('dot','Specialisation Tree','Show Specialisation Tree','fkt_dot');
 def_button('pre_load','Load','Load a working example','fkt_pre_load');
 def_button('rul','RUL','Regular Unary Logic program analysis (Goal-Directed) by John Gallagher','fkt_rul');
 def_button('rul_bup','RUL-BUP','Regular Unary Logic bottom-up analysis by John Gallagher','fkt_rul_bup');
-def_button('nfta','NFTA','Non-Deterministic Finite Tree Automaton (Goal-Directed) by John Gallagher','fkt_nfta');
-def_button('nfta_bup','NFTA-BUP','Non-Deterministic Finite Tree Automaton (Bottom-Up) by John Gallagher','fkt_nfta_bup');
-def_button('ciao_optimise','CiaoPP Optimise','Compute CiaoPP Optimisation','fkt_ciao_optimise');
-def_button('ciao_analyse','CiaoPP Analyse','Use CiaoPP Analyser','fkt_ciao_analyse');
+def_button('convex','CONVEX-LL','Polyhedra Convex Hull Analyser using list_length by Benoy, King, Mesnard','fkt_convex');
+def_button('convex_tt','CONVEX-TS','Polyhedra Convex Hull Analyser using term_size by Benoy, King, Mesnard','fkt_convex_ts');
+// def_button('nfta','NFTA','Non-Deterministic Finite Tree Automaton (Goal-Directed) by John Gallagher','fkt_nfta');
+// def_button('nfta_bup','NFTA-BUP','Non-Deterministic Finite Tree Automaton (Bottom-Up) by John Gallagher','fkt_nfta_bup');
+// def_button('ciao_optimise','CiaoPP Optimise','Compute CiaoPP Optimisation','fkt_ciao_optimise');
+// def_button('ciao_analyse','CiaoPP Analyse','Use CiaoPP Analyser','fkt_ciao_analyse');
 
 
 

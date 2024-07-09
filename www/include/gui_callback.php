@@ -319,6 +319,38 @@ function fkt_rul_bup()
 	$_SESSION['specialized']=$xce;
 	$_SESSION['pl_out']=pl2html($xce);
 }
+function fkt_convex()
+{
+	debug_print('convex');
+	extract($GLOBALS['dout']);
+	
+	$outfile=file_with('');
+	$infile=file_with($source);
+
+	$cmd=CONVEX_BIN." $infile -o $outfile";
+
+	$ret=run_process($cmd);
+
+	$xce=from_tmp($outfile);
+	$_SESSION['specialized']=$xce;
+	$_SESSION['pl_out']=pl2html($xce);
+}
+function fkt_convex_ts()
+{
+	debug_print('convex');
+	extract($GLOBALS['dout']);
+	
+	$outfile=file_with('');
+	$infile=file_with($source);
+
+	$cmd=CONVEX_BIN." -t $infile -o $outfile";
+
+	$ret=run_process($cmd);
+
+	$xce=from_tmp($outfile);
+	$_SESSION['specialized']=$xce;
+	$_SESSION['pl_out']=pl2html($xce);
+}
 function fkt_nfta()
 {
 	debug_print('nfta');

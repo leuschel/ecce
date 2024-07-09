@@ -15,6 +15,7 @@ linux:build:
     paths:
       - bin/ecce_cli
       - bin/rul_cli
+      - bin/convex_cli
 
 docker:build:
   stage: docker
@@ -25,6 +26,7 @@ docker:build:
   before_script:
     - cp bin/ecce_cli www/bin/mecce
     - cp bin/rul_cli www/bin/rul_cli
+    - cp bin/convex_cli www/bin/convex_cli
     - echo "${CI_REGISTRY_PASSWORD}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
   script:
     - docker image build --tag "${CI_REGISTRY_IMAGE}:latest" .
