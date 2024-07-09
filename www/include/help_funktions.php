@@ -15,7 +15,7 @@ function run_process_with_input($command,$input)
 
     $env=array('HOME'=>'/var/lib/wwwrun');
 
-    $process = proc_open($command, $descriptorspec, $pipes,'tmp',$env);
+    $process = proc_open($command, $descriptorspec, $pipes, '/tmp', $env);
 
     if(is_resource($process))
     {
