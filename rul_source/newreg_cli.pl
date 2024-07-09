@@ -40,7 +40,7 @@ runtime_entry(start) :- go.
 
 save :- save_program('rul.sav').
 
-:- use_module(library(charsio),[read_from_chars/2]).
+:- use_module(library(codesio),[read_from_codes/2]).
 :- use_module(library(system),[system/1]).
 :- use_module(library(lists)).
 :- use_module(library(timeout)).
@@ -56,7 +56,7 @@ go :-
     assert(options(Opts)),
     
     (AX = [F,Query|_RestArgv] 
-     -> (name(Query,AsciiL),add_dot(AsciiL,AL2),read_from_chars(AL2,Q),
+     -> (atom_codes(Query,AsciiL),add_dot(AsciiL,AL2),read_from_codes(AL2,Q),
          timeout_call(td(F,Q),Opts))
      ;  (AX=[F]
           -> (member(bup,Opts)
@@ -1747,4 +1747,10 @@ numexpr('X0'*'X1') :- numexpr('X0'),numexpr('X1').
 numexpr('X0' mod 'X1') :- numexpr('X0'),numexpr('X1').
 numexpr(-'X0') :- numexpr('X0').
 
-
+ttynl :- nl(user_output).
+ttyflush :- flush_output.
+tab(X) :- X<1,!.
+tab(X) :- write(' '), X1 is X-1, tab(X1).
+% TODO: adapt:
+nofileerrors.
+fileerrors.
