@@ -15,6 +15,19 @@ V = [_A,_B] ?
 :- module(convex_hull, [project/3, convex_hull/6, tell_cs/1]).
 :- use_module(library(clpq)).
 
+:- meta_predicate call_residue(0,*).
+/* from File: sp4_compatibility_mappings.pl */
+/* Created: 08/05/2007 by Michael Leuschel */
+call_residue(X,Residue) :- call_residue_vars(X,V),filter_residue_vars(V,Residue).
+filter_residue_vars([],[]).
+filter_residue_vars([H|T],Res) :-
+  frozen(H,FH),
+  (FH=true -> Res=RT
+   ; %format('Residue for variable ~w: ~w~n',[H,FH]),
+     Res = [FH|RT]),
+  filter_residue_vars(T,RT).
+  
+
 project(Xs, Cxs, ProjectCxs) :-
     call_residue(copy_term(Xs-Cxs, CpyXs-CpyCxs), _),
     tell_cs(CpyCxs),
