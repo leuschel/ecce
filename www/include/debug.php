@@ -43,7 +43,8 @@ function userErrorHandler($errno, $errmsg, $filename, $linenum)
     error_log($err, 3, DEBUG_ERROR_HANDLER_LOG_FILE);
 //   mail(DEBUG_ERROR_MAIL_TO, "Critical User Error", $err,$GLOBALS['pref']['mail_headers']);
 
-   show_runtime_error("Interner Fehler","handled by userErrorHandler");
+   show_runtime_error($err,"handled by userErrorHandler");
+//   show_runtime_error("Interner Fehler","handled by userErrorHandler");
    exit();
 }
 
