@@ -8,10 +8,10 @@ Implemented by Michael Leuschel
 Based on work by Michael Leuschel, Bern Martens, Jesper Jorgensen,
 Danny De Schreye, Robert Glueck, Morten Heine Sorensen, Andre de Waal,
 and Mauricio Varea.
-(C) 1995-2024
+(C) 1995-2026
 
 An online version of Ecce is available at:
-  http://wyvern.cs.uni-duesseldorf.de/ecce/index.php
+  https://ecce.stups.hhu.de/ecce/
 
 To build the command-line version of ecce (ecce_cli) simply execute make in the
 main directory or within the ecce_source directory. This will also run a simple test.
